@@ -1,0 +1,27 @@
+// Kibol1.cpp: implementation of the CKibol class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "kibol.h"
+#include "Kibol1.h"
+
+#ifdef _DEBUG
+#undef THIS_FILE
+static char THIS_FILE[]=__FILE__;
+#define new DEBUG_NEW
+#endif
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+CKibol::CKibol()
+{
+
+}
+
+CKibol::~CKibol()
+{
+
+}
