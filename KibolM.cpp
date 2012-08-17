@@ -643,3 +643,32 @@ CDrogi *CKibolM::LosujRozw(CDrogi *droga)
 
 	return(droga);
 }
+
+/*	krok 0. => zmieniamy stopnien srodkowego punktu na "2"
+ *				zwracany jest numer nastepnego kroku czyli nr 1.
+ *	krok 1. => przywracamy stopnien srodkowego punktu na "1"
+ *				zwracany jest numer nastepnego kroku czyli nr 2.
+ *	krok 2. => bez reakcaji korekta zostala zakonczona 
+ *				zwracany jest numer tego samego kroku czyli nr 2.
+ */
+int CKibolM::KorektaHvsK(int krok)
+{
+	if(krok == 2) return(2);
+	if(krok < 2) 
+	{
+		int x = (int)(width / 2);
+		int y = (int)(height / 2);
+
+		if(krok == 0) 
+		{
+			punkt_info[x][y].deg = 2;
+			return(1);
+		}
+		if(krok == 1)
+		{
+			punkt_info[x][y].deg--;
+			return(2);
+		}
+	}
+	return(2);
+}

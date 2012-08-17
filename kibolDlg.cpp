@@ -69,15 +69,22 @@ CKibolDlg::CKibolDlg(CWnd* pParent /*=NULL*/)
 
 
 //## pamietac o zmianie trybu na 0, teraz testowany jest tryb H vs H
-	tryb_gry = 3;
+	tryb_gry = 0;
+	koryguj = 2;
 
+	kolor = RGB(255, 0, 0);
+	bk_kolor = RGB(192, 192, 192);
 	przesun.x = 30;
 	przesun.y = 60;
-	offset.x = 3;
-	offset.y = 41;
+	//offset.x = 3;
+	//offset.y = 41;
+	offset.x = 0;
+	offset.y = 0;
 	rozm = 30;
 	win_akt.x = 3*rozm + przesun.x + offset.x;
 	win_akt.y = 4*rozm + przesun.y + offset.y;
+
+	marker_check = 1;
 
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -96,6 +103,12 @@ BEGIN_MESSAGE_MAP(CKibolDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_LBUTTONDOWN()
+	ON_COMMAND(ID_GRA_MARKERY, OnGraMarkery)
+	ON_COMMAND(ID_TRYB_HUMVSHUM, OnTrybHumvshum)
+	ON_COMMAND(ID_TRYB_HUMVSKOMP, OnTrybHumvskomp)
+	ON_COMMAND(ID_TRYB_KOMPVSHUM, OnTrybKompvshum)
+	ON_COMMAND(ID_GRA_KONIEC, OnGraKoniec)
+	ON_COMMAND(ID_GRA_NOWA, OnGraNowa)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -176,7 +189,9 @@ void CKibolDlg::OnPaint()
 		CDialog::OnPaint();
 	}
 
+	Zamazuj();
 	WinRysujBoisko();
+	Marker();
 }
 
 // The system calls this to obtain the cursor to display while the user drags
@@ -189,8 +204,13 @@ HCURSOR CKibolDlg::OnQueryDragIcon()
 void CKibolDlg::OnLButtonDown(UINT nFlags, CPoint point) 
 {
 	CPoint pt(point);
+	CString zwrot;
+	
 	
 	switch(tryb_gry) {
+	case 0:
+		zwrot = MessageBox("Nie wybrano zadnego trybu!","Kibol",MB_OK | MB_ICONEXCLAMATION);
+		break;
 	case 1:
 		TrybHvsH(pt.x + offset.x, pt.y + offset.y);
 		break;
@@ -210,40 +230,57 @@ void CKibolDlg::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CKibolDlg::WinRysuj(int x, int y)
 {
-	CWindowDC pDC(this);
+/*
+	CWindowDC pdc(this);
 	
-	pDC.MoveTo(win_akt.x, win_akt.y);
-	pDC.LineTo(x, y);
+	pdc.MoveTo(win_akt.x, win_akt.y);
+	pdc.LineTo(x, y);
 	win_akt.x = x;
 	win_akt.y = y;
+*/
+	CClientDC pdc(this);
+	//CPen lSolidPen(PS_SOLID, 1, RGB(255,0,0) );
+	CPen lSolidPen(PS_SOLID, 1, kolor );
+
+
+	//pobranie obszaru rysowania
+	CRect lObszar;
+	GetClientRect(lObszar);
+	//lObszar.NormalizeRect();
+
+	CPen *lOldPen;
+
+	lOldPen = pdc.SelectObject(&lSolidPen);
+
+	//rysowanie linii
+	pdc.MoveTo(win_akt.x, win_akt.y);
+	pdc.LineTo(x, y);
+	win_akt.x = x;
+	win_akt.y = y;
+
+	//wybranie oryginalnego piora
+	pdc.SelectObject(lOldPen);
+
 }
 
 void CKibolDlg::WinRysujBoisko()
 {
-	CWindowDC pDC(this);
+	//CWindowDC pdc(this);
+	CClientDC pdc(this);
 	
-	pDC.MoveTo( przesun.x + offset.x, przesun.y + offset.y );
-	pDC.LineTo( przesun.x + offset.x, przesun.y +(boisko.height - 2)*rozm + offset.y );
-	pDC.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
-	pDC.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (boisko.height -2 +1)*rozm + offset.y );
-	pDC.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (boisko.height -2 +1)*rozm + offset.y );
-	pDC.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
-	pDC.LineTo( przesun.x + (2+2+2)*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
-	pDC.LineTo( przesun.x + (2+2+2)*rozm + offset.x, przesun.y + offset.y );
-	pDC.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + offset.y );
-	pDC.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (-1)*rozm + offset.y );
-	pDC.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (-1)*rozm + offset.y );
-	pDC.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + offset.y );
-	pDC.LineTo( przesun.x + offset.x, przesun.y + offset.y );
-
-	// markery
-	int x, y;
-	for(x =(przesun.x + offset.x);  x<=(6*rozm + przesun.x + offset.x); x+=rozm)
-		for(y=(przesun.y + offset.y); y<=(8*rozm + przesun.y + offset.y); y+=rozm)
-		{
-			pDC.MoveTo(x,y);
-			pDC.LineTo(x+2,y+2);
-		}
+	pdc.MoveTo( przesun.x + offset.x, przesun.y + offset.y );
+	pdc.LineTo( przesun.x + offset.x, przesun.y +(boisko.height - 2)*rozm + offset.y );
+	pdc.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
+	pdc.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (boisko.height -2 +1)*rozm + offset.y );
+	pdc.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (boisko.height -2 +1)*rozm + offset.y );
+	pdc.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
+	pdc.LineTo( przesun.x + (2+2+2)*rozm + offset.x, przesun.y + (boisko.height -2)*rozm + offset.y );
+	pdc.LineTo( przesun.x + (2+2+2)*rozm + offset.x, przesun.y + offset.y );
+	pdc.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + offset.y );
+	pdc.LineTo( przesun.x + (2+2)*rozm + offset.x, przesun.y + (-1)*rozm + offset.y );
+	pdc.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + (-1)*rozm + offset.y );
+	pdc.LineTo( przesun.x + 2*rozm + offset.x, przesun.y + offset.y );
+	pdc.LineTo( przesun.x + offset.x, przesun.y + offset.y );
 }
 
 int CKibolDlg::TrybHvsH(int win_x, int win_y)
@@ -285,6 +322,7 @@ int CKibolDlg::TrybHvsH(int win_x, int win_y)
 			tryb_gry = 0;
 			break;
 		case 1:
+			ZmienKolor();
 			zwrot = MessageBox("Koniec ruchow zawodnika.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
 			break;
 //		case 2:
@@ -436,6 +474,8 @@ int CKibolDlg::TrybKvsH(int win_x, int win_y)
 			break;
 		case 1:
 //			zwrot = MessageBox("Koniec ruchow. Teraz komputer.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
+			koryguj = boisko.KorektaHvsK( koryguj );
+			ZmienKolor();
 			tryb_gry = 3;
 			break;
 		}	
@@ -474,6 +514,7 @@ int CKibolDlg::TrybKvsH(int win_x, int win_y)
 			break;
 		case 1:
 //			zwrot = MessageBox("Koniec drogi. Teraz czlowiek.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
+			ZmienKolor();
 			tryb_gry = 2;
 			break;
 		}	
@@ -507,4 +548,139 @@ int CKibolDlg::KonwersjaKon(CPunkt *pkt, CPunkt *win_pos)
 	}
 
 	return(0);
+}
+
+int CKibolDlg::Marker()
+{
+	CClientDC pdc(this);
+	int x, y;
+
+	COLORREF marker_kolor;	
+	//CWindowDC pdc(this);
+
+	if(marker_check == 1) marker_kolor = RGB(0, 0, 0);
+	else marker_kolor = bk_kolor;
+
+	CPen pioro(PS_SOLID, 1, marker_kolor);
+	//CPen pioro(PS_SOLID, 1, bk_kolor);
+	CPen *p_pioro;
+	p_pioro = pdc.SelectObject(&pioro);
+
+	for(x =(przesun.x + offset.x);  x<=(6*rozm + przesun.x + offset.x); x+=rozm)
+		for(y=(przesun.y + offset.y); y<=(8*rozm + przesun.y + offset.y); y+=rozm)
+		{
+			pdc.MoveTo(x,y);
+			pdc.LineTo(x +1,y +1);
+		}
+
+	pdc.SelectObject(p_pioro);
+	WinRysujBoisko();
+
+	return(0);
+}
+
+COLORREF CKibolDlg::ZmienKolor()
+{
+	if(kolor == RGB(255, 0, 0)) kolor = RGB(0, 0, 255);
+	else kolor = RGB(255, 0, 0);
+	return(kolor);
+}
+
+void CKibolDlg::OnGraMarkery() 
+{
+
+	if( marker_check == 0) marker_check = 1;
+	else marker_check = 0;
+
+	Marker();
+}
+
+void CKibolDlg::OnTrybHumvshum() 
+{
+	Zamazuj();
+	WinRysujBoisko();
+	Marker();
+
+	boisko.akt.x = 4;
+	boisko.akt.y = 5;
+	boisko.UstawDane();
+	win_akt.x = 3*rozm + przesun.x + offset.x;
+	win_akt.y = 4*rozm + przesun.y + offset.y;
+
+	tryb_gry = 1;
+}
+
+void CKibolDlg::OnTrybHumvskomp() 
+{
+	Zamazuj();
+	WinRysujBoisko();
+	Marker();
+
+	boisko.akt.x = 4;
+	boisko.akt.y = 5;
+	boisko.UstawDane();
+	win_akt.x = 3*rozm + przesun.x + offset.x;
+	win_akt.y = 4*rozm + przesun.y + offset.y;
+
+	tryb_gry = 2;
+	koryguj = 0;
+}
+
+void CKibolDlg::OnTrybKompvshum() 
+{
+	Zamazuj();
+	WinRysujBoisko();
+	Marker();
+
+	boisko.akt.x = 4;
+	boisko.akt.y = 5;
+	boisko.UstawDane();
+	win_akt.x = 3*rozm + przesun.x + offset.x;
+	win_akt.y = 4*rozm + przesun.y + offset.y;
+
+	tryb_gry = 3;
+
+	TrybKvsH(win_akt.x, win_akt.y);
+}
+
+void CKibolDlg::OnGraKoniec() 
+{
+	OnOK();
+}
+
+int CKibolDlg::Zamazuj()
+{
+	CClientDC pdc(this);
+	CPen pioro(PS_SOLID, 1, bk_kolor );
+	CBrush pedzel(bk_kolor);
+	CPen *p_pioro;
+	CBrush *p_pedzel;
+
+	p_pedzel = pdc.SelectObject(&pedzel);
+	p_pioro = pdc.SelectObject(&pioro);
+
+	pdc.SetBkMode( OPAQUE );
+	pdc.Rectangle(przesun.x, przesun.y, przesun.x + 6*rozm, przesun.y + 8*rozm);
+	pdc.Rectangle(przesun.x + 2*rozm, przesun.y - rozm, przesun.x + 4*rozm, przesun.y);
+	pdc.Rectangle(przesun.x + 2*rozm, przesun.y + 8*rozm, przesun.x + 4*rozm, przesun.y + 9*rozm);
+
+	pdc.SelectObject(p_pedzel);
+	pdc.SelectObject(p_pioro);
+
+	return(0);
+}
+
+void CKibolDlg::OnGraNowa() 
+{
+	Zamazuj();
+	WinRysujBoisko();
+	Marker();
+
+	boisko.akt.x = 4;
+	boisko.akt.y = 5;
+	boisko.UstawDane();
+	win_akt.x = 3*rozm + przesun.x + offset.x;
+	win_akt.y = 4*rozm + przesun.y + offset.y;
+
+	tryb_gry = 0;
 }

@@ -18,6 +18,7 @@
 class CKibolM  
 {
 public:
+	int KorektaHvsK(int krok);
 	CDrogi * LosujRozw(CDrogi *drogi);
 	CDrogi * KasujDrogi(CDrogi *droga);
 	CDrogi *DodajDroge(CDrogi *droga, CStos *stos);
@@ -34,7 +35,7 @@ public:
 	BOOL NrSasiada(CPunkt punkt_1, CPunkt punkt_2, int *nr_sasiad_1, int *nr_sasiad_2);
 	BOOL DodajSasiada(CPunkt punkt_1, CPunkt punkt_2);
 	CWierzchGrafu punkt_info[9][11];
-	int stan_gry;
+//	int stan_gry;
 //	CStos stos_hum;
 //	CStos stos_komp;
 	CPunkt akt;

@@ -78,8 +78,17 @@ BEGIN
     POPUP "&Gra"
     BEGIN
         MENUITEM "&Nowa",                       ID_GRA_NOWA
+        MENUITEM SEPARATOR
+        MENUITEM "&Markery",                    ID_GRA_MARKERY
+        MENUITEM "&Koniec",                     ID_GRA_KONIEC
     END
-    MENUITEM "&Tryb",                       65535
+    POPUP "&Tryb"
+    BEGIN
+        MENUITEM "Hum vs Hum",                  ID_TRYB_HUMVSHUM
+        MENUITEM "Hum vs Komp",                 ID_TRYB_HUMVSKOMP
+        MENUITEM "Komp vs Hum",                 ID_TRYB_KOMPVSHUM
+    END
+    MENUITEM "",                            65535
 END
 
 #endif    // Polish resources
@@ -100,16 +109,19 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 68
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About kibol"
 FONT 8, "MS Sans Serif"
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "KIBOL Version 0.9.1 beta",IDC_STATIC,40,10,119,8,
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "KIBOL Version 0.9.2 beta",IDC_STATIC,39,36,119,8,
                     SS_NOPREFIX
-    LTEXT           "FreeWare 21.05.2004",IDC_STATIC,40,25,119,8
-    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+    LTEXT           "FreeWare 22.05.2004",IDC_STATIC,40,46,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,47,50,14,WS_GROUP
+    LTEXT           "Konsolowy. Interpretator. BOiska. Ligowego.",IDC_STATIC,
+                    54,14,144,9
+    LTEXT           "(narazie bez konsoli)",IDC_STATIC,89,24,69,10
 END
 
 IDD_KIBOL_DIALOG DIALOGEX 0, 0, 160, 225
@@ -178,7 +190,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 228
         TOPMARGIN, 7
-        BOTTOMMARGIN, 48
+        BOTTOMMARGIN, 61
     END
 
     IDD_KIBOL_DIALOG, DIALOG

@@ -21,6 +21,13 @@ class CKibolDlg : public CDialog
 {
 // Construction
 public:
+	int koryguj;
+	COLORREF bk_kolor;
+	int marker_check;
+	int Zamazuj();
+	COLORREF ZmienKolor();
+	COLORREF kolor;
+	int Marker();
 	int KonwersjaKon(CPunkt *pkt, CPunkt *win_pos);
 	int TrybKvsH(int win_x, int win_y);
 	int tryb_gry;
@@ -58,6 +65,12 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnGraMarkery();
+	afx_msg void OnTrybHumvshum();
+	afx_msg void OnTrybHumvskomp();
+	afx_msg void OnTrybKompvshum();
+	afx_msg void OnGraKoniec();
+	afx_msg void OnGraNowa();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
