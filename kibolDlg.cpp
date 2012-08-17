@@ -70,7 +70,7 @@ CKibolDlg::CKibolDlg(CWnd* pParent /*=NULL*/)
 
 //## pamietac o zmianie trybu na 0, teraz testowany jest tryb H vs H
 	tryb_gry = 0;
-	koryguj = 2;
+//	koryguj = 2;
 
 	kolor = RGB(255, 0, 0);
 	bk_kolor = RGB(192, 192, 192);
@@ -469,12 +469,12 @@ int CKibolDlg::TrybKvsH(int win_x, int win_y)
 
 		switch(stan){
 		case 0:
-//			zwrot = MessageBox("KONIEC GRY!","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
+			zwrot = MessageBox("KONIEC GRY!","Tryb Hum_vs_Komp",MB_OK | MB_ICONEXCLAMATION);
 			tryb_gry = 0;
 			break;
 		case 1:
-//			zwrot = MessageBox("Koniec ruchow. Teraz komputer.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
-			koryguj = boisko.KorektaHvsK( koryguj );
+//			zwrot = MessageBox("Koniec ruchow. Teraz komputer.","Tryb Hum_vs_Komp",MB_OK | MB_ICONEXCLAMATION);
+//			koryguj = boisko.KorektaHvsK( koryguj );
 			ZmienKolor();
 			tryb_gry = 3;
 			break;
@@ -489,7 +489,6 @@ int CKibolDlg::TrybKvsH(int win_x, int win_y)
 		stos_komp = new CStos;
 
 		stan = boisko.RuchKomp(stos_komp);
-//		zwrot = MessageBox("Czy cos wygenerowalo?.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
 		
 		while(stos_komp != NULL)
 		{
@@ -509,11 +508,11 @@ int CKibolDlg::TrybKvsH(int win_x, int win_y)
 
 		switch(stan){
 		case 0:
-//			zwrot = MessageBox("KONIEC GRY!","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
+			zwrot = MessageBox("KONIEC GRY!","Tryb Hum_vs_Komp",MB_OK | MB_ICONEXCLAMATION);
 			tryb_gry = 0;
 			break;
 		case 1:
-//			zwrot = MessageBox("Koniec drogi. Teraz czlowiek.","Tryb Hum_vs_Hum",MB_OK | MB_ICONEXCLAMATION);
+//			zwrot = MessageBox("Koniec drogi. Teraz czlowiek.","Tryb Hum_vs_Komp",MB_OK | MB_ICONEXCLAMATION);
 			ZmienKolor();
 			tryb_gry = 2;
 			break;
@@ -623,7 +622,7 @@ void CKibolDlg::OnTrybHumvskomp()
 	win_akt.y = 4*rozm + przesun.y + offset.y;
 
 	tryb_gry = 2;
-	koryguj = 0;
+//	koryguj = 0;
 }
 
 void CKibolDlg::OnTrybKompvshum() 

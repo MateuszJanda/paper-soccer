@@ -21,7 +21,7 @@ class CKibolDlg : public CDialog
 {
 // Construction
 public:
-	int koryguj;
+//	int koryguj;
 	COLORREF bk_kolor;
 	int marker_check;
 	int Zamazuj();

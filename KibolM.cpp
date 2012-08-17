@@ -460,9 +460,11 @@ int CKibolM::RuchHum(CPunkt pkt)
 int CKibolM::RuchKomp(CStos *stos)
 {
 	CPunkt bazowy, poprzed, nowy;
-    CStos *stos_gen; //, *stos_temp;	
+    CStos *stos_gen;
 	CDrogi *rozwiaz;
 	int koniec_gener = 0;
+	int koniec_drogi;
+	int stan_gry;
 
 	
 	bazowy = akt;
@@ -496,9 +498,20 @@ int CKibolM::RuchKomp(CStos *stos)
 				} 
 				else stos_gen = ZeStosu(stos_gen, &poprzed, &bazowy);
 			}
-		} while( ((nowy.x != -1) && (nowy.y != -1)) &&
+		
+		if( (nowy.x != -1) && (nowy.y != -1) &&
 			(punkt_info[nowy.x][nowy.y].deg > 1) &&
-			(punkt_info[bazowy.x][bazowy.y].waga != 0) );
+			(punkt_info[bazowy.x][bazowy.y].waga != 0) )
+			koniec_drogi = 1;
+		else koniec_drogi = 0;
+
+		if( (nowy.x == 4) && (nowy.y == 5) ) koniec_drogi = 1;
+
+		} while( koniec_drogi );
+		//} while( (nowy.x != -1) && (nowy.y != -1) &&
+		//	wyjatek &&
+		//	(punkt_info[nowy.x][nowy.y].deg > 1) &&
+		//	(punkt_info[bazowy.x][bazowy.y].waga != 0) );
 
 //++++++++++++++++++++
 // ta czes petli REPEAT zajmuje sie zdejmowaniem elementu ze stosu ( cofnieciem
@@ -565,26 +578,17 @@ int CKibolM::RuchKomp(CStos *stos)
 // odwrocenie stosu jest konieczne do tego aby narysowac dorge na boisku
 // poniewaz na szczycie znajduje sie ostatni element drogi a rysowanie musimy
 // zaczac od pierwszego
+	if(punkt_info[(*stos_gen).pkt.x][(*stos_gen).pkt.y].waga == 0)
+	{
+		stan_gry = 0;
+	}
+	else stan_gry = 1;
+
 	stos_gen = OdwrocStos(stos_gen);
-
-
-// odpowiednia modyfikacja listy_sasiedztw oraz stopni wierzcholkow
-/*
-	stos_temp = stos_gen;
-	do {
-		DodajSasiada(akt, (*stos_temp).pkt); 
-		punkt_info[akt.x][akt.y].deg++;
-		punkt_info[(*stos_temp).pkt.x][(*stos_temp).pkt.y].deg++;
-		akt = (*stos_temp).pkt;
-		stos_temp = (*stos_temp).prev;
-	} while( stos_temp != NULL);
-*/
 	*stos = *stos_gen;
-//## 
 	delete stos_gen;
-//##
-	if(punkt_info[akt.x][akt.y].waga == 0) return(0);
-	else return(1);
+
+	return(stan_gry);
 }
 
 CStos * CKibolM::KasujStos(CStos *stos)
