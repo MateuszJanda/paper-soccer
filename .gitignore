@@ -1,9 +1,12 @@
+paper-soccer
+runTests
 CMakeLists.txt.user
 CMakeLists.txt.autosave
 CMakeFiles/
 CMakeCache.txt
 Makefile
 cmake_install.cmake
-runTests
+lib/
 lib/googletest
+src/libpaper-soccer_lib.a
 *~
