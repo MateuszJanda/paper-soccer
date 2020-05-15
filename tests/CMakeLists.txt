@@ -1,14 +1,11 @@
-cmake_minimum_required(VERSION 3.5)
+set(BINARY runTests)
+set(SOURCES ${TEST_SOURCES})
 
-project(runTests LANGUAGES CXX)
+add_test(NAME ${BINARY} COMMAND ${BINARY})
+add_executable(${BINARY} runTests.cpp BoardTest.cpp  ${TEST_SOURCES})
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_executable(runTests runTests.cpp BoardTest.cpp)
-
-target_link_libraries(${PROJECT_NAME}
-    ${CMAKE_SOURCE_DIR}/libgtest.a
-    ${CMAKE_SOURCE_DIR}/libgtest_main.a
+target_link_libraries(${BINARY}
+    libgtest.a
+    libgtest_main.a
     pthread
 )
