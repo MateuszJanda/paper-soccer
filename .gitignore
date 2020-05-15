@@ -1,2 +1,7 @@
 CMakeLists.txt.user
+CMakeLists.txt.autosave
+tests/CMakeFiles/
+tests/CMakeCache.txt
+tests/Makefile
+tests/cmake_install.cmake
 *~

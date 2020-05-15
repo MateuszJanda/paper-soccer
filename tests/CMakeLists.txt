@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(paper-soccer LANGUAGES CXX)
+project(test-paper-soccer LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(paper-soccer main.cpp Board.cpp)
+add_executable(paper-soccer mainTest.cpp BoardTest.cpp)
