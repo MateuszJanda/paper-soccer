@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(runTests runTests.cpp BoardTest.cpp)
 
-find_library(FOOlib libfoo.a PATHS /home/user)
-
 target_link_libraries(${PROJECT_NAME}
-
+    ${CMAKE_SOURCE_DIR}/libgtest.a
+    ${CMAKE_SOURCE_DIR}/libgtest_main.a
+    pthread
 )

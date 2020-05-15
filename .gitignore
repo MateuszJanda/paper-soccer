@@ -4,4 +4,9 @@ tests/CMakeFiles/
 tests/CMakeCache.txt
 tests/Makefile
 tests/cmake_install.cmake
+tests/libgmock.a
+tests/libgmock_main.a
+tests/libgtest.a
+tests/libgtest_main.a
+tests/runTests
 *~
