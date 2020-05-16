@@ -1,12 +1,21 @@
 #include "gtest/gtest.h"
+#include "Board.hpp"
 
-class BoardTest
+namespace
 {
+constexpr std::size_t WIDTH{8};
+constexpr std::size_t HEIGHT{10};
+}
 
+class BoardTest : public testing::Test
+{
+public:
+    Board<HEIGHT, WIDTH> board;
 };
 
 
-TEST(TestSuiteName, TestName)
+TEST_F(BoardTest, first)
 {
-    ASSERT_TRUE(false);
+//    ASSERT_EQ(board.getWidth(), WIDTH);
+    ASSERT_EQ(board.getHeight(), HEIGHT);
 }

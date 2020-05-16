@@ -15,6 +15,8 @@ class Board
 {
 public:
     Board();
+    std::size_t getWidth() const;
+    std::size_t getHeight() const;
 
 private:
     const std::size_t width{WIDTH};

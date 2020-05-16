@@ -1,8 +1,19 @@
 set(BINARY runTests)
-set(SOURCES ${TEST_SOURCES})
 
+set(SOURCES
+    ${CMAKE_SOURCE_DIR}/src/Board.cpp
+    ${CMAKE_SOURCE_DIR}/src/Node.cpp
+)
+
+# QtCreator can use this
+# Adds a test called <name>, <command> specifies an executable target
 add_test(NAME ${BINARY} COMMAND ${BINARY})
-add_executable(${BINARY} runTests.cpp BoardTest.cpp ${TEST_SOURCES})
+
+add_executable(${BINARY}
+    runTests.cpp
+    BoardTest.cpp
+    ${SOURCES}
+)
 
 target_link_libraries(${BINARY}
     libgtest.a
