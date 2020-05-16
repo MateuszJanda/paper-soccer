@@ -1,7 +1,11 @@
 #include "Board.hpp"
+#include <iostream>
 
-Board::Board(const std::size_t  width, const std::size_t height) :
-    width{width},
-    height{height}
+
+template<std::size_t WIDTH, std::size_t HEIGHT>
+Board<WIDTH, HEIGHT>::Board()
 {
+    std::cout << "adsf" << std::endl;
 }
+
+template class Board<10, 8>;
