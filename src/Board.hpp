@@ -6,8 +6,8 @@
 
 namespace
 {
-constexpr std::size_t X_SHIFT{2};
-constexpr std::size_t Y_SHIFT{4};
+constexpr std::size_t X_OFFSET{2*1};
+constexpr std::size_t Y_OFFSET{2*2};
 }
 
 template<std::size_t WIDTH, std::size_t HEIGHT>
@@ -19,8 +19,5 @@ public:
     std::size_t getHeight() const;
 
 private:
-    const std::size_t width{WIDTH};
-    const std::size_t height{HEIGHT};
-
-    std::array<std::array<Node, HEIGHT + Y_SHIFT>, WIDTH + X_SHIFT> graph;
+    std::array<std::array<Node, WIDTH + X_OFFSET>, HEIGHT + Y_OFFSET> graph;
 };

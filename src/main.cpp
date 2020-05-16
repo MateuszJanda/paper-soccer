@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    Board<10, 8> b{};
+    Board<8, 10> b{};
     Node n;
     cout << "Hello world!!" << endl;
 }
