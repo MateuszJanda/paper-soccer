@@ -76,10 +76,10 @@ public:
 
     void addNeighbour(Direction dir);
     void delNeighbour(Direction dir);
-    bool isNeighbour(Direction dir) const;
+    bool hasNeighbour(Direction dir) const;
     unsigned degree() const;
     bool canEnter() const;
-    bool isOccupied() const;
+    bool isLonely() const;
     std::vector<Positions> neighboursPositions(Position currentPos) const;
 
 private:

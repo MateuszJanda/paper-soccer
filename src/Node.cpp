@@ -25,7 +25,7 @@ void Node::delNeighbour(Direction dir)
     return true;
 }
 
-bool Node::isNeighbour(Direction dir) const
+bool Node::hasNeighbour(Direction dir) const
 {
     return this->neighbours[dir];
 }
@@ -54,9 +54,9 @@ bool Node::canEnter() const
     return false;
 }
 
-bool Node::isOccupied() const
+bool Node::isLonely() const
 {
-    return degree() != 0;
+    return degree() == 0;
 }
 
 std::vector<Position> Node::neighboursPositions(Position currentPos) const

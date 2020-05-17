@@ -245,9 +245,14 @@ void Board::setBall(Position pos)
 
 MoveStatus Board::moveBall(Direction dir)
 {
+    if (this->graph[this->ballPos.y][this->ballPos.x].hasNeighbour(dir))
+    {
+        return MoveStatus::Illegal;
+    }
+
     auto newPos = directionToPosition(this->ballPos, dir);
 
-    if(isGoal(newPos, 0))
+    if(canReachGoal(dir, 0))
     {
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
@@ -257,7 +262,7 @@ MoveStatus Board::moveBall(Direction dir)
         return MoveStatus::TopGoal;
     }
 
-    if(isGoal(newPos, this->graph.size() - 1))
+    if(canReachGoal(dir, this->graph.size() - 1))
     {
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
@@ -270,25 +275,31 @@ MoveStatus Board::moveBall(Direction dir)
     if(this->graph[newPos.y][newPos.x].canEnter())
     {
         auto newNode = this->graph[this->ballPos.y][this->ballPos.x];
-        bool occupied = newNode.isOccupied();
+        bool lonely = newNode.isLonely();
 
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
         this->graph[newPos.y][newPos.x].addNeighbour(reverse);
         setBall(newPos);
 
-        if(occupied)
+        if (isDeadEnd())
         {
-            return MoveStatus::Continue;
+            return MoveStatus::DeadEnd;
         }
-        return MoveStatus::Stop;
+        else if(lonely)
+        {
+            return MoveStatus::Stop;
+        }
+        return MoveStatus::Continue;
     }
 
     return MoveStatus::Illegal;
 }
 
-bool Board::isGoal(Position pos, int line) const
+bool Board::canReachGoal(Direction dir, int line) const
 {
+    auto pos = directionToPosition(this->ballPos, dir);
+
     auto row = this->graph[line];
     const int goalpost = (row.size() / 2) - (GATE_WIDTH / 2);
     const int g = (row.size() / 2) + (GATE_WIDTH / 2) + 1;
@@ -302,4 +313,31 @@ bool Board::isGoal(Position pos, int line) const
     }
 
     return false;
+}
+
+bool Board::isDeadEnd() const
+{
+    std::array<Direction> allDirs{    Direction::top,
+                Direction::top_left,
+                Direction::right,
+                Direction::bottom_right,
+                Direction::bottom,
+                Direction::bottom_left,
+                Direction::left,
+                Direction::top_right};
+
+    for (const auto dir : allDirs)
+    {
+        auto newPos = directionToPosition(this->ballPos, dir);
+
+        auto newNode = this->graph[newPos.y][newPos.x];
+        auto node = this->graph[this->ballPos.y][this->ballPos.x];
+
+        if (newNode.canEnter() and not node.hasNeighbour(dir))
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

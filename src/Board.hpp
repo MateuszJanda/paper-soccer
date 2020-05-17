@@ -9,6 +9,7 @@ enum MoveStatus
     Illegal,
     Continue,
     Stop,
+    DeadEnd,
     TopGoal,
     BottomGoal
 };
@@ -25,7 +26,8 @@ public:
 private:
     void setBorders();
     void setBottom();
-    bool isGoal(Position pos, int line) const;
+    bool canReachGoal(Direction dir, int line) const;
+    bool isDeadEnd() const;
 
     Position ballPos;
     std::vector<std::vector<Node>> graph;
