@@ -22,6 +22,7 @@ Board::Board(unsigned witdth, unsigned height)
     }
 
     setBorders();
+    setBall(Position{(witdth + X_OFFSET)/2, (height + Y_OFFSET)/2});
 }
 
 void Board::setBorders()
@@ -235,4 +236,70 @@ std::size_t Board::getWidth() const
 std::size_t Board::getHeight() const
 {
     return this->graph.size() - Y_OFFSET;
+}
+
+void Board::setBall(Position pos)
+{
+    this->ballPos = pos;
+}
+
+MoveStatus Board::moveBall(Direction dir)
+{
+    auto newPos = directionToPosition(this->ballPos, dir);
+
+    if(isGoal(newPos, 0))
+    {
+        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
+        auto reverse = reverseDirection(dir);
+        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
+        setBall(newPos);
+
+        return MoveStatus::TopGoal;
+    }
+
+    if(isGoal(newPos, this->graph.size() - 1))
+    {
+        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
+        auto reverse = reverseDirection(dir);
+        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
+        setBall(newPos);
+
+        return MoveStatus::BottomGoal;
+    }
+
+    if(this->graph[newPos.y][newPos.x].canEnter())
+    {
+        auto newNode = this->graph[this->ballPos.y][this->ballPos.x];
+        bool occupied = newNode.isOccupied();
+
+        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
+        auto reverse = reverseDirection(dir);
+        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
+        setBall(newPos);
+
+        if(occupied)
+        {
+            return MoveStatus::Continue;
+        }
+        return MoveStatus::Stop;
+    }
+
+    return MoveStatus::Illegal;
+}
+
+bool Board::isGoal(Position pos, int line) const
+{
+    auto row = this->graph[line];
+    const int goalpost = (row.size() / 2) - (GATE_WIDTH / 2);
+    const int g = (row.size() / 2) + (GATE_WIDTH / 2) + 1;
+
+    for (int i = goalpost; i <= g; i++)
+    {
+        if (pos.y == line and pos.x = i)
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

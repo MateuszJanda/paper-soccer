@@ -44,6 +44,21 @@ unsigned Node::degree() const
     return counter;
 }
 
+bool Node::canEnter() const
+{
+    if(degree() < 7)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool Node::isOccupied() const
+{
+    return degree() != 0;
+}
+
 std::vector<Position> Node::neighboursPositions(Position currentPos) const
 {
     std::vector<Position> positions;
