@@ -4,6 +4,8 @@
 #include <vector>
 #include "Node.hpp"
 
+namespace Ps {
+
 enum MoveStatus
 {
     Illegal,
@@ -17,11 +19,11 @@ enum MoveStatus
 class Board
 {
 public:
-    Board(unsigned witdth, unsigned height);
+    Board(std::size_t width, std::size_t height);
     std::size_t getWidth() const;
     std::size_t getHeight() const;
     void setBall(Position pos);
-    void moveBall(Direction dir);
+    MoveStatus moveBall(Direction dir);
 
 private:
     void setBorders();
@@ -32,3 +34,5 @@ private:
     Position ballPos;
     std::vector<std::vector<Node>> graph;
 };
+
+} // namespace Ps

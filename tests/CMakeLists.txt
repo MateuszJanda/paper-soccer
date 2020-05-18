@@ -1,9 +1,12 @@
 set(BINARY runTests)
 
+set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
+
 set(SOURCES
-    ${CMAKE_SOURCE_DIR}/src/Board.cpp
-    ${CMAKE_SOURCE_DIR}/src/Node.cpp
+    ${SOURCES_DIR}/Board.cpp
+    ${SOURCES_DIR}/Node.cpp
 )
+
 
 # QtCreator can use this
 # Adds a test called <name>, <command> specifies an executable target

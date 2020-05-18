@@ -1,5 +1,9 @@
 #include "Board.hpp"
 #include <iostream>
+#include <cassert>
+
+
+namespace Ps {
 
 namespace
 {
@@ -8,7 +12,8 @@ constexpr std::size_t Y_OFFSET{1+2};
 constexpr std::size_t GATE_WIDTH{2};
 }
 
-Board::Board(unsigned witdth, unsigned height)
+Board::Board(std::size_t width, std::size_t height)
+    : ballPos{(width + X_OFFSET)/2, (height + Y_OFFSET)/2}
 {
     assert(width >= 4);
     assert(width % 2 == 0);
@@ -18,11 +23,11 @@ Board::Board(unsigned witdth, unsigned height)
     // Empty graph
     for(int i = 0; i < height + Y_OFFSET; i++)
     {
-        this->graph.push_back(std::vector{witdth + X_OFFSET, Node{}});
+        this->graph.push_back(std::vector{width + X_OFFSET, Node{}});
     }
 
     setBorders();
-    setBall(Position{(witdth + X_OFFSET)/2, (height + Y_OFFSET)/2});
+//    setBall(Position{(width + X_OFFSET)/2, (height + Y_OFFSET)/2});
 }
 
 void Board::setBorders()
@@ -113,7 +118,7 @@ void Board::setBorders()
         node.addNeighbour(Direction::top_left);
         node.addNeighbour(Direction::right);
 
-        node = raw[g];
+        node = row[g];
         node.addNeighbour(Direction::left);
         node.addNeighbour(Direction::top_left);
         node.addNeighbour(Direction::top);
@@ -125,7 +130,7 @@ void Board::setBorders()
 
     for(int i = goalpost; i <= g; i++)
     {
-        auto node = raw[i];
+        auto node = row[i];
         node.addNeighbour(Direction::left);
         node.addNeighbour(Direction::top_left);
         node.addNeighbour(Direction::top);
@@ -205,9 +210,9 @@ void Board::setBottom()
         node = line[g];
         node.addNeighbour(Direction::right);
         node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom;
+        node.addNeighbour(Direction::bottom);
 
-        node = raw[g];
+        node = row[g];
         node.addNeighbour(Direction::top);
         node.addNeighbour(Direction::top_right);
         node.addNeighbour(Direction::bottom_right);
@@ -219,7 +224,7 @@ void Board::setBottom()
 
     for(int i = goalpost; i <= g; i++)
     {
-        auto node = raw[i];
+        auto node = row[i];
         node.addNeighbour(Direction::right);
         node.addNeighbour(Direction::bottom_right);
         node.addNeighbour(Direction::bottom);
@@ -306,7 +311,7 @@ bool Board::canReachGoal(Direction dir, int line) const
 
     for (int i = goalpost; i <= g; i++)
     {
-        if (pos.y == line and pos.x = i)
+        if (pos.y == line and pos.x == i)
         {
             return true;
         }
@@ -317,7 +322,7 @@ bool Board::canReachGoal(Direction dir, int line) const
 
 bool Board::isDeadEnd() const
 {
-    std::array<Direction> allDirs{    Direction::top,
+    std::array<Direction, 8> allDirs{    Direction::top,
                 Direction::top_left,
                 Direction::right,
                 Direction::bottom_right,
@@ -341,3 +346,5 @@ bool Board::isDeadEnd() const
 
     return true;
 }
+
+} // namespace Ps

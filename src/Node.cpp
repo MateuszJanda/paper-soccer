@@ -1,13 +1,15 @@
 #include "Node.hpp"
 
+namespace Ps {
+
 Node::Node()
 {
 
 }
 
-void Node::addNeighbour(Direction dir)
+bool Node::addNeighbour(Direction dir)
 {
-    if(isNeighbour(dir))
+    if(hasNeighbour(dir))
     {
         return false;
     }
@@ -15,9 +17,9 @@ void Node::addNeighbour(Direction dir)
     return true;
 }
 
-void Node::delNeighbour(Direction dir)
+bool Node::delNeighbour(Direction dir)
 {
-    if(isNeighbour(dir))
+    if(hasNeighbour(dir))
     {
         return false;
     }
@@ -27,7 +29,11 @@ void Node::delNeighbour(Direction dir)
 
 bool Node::hasNeighbour(Direction dir) const
 {
-    return this->neighbours[dir];
+    if (auto it = neighbours.find(dir); it != neighbours.end()) {
+        return it->second;
+    }
+
+    return false;
 }
 
 unsigned Node::degree() const
@@ -72,3 +78,5 @@ std::vector<Position> Node::neighboursPositions(Position currentPos) const
 
     return positions;
 }
+
+} // namespace Ps

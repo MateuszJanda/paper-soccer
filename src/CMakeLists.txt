@@ -4,5 +4,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     Board.hpp
     Node.cpp
     Node.hpp
+    Position.hpp
+    Direction.hpp
     main.cpp
 )
