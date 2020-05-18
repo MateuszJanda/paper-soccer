@@ -1,4 +1,6 @@
-#pragma once
+//#pragma once
+#ifndef DIRECTION_HPP
+#define DIRECTION_HPP
 
 #include "Position.hpp"
 
@@ -17,7 +19,7 @@ enum class Direction
 };
 
 
-Position directionToPosition(Position pos, Direction dir)
+inline Position directionToPosition(Position pos, Direction dir)
 {
     switch (dir) {
     case Direction::top:       pos += std::make_pair(0, -1); break;
@@ -35,7 +37,7 @@ Position directionToPosition(Position pos, Direction dir)
     return pos;
 }
 
-Direction reverseDirection(Direction dir)
+constexpr Direction reverseDirection(Direction dir)
 {
     switch (dir) {
     case Direction::top: return Direction::bottom;
@@ -54,3 +56,5 @@ Direction reverseDirection(Direction dir)
 }
 
 } // namespace Ps
+
+#endif

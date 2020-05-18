@@ -10,7 +10,7 @@ public:
     {
     }
 
-    void operator +=(std::pair<int, int> offset) {
+    constexpr void operator +=(std::pair<int, int> offset) {
         x += offset.first;
         y += offset.second;
     }
