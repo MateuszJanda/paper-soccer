@@ -5,7 +5,7 @@ namespace Ps {
 
 class Position {
 public:
-    Position(int x, int y)
+    constexpr Position(int x, int y)
         : x(x), y(y)
     {
     }

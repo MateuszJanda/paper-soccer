@@ -19,7 +19,7 @@ enum class Direction
 };
 
 
-inline Position directionToPosition(Position pos, Direction dir)
+constexpr Position directionToPosition(Position pos, Direction dir)
 {
     switch (dir) {
     case Direction::top:       pos += std::make_pair(0, -1); break;
