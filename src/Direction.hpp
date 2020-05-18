@@ -1,6 +1,4 @@
-//#pragma once
-#ifndef DIRECTION_HPP
-#define DIRECTION_HPP
+#pragma once
 
 #include "Position.hpp"
 
@@ -56,5 +54,3 @@ constexpr Direction reverseDirection(Direction dir)
 }
 
 } // namespace Ps
-
-#endif

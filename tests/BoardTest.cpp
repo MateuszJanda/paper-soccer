@@ -3,21 +3,18 @@
 
 using namespace Ps;
 
-namespace
-{
+namespace {
 constexpr std::size_t HEIGHT{10};
 constexpr std::size_t WIDTH{8};
-}
+} namespace anonymous
 
-class BoardTest : public testing::Test
-{
+class BoardTest : public testing::Test {
 public:
     Board board{WIDTH, HEIGHT};
 };
 
 
-TEST_F(BoardTest, first)
-{
+TEST_F(BoardTest, first) {
     ASSERT_EQ(board.getWidth(), WIDTH);
     ASSERT_EQ(board.getHeight(), HEIGHT);
 }
