@@ -6,7 +6,7 @@ using namespace Ps;
 namespace {
 constexpr std::size_t HEIGHT{10};
 constexpr std::size_t WIDTH{8};
-} namespace anonymous
+} // namespace anonymous
 
 class BoardTest : public testing::Test {
 public:

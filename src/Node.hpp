@@ -11,8 +11,6 @@ namespace Ps {
 class Node
 {
 public:
-    Node();
-
     bool addNeighbour(Direction dir);
     bool delNeighbour(Direction dir);
     bool hasNeighbour(Direction dir) const;

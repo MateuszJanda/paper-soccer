@@ -15,6 +15,7 @@ add_test(NAME ${BINARY} COMMAND ${BINARY})
 add_executable(${BINARY}
     runTests.cpp
     BoardTest.cpp
+    NodeTest.cpp
     ${SOURCES}
 )
 

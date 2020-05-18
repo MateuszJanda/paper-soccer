@@ -2,11 +2,6 @@
 
 namespace Ps {
 
-Node::Node()
-{
-
-}
-
 bool Node::addNeighbour(Direction dir)
 {
     if(hasNeighbour(dir))
