@@ -28,7 +28,7 @@ bool Node::hasNeighbour(Direction dir) const {
 
 unsigned Node::degree() const {
     unsigned counter{0};
-    for(auto const& [dir, exist] : this->neighbours) {
+    for(const auto& [dir, exist] : this->neighbours) {
         if(exist) {
             counter++;
         }

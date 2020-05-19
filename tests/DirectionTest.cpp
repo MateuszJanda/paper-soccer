@@ -52,3 +52,21 @@ TEST(DirectionTest, checkConversionDirectionTopLeftToPosition)
     Position p{0, 0};
     ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::TopLeft), p);
 }
+
+TEST(DirectionTest, checkReverseDirection)
+{
+    std::map<Direction, Direction> mapDirs {
+        {Direction::Top, Direction::Bottom},
+        {Direction::TopRight, Direction::BottomLeft},
+        {Direction::Right, Direction::Left},
+        {Direction::BottomRight, Direction::TopLeft},
+        {Direction::Bottom, Direction::Top},
+        {Direction::BottomLeft, Direction::TopRight},
+        {Direction::Left, Direction::Right},
+        {Direction::TopLeft, Direction::BottomRight},
+    };
+
+    for (const auto& [dir1, dir2] : mapDirs) {
+        ASSERT_EQ(reverseDirection(dir1), dir2);
+    }
+}
