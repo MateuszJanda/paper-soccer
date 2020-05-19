@@ -1,5 +1,4 @@
-#include "Node.hpp"
-#include "gmock/gmock.h"
+#include "Position.hpp"
 #include "gtest/gtest.h"
 
 using namespace PaperSoccer;

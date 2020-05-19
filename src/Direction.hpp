@@ -35,14 +35,14 @@ constexpr Position directionToPosition(Position pos, Direction dir) {
 
 constexpr Direction reverseDirection(Direction dir) {
     switch (dir) {
-    case Direction::Top: return Direction::Bottom;
-    case Direction::TopRight: return Direction::BottomLeft;
-    case Direction::Right: return Direction::Left;
+    case Direction::Top:         return Direction::Bottom;
+    case Direction::TopRight:    return Direction::BottomLeft;
+    case Direction::Right:       return Direction::Left;
     case Direction::BottomRight: return Direction::TopLeft;
-    case Direction::Bottom: return Direction::Top;
-    case Direction::BottomLeft: return Direction::TopRight;
-    case Direction::Left: return Direction::Right;
-    case Direction::TopLeft: return Direction::BottomRight;
+    case Direction::Bottom:      return Direction::Top;
+    case Direction::BottomLeft:  return Direction::TopRight;
+    case Direction::Left:        return Direction::Right;
+    case Direction::TopLeft:     return Direction::BottomRight;
     default:
         break;
     }

@@ -1,0 +1,54 @@
+#include "Direction.hpp"
+#include "gtest/gtest.h"
+
+using namespace PaperSoccer;
+using namespace testing;
+
+
+TEST(DirectionTest, checkConversionDirectionTopToPosition)
+{
+    Position p{1, 0};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::Top), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionTopRightToPosition)
+{
+    Position p{2, 0};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::TopRight), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionRightToPosition)
+{
+    Position p{2, 1};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::Right), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionBottomRightToPosition)
+{
+    Position p{2, 2};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::BottomRight), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionBottomToPosition)
+{
+    Position p{1, 2};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::Bottom), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionBottomLeftToPosition)
+{
+    Position p{0, 2};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::BottomLeft), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionLeftToPosition)
+{
+    Position p{0, 1};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::Left), p);
+}
+
+TEST(DirectionTest, checkConversionDirectionTopLeftToPosition)
+{
+    Position p{0, 0};
+    ASSERT_EQ(directionToPosition(Position{1, 1}, Direction::TopLeft), p);
+}

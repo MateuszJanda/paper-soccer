@@ -17,6 +17,7 @@ add_executable(${BINARY}
     BoardTest.cpp
     NodeTest.cpp
     PositionTest.cpp
+    DirectionTest.cpp
     ${SOURCES}
 )
 
