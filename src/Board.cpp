@@ -245,6 +245,9 @@ std::size_t Board::getHeight() const
 
 void Board::setBallPosition(Position pos)
 {
+    if (not isPositionInGraph(pos)) {
+        throw std::range_error{"Position out of graph."};
+    }
     this->ballPos = pos;
 }
 
