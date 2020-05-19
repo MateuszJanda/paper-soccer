@@ -22,7 +22,8 @@ public:
     Board(std::size_t width, std::size_t height);
     std::size_t getWidth() const;
     std::size_t getHeight() const;
-    void setBall(Position pos);
+    void setBallPosition(Position pos);
+    Position getBallPosition() const;
     MoveStatus moveBall(Direction dir);
 
 private:
@@ -30,6 +31,7 @@ private:
     void setBottom();
     bool canReachGoal(Direction dir, int line) const;
     bool isDeadEnd() const;
+    bool isPositionInGraph(Position pos) const;
 
     Position ballPos;
     std::vector<std::vector<Node>> graph;

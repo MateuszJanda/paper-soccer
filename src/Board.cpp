@@ -27,7 +27,7 @@ Board::Board(std::size_t width, std::size_t height)
     }
 
     setBorders();
-//    setBall(Position{(width + X_OFFSET)/2, (height + Y_OFFSET)/2});
+//    setBallPosition(Position{(width + X_OFFSET)/2, (height + Y_OFFSET)/2});
 }
 
 void Board::setBorders()
@@ -243,9 +243,14 @@ std::size_t Board::getHeight() const
     return this->graph.size() - Y_OFFSET;
 }
 
-void Board::setBall(Position pos)
+void Board::setBallPosition(Position pos)
 {
     this->ballPos = pos;
+}
+
+Position Board::getBallPosition() const
+{
+    return this->ballPos;
 }
 
 MoveStatus Board::moveBall(Direction dir)
@@ -256,13 +261,17 @@ MoveStatus Board::moveBall(Direction dir)
     }
 
     auto newPos = directionToPosition(this->ballPos, dir);
+    if (not isPositionInGraph(newPos))
+    {
+        return MoveStatus::Illegal;
+    }
 
     if(canReachGoal(dir, 0))
     {
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
         this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBall(newPos);
+        setBallPosition(newPos);
 
         return MoveStatus::TopGoal;
     }
@@ -272,7 +281,7 @@ MoveStatus Board::moveBall(Direction dir)
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
         this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBall(newPos);
+        setBallPosition(newPos);
 
         return MoveStatus::BottomGoal;
     }
@@ -285,7 +294,7 @@ MoveStatus Board::moveBall(Direction dir)
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
         auto reverse = reverseDirection(dir);
         this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBall(newPos);
+        setBallPosition(newPos);
 
         if (isDeadEnd())
         {
@@ -345,6 +354,11 @@ bool Board::isDeadEnd() const
     }
 
     return true;
+}
+
+bool Board::isPositionInGraph(Position pos) const
+{
+    return pos.y >= 0 and pos.y < this->graph.size() and pos.x >= 0 and pos.x < this->graph[0].size();
 }
 
 } // namespace PaperSoccer
