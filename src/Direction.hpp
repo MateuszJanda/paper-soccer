@@ -2,32 +2,30 @@
 
 #include "Position.hpp"
 
-namespace Ps {
+namespace PaperSoccer {
 
-enum class Direction
-{
-    top,
-    top_left,
-    right,
-    bottom_right,
-    bottom,
-    bottom_left,
-    left,
-    top_right
+enum class Direction {
+    Top,
+    TopRight,
+    Right,
+    BottomRight,
+    Bottom,
+    BottomLeft,
+    Left,
+    TopLeft,
 };
 
 
-constexpr Position directionToPosition(Position pos, Direction dir)
-{
+constexpr Position directionToPosition(Position pos, Direction dir) {
     switch (dir) {
-    case Direction::top:       pos += std::make_pair(0, -1); break;
-    case Direction::top_right: pos += std::make_pair(1, -1); break;
-    case Direction::right:       pos += std::make_pair(1, 0); break;
-    case Direction::bottom_right:       pos += std::make_pair(1, 1); break;
-    case Direction::bottom:       pos += std::make_pair(0, 1); break;
-    case Direction::bottom_left:       pos += std::make_pair(-1, 1); break;
-    case Direction::left:       pos += std::make_pair(-1, 0); break;
-    case Direction::top_left:       pos += std::make_pair(-1, -1); break;
+    case Direction::Top:         pos += std::make_pair(0, -1); break;
+    case Direction::TopRight:    pos += std::make_pair(1, -1); break;
+    case Direction::Right:       pos += std::make_pair(1, 0); break;
+    case Direction::BottomRight: pos += std::make_pair(1, 1); break;
+    case Direction::Bottom:      pos += std::make_pair(0, 1); break;
+    case Direction::BottomLeft:  pos += std::make_pair(-1, 1); break;
+    case Direction::Left:        pos += std::make_pair(-1, 0); break;
+    case Direction::TopLeft:     pos += std::make_pair(-1, -1); break;
     default:
         break;
     }
@@ -35,17 +33,16 @@ constexpr Position directionToPosition(Position pos, Direction dir)
     return pos;
 }
 
-constexpr Direction reverseDirection(Direction dir)
-{
+constexpr Direction reverseDirection(Direction dir) {
     switch (dir) {
-    case Direction::top: return Direction::bottom;
-    case Direction::top_right: return Direction::bottom_left;
-    case Direction::right: return Direction::left;
-    case Direction::bottom_right: return Direction::top_left;
-    case Direction::bottom: return Direction::top;
-    case Direction::bottom_left: return Direction::top_right;
-    case Direction::left: return Direction::right;
-    case Direction::top_left: return Direction::bottom_right;
+    case Direction::Top: return Direction::Bottom;
+    case Direction::TopRight: return Direction::BottomLeft;
+    case Direction::Right: return Direction::Left;
+    case Direction::BottomRight: return Direction::TopLeft;
+    case Direction::Bottom: return Direction::Top;
+    case Direction::BottomLeft: return Direction::TopRight;
+    case Direction::Left: return Direction::Right;
+    case Direction::TopLeft: return Direction::BottomRight;
     default:
         break;
     }
@@ -53,4 +50,4 @@ constexpr Direction reverseDirection(Direction dir)
     return dir;
 }
 
-} // namespace Ps
+} // namespace PaperSoccer

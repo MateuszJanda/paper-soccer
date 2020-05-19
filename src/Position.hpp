@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace Ps {
+namespace PaperSoccer {
 
 class Position {
 public:
@@ -23,4 +23,4 @@ public:
     int y;
 };
 
-} // namespace Ps
+} // namespace PaperSoccer

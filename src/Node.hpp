@@ -6,10 +6,9 @@
 #include "Direction.hpp"
 
 
-namespace Ps {
+namespace PaperSoccer {
 
-class Node
-{
+class Node {
 public:
     bool addNeighbour(Direction dir);
     bool delNeighbour(Direction dir);
@@ -23,4 +22,4 @@ private:
     std::map<Direction, bool> neighbours;
 };
 
-} // namespace Ps
+} // namespace PaperSoccer

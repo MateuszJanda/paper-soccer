@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "Board.hpp"
 
-using namespace Ps;
+using namespace PaperSoccer;
 
 namespace {
 constexpr std::size_t HEIGHT{10};

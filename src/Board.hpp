@@ -4,7 +4,7 @@
 #include <vector>
 #include "Node.hpp"
 
-namespace Ps {
+namespace PaperSoccer {
 
 enum MoveStatus
 {
@@ -35,4 +35,4 @@ private:
     std::vector<std::vector<Node>> graph;
 };
 
-} // namespace Ps
+} // namespace PaperSoccer

@@ -3,7 +3,7 @@
 #include <cassert>
 
 
-namespace Ps {
+namespace PaperSoccer {
 
 namespace
 {
@@ -36,18 +36,18 @@ void Board::setBorders()
     for(auto& row: this->graph)
     {
         auto node = row[0];
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::bottom);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Bottom);
 
         auto rightNode = row[row.size() - 1];
-        rightNode.addNeighbour(Direction::top);
-        rightNode.addNeighbour(Direction::top_right);
-        rightNode.addNeighbour(Direction::right);
-        rightNode.addNeighbour(Direction::bottom_right);
-        rightNode.addNeighbour(Direction::bottom);
+        rightNode.addNeighbour(Direction::Top);
+        rightNode.addNeighbour(Direction::TopRight);
+        rightNode.addNeighbour(Direction::Right);
+        rightNode.addNeighbour(Direction::BottomRight);
+        rightNode.addNeighbour(Direction::Bottom);
     }
 
     // Vertical top left borders
@@ -58,21 +58,21 @@ void Board::setBorders()
     for(int i = 0; i < goalpost; i++)
     {
         auto node = line[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
 
         node = row[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
     }
 
     // Vertical top right borders
@@ -80,62 +80,62 @@ void Board::setBorders()
     for(int i = g; i < row.size(); i++)
     {
         auto node = line[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
 
         node = row[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
     }
 
     // Top goal
     {
         auto node = line[goalpost];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
 
         node = row[goalpost];
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
 
         node = line[g];
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::right);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Right);
 
         node = row[g];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
     }
 
     for(int i = goalpost; i <= g; i++)
     {
         auto node = row[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
     }
 
     setBottom();
@@ -152,21 +152,21 @@ void Board::setBottom()
     for(int i = 0; i < goalpost; i++)
     {
         auto node = line[i];
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
 
         node = row[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
     }
 
     // Vertical bottom right borders
@@ -174,62 +174,62 @@ void Board::setBottom()
     for(int i = g; i < row.size(); i++)
     {
         auto node = line[i];
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
 
         node = row[i];
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
     }
 
     // Bottom goal
     {
         auto node = line[goalpost];
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
 
         node = row[goalpost];
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
-        node.addNeighbour(Direction::top_left);
-        node.addNeighbour(Direction::top);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
+        node.addNeighbour(Direction::TopLeft);
+        node.addNeighbour(Direction::Top);
 
         node = line[g];
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
 
         node = row[g];
-        node.addNeighbour(Direction::top);
-        node.addNeighbour(Direction::top_right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::left);
+        node.addNeighbour(Direction::Top);
+        node.addNeighbour(Direction::TopRight);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::Left);
     }
 
     for(int i = goalpost; i <= g; i++)
     {
         auto node = row[i];
-        node.addNeighbour(Direction::right);
-        node.addNeighbour(Direction::bottom_right);
-        node.addNeighbour(Direction::bottom);
-        node.addNeighbour(Direction::bottom_left);
-        node.addNeighbour(Direction::left);
+        node.addNeighbour(Direction::Right);
+        node.addNeighbour(Direction::BottomRight);
+        node.addNeighbour(Direction::Bottom);
+        node.addNeighbour(Direction::BottomLeft);
+        node.addNeighbour(Direction::Left);
     }
 }
 
@@ -322,14 +322,14 @@ bool Board::canReachGoal(Direction dir, int line) const
 
 bool Board::isDeadEnd() const
 {
-    std::array<Direction, 8> allDirs{    Direction::top,
-                Direction::top_left,
-                Direction::right,
-                Direction::bottom_right,
-                Direction::bottom,
-                Direction::bottom_left,
-                Direction::left,
-                Direction::top_right};
+    std::array<Direction, 8> allDirs{    Direction::Top,
+                Direction::TopLeft,
+                Direction::Right,
+                Direction::BottomRight,
+                Direction::Bottom,
+                Direction::BottomLeft,
+                Direction::Left,
+                Direction::TopRight};
 
     for (const auto dir : allDirs)
     {
@@ -347,4 +347,4 @@ bool Board::isDeadEnd() const
     return true;
 }
 
-} // namespace Ps
+} // namespace PaperSoccer
