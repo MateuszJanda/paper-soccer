@@ -24,9 +24,9 @@ TEST(PositionTest, checkNotEqual)
 
 TEST(PositionTest, checkAdd)
 {
-    Position p{1, 1};
-    p += std::make_pair<int>(1, 2);
+    Position p1{1, 1};
+    p1 += std::make_pair<int>(1, 2);
 
-    Position pw{2, 3};
-    ASSERT_EQ(p, pw);
+    Position p2{2, 3};
+    ASSERT_EQ(p1, p2);
 }
