@@ -14,7 +14,7 @@ bool Node::addNeighbour(Direction dir)
 
 bool Node::delNeighbour(Direction dir)
 {
-    if(hasNeighbour(dir))
+    if(not hasNeighbour(dir))
     {
         return false;
     }
