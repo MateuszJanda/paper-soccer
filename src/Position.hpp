@@ -10,9 +10,10 @@ public:
     {
     }
 
-    constexpr void operator +=(const std::pair<int, int>& offset) {
+    constexpr Position& operator +=(const std::pair<int, int>& offset) {
         x += offset.first;
         y += offset.second;
+        return *this;
     }
 
     constexpr bool operator ==(const Position& second) const {
