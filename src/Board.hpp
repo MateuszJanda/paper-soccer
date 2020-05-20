@@ -32,6 +32,7 @@ private:
     void setTopBorders();
     void setTopGaol();
     void setBottomBorders();
+    void setBottomGaol();
 
     bool canReachGoal(Direction dir, int line) const;
     bool isDeadEnd() const;
