@@ -11,6 +11,7 @@ namespace PaperSoccer {
 class Node {
 public:
     bool addNeighbour(Direction dir);
+    void addNeighbours(std::initializer_list<Direction> dirList);
     bool delNeighbour(Direction dir);
     bool hasNeighbour(Direction dir) const;
     unsigned degree() const;

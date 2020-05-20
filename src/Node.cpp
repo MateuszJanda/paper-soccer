@@ -10,6 +10,12 @@ bool Node::addNeighbour(Direction dir) {
     return true;
 }
 
+void Node::addNeighbours(std::initializer_list<Direction> dirList) {
+    for (const auto& dir : dirList) {
+        addNeighbour(dir);
+    }
+}
+
 bool Node::delNeighbour(Direction dir) {
     if(not hasNeighbour(dir)) {
         return false;
