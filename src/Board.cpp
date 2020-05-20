@@ -23,8 +23,7 @@ Board::Board(std::size_t width, std::size_t height)
     assert(height % 2 == 0);
 
     // Empty graph
-    for(int i = 0; i < height + Y_OFFSET; i++)
-    {
+    for(int i = 0; i < height + Y_OFFSET; i++) {
         this->graph.push_back(std::vector{width + X_OFFSET, Node{}});
     }
 
@@ -35,6 +34,7 @@ void Board::setBorders()
 {
     setHorizontalBorders();
     setTopBorders();
+    setTopGaol();
     setBottomBorders();
 }
 
@@ -54,89 +54,60 @@ void Board::setHorizontalBorders()
 void Board::setTopBorders()
 {
     // Left borders
-    auto& row = this->graph[0];
-    auto& line = this->graph[1];
+    auto& goalLine = this->graph[0];
+    auto& borderLine = this->graph[1];
 
     for(int i = 0; i < goalpostLeft; i++)
     {
-        auto& node = line[i];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
+        auto& borderNode = borderLine[i];
+        borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
 
-        node = row[i];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
-        node.addNeighbour(Direction::BottomRight);
-        node.addNeighbour(Direction::Bottom);
-        node.addNeighbour(Direction::BottomLeft);
+        auto& goalNode = goalLine[i];
+        goalNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
+            Direction::BottomLeft});
     }
 
     // Right borders
-    for(int i = goalpostRight; i < row.size(); i++)
+    for(int i = goalpostRight; i < goalLine.size(); i++)
     {
-        auto& node = line[i];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
+        auto& borderNode = borderLine[i];
+        borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
 
-        node = row[i];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
-        node.addNeighbour(Direction::BottomRight);
-        node.addNeighbour(Direction::Bottom);
-        node.addNeighbour(Direction::BottomLeft);
+        auto& goalNode = goalLine[i];
+        goalNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
+            Direction::BottomLeft});
     }
+}
 
-    // Top goal
-    {
-        auto& node = line[goalpostLeft];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
+void Board::setTopGaol()
+{
+    auto& goalLine = this->graph[0];
+    auto& borderLine = this->graph[1];
 
-        node = row[goalpostLeft];
-        node.addNeighbour(Direction::Bottom);
-        node.addNeighbour(Direction::BottomLeft);
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
+    // Set goal corners
+    auto& node1 = borderLine[goalpostLeft];
+    node1.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top});
 
-        node = line[goalpostRight];
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Right);
+    auto& node2 = goalLine[goalpostLeft];
+    node2.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left,
+        Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right});
 
-        node = row[goalpostRight];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
-        node.addNeighbour(Direction::BottomRight);
-        node.addNeighbour(Direction::Bottom);
-    }
+    auto& node3 = borderLine[goalpostRight];
+    node3.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Right});
 
-    for(int i = goalpostLeft; i <= goalpostRight; i++)
-    {
-        auto& node = row[i];
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopRight);
-        node.addNeighbour(Direction::Right);
+    auto& node4 = goalLine[goalpostRight];
+    node4.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+        Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom});
+
+    // Goal net
+    for(int i = goalpostLeft; i <= goalpostRight; i++) {
+        auto& node = goalLine[i];
+        node.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
     }
 }
 

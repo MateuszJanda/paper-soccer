@@ -30,6 +30,7 @@ private:
     void setBorders();
     void setHorizontalBorders();
     void setTopBorders();
+    void setTopGaol();
     void setBottomBorders();
 
     bool canReachGoal(Direction dir, int line) const;
