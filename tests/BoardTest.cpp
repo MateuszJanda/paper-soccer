@@ -58,7 +58,7 @@ TEST_F(BoardTest, moveBallAndIllegalWhenCorner)
     ASSERT_EQ(board.moveBall(Direction::BottomRight), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalThroughVerticalBorder)
+TEST_F(BoardTest, moveBallAndIllegalOutOfBorder)
 {
     board.setBallPosition(Position{0, 6});
     ASSERT_EQ(board.moveBall(Direction::Left), MoveStatus::Illegal);
@@ -67,7 +67,54 @@ TEST_F(BoardTest, moveBallAndIllegalThroughVerticalBorder)
     ASSERT_EQ(board.moveBall(Direction::Right), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallsAndContinue)
+TEST_F(BoardTest, moveBallAndIllegalAlongBorder)
+{
+    board.setBallPosition(Position{0, 6});
+    ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Illegal);
+
+    board.setBallPosition(Position{0, 6});
+    ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
+
+    board.setBallPosition(Position{8, 6});
+    ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Illegal);
+
+    board.setBallPosition(Position{8, 6});
+    ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
+}
+
+TEST_F(BoardTest, moveBallAndTopGoal)
+{
+    board.setBallPosition(Position{4, 1});
+    ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::TopGoal);
+}
+
+TEST_F(BoardTest, moveBallAndBottomGoal)
+{
+    board.setBallPosition(Position{4, 11});
+    ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::BottomGoal);
+}
+
+TEST_F(BoardTest, moveBallAndDeadEnd)
+{
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::Left), MoveStatus::Continue);
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::BottomLeft), MoveStatus::Continue);
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Stop);
+
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::TopRight), MoveStatus::Continue);
+    board.setBallPosition(Position{1, 2});
+    ASSERT_EQ(board.moveBall(Direction::Right), MoveStatus::Stop);
+
+    board.setBallPosition(Position{2, 3});
+    ASSERT_EQ(board.moveBall(Direction::TopLeft), MoveStatus::DeadEnd);
+}
+
+TEST_F(BoardTest, moveBallAndContinue)
 {
     board.moveBall(Direction::Top);
     board.moveBall(Direction::Left);
