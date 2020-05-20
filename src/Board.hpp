@@ -28,6 +28,8 @@ public:
 
 private:
     void setBorders();
+    void setHorizontalBorders();
+
     void setBottom();
     bool canReachGoal(Direction dir, int line) const;
     bool isDeadEnd() const;
@@ -35,6 +37,8 @@ private:
 
     Position ballPos;
     std::vector<std::vector<Node>> graph;
+    const int goalpostLeft;
+    const int goalpostRight;
 };
 
 } // namespace PaperSoccer
