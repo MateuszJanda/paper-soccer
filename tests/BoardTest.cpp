@@ -87,6 +87,12 @@ TEST_F(BoardTest, moveBallAndIllegalAlongBorder)
     ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
 }
 
+TEST_F(BoardTest, moveBallAndIllegalAlongGoalNet)
+{
+    board.setBallPosition(Position { 3, 11 });
+    ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
+}
+
 TEST_F(BoardTest, moveBallAndTopGoal)
 {
     board.setBallPosition(Position { 4, 1 });

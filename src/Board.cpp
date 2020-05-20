@@ -139,8 +139,8 @@ void Board::setBottomBorders()
 
 void Board::setBottomGaol()
 {
-    auto& goalLine = m_graph[0];
-    auto& borderLine = m_graph[1];
+    auto& goalLine = m_graph[m_graph.size() - 1];
+    auto& borderLine = m_graph[m_graph.size() - 2];
 
     // Goal corners
     auto& node1 = borderLine[m_goalpostLeft];

@@ -29,7 +29,7 @@ bool Node::delNeighbour(Direction dir)
 
 bool Node::hasNeighbour(Direction dir) const
 {
-    if (auto it = neighbours.find(dir); it != neighbours.end()) {
+    if (auto it = m_neighbours.find(dir); it != m_neighbours.end()) {
         return it->second;
     }
 
