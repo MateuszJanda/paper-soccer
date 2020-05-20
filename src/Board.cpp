@@ -200,14 +200,14 @@ MoveStatus Board::moveBall(Direction dir)
         return MoveStatus::Illegal;
     }
 
-    const std::size_t topLine = 0;
-    if (canReachGoal(dir, topLine)) {
+    const std::size_t topGoalLine = 0;
+    if (canReachGoal(dir, topGoalLine)) {
         updateBallAndGraph(dir);
         return MoveStatus::TopGoal;
     }
 
-    const std::size_t bottomLine = m_graph.size() - 1;
-    if (canReachGoal(dir, bottomLine)) {
+    const std::size_t bottomGoalLine = m_graph.size() - 1;
+    if (canReachGoal(dir, bottomGoalLine)) {
         updateBallAndGraph(dir);
         return MoveStatus::BottomGoal;
     }
@@ -241,11 +241,11 @@ void Board::updateBallAndGraph(Direction dir)
     setBallPosition(newPos);
 }
 
-bool Board::canReachGoal(Direction dir, int line) const
+bool Board::canReachGoal(Direction dir, int goalLine) const
 {
     const auto newPos = directionToPosition(m_ballPos, dir);
     for (std::size_t x = m_goalpostLeft; x <= m_goalpostRight; x++) {
-        if (newPos.y == line and newPos.x == x) {
+        if (newPos.y == goalLine and newPos.x == x) {
             return true;
         }
     }

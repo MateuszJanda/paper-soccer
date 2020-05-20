@@ -33,7 +33,7 @@ private:
     void setBottomGaol();
 
     void updateBallAndGraph(Direction dir);
-    bool canReachGoal(Direction dir, int line) const;
+    bool canReachGoal(Direction dir, int goalLine) const;
     bool isDeadEnd() const;
     bool isPositionInGraph(Position pos) const;
 
