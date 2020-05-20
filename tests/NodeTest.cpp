@@ -35,7 +35,7 @@ TEST_F(NodeTest, checkAddTwoNeighbours)
     ASSERT_FALSE(node.hasNeighbour(Direction::Top));
     ASSERT_FALSE(node.hasNeighbour(Direction::Left));
 
-    node.addNeighbours({Direction::Top, Direction::Left});
+    node.addNeighbours({ Direction::Top, Direction::Left });
 
     ASSERT_TRUE(node.hasNeighbour(Direction::Top));
     ASSERT_TRUE(node.hasNeighbour(Direction::Left));
