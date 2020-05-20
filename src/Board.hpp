@@ -34,6 +34,7 @@ private:
     void setBottomBorders();
     void setBottomGaol();
 
+    void updateBallAndGraph(Direction dir);
     bool canReachGoal(Direction dir, int line) const;
     bool isDeadEnd() const;
     bool isPositionInGraph(Position pos) const;

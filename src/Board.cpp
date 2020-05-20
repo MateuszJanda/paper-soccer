@@ -17,10 +17,9 @@ Board::Board(std::size_t width, std::size_t height)
       goalpostLeft{((width + X_OFFSET) / 2) - (GATE_WIDTH / 2)},
       goalpostRight{((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1}
 {
-    assert(width >= 4);
-    assert(width % 2 == 0);
-    assert(height >= 4);
-    assert(height % 2 == 0);
+    if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
+        throw std::range_error("Can't build border with this dimensions.");
+    }
 
     // Empty graph
     for(int i = 0; i < height + Y_OFFSET; i++) {
@@ -89,7 +88,7 @@ void Board::setTopGaol()
     auto& goalLine = this->graph[0];
     auto& borderLine = this->graph[1];
 
-    // Set goal corners
+    // Goal corners
     auto& node1 = borderLine[goalpostLeft];
     node1.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top});
 
@@ -149,6 +148,7 @@ void Board::setBottomGaol()
     auto& goalLine = this->graph[0];
     auto& borderLine = this->graph[1];
 
+    // Goal corners
     auto& node1 = borderLine[goalpostLeft];
     node1.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left});
 
@@ -163,6 +163,7 @@ void Board::setBottomGaol()
     node4.addNeighbours({Direction::Top, Direction::TopRight, Direction::BottomRight,
         Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left});
 
+    // Goal net
     for(int i = goalpostLeft; i <= goalpostRight; i++)
     {
         auto& node = goalLine[i];
@@ -196,7 +197,8 @@ Position Board::getBallPosition() const
 
 MoveStatus Board::moveBall(Direction dir)
 {
-    if (this->graph[this->ballPos.y][this->ballPos.x].hasNeighbour(dir))
+    const auto& currentNode = this->graph[this->ballPos.y][this->ballPos.x];
+    if (currentNode.hasNeighbour(dir))
     {
         return MoveStatus::Illegal;
     }
@@ -209,33 +211,21 @@ MoveStatus Board::moveBall(Direction dir)
 
     if(canReachGoal(dir, 0))
     {
-        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
-        auto reverse = reverseDirection(dir);
-        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBallPosition(newPos);
-
+        updateBallAndGraph(dir);
         return MoveStatus::TopGoal;
     }
 
     if(canReachGoal(dir, this->graph.size() - 1))
     {
-        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
-        auto reverse = reverseDirection(dir);
-        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBallPosition(newPos);
-
+        updateBallAndGraph(dir);
         return MoveStatus::BottomGoal;
     }
 
-    if(this->graph[newPos.y][newPos.x].canEnter())
+    const auto& newNode = this->graph[newPos.y][newPos.x];
+    if(newNode.canEnter())
     {
-        auto& newNode = this->graph[this->ballPos.y][this->ballPos.x];
-        const bool lonely = newNode.isLonely();
-
-        this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
-        auto reverse = reverseDirection(dir);
-        this->graph[newPos.y][newPos.x].addNeighbour(reverse);
-        setBallPosition(newPos);
+        const bool lonely = currentNode.isLonely();
+        updateBallAndGraph(dir);
 
         if (isDeadEnd())
         {
@@ -249,6 +239,20 @@ MoveStatus Board::moveBall(Direction dir)
     }
 
     return MoveStatus::Illegal;
+}
+
+void Board::updateBallAndGraph(Direction dir)
+{
+    const auto newPos = directionToPosition(this->ballPos, dir);
+    if (not isPositionInGraph(newPos))
+    {
+        throw std::range_error("New position out of graph.");
+    }
+
+    this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
+    const auto reverse = reverseDirection(dir);
+    this->graph[newPos.y][newPos.x].addNeighbour(reverse);
+    setBallPosition(newPos);
 }
 
 bool Board::canReachGoal(Direction dir, int line) const
