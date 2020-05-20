@@ -14,7 +14,6 @@ public:
     Board board{WIDTH, HEIGHT};
 };
 
-
 TEST_F(BoardTest, checkSize)
 {
     ASSERT_EQ(board.getWidth(), WIDTH);
@@ -121,4 +120,10 @@ TEST_F(BoardTest, moveBallAndContinue)
 
     ASSERT_EQ(board.moveBall(Direction::BottomRight), MoveStatus::Continue);
     ASSERT_EQ(board.getBallPosition(), CENTER);
+}
+
+TEST_F(BoardTest, moveBallAndBounceOffTheGoalpost)
+{
+    board.setBallPosition(Position{3, 2});
+    ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);
 }
