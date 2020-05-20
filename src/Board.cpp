@@ -22,7 +22,7 @@ Board::Board(std::size_t width, std::size_t height)
     }
 
     // Empty graph
-    for(int i = 0; i < height + Y_OFFSET; i++) {
+    for(std::size_t i = 0; i < height + Y_OFFSET; i++) {
         this->graph.push_back(std::vector{width + X_OFFSET, Node{}});
     }
 
@@ -57,7 +57,7 @@ void Board::setTopBorders()
     auto& goalLine = this->graph[0];
     auto& borderLine = this->graph[1];
 
-    for(int i = 0; i < goalpostLeft; i++)
+    for(std::size_t i = 0; i < goalpostLeft; i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
@@ -70,7 +70,7 @@ void Board::setTopBorders()
     }
 
     // Right borders
-    for(int i = goalpostRight; i < goalLine.size(); i++)
+    for(std::size_t i = goalpostRight; i < goalLine.size(); i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
@@ -117,7 +117,7 @@ void Board::setBottomBorders()
     auto& goalLine = this->graph[this->graph.size() - 1];
     auto& borderLine = this->graph[this->graph.size() - 2];
 
-    for(int i = 0; i < goalpostLeft; i++)
+    for(std::size_t i = 0; i < goalpostLeft; i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -130,7 +130,7 @@ void Board::setBottomBorders()
     }
 
     // Right borders
-    for(int i = goalpostRight; i < goalLine.size(); i++)
+    for(std::size_t i = goalpostRight; i < goalLine.size(); i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -164,7 +164,7 @@ void Board::setBottomGaol()
         Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left});
 
     // Goal net
-    for(int i = goalpostLeft; i <= goalpostRight; i++)
+    for(std::size_t i = goalpostLeft; i <= goalpostRight; i++)
     {
         auto& node = goalLine[i];
         node.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -209,13 +209,15 @@ MoveStatus Board::moveBall(Direction dir)
         return MoveStatus::Illegal;
     }
 
-    if(canReachGoal(dir, 0))
+    const std::size_t topLine = 0;
+    if(canReachGoal(dir, topLine))
     {
         updateBallAndGraph(dir);
         return MoveStatus::TopGoal;
     }
 
-    if(canReachGoal(dir, this->graph.size() - 1))
+    const std::size_t bottomLine = this->graph.size() - 1;
+    if(canReachGoal(dir, bottomLine))
     {
         updateBallAndGraph(dir);
         return MoveStatus::BottomGoal;
@@ -257,8 +259,8 @@ void Board::updateBallAndGraph(Direction dir)
 
 bool Board::canReachGoal(Direction dir, int line) const
 {
-    auto newPos = directionToPosition(this->ballPos, dir);
-    for (int x = goalpostLeft; x <= goalpostRight; x++)
+    const auto newPos = directionToPosition(this->ballPos, dir);
+    for (std::size_t x = goalpostLeft; x <= goalpostRight; x++)
     {
         if (newPos.y == line and newPos.x == x)
         {
@@ -271,7 +273,7 @@ bool Board::canReachGoal(Direction dir, int line) const
 
 bool Board::isDeadEnd() const
 {
-    std::array<Direction, 8> allDirs{    Direction::Top,
+    const std::array<Direction, 8> allDirs{    Direction::Top,
                 Direction::TopLeft,
                 Direction::Right,
                 Direction::BottomRight,
@@ -282,13 +284,13 @@ bool Board::isDeadEnd() const
 
     for (const auto dir : allDirs)
     {
-        auto newPos = directionToPosition(this->ballPos, dir);
+        const auto newPos = directionToPosition(this->ballPos, dir);
         if (not isPositionInGraph(newPos)) {
             continue;
         }
 
-        auto& newNode = this->graph[newPos.y][newPos.x];
-        auto& node = this->graph[this->ballPos.y][this->ballPos.x];
+        const auto& newNode = this->graph[newPos.y][newPos.x];
+        const auto& node = this->graph[this->ballPos.y][this->ballPos.x];
 
         if (not node.hasNeighbour(dir) && newNode.canEnter())
         {
