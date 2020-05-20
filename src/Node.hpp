@@ -20,7 +20,7 @@ public:
     std::vector<Position> neighboursPositions(Position currentPos) const;
 
 private:
-    std::map<Direction, bool> neighbours;
+    std::map<Direction, bool> m_neighbours;
 };
 
 } // namespace PaperSoccer

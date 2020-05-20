@@ -13,9 +13,9 @@ constexpr std::size_t GATE_WIDTH{2};
 }
 
 Board::Board(std::size_t width, std::size_t height)
-    : ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)},
-      goalpostLeft{((width + X_OFFSET) / 2) - (GATE_WIDTH / 2)},
-      goalpostRight{((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1}
+    : m_ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)},
+      m_goalpostLeft{((width + X_OFFSET) / 2) - (GATE_WIDTH / 2)},
+      m_goalpostRight{((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1}
 {
     if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
         throw std::range_error("Can't build border with this dimensions.");
@@ -23,7 +23,7 @@ Board::Board(std::size_t width, std::size_t height)
 
     // Empty graph
     for(std::size_t i = 0; i < height + Y_OFFSET; i++) {
-        this->graph.push_back(std::vector{width + X_OFFSET, Node{}});
+        m_graph.push_back(std::vector{width + X_OFFSET, Node{}});
     }
 
     setBorders();
@@ -40,7 +40,7 @@ void Board::setBorders()
 
 void Board::setHorizontalBorders()
 {
-    for(auto& row: this->graph) {
+    for(auto& row: m_graph) {
         auto& leftNode = row[0];
         leftNode.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Left,
             Direction::BottomLeft, Direction::Bottom});
@@ -54,10 +54,10 @@ void Board::setHorizontalBorders()
 void Board::setTopBorders()
 {
     // Left borders
-    auto& goalLine = this->graph[0];
-    auto& borderLine = this->graph[1];
+    auto& goalLine = m_graph[0];
+    auto& borderLine = m_graph[1];
 
-    for(std::size_t i = 0; i < goalpostLeft; i++)
+    for(std::size_t i = 0; i < m_goalpostLeft; i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
@@ -70,7 +70,7 @@ void Board::setTopBorders()
     }
 
     // Right borders
-    for(std::size_t i = goalpostRight; i < goalLine.size(); i++)
+    for(std::size_t i = m_goalpostRight; i < goalLine.size(); i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
@@ -85,26 +85,26 @@ void Board::setTopBorders()
 
 void Board::setTopGaol()
 {
-    auto& goalLine = this->graph[0];
-    auto& borderLine = this->graph[1];
+    auto& goalLine = m_graph[0];
+    auto& borderLine = m_graph[1];
 
     // Goal corners
-    auto& node1 = borderLine[goalpostLeft];
+    auto& node1 = borderLine[m_goalpostLeft];
     node1.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top});
 
-    auto& node2 = goalLine[goalpostLeft];
+    auto& node2 = goalLine[m_goalpostLeft];
     node2.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left,
         Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right});
 
-    auto& node3 = borderLine[goalpostRight];
+    auto& node3 = borderLine[m_goalpostRight];
     node3.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Right});
 
-    auto& node4 = goalLine[goalpostRight];
+    auto& node4 = goalLine[m_goalpostRight];
     node4.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
         Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom});
 
     // Goal net
-    for(int i = goalpostLeft; i <= goalpostRight; i++) {
+    for(int i = m_goalpostLeft; i <= m_goalpostRight; i++) {
         auto& node = goalLine[i];
         node.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right});
@@ -114,10 +114,10 @@ void Board::setTopGaol()
 void Board::setBottomBorders()
 {
     // Left borders
-    auto& goalLine = this->graph[this->graph.size() - 1];
-    auto& borderLine = this->graph[this->graph.size() - 2];
+    auto& goalLine = m_graph[m_graph.size() - 1];
+    auto& borderLine = m_graph[m_graph.size() - 2];
 
-    for(std::size_t i = 0; i < goalpostLeft; i++)
+    for(std::size_t i = 0; i < m_goalpostLeft; i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -130,7 +130,7 @@ void Board::setBottomBorders()
     }
 
     // Right borders
-    for(std::size_t i = goalpostRight; i < goalLine.size(); i++)
+    for(std::size_t i = m_goalpostRight; i < goalLine.size(); i++)
     {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -145,26 +145,26 @@ void Board::setBottomBorders()
 
 void Board::setBottomGaol()
 {
-    auto& goalLine = this->graph[0];
-    auto& borderLine = this->graph[1];
+    auto& goalLine = m_graph[0];
+    auto& borderLine = m_graph[1];
 
     // Goal corners
-    auto& node1 = borderLine[goalpostLeft];
+    auto& node1 = borderLine[m_goalpostLeft];
     node1.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left});
 
-    auto& node2 = goalLine[goalpostLeft];
+    auto& node2 = goalLine[m_goalpostLeft];
     node2.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
         Direction::BottomLeft, Direction::Left, Direction::TopLeft, Direction::Top});
 
-    auto& node3 = borderLine[goalpostRight];
+    auto& node3 = borderLine[m_goalpostRight];
     node3.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom});
 
-    auto& node4 = goalLine[goalpostRight];
+    auto& node4 = goalLine[m_goalpostRight];
     node4.addNeighbours({Direction::Top, Direction::TopRight, Direction::BottomRight,
         Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left});
 
     // Goal net
-    for(std::size_t i = goalpostLeft; i <= goalpostRight; i++)
+    for(std::size_t i = m_goalpostLeft; i <= m_goalpostRight; i++)
     {
         auto& node = goalLine[i];
         node.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
@@ -174,12 +174,12 @@ void Board::setBottomGaol()
 
 std::size_t Board::getWidth() const
 {
-    return this->graph[0].size() - X_OFFSET;
+    return m_graph[0].size() - X_OFFSET;
 }
 
 std::size_t Board::getHeight() const
 {
-    return this->graph.size() - Y_OFFSET;
+    return m_graph.size() - Y_OFFSET;
 }
 
 void Board::setBallPosition(Position pos)
@@ -187,23 +187,23 @@ void Board::setBallPosition(Position pos)
     if (not isPositionInGraph(pos)) {
         throw std::out_of_range{"Position out of graph."};
     }
-    this->ballPos = pos;
+    m_ballPos = pos;
 }
 
 Position Board::getBallPosition() const
 {
-    return this->ballPos;
+    return m_ballPos;
 }
 
 MoveStatus Board::moveBall(Direction dir)
 {
-    const auto& currentNode = this->graph[this->ballPos.y][this->ballPos.x];
+    const auto& currentNode = m_graph[m_ballPos.y][m_ballPos.x];
     if (currentNode.hasNeighbour(dir))
     {
         return MoveStatus::Illegal;
     }
 
-    auto newPos = directionToPosition(this->ballPos, dir);
+    auto newPos = directionToPosition(m_ballPos, dir);
     if (not isPositionInGraph(newPos))
     {
         return MoveStatus::Illegal;
@@ -216,14 +216,14 @@ MoveStatus Board::moveBall(Direction dir)
         return MoveStatus::TopGoal;
     }
 
-    const std::size_t bottomLine = this->graph.size() - 1;
+    const std::size_t bottomLine = m_graph.size() - 1;
     if(canReachGoal(dir, bottomLine))
     {
         updateBallAndGraph(dir);
         return MoveStatus::BottomGoal;
     }
 
-    const auto& newNode = this->graph[newPos.y][newPos.x];
+    const auto& newNode = m_graph[newPos.y][newPos.x];
     if(newNode.canEnter())
     {
         const bool lonely = newNode.isLonely();
@@ -245,22 +245,22 @@ MoveStatus Board::moveBall(Direction dir)
 
 void Board::updateBallAndGraph(Direction dir)
 {
-    const auto newPos = directionToPosition(this->ballPos, dir);
+    const auto newPos = directionToPosition(m_ballPos, dir);
     if (not isPositionInGraph(newPos))
     {
         throw std::out_of_range("New position out of graph.");
     }
 
-    this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
+    m_graph[m_ballPos.y][m_ballPos.x].addNeighbour(dir);
     const auto reverse = reverseDirection(dir);
-    this->graph[newPos.y][newPos.x].addNeighbour(reverse);
+    m_graph[newPos.y][newPos.x].addNeighbour(reverse);
     setBallPosition(newPos);
 }
 
 bool Board::canReachGoal(Direction dir, int line) const
 {
-    const auto newPos = directionToPosition(this->ballPos, dir);
-    for (std::size_t x = goalpostLeft; x <= goalpostRight; x++)
+    const auto newPos = directionToPosition(m_ballPos, dir);
+    for (std::size_t x = m_goalpostLeft; x <= m_goalpostRight; x++)
     {
         if (newPos.y == line and newPos.x == x)
         {
@@ -284,13 +284,13 @@ bool Board::isDeadEnd() const
 
     for (const auto dir : allDirs)
     {
-        const auto newPos = directionToPosition(this->ballPos, dir);
+        const auto newPos = directionToPosition(m_ballPos, dir);
         if (not isPositionInGraph(newPos)) {
             continue;
         }
 
-        const auto& newNode = this->graph[newPos.y][newPos.x];
-        const auto& node = this->graph[this->ballPos.y][this->ballPos.x];
+        const auto& newNode = m_graph[newPos.y][newPos.x];
+        const auto& node = m_graph[m_ballPos.y][m_ballPos.x];
 
         if (not node.hasNeighbour(dir) && newNode.canEnter())
         {
@@ -303,7 +303,7 @@ bool Board::isDeadEnd() const
 
 bool Board::isPositionInGraph(Position pos) const
 {
-    return pos.y >= 0 and pos.y < this->graph.size() and pos.x >= 0 and pos.x < this->graph[0].size();
+    return pos.y >= 0 and pos.y < m_graph.size() and pos.x >= 0 and pos.x < m_graph[0].size();
 }
 
 } // namespace PaperSoccer
