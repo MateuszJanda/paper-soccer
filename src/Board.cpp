@@ -29,30 +29,31 @@ Board::Board(std::size_t width, std::size_t height)
     }
 
     setBorders();
-//    setBallPosition(Position{(width + X_OFFSET)/2, (height + Y_OFFSET)/2});
 }
 
 void Board::setBorders()
 {
-    // Horizontal borders
-    for(auto& row: this->graph)
-    {
-        auto& node = row[0];
-        node.addNeighbour(Direction::Top);
-        node.addNeighbour(Direction::TopLeft);
-        node.addNeighbour(Direction::Left);
-        node.addNeighbour(Direction::BottomLeft);
-        node.addNeighbour(Direction::Bottom);
+    setHorizontalBorders();
+    setTopBorders();
+    setBottomBorders();
+}
+
+void Board::setHorizontalBorders()
+{
+    for(auto& row: this->graph) {
+        auto& leftNode = row[0];
+        leftNode.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Left,
+            Direction::BottomLeft, Direction::Bottom});
 
         auto rightNode = row[row.size() - 1];
-        rightNode.addNeighbour(Direction::Top);
-        rightNode.addNeighbour(Direction::TopRight);
-        rightNode.addNeighbour(Direction::Right);
-        rightNode.addNeighbour(Direction::BottomRight);
-        rightNode.addNeighbour(Direction::Bottom);
+        rightNode.addNeighbours({Direction::Top, Direction::TopRight, Direction::Right,
+            Direction::BottomRight, Direction::Bottom});
     }
+}
 
-    // Vertical top left borders
+void Board::setTopBorders()
+{
+    // Left borders
     auto& row = this->graph[0];
     auto& line = this->graph[1];
 
@@ -76,7 +77,7 @@ void Board::setBorders()
         node.addNeighbour(Direction::BottomLeft);
     }
 
-    // Vertical top right borders
+    // Right borders
     for(int i = goalpostRight; i < row.size(); i++)
     {
         auto& node = line[i];
@@ -137,14 +138,11 @@ void Board::setBorders()
         node.addNeighbour(Direction::TopRight);
         node.addNeighbour(Direction::Right);
     }
-
-    setBottom();
 }
 
-
-void Board::setBottom()
+void Board::setBottomBorders()
 {
-    // Vertical bottom left borders
+    // Left borders
     auto& row = this->graph[this->graph.size() - 1];
     auto& line = this->graph[this->graph.size() - 2];
 
@@ -168,7 +166,7 @@ void Board::setBottom()
         node.addNeighbour(Direction::BottomLeft);
     }
 
-    // Vertical bottom right borders
+    // Right borders
     for(int i = goalpostRight; i < row.size(); i++)
     {
         auto& node = line[i];
@@ -229,11 +227,6 @@ void Board::setBottom()
         node.addNeighbour(Direction::BottomLeft);
         node.addNeighbour(Direction::Left);
     }
-}
-
-void Board::setHorizontalBorders()
-{
-
 }
 
 std::size_t Board::getWidth() const

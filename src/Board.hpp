@@ -29,8 +29,9 @@ public:
 private:
     void setBorders();
     void setHorizontalBorders();
+    void setTopBorders();
+    void setBottomBorders();
 
-    void setBottom();
     bool canReachGoal(Direction dir, int line) const;
     bool isDeadEnd() const;
     bool isPositionInGraph(Position pos) const;
