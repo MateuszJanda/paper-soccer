@@ -45,7 +45,7 @@ void Board::setHorizontalBorders()
         leftNode.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Left,
             Direction::BottomLeft, Direction::Bottom});
 
-        auto rightNode = row[row.size() - 1];
+        auto& rightNode = row[row.size() - 1];
         rightNode.addNeighbours({Direction::Top, Direction::TopRight, Direction::Right,
             Direction::BottomRight, Direction::Bottom});
     }
@@ -258,7 +258,7 @@ MoveStatus Board::moveBall(Direction dir)
 
     if(this->graph[newPos.y][newPos.x].canEnter())
     {
-        auto newNode = this->graph[this->ballPos.y][this->ballPos.x];
+        auto& newNode = this->graph[this->ballPos.y][this->ballPos.x];
         bool lonely = newNode.isLonely();
 
         this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
@@ -282,11 +282,10 @@ MoveStatus Board::moveBall(Direction dir)
 
 bool Board::canReachGoal(Direction dir, int line) const
 {
-    auto pos = directionToPosition(this->ballPos, dir);
-
+    auto newPos = directionToPosition(this->ballPos, dir);
     for (int x = goalpostLeft; x <= goalpostRight; x++)
     {
-        if (pos.y == line and pos.x == x)
+        if (newPos.y == line and newPos.x == x)
         {
             return true;
         }
@@ -309,11 +308,14 @@ bool Board::isDeadEnd() const
     for (const auto dir : allDirs)
     {
         auto newPos = directionToPosition(this->ballPos, dir);
+        if (not isPositionInGraph(newPos)) {
+            continue;
+        }
 
-        auto newNode = this->graph[newPos.y][newPos.x];
-        auto node = this->graph[this->ballPos.y][this->ballPos.x];
+        auto& newNode = this->graph[newPos.y][newPos.x];
+        auto& node = this->graph[this->ballPos.y][this->ballPos.x];
 
-        if (newNode.canEnter() and not node.hasNeighbour(dir))
+        if (not node.hasNeighbour(dir) && newNode.canEnter())
         {
             return false;
         }
