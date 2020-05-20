@@ -1,10 +1,9 @@
 #pragma once
 
+#include "Direction.hpp"
+#include "Position.hpp"
 #include <map>
 #include <vector>
-#include "Position.hpp"
-#include "Direction.hpp"
-
 
 namespace PaperSoccer {
 

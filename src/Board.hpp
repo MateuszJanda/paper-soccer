@@ -1,13 +1,12 @@
 #pragma once
 
+#include "Node.hpp"
 #include <cstddef>
 #include <vector>
-#include "Node.hpp"
 
 namespace PaperSoccer {
 
-enum MoveStatus
-{
+enum MoveStatus {
     Illegal,
     Continue,
     Stop,
@@ -16,8 +15,7 @@ enum MoveStatus
     BottomGoal
 };
 
-class Board
-{
+class Board {
 public:
     Board(std::size_t width, std::size_t height);
     std::size_t getWidth() const;
