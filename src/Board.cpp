@@ -226,7 +226,7 @@ MoveStatus Board::moveBall(Direction dir)
     const auto& newNode = this->graph[newPos.y][newPos.x];
     if(newNode.canEnter())
     {
-        const bool lonely = currentNode.isLonely();
+        const bool lonely = newNode.isLonely();
         updateBallAndGraph(dir);
 
         if (isDeadEnd())
