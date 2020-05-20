@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "Board.hpp"
 
 using namespace PaperSoccer;
@@ -23,6 +24,11 @@ TEST_F(BoardTest, checkSize)
 TEST_F(BoardTest, checkBallPosition)
 {
     ASSERT_EQ(board.getBallPosition(), CENTER);
+}
+
+TEST_F(BoardTest, setBallPositionOutOfRange)
+{
+    ASSERT_THROW(board.setBallPosition(Position{-1, -1}), std::out_of_range);
 }
 
 TEST_F(BoardTest, moveBallAndStop)

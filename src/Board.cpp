@@ -185,7 +185,7 @@ std::size_t Board::getHeight() const
 void Board::setBallPosition(Position pos)
 {
     if (not isPositionInGraph(pos)) {
-        throw std::range_error{"Position out of graph."};
+        throw std::out_of_range{"Position out of graph."};
     }
     this->ballPos = pos;
 }
@@ -248,7 +248,7 @@ void Board::updateBallAndGraph(Direction dir)
     const auto newPos = directionToPosition(this->ballPos, dir);
     if (not isPositionInGraph(newPos))
     {
-        throw std::range_error("New position out of graph.");
+        throw std::out_of_range("New position out of graph.");
     }
 
     this->graph[this->ballPos.y][this->ballPos.x].addNeighbour(dir);
