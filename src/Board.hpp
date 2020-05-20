@@ -39,8 +39,8 @@ private:
 
     Position ballPos;
     std::vector<std::vector<Node>> graph;
-    const int goalpostLeft;
-    const int goalpostRight;
+    const std::size_t goalpostLeft;
+    const std::size_t goalpostRight;
 };
 
 } // namespace PaperSoccer

@@ -14,8 +14,8 @@ constexpr std::size_t GATE_WIDTH{2};
 
 Board::Board(std::size_t width, std::size_t height)
     : ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)},
-      goalpostLeft{((GATE_WIDTH + X_OFFSET) / 2) - (GATE_WIDTH / 2)},
-      goalpostRight{((GATE_WIDTH + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1}
+      goalpostLeft{((width + X_OFFSET) / 2) - (GATE_WIDTH / 2)},
+      goalpostRight{((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1}
 {
     assert(width >= 4);
     assert(width % 2 == 0);
