@@ -35,7 +35,7 @@ void Board::setBorders()
     // Horizontal borders
     for(auto& row: this->graph)
     {
-        auto node = row[0];
+        auto& node = row[0];
         node.addNeighbour(Direction::Top);
         node.addNeighbour(Direction::TopLeft);
         node.addNeighbour(Direction::Left);
@@ -51,13 +51,13 @@ void Board::setBorders()
     }
 
     // Vertical top left borders
-    auto row = this->graph[0];
-    auto line = this->graph[1];
+    auto& row = this->graph[0];
+    auto& line = this->graph[1];
 
     const int goalpost = (row.size() / 2) - (GATE_WIDTH / 2);
     for(int i = 0; i < goalpost; i++)
     {
-        auto node = line[i];
+        auto& node = line[i];
         node.addNeighbour(Direction::Left);
         node.addNeighbour(Direction::TopLeft);
         node.addNeighbour(Direction::Top);
@@ -79,7 +79,7 @@ void Board::setBorders()
     const int g = (row.size() / 2) + (GATE_WIDTH / 2) + 1;
     for(int i = g; i < row.size(); i++)
     {
-        auto node = line[i];
+        auto& node = line[i];
         node.addNeighbour(Direction::Left);
         node.addNeighbour(Direction::TopLeft);
         node.addNeighbour(Direction::Top);
@@ -99,7 +99,7 @@ void Board::setBorders()
 
     // Top goal
     {
-        auto node = line[goalpost];
+        auto& node = line[goalpost];
         node.addNeighbour(Direction::Left);
         node.addNeighbour(Direction::TopLeft);
         node.addNeighbour(Direction::Top);
@@ -130,7 +130,7 @@ void Board::setBorders()
 
     for(int i = goalpost; i <= g; i++)
     {
-        auto node = row[i];
+        auto& node = row[i];
         node.addNeighbour(Direction::Left);
         node.addNeighbour(Direction::TopLeft);
         node.addNeighbour(Direction::Top);
@@ -145,13 +145,13 @@ void Board::setBorders()
 void Board::setBottom()
 {
     // Vertical bottom left borders
-    auto row = this->graph[this->graph.size() - 1];
-    auto line = this->graph[this->graph.size() - 2];
+    auto& row = this->graph[this->graph.size() - 1];
+    auto& line = this->graph[this->graph.size() - 2];
 
     const int goalpost = (row.size() / 2) - (GATE_WIDTH / 2);
     for(int i = 0; i < goalpost; i++)
     {
-        auto node = line[i];
+        auto& node = line[i];
         node.addNeighbour(Direction::Right);
         node.addNeighbour(Direction::BottomRight);
         node.addNeighbour(Direction::Bottom);
@@ -173,7 +173,7 @@ void Board::setBottom()
     const int g = (row.size() / 2) + (GATE_WIDTH / 2) + 1;
     for(int i = g; i < row.size(); i++)
     {
-        auto node = line[i];
+        auto& node = line[i];
         node.addNeighbour(Direction::Right);
         node.addNeighbour(Direction::BottomRight);
         node.addNeighbour(Direction::Bottom);
@@ -193,7 +193,7 @@ void Board::setBottom()
 
     // Bottom goal
     {
-        auto node = line[goalpost];
+        auto& node = line[goalpost];
         node.addNeighbour(Direction::Bottom);
         node.addNeighbour(Direction::BottomLeft);
         node.addNeighbour(Direction::Left);
@@ -224,7 +224,7 @@ void Board::setBottom()
 
     for(int i = goalpost; i <= g; i++)
     {
-        auto node = row[i];
+        auto& node = row[i];
         node.addNeighbour(Direction::Right);
         node.addNeighbour(Direction::BottomRight);
         node.addNeighbour(Direction::Bottom);
