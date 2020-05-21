@@ -167,12 +167,12 @@ void Board::setBottomGaol()
 
 std::size_t Board::getWidth() const
 {
-    return m_graph[0].size() - X_OFFSET;
+    return m_graph[0].size();
 }
 
 std::size_t Board::getHeight() const
 {
-    return m_graph.size() - Y_OFFSET;
+    return m_graph.size();
 }
 
 void Board::setBallPosition(Position pos)

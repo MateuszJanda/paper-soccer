@@ -8,6 +8,8 @@ add_executable(${CMAKE_PROJECT_NAME}
     Direction.hpp
     NCurses.cpp
     NCurses.hpp
+    View.cpp
+    View.hpp
     main.cpp
 )
 
