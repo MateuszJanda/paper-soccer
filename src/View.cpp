@@ -2,6 +2,7 @@
 #include "Board.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
+#include <set>
 
 namespace PaperSoccer {
 
@@ -23,9 +24,21 @@ void View::drawBoard(const Board& board)
         {
             if (y == firstLine)
             {
-                if (x >= board.getGoalpostLeft() and x <= board.getGoalpostRight())
+                if (x == board.getGoalpostLeft())
                 {
-
+                    std:set<Direction> skip{Direction::Top, Direction::TopRight};
+                }
+                else if (x == board.getGoalpostRight())
+                {
+                    std:set<Direction> skip{Direction::Top, Direction::TopRight, Direction::Right};
+                }
+                else if (x > board.getGoalpostLeft() and x < board.getGoalpostRight())
+                {
+                    std:set<Direction> skip{Direction::Top, Direction::TopRight};
+                }
+                else
+                {
+                    std:set<Direction> skip{Direction::Top, Direction::TopRight, Direction::Right};
                 }
             }
             else if (y == lastLine)
@@ -77,25 +90,25 @@ void View::drawDebugBoard(const Board& board)
     }
 }
 
-void View::drawCell(const Board& board, Position nodePos)
+void View::drawCell(const Board& board, Position nodePos, std::set<Direction> skip)
 {
-    if (board.hasNeighbour(nodePos, Direction::Top))
+    if (not skip.contains(Direction::Top) and board.hasNeighbour(nodePos, Direction::Top))
     {
         drawVerticalToTopLine(nodePos);
     }
-    else if (board.hasNeighbour(nodePos, Direction::Right))
+    else if (not skip.contains(Direction::Right) and board.hasNeighbour(nodePos, Direction::Right))
     {
         drawHorizontalToRightLine(nodePos);
     }
-    else if (board.hasNeighbour(nodePos, Direction::TopRight))
+    else if (not skip.contains(Direction::TopRight) and board.hasNeighbour(nodePos, Direction::TopRight))
     {
         if (x + 1 < board.getHeight() and board.hasNeighbour(Position{x + 1, y}, Direction::TopLeft))
         {
-            drawHypotenuseToTopRight(nodePos);
+            drawCrossToRight(nodePos);
         }
         else
         {
-            drawCrossToRight(nodePos);
+            drawHypotenuseToTopRight(nodePos);
         }
     }
 
