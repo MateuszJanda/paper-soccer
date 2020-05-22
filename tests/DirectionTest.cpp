@@ -1,7 +1,9 @@
 #include "Direction.hpp"
 #include "gtest/gtest.h"
 
-using namespace PaperSoccer;
+namespace PaperSoccer
+{
+
 using namespace testing;
 
 TEST(DirectionTest, checkConversionDirectionTopToPosition)
@@ -68,4 +70,6 @@ TEST(DirectionTest, checkReverseDirection)
     for (const auto& [dir1, dir2] : mapDirs) {
         ASSERT_EQ(reverseDirection(dir1), dir2);
     }
+}
+
 }

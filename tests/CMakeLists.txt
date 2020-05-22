@@ -5,6 +5,7 @@ set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
 set(SOURCES
     ${SOURCES_DIR}/Board.cpp
     ${SOURCES_DIR}/Node.cpp
+    ${SOURCES_DIR}/View.cpp
 )
 
 
@@ -18,11 +19,15 @@ add_executable(${BINARY}
     NodeTest.cpp
     PositionTest.cpp
     DirectionTest.cpp
+    BoardMock.hpp
+    ViewTest.cpp
     ${SOURCES}
 )
 
 target_link_libraries(${BINARY}
     libgtest.a
     libgtest_main.a
+    libgmock.a
+    libgmock_main.a
     pthread
 )

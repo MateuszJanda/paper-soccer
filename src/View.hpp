@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Direction.hpp"
-#include "NCurses.hpp"
+#include "INCurses.hpp"
 #include "IBoard.hpp"
 #include <set>
 
@@ -28,7 +28,6 @@ private:
     void drawHypotenuseToTopRight(Position nodePos);
     void drawMarker(Position nodePos);
 
-    NCurses nnn;
     IBoard& m_board;
 
 

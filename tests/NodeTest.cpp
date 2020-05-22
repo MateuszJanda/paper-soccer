@@ -2,7 +2,8 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-using namespace PaperSoccer;
+namespace PaperSoccer {
+
 using namespace testing;
 
 class NodeTest : public testing::Test {
@@ -136,4 +137,6 @@ TEST_F(NodeTest, checkNeighboursPositions)
     ASSERT_TRUE(node.addNeighbour(Direction::Left));
 
     ASSERT_THAT(node.neighboursPositions(Position { 1, 1 }), ElementsAre(Position { 1, 0 }, Position { 0, 1 }));
+}
+
 }

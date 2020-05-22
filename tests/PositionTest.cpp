@@ -1,7 +1,9 @@
 #include "Position.hpp"
 #include "gtest/gtest.h"
 
-using namespace PaperSoccer;
+namespace PaperSoccer
+{
+
 using namespace testing;
 
 TEST(PositionTest, checkEqual)
@@ -27,4 +29,6 @@ TEST(PositionTest, checkAdd)
 
     Position p2 { 2, 3 };
     ASSERT_EQ(p1, p2);
+}
+
 }

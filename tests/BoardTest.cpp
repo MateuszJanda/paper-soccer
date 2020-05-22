@@ -2,7 +2,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-using namespace PaperSoccer;
+namespace PaperSoccer {
 
 namespace {
 constexpr std::size_t HEIGHT { 10 };
@@ -171,4 +171,6 @@ TEST_F(BoardTest, checkMoveBallAndBounceOffTheGoalpost)
 {
     board.setBallPosition(Position { 3, 2 });
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);
+}
+
 }
