@@ -1,31 +1,23 @@
 #pragma once
 
 #include "Node.hpp"
+#include "IBoard.hpp"
 #include <cstddef>
 #include <vector>
 
 namespace PaperSoccer {
 
-enum MoveStatus {
-    Illegal,
-    Continue,
-    Stop,
-    DeadEnd,
-    TopGoal,
-    BottomGoal
-};
-
-class Board {
+class Board : public IBoard {
 public:
     Board(std::size_t width, std::size_t height);
-    std::size_t getWidth() const;
-    std::size_t getHeight() const;
-    std::size_t getGoalpostLeft() const;
-    std::size_t getGoalpostRight() const;
-    void setBallPosition(Position pos);
+    std::size_t getWidth() const override;
+    std::size_t getHeight() const override;
+    std::size_t getGoalpostLeft() const override;
+    std::size_t getGoalpostRight() const override;
+    void setBallPosition(Position pos) override;
     Position getBallPosition() const;
-    bool hasNeighbour(Position pos, Direction dir) const;
-    MoveStatus moveBall(Direction dir);
+    bool hasNeighbour(Position pos, Direction dir) const override;
+    MoveStatus moveBall(Direction dir) override;
 
 private:
     void setBorders();

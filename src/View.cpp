@@ -6,107 +6,125 @@
 
 namespace PaperSoccer {
 
-View::View()
+View::View(IBoard& board) : m_board{board}
 {
 
 }
 
-void View::drawBoard(const Board& board)
+void View::drawBoard()
 {
-    const std::size_t firstLine = 0;
-    const std::size_t lastLine = board.getHeight() - 1;
     const std::size_t firstCol = 0;
-    const std::size_t lastCol = board.getWidth() - 1;
+    const std::size_t lastCol = m_board.getWidth() - 1;
 
-    for(std::size_t y = 0; y < board.getHeight(); y++)
+    for(std::size_t y = 0; y < m_board.getHeight(); y++)
     {
-        for(std::size_t x = 0; x < board.getWidth(); x++)
+        for(std::size_t x = 0; x < m_board.getWidth(); x++)
         {
-            std::set<Direction> skip{};
-
-            if (y == firstLine)
-            {
-                if (x == board.getGoalpostLeft())
-                {
-                    std::set<Direction> skip{Direction::Top, Direction::TopRight};
-                }
-                else if (x == board.getGoalpostRight())
-                {
-                    std::set<Direction> skip{Direction::Top, Direction::TopRight, Direction::Right};
-                }
-                else if (x > board.getGoalpostLeft() and x < board.getGoalpostRight())
-                {
-                    std::set<Direction> skip{Direction::Top, Direction::TopRight};
-                }
-                else
-                {
-                    std::set<Direction> skip{Direction::Top, Direction::TopRight, Direction::Right};
-                }
-            }
-            else if (y == lastLine)
-            {
-                if (x >= board.getGoalpostLeft() and x <= board.getGoalpostRight())
-                {
-
-                }
-            }
-            else if (y == firstLine + 1)
-            {
-                if (x >= board.getGoalpostLeft() and x <= board.getGoalpostRight())
-                {
-
-                }
-                else
-                {
-
-                }
-            }
-            else if (y == firstLine - 1)
-            {
-                if (x >= board.getGoalpostLeft() and x <= board.getGoalpostRight())
-                {
-
-                }
-                else
-                {
-
-                }
-            }
-            else
-            {
-                Position nodePos{x, y};
-                drawCell(board, nodePos, skip);
-            }
+            Position nodePos{x, y};
+            std::set<Direction> skip = filterDirsForOutOfBorder(nodePos);
+            drawCell(nodePos, skip);
         }
     }
 }
 
-void View::drawDebugBoard(const Board& board)
+std::set<Direction> View::filterDirsForOutOfBorder(Position nodePos)
 {
     std::set<Direction> skip;
 
-    for(std::size_t y = 0; y < board.getHeight(); y++)
-    {
-        for(std::size_t x = 0; x < board.getWidth(); x++)
-        {
-            drawCell(board, Position{x, y}, skip);
-        }
-    }
+    skip.merge(filterDirsForTopBorderLine(nodePos));
+    skip.merge(filterDirsForTopBorderLine(nodePos));
+
+
+//    else if (y == lastLine)
+//    {
+//        if (x >= m_board.getGoalpostLeft() and x <= m_board.getGoalpostRight())
+//        {
+
+//        }
+//    }
+//    else if (y == firstLine + 1)
+//    {
+//        if (x >= m_board.getGoalpostLeft() and x <= m_board.getGoalpostRight())
+//        {
+
+//        }
+//        else
+//        {
+
+//        }
+//    }
+//    else if (y == firstLine - 1)
+//    {
+//        if (x >= m_board.getGoalpostLeft() and x <= m_board.getGoalpostRight())
+//        {
+
+//        }
+//        else
+//        {
+
+//        }
+//    }
+//    else
+//    {
+//        Position nodePos{x, y};
+//        drawCell(m_board, nodePos, skip);
+//    }
+
+    return skip;
 }
 
-void View::drawCell(const Board& board, Position nodePos, std::set<Direction> skip)
+std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
 {
-    if (not skip.contains(Direction::Top) and board.hasNeighbour(nodePos, Direction::Top))
+    const std::size_t firstLine = 0;
+
+    if (nodePos.y == firstLine)
+    {
+        if (nodePos.x > m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
+        {
+            return std::set<Direction>{Direction::Top, Direction::TopRight};
+        }
+        else
+        {
+            return std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right};
+        }
+    }
+
+    return std::set<Direction>{};
+}
+
+std::set<Direction> View::filterDirsForBottomBorderLine(Position nodePos)
+{
+    const std::size_t lastLine = m_board.getHeight() - 1;
+
+    if (nodePos.y == lastLine)
+    {
+        if (nodePos.x < m_board.getGoalpostLeft() and nodePos.x > m_board.getGoalpostRight())
+        {
+            return std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right};
+        }
+        else if (nodePos.x == m_board.getGoalpostRight())
+        {
+            return std::set<Direction>{Direction::TopRight, Direction::Right};
+        }
+    }
+
+    return std::set<Direction>{};
+}
+
+
+void View::drawCell(Position nodePos, std::set<Direction> skip)
+{
+    if (not skip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
     {
         drawVerticalToTopLine(nodePos);
     }
-    else if (not skip.contains(Direction::Right) and board.hasNeighbour(nodePos, Direction::Right))
+    else if (not skip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
     {
         drawHorizontalToRightLine(nodePos);
     }
-    else if (not skip.contains(Direction::TopRight) and board.hasNeighbour(nodePos, Direction::TopRight))
+    else if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
     {
-        if (nodePos.x + 1 < board.getHeight() and board.hasNeighbour(Position{nodePos.x + 1, nodePos.y}, Direction::TopLeft))
+        if (nodePos.x + 1 < m_board.getWidth() and m_board.hasNeighbour(Position{nodePos.x + 1, nodePos.y}, Direction::TopLeft))
         {
             drawCrossToRight(nodePos);
         }
