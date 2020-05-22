@@ -13,9 +13,6 @@ View::View(IBoard& board) : m_board{board}
 
 void View::drawBoard()
 {
-    const std::size_t firstCol = 0;
-    const std::size_t lastCol = m_board.getWidth() - 1;
-
     for(std::size_t y = 0; y < m_board.getHeight(); y++)
     {
         for(std::size_t x = 0; x < m_board.getWidth(); x++)

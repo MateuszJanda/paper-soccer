@@ -7,7 +7,7 @@ bool Node::addNeighbour(Direction dir)
     if (hasNeighbour(dir)) {
         return false;
     }
-    m_neighbours[dir] = true;
+    m_neighbours.insert(dir);
     return true;
 }
 
@@ -23,29 +23,18 @@ bool Node::delNeighbour(Direction dir)
     if (not hasNeighbour(dir)) {
         return false;
     }
-    m_neighbours[dir] = false;
+    m_neighbours.erase(dir);
     return true;
 }
 
 bool Node::hasNeighbour(Direction dir) const
 {
-    if (auto it = m_neighbours.find(dir); it != m_neighbours.end()) {
-        return it->second;
-    }
-
-    return false;
+    return m_neighbours.contains(dir);
 }
 
 unsigned Node::degree() const
 {
-    unsigned counter { 0 };
-    for (const auto& [dir, exist] : m_neighbours) {
-        if (exist) {
-            counter++;
-        }
-    }
-
-    return counter;
+    return m_neighbours.size();
 }
 
 bool Node::canEnter() const
@@ -65,10 +54,8 @@ bool Node::isLonely() const
 std::vector<Position> Node::neighboursPositions(Position currentPos) const
 {
     std::vector<Position> positions;
-    for (auto const& [dir, exist] : m_neighbours) {
-        if (exist) {
-            positions.push_back(directionToPosition(currentPos, dir));
-        }
+    for (auto const& dir : m_neighbours) {
+        positions.push_back(directionToPosition(currentPos, dir));
     }
 
     return positions;

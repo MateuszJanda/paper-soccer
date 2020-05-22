@@ -1,5 +1,5 @@
 #include "Board.hpp"
-#include <cassert>
+#include <array>
 #include <iostream>
 
 namespace PaperSoccer {

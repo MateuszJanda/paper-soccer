@@ -2,7 +2,7 @@
 
 #include "Direction.hpp"
 #include "Position.hpp"
-#include <map>
+#include <set>
 #include <vector>
 
 namespace PaperSoccer {
@@ -19,7 +19,7 @@ public:
     std::vector<Position> neighboursPositions(Position currentPos) const;
 
 private:
-    std::map<Direction, bool> m_neighbours;
+    std::set<Direction> m_neighbours;
 };
 
 } // namespace PaperSoccer
