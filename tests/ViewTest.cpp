@@ -17,6 +17,8 @@ const std::size_t FIRST_BORDER_LINE{0};
 const std::size_t LAST_BORDER_LINE{12};
 const std::size_t FIRST_GOAL_LINE{FIRST_BORDER_LINE+1};
 const std::size_t LAST_GOAL_LINE{LAST_BORDER_LINE-1};
+const std::size_t CENTER_LINE{6};
+const std::size_t RIGHT_LINE{8};
 const std::size_t GOALPOST_LEFT{3};
 const std::size_t GOALPOST_RIGHT{5};
 }
@@ -30,6 +32,7 @@ public:
         EXPECT_CALL(boardMock, getGoalpostLeft()).WillRepeatedly(Return(GOALPOST_LEFT));
         EXPECT_CALL(boardMock, getGoalpostRight()).WillRepeatedly(Return(GOALPOST_RIGHT));
         EXPECT_CALL(boardMock, getHeight()).WillRepeatedly(Return(LAST_BORDER_LINE+1));
+        EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(RIGHT_LINE+1));
     }
     StrictMock<BoardMock> boardMock;
     View view;
@@ -80,15 +83,24 @@ TEST_F(ViewTest, checkFilterDirsForTopGoalLineWhenNotAGoal)
     ASSERT_EQ(view.filterDirsForTopGoalLine(Position{0, FIRST_GOAL_LINE}), TTRIGHT);
 }
 
-TEST_F(ViewTest,  checkFilterDirsForTopGoalLineWhenGoalpostLeft)
+TEST_F(ViewTest, checkFilterDirsForTopGoalLineWhenGoalpostLeft)
 {
     ASSERT_EQ(view.filterDirsForTopGoalLine(Position{GOALPOST_LEFT, FIRST_GOAL_LINE}), EMPTY);
 }
 
-TEST_F(ViewTest,  checkFilterDirsForTopGoalLineWhenGoalpostRight)
+TEST_F(ViewTest, checkFilterDirsForTopGoalLineWhenGoalpostRight)
 {
     ASSERT_EQ(view.filterDirsForTopGoalLine(Position{GOALPOST_RIGHT, FIRST_GOAL_LINE}), RIGHT);
 }
 
+TEST_F(ViewTest, checkFilterDirsForRightLineWhenNotThisLine)
+{
+    ASSERT_EQ(view.filterDirsForRightLine(Position{0, CENTER_LINE}), EMPTY);
+}
+
+TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
+{
+    ASSERT_EQ(view.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE}), RTRIGHT);
+}
 
 }

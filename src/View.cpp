@@ -31,35 +31,7 @@ std::set<Direction> View::filterDirsForOutOfBorder(Position nodePos)
     skip.merge(filterDirsForTopBorderLine(nodePos));
     skip.merge(filterDirsForBottomBorderLine(nodePos));
     skip.merge(filterDirsForTopGoalLine(nodePos));
-
-
-//    else if (y == firstLine + 1)
-//    {
-//        if (x >= m_board.getGoalpostLeft() and x <= m_board.getGoalpostRight())
-//        {
-
-//        }
-//        else
-//        {
-
-//        }
-//    }
-//    else if (y == firstLine - 1)
-//    {
-//        if (x >= m_board.getGoalpostLeft() and x <= m_board.getGoalpostRight())
-//        {
-
-//        }
-//        else
-//        {
-
-//        }
-//    }
-//    else
-//    {
-//        Position nodePos{x, y};
-//        drawCell(m_board, nodePos, skip);
-//    }
+    skip.merge(filterDirsForRightLine(nodePos));
 
     return skip;
 }
@@ -104,9 +76,9 @@ std::set<Direction> View::filterDirsForBottomBorderLine(Position nodePos)
 
 std::set<Direction> View::filterDirsForTopGoalLine(Position nodePos)
 {
-    const std::size_t goalLine = 1;
+    const std::size_t firstGoalLine = 1;
 
-    if (nodePos.y == goalLine)
+    if (nodePos.y == firstGoalLine)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
@@ -116,6 +88,18 @@ std::set<Direction> View::filterDirsForTopGoalLine(Position nodePos)
         {
             return std::set<Direction>{Direction::Right};
         }
+    }
+
+    return std::set<Direction>{};
+}
+
+std::set<Direction> View::filterDirsForRightLine(Position nodePos)
+{
+    const std::size_t rightLine = m_board.getWidth() - 1;
+
+    if (nodePos.x == rightLine)
+    {
+        return std::set<Direction>{Direction::TopRight, Direction::Right};
     }
 
     return std::set<Direction>{};
@@ -133,7 +117,8 @@ void View::drawCell(Position nodePos, std::set<Direction> skip)
     }
     else if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
     {
-        if (nodePos.x + 1 < m_board.getWidth() and m_board.hasNeighbour(Position{nodePos.x + 1, nodePos.y}, Direction::TopLeft))
+        Position neighbourPos{nodePos.x + 1, nodePos.y};
+        if (nodePos.x + 1 < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
         {
             drawCrossToRight(nodePos);
         }

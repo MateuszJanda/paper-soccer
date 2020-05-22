@@ -21,6 +21,7 @@ public:
     std::set<Direction> filterDirsForTopBorderLine(Position nodePos);
     std::set<Direction> filterDirsForBottomBorderLine(Position nodePos);
     std::set<Direction> filterDirsForTopGoalLine(Position nodePos);
+    std::set<Direction> filterDirsForRightLine(Position nodePos);
 
 private:
     void drawVerticalToTopLine(Position nodePos);

@@ -12,5 +12,4 @@ int main(int argc, char** argv)
     Node n;
 
     NCurses nn;
-    cout << "Hello world!!" << endl;
 }
