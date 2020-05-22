@@ -7,13 +7,13 @@ namespace PaperSoccer {
 namespace {
     constexpr std::size_t X_OFFSET { 1 };
     constexpr std::size_t Y_OFFSET { 1 + 2 };
-    constexpr std::size_t GATE_WIDTH { 2 };
+    constexpr std::size_t GOAL_WIDTH { 2 };
 }
 
 Board::Board(std::size_t width, std::size_t height)
     : m_ballPos { static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2) }
-    , m_goalpostLeft { ((width + X_OFFSET) / 2) - (GATE_WIDTH / 2) }
-    , m_goalpostRight { ((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) }
+    , m_goalpostLeft { ((width + X_OFFSET) / 2) - (GOAL_WIDTH / 2) }
+    , m_goalpostRight { ((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2) }
 {
     if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
         throw std::range_error("Can't build border with this dimensions.");
@@ -302,7 +302,7 @@ bool Board::isDeadEnd() const
 
 bool Board::isPositionInGraph(Position pos) const
 {
-    return pos.y >= 0 and pos.y < m_graph.size() and pos.x >= 0 and pos.x < m_graph[0].size();
+    return pos.y >= 0 and pos.y < getHeight() and pos.x >= 0 and pos.x < getWidth();
 }
 
 } // namespace PaperSoccer
