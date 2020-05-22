@@ -108,7 +108,6 @@ std::set<Direction> View::filterDirsForBottomBorderLine(Position nodePos)
     return std::set<Direction>{};
 }
 
-
 void View::drawCell(Position nodePos, std::set<Direction> skip)
 {
     if (not skip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
