@@ -20,6 +20,7 @@ public:
     std::set<Direction> filterDirsForOutOfBorder(Position nodePos);
     std::set<Direction> filterDirsForTopBorderLine(Position nodePos);
     std::set<Direction> filterDirsForBottomBorderLine(Position nodePos);
+    std::set<Direction> filterDirsForTopGoalLine(Position nodePos);
 
 private:
     void drawVerticalToTopLine(Position nodePos);
