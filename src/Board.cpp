@@ -13,7 +13,7 @@ namespace {
 Board::Board(std::size_t width, std::size_t height)
     : m_ballPos { static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2) }
     , m_goalpostLeft { ((width + X_OFFSET) / 2) - (GATE_WIDTH / 2) }
-    , m_goalpostRight { ((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) + 1 }
+    , m_goalpostRight { ((width + X_OFFSET) / 2) + (GATE_WIDTH / 2) }
 {
     if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
         throw std::range_error("Can't build border with this dimensions.");
@@ -174,6 +174,15 @@ std::size_t Board::getHeight() const
 {
     return m_graph.size();
 }
+std::size_t Board::getGoalpostLeft() const
+{
+    return m_goalpostLeft;
+}
+
+std::size_t Board::getGoalpostRight() const
+{
+    return m_goalpostRight;
+}
 
 void Board::setBallPosition(Position pos)
 {
@@ -186,6 +195,16 @@ void Board::setBallPosition(Position pos)
 Position Board::getBallPosition() const
 {
     return m_ballPos;
+}
+
+bool Board::hasNeighbour(Position pos, Direction dir) const
+{
+    if (not isPositionInGraph(pos)) {
+        return false;
+    }
+
+    const auto& node = m_graph[pos.y][pos.x];
+    return node.hasNeighbour(dir);
 }
 
 MoveStatus Board::moveBall(Direction dir)

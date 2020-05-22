@@ -7,6 +7,10 @@ using namespace PaperSoccer;
 namespace {
 constexpr std::size_t HEIGHT { 10 };
 constexpr std::size_t WIDTH { 8 };
+constexpr std::size_t GRAPH_HEIGHT { 10+2+1 };
+constexpr std::size_t GRPAH_WIDTH { 8+1 };
+constexpr std::size_t GOALPOST_LEFT{ 3 };
+constexpr std::size_t GOALPOST_RIGHT{ 5 };
 constexpr Position CENTER { 4, 6 };
 }
 
@@ -15,10 +19,24 @@ public:
     Board board { WIDTH, HEIGHT };
 };
 
-TEST_F(BoardTest, checkSize)
+TEST_F(BoardTest, checkWidth)
 {
-    ASSERT_EQ(board.getWidth(), WIDTH);
-    ASSERT_EQ(board.getHeight(), HEIGHT);
+    ASSERT_EQ(board.getWidth(), GRPAH_WIDTH);
+}
+
+TEST_F(BoardTest, checkHeight)
+{
+    ASSERT_EQ(board.getHeight(), GRAPH_HEIGHT);
+}
+
+TEST_F(BoardTest, checkGoalpostLeft)
+{
+    ASSERT_EQ(board.getGoalpostLeft(), GOALPOST_LEFT);
+}
+
+TEST_F(BoardTest, checkGoalpostRight)
+{
+    ASSERT_EQ(board.getGoalpostRight(), GOALPOST_RIGHT);
 }
 
 TEST_F(BoardTest, checkBallPosition)
@@ -26,12 +44,27 @@ TEST_F(BoardTest, checkBallPosition)
     ASSERT_EQ(board.getBallPosition(), CENTER);
 }
 
-TEST_F(BoardTest, setBallPositionOutOfRange)
+TEST_F(BoardTest, checkHasNeighbourOutOfRange)
+{
+    ASSERT_FALSE(board.hasNeighbour(Position{-1, 0}, Direction::Top));
+}
+
+TEST_F(BoardTest, checkHasNeighbourWhenThereIsNo)
+{
+    ASSERT_FALSE(board.hasNeighbour(CENTER, Direction::Top));
+}
+
+TEST_F(BoardTest, checkHasNeighbourWhenThereIsOne)
+{
+    ASSERT_TRUE(board.hasNeighbour(Position{3, 1}, Direction::Top));
+}
+
+TEST_F(BoardTest, checkSettingBallPositionOutOfRange)
 {
     ASSERT_THROW(board.setBallPosition(Position { -1, -1 }), std::out_of_range);
 }
 
-TEST_F(BoardTest, moveBallAndStop)
+TEST_F(BoardTest, checkMoveBallAndStop)
 {
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Stop);
 
@@ -39,7 +72,7 @@ TEST_F(BoardTest, moveBallAndStop)
     ASSERT_EQ(board.getBallPosition(), p);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalWhenTurnBack)
+TEST_F(BoardTest, checkMoveBallAndIllegalWhenTurnBack)
 {
     board.moveBall(Direction::Top);
     ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
@@ -48,7 +81,7 @@ TEST_F(BoardTest, moveBallAndIllegalWhenTurnBack)
     ASSERT_EQ(board.getBallPosition(), p);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalWhenCorner)
+TEST_F(BoardTest, checkMoveBallAndIllegalWhenCorner)
 {
     board.setBallPosition(Position { 1, 2 });
     ASSERT_EQ(board.moveBall(Direction::TopLeft), MoveStatus::Illegal);
@@ -63,7 +96,7 @@ TEST_F(BoardTest, moveBallAndIllegalWhenCorner)
     ASSERT_EQ(board.moveBall(Direction::BottomRight), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalOutOfBorder)
+TEST_F(BoardTest, checkMoveBallAndIllegalOutOfBorder)
 {
     board.setBallPosition(Position { 0, 6 });
     ASSERT_EQ(board.moveBall(Direction::Left), MoveStatus::Illegal);
@@ -72,7 +105,7 @@ TEST_F(BoardTest, moveBallAndIllegalOutOfBorder)
     ASSERT_EQ(board.moveBall(Direction::Right), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalAlongBorder)
+TEST_F(BoardTest, checkMoveBallAndIllegalAlongBorder)
 {
     board.setBallPosition(Position { 0, 6 });
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Illegal);
@@ -87,25 +120,25 @@ TEST_F(BoardTest, moveBallAndIllegalAlongBorder)
     ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallAndIllegalAlongGoalNet)
+TEST_F(BoardTest, checkMoveBallAndIllegalAlongGoalNet)
 {
     board.setBallPosition(Position { 3, 11 });
     ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::Illegal);
 }
 
-TEST_F(BoardTest, moveBallAndTopGoal)
+TEST_F(BoardTest, checkMoveBallAndTopGoal)
 {
     board.setBallPosition(Position { 4, 1 });
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::TopGoal);
 }
 
-TEST_F(BoardTest, moveBallAndBottomGoal)
+TEST_F(BoardTest, checkMoveBallAndBottomGoal)
 {
     board.setBallPosition(Position { 4, 11 });
     ASSERT_EQ(board.moveBall(Direction::Bottom), MoveStatus::BottomGoal);
 }
 
-TEST_F(BoardTest, moveBallAndDeadEnd)
+TEST_F(BoardTest, checkMoveBallAndDeadEnd)
 {
     board.setBallPosition(Position { 1, 2 });
     ASSERT_EQ(board.moveBall(Direction::Left), MoveStatus::Continue);
@@ -125,7 +158,7 @@ TEST_F(BoardTest, moveBallAndDeadEnd)
     ASSERT_EQ(board.moveBall(Direction::TopLeft), MoveStatus::DeadEnd);
 }
 
-TEST_F(BoardTest, moveBallAndContinue)
+TEST_F(BoardTest, checkMoveBallAndContinue)
 {
     board.moveBall(Direction::Top);
     board.moveBall(Direction::Left);
@@ -134,7 +167,7 @@ TEST_F(BoardTest, moveBallAndContinue)
     ASSERT_EQ(board.getBallPosition(), CENTER);
 }
 
-TEST_F(BoardTest, moveBallAndBounceOffTheGoalpost)
+TEST_F(BoardTest, checkMoveBallAndBounceOffTheGoalpost)
 {
     board.setBallPosition(Position { 3, 2 });
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);

@@ -20,8 +20,11 @@ public:
     Board(std::size_t width, std::size_t height);
     std::size_t getWidth() const;
     std::size_t getHeight() const;
+    std::size_t getGoalpostLeft() const;
+    std::size_t getGoalpostRight() const;
     void setBallPosition(Position pos);
     Position getBallPosition() const;
+    bool hasNeighbour(Position pos, Direction dir) const;
     MoveStatus moveBall(Direction dir);
 
 private:
