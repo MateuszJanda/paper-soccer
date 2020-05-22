@@ -1,5 +1,6 @@
 #include "Board.hpp"
 #include "Node.hpp"
+#include "View.hpp"
 #include "NCurses.hpp"
 #include <iostream>
 
@@ -9,7 +10,9 @@ int main(int argc, char** argv)
 {
     using namespace PaperSoccer;
     Board b { 8, 10 };
-    Node n;
 
     NCurses nn;
+    View v{b, nn};
+    v.drawBoard();
+    nn.wait();
 }

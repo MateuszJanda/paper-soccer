@@ -13,7 +13,7 @@ class Board;
 class View
 {
 public:
-    View(IBoard &board);
+    View(IBoard &board, INCurses& ncurses);
     void drawBoard();
     void drawCell(PaperSoccer::Position nodePos, std::set<PaperSoccer::Direction> skip);
 
@@ -31,6 +31,7 @@ private:
     void drawMarker(Position nodePos);
 
     IBoard& m_board;
+    INCurses& m_ncurses;
 };
 
 }

@@ -6,7 +6,13 @@
 
 namespace PaperSoccer {
 
-View::View(IBoard& board) : m_board{board}
+namespace {
+constexpr int X_OFFSET{2};
+constexpr int Y_OFFSET{2};
+
+}
+
+View::View(IBoard& board, INCurses &ncurses) : m_board{board}, m_ncurses{ncurses}
 {
 
 }
@@ -133,26 +139,27 @@ void View::drawCell(Position nodePos, std::set<Direction> skip)
 
 void View::drawVerticalToTopLine(Position nodePos)
 {
-
+    m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y + 1 + Y_OFFSET, "|");
 }
 
 void View::drawHorizontalToRightLine(Position nodePos)
 {
-
+    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y + Y_OFFSET, "--");
 }
 
 void View::drawCrossToRight(Position nodePos)
 {
-
+    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y + 1 + Y_OFFSET, "><");
 }
 
 void View::drawHypotenuseToTopRight(Position nodePos)
 {
-
+    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y + 1 + Y_OFFSET, "/");
 }
 
 void View::drawMarker(Position nodePos)
 {
-
+    m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y + Y_OFFSET, "+");
 }
+
 }

@@ -1,5 +1,6 @@
 #include "View.hpp"
 #include "BoardMock.hpp"
+#include "NCursesMock.hpp"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
@@ -27,7 +28,7 @@ using namespace testing;
 
 class ViewTest : public testing::Test {
 public:
-    ViewTest() : view(boardMock)
+    ViewTest() : view(boardMock, ncursesMock)
     {
         EXPECT_CALL(boardMock, getGoalpostLeft()).WillRepeatedly(Return(GOALPOST_LEFT));
         EXPECT_CALL(boardMock, getGoalpostRight()).WillRepeatedly(Return(GOALPOST_RIGHT));
@@ -35,6 +36,7 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(RIGHT_LINE+1));
     }
     StrictMock<BoardMock> boardMock;
+    StrictMock<NCursesMock> ncursesMock;
     View view;
 };
 
