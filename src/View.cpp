@@ -76,7 +76,7 @@ std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
 
     if (nodePos.y == firstLine)
     {
-        if (nodePos.x > m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
+        if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
         {
             return std::set<Direction>{Direction::Top, Direction::TopRight};
         }
