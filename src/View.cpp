@@ -187,11 +187,13 @@ void View::drawCrossToRight(Position nodePos)
 
 void View::drawHypotenuseToTopRight(Position nodePos)
 {
+    // ⸝ᐟ
     m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "/");
 }
 
 void View::drawHypotenuseToTopLeft(Position nodePos)
 {
+    // ヽ৲
     m_ncurses.print(nodePos.x * 3 - 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "\\");
 }
 
