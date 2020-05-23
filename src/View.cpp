@@ -124,19 +124,31 @@ void View::drawCell(Position nodePos, std::set<Direction> skip)
         drawHorizontalToRightLine(nodePos);
     }
 
+    bool topRight = false;
     if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
     {
-        Position neighbourPos{nodePos.x + 1, nodePos.y};
-        if (nodePos.x + 1 < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
-        {
-            drawCrossToRight(nodePos);
-        }
-        else
-        {
-            drawHypotenuseToTopRight(nodePos);
-        }
+        topRight = true;
     }
 
+    bool topLeft = false;
+    Position neighbourPos{nodePos.x + 1, nodePos.y};
+    if (neighbourPos.x < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
+    {
+        topLeft = true;
+    }
+
+    if (topRight and topLeft)
+    {
+        drawCrossToRight(nodePos);
+    }
+    else if (topRight)
+    {
+        drawHypotenuseToTopRight(nodePos);
+    }
+    else if (topLeft)
+    {
+        drawHypotenuseToTopLeft(neighbourPos);
+    }
     drawMarker(nodePos);
 }
 
@@ -158,6 +170,11 @@ void View::drawCrossToRight(Position nodePos)
 void View::drawHypotenuseToTopRight(Position nodePos)
 {
     m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "/");
+}
+
+void View::drawHypotenuseToTopLeft(Position nodePos)
+{
+    m_ncurses.print(nodePos.x * 3 - 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "\\");
 }
 
 void View::drawMarker(Position nodePos)

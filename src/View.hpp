@@ -28,6 +28,7 @@ private:
     void drawHorizontalToRightLine(Position nodePos);
     void drawCrossToRight(Position nodePos);
     void drawHypotenuseToTopRight(Position nodePos);
+    void drawHypotenuseToTopLeft(Position nodePos);
     void drawMarker(Position nodePos);
 
     IBoard& m_board;
