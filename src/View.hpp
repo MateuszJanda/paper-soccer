@@ -4,24 +4,26 @@
 #include "INCurses.hpp"
 #include "IBoard.hpp"
 #include <set>
-
+#include <tuple>
 
 namespace PaperSoccer {
 
-class Board;
+using Skip = std::set<Direction>;
+using Skips = std::tuple<Skip, Skip>;
 
 class View
 {
+
 public:
     View(IBoard &board, INCurses& ncurses);
     void drawBoard();
-    void drawCell(PaperSoccer::Position nodePos, std::set<PaperSoccer::Direction> skip);
+    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip);
 
-    std::set<Direction> filterDirsForOutOfBorder(Position nodePos);
-    std::set<Direction> filterDirsForTopNetLine(Position nodePos);
-    std::set<Direction> filterDirsForBottomNetLine(Position nodePos);
-    std::set<Direction> filterDirsForTopBorderLine(Position nodePos);
-    std::set<Direction> filterDirsForRightLine(Position nodePos);
+    Skips filterDirsForOutOfBorder(Position nodePos);
+    Skips filterDirsForTopNetLine(Position nodePos);
+    Skips filterDirsForBottomNetLine(Position nodePos);
+    Skips filterDirsForTopBorderLine(Position nodePos);
+    Skips filterDirsForRightLine(Position nodePos);
 
 private:
     void drawVerticalToTopLine(Position nodePos);

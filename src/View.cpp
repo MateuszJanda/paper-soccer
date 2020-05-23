@@ -25,25 +25,40 @@ void View::drawBoard()
         for(std::size_t x = 0; x < m_board.getWidth(); x++)
         {
             Position nodePos{x, y};
-            std::set<Direction> skip = filterDirsForOutOfBorder(nodePos);
-            drawCell(nodePos, skip);
+            auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
+            drawCell(nodePos, nodeSkip, neighSkip);
         }
     }
 }
 
-std::set<Direction> View::filterDirsForOutOfBorder(Position nodePos)
+Skips View::filterDirsForOutOfBorder(Position nodePos)
 {
-    std::set<Direction> skip;
+    Skip allNodeSkip;
+    Skip allNeighSkip;
 
-    skip.merge(filterDirsForTopNetLine(nodePos));
-    skip.merge(filterDirsForTopBorderLine(nodePos));
-    skip.merge(filterDirsForBottomNetLine(nodePos));
-    skip.merge(filterDirsForRightLine(nodePos));
+    Skip nodeSkip;
+    Skip neighSkip;
 
-    return skip;
+    std::tie(nodeSkip, neighSkip) = filterDirsForTopNetLine(nodePos);
+    allNodeSkip.merge(nodeSkip);
+    allNeighSkip.merge(neighSkip);
+
+    std::tie(nodeSkip, neighSkip) = filterDirsForTopBorderLine(nodePos);
+    allNodeSkip.merge(nodeSkip);
+    allNeighSkip.merge(neighSkip);
+
+    std::tie(nodeSkip, neighSkip) = filterDirsForBottomNetLine(nodePos);
+    allNodeSkip.merge(nodeSkip);
+    allNeighSkip.merge(neighSkip);
+
+    std::tie(nodeSkip, neighSkip) = filterDirsForRightLine(nodePos);
+    allNodeSkip.merge(nodeSkip);
+    allNeighSkip.merge(neighSkip);
+
+    return Skips{allNodeSkip, allNeighSkip};
 }
 
-std::set<Direction> View::filterDirsForTopNetLine(Position nodePos)
+Skips View::filterDirsForTopNetLine(Position nodePos)
 {
     const std::size_t topNetLine = 0;
 
@@ -51,18 +66,20 @@ std::set<Direction> View::filterDirsForTopNetLine(Position nodePos)
     {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight};
+            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight},
+                                   std::set<Direction>{Direction::TopLeft});
         }
         else
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right};
+            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right},
+                                   std::set<Direction>{Direction::TopLeft});
         }
     }
 
-    return std::set<Direction>{};
+    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
 }
 
-std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
+Skips View::filterDirsForTopBorderLine(Position nodePos)
 {
     const std::size_t topBorderLine = 1;
 
@@ -70,18 +87,20 @@ std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight};
+            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight},
+                                   std::set<Direction>{Direction::TopLeft});
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::TopRight};
+            return std::make_tuple(std::set<Direction>{Direction::TopRight},
+                                   std::set<Direction>{Direction::TopLeft});
         }
     }
 
-    return std::set<Direction>{};
+    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
 }
 
-std::set<Direction> View::filterDirsForBottomNetLine(Position nodePos)
+Skips View::filterDirsForBottomNetLine(Position nodePos)
 {
     const std::size_t bottomNetLine = m_board.getHeight() - 1;
 
@@ -89,50 +108,53 @@ std::set<Direction> View::filterDirsForBottomNetLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right};
+            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right},
+                                   std::set<Direction>{Direction::TopLeft});
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopLeft, Direction::TopRight, Direction::Right};
+            return std::make_tuple(std::set<Direction>{Direction::TopRight, Direction::Right},
+                                   std::set<Direction>{Direction::TopLeft});
         }
     }
 
-    return std::set<Direction>{};
+    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
 }
 
-std::set<Direction> View::filterDirsForRightLine(Position nodePos)
+Skips View::filterDirsForRightLine(Position nodePos)
 {
     const std::size_t rightLine = m_board.getWidth() - 1;
 
     if (nodePos.x == rightLine)
     {
-        return std::set<Direction>{Direction::TopRight, Direction::Right};
+        return std::make_tuple(std::set<Direction>{Direction::TopRight, Direction::Right},
+                               std::set<Direction>{});
     }
 
-    return std::set<Direction>{};
+    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
 }
 
-void View::drawCell(Position nodePos, std::set<Direction> skip)
+void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
 {
-    if (not skip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
+    if (not nodeSkip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
     {
         drawVerticalToTopLine(nodePos);
     }
 
-    if (not skip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
+    if (not nodeSkip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
     {
         drawHorizontalToRightLine(nodePos);
     }
 
     bool topRight = false;
-    if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
+    if (not nodeSkip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
     {
         topRight = true;
     }
 
     bool topLeft = false;
     const Position neighbourPos{nodePos.x + 1, nodePos.y};
-    if (not skip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
+    if (not neighSkip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
         and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
     {
         topLeft = true;

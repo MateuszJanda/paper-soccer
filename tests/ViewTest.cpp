@@ -12,6 +12,7 @@ const std::set<Direction> EMPTY;
 const std::set<Direction> ALL{Direction::Top, Direction::TopRight, Direction::Right};
 const std::set<Direction> TTRIGHT{Direction::Top, Direction::TopRight};
 const std::set<Direction> TRIGHT{Direction::TopRight};
+const std::set<Direction> TLEFT{Direction::TopLeft};
 const std::set<Direction> RTRIGHT{Direction::TopRight, Direction::Right};
 const std::set<Direction> RIGHT{Direction::Right};
 
@@ -43,67 +44,93 @@ public:
 
 TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenNotThisLine)
 {
-    ASSERT_EQ(view.filterDirsForTopNetLine(Position{0, TOP_BORDER_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{0, TOP_BORDER_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenCorner)
 {
-    ASSERT_EQ(view.filterDirsForTopNetLine(Position{0, TOP_NET_LINE}), ALL);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{0, TOP_NET_LINE});
+    ASSERT_EQ(nodeSkip, ALL);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenGoalpostLeft)
 {
-    ASSERT_EQ(view.filterDirsForTopNetLine(Position{GOALPOST_LEFT, TOP_NET_LINE}), TTRIGHT);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{GOALPOST_LEFT, TOP_NET_LINE});
+    ASSERT_EQ(nodeSkip, TTRIGHT);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotThisLine)
 {
-    ASSERT_EQ(view.filterDirsForBottomNetLine(Position{0, TOP_BORDER_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{0, TOP_BORDER_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotAGoal)
 {
-    ASSERT_EQ(view.filterDirsForBottomNetLine(Position{0, BOTTOM_NET_LINE}), ALL);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{0, BOTTOM_NET_LINE});
+    ASSERT_EQ(nodeSkip, ALL);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
 {
-    ASSERT_EQ(view.filterDirsForBottomNetLine(Position{GOALPOST_LEFT+1, BOTTOM_NET_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_LEFT+1, BOTTOM_NET_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenGoalpostRight)
 {
-    ASSERT_EQ(view.filterDirsForBottomNetLine(Position{GOALPOST_RIGHT, BOTTOM_NET_LINE}), RTRIGHT);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_RIGHT, BOTTOM_NET_LINE});
+    ASSERT_EQ(nodeSkip, RTRIGHT);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenNotThisLine)
 {
-    ASSERT_EQ(view.filterDirsForTopBorderLine(Position{0, TOP_NET_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{0, TOP_NET_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenCorner)
 {
-    ASSERT_EQ(view.filterDirsForTopBorderLine(Position{0, TOP_BORDER_LINE}), TTRIGHT);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{0, TOP_BORDER_LINE});
+    ASSERT_EQ(nodeSkip, TTRIGHT);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostLeft)
 {
-    ASSERT_EQ(view.filterDirsForTopBorderLine(Position{GOALPOST_LEFT, TOP_BORDER_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{GOALPOST_LEFT, TOP_BORDER_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostRight)
 {
-    ASSERT_EQ(view.filterDirsForTopBorderLine(Position{GOALPOST_RIGHT, TOP_BORDER_LINE}), TRIGHT);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{GOALPOST_RIGHT, TOP_BORDER_LINE});
+    ASSERT_EQ(nodeSkip, TRIGHT);
+    ASSERT_EQ(neighSkip, TLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForRightLineWhenNotThisLine)
 {
-    ASSERT_EQ(view.filterDirsForRightLine(Position{0, CENTER_LINE}), EMPTY);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForRightLine(Position{0, CENTER_LINE});
+    ASSERT_EQ(nodeSkip, EMPTY);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
 {
-    ASSERT_EQ(view.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE}), RTRIGHT);
+    const auto [nodeSkip, neighSkip] = view.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE});
+    ASSERT_EQ(nodeSkip, RTRIGHT);
+    ASSERT_EQ(neighSkip, EMPTY);
 }
 
 }
