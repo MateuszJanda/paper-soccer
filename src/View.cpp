@@ -51,11 +51,11 @@ std::set<Direction> View::filterDirsForTopNetLine(Position nodePos)
     {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::Top, Direction::TopRight};
+            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight};
         }
         else
         {
-            return std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right};
+            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right};
         }
     }
 
@@ -70,11 +70,11 @@ std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::Top, Direction::TopRight};
+            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight};
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopRight};
+            return std::set<Direction>{Direction::TopLeft, Direction::TopRight};
         }
     }
 
@@ -89,11 +89,11 @@ std::set<Direction> View::filterDirsForBottomNetLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right};
+            return std::set<Direction>{Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right};
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::set<Direction>{Direction::TopRight, Direction::Right};
+            return std::set<Direction>{Direction::TopLeft, Direction::TopRight, Direction::Right};
         }
     }
 
@@ -132,7 +132,8 @@ void View::drawCell(Position nodePos, std::set<Direction> skip)
 
     bool topLeft = false;
     const Position neighbourPos{nodePos.x + 1, nodePos.y};
-    if (neighbourPos.x < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
+    if (not skip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
+        and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
     {
         topLeft = true;
     }
