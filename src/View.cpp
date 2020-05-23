@@ -4,6 +4,7 @@
 #include "Position.hpp"
 #include <set>
 
+
 namespace PaperSoccer {
 
 namespace {
@@ -112,16 +113,18 @@ std::set<Direction> View::filterDirsForRightLine(Position nodePos)
 }
 
 void View::drawCell(Position nodePos, std::set<Direction> skip)
-{   
+{
     if (not skip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
     {
         drawVerticalToTopLine(nodePos);
     }
-    else if (not skip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
+
+    if (not skip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
     {
         drawHorizontalToRightLine(nodePos);
     }
-    else if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
+
+    if (not skip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
     {
         Position neighbourPos{nodePos.x + 1, nodePos.y};
         if (nodePos.x + 1 < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
