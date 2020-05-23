@@ -72,6 +72,12 @@ TEST_F(BoardTest, checkMoveBallAndStop)
     ASSERT_EQ(board.getBallPosition(), p);
 }
 
+TEST_F(BoardTest, checkMoveBallFromGaolAndStop)
+{
+    board.setBallPosition(Position { 5, 12 });
+    ASSERT_EQ(board.moveBall(Direction::TopLeft), MoveStatus::Stop);
+}
+
 TEST_F(BoardTest, checkMoveBallAndIllegalWhenTurnBack)
 {
     board.moveBall(Direction::Top);
@@ -133,6 +139,9 @@ TEST_F(BoardTest, checkMoveBallAndTopGoal)
 {
     board.setBallPosition(Position { 4, 1 });
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::TopGoal);
+
+    board.setBallPosition(Position { 5, 1 });
+    ASSERT_EQ(board.moveBall(Direction::TopLeft), MoveStatus::TopGoal);
 }
 
 TEST_F(BoardTest, checkMoveBallAndBottomGoal)

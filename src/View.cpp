@@ -131,7 +131,7 @@ void View::drawCell(Position nodePos, std::set<Direction> skip)
     }
 
     bool topLeft = false;
-    Position neighbourPos{nodePos.x + 1, nodePos.y};
+    const Position neighbourPos{nodePos.x + 1, nodePos.y};
     if (neighbourPos.x < m_board.getWidth() and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
     {
         topLeft = true;

@@ -60,20 +60,20 @@ void Board::setTopBorders()
         borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right });
 
-        auto& goalNode = netLine[i];
-        goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        auto& netNode = netLine[i];
+        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
 
     // Right borders
-    for (std::size_t i = m_goalpostRight; i < netLine.size(); i++) {
+    for (std::size_t i = m_goalpostRight + 1; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right });
 
-        auto& goalNode = netLine[i];
-        goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        auto& netNode = netLine[i];
+        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
@@ -93,7 +93,7 @@ void Board::setTopGaol()
         Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right });
 
     auto& node3 = borderLine[m_goalpostRight];
-    node3.addNeighbours({ Direction::Top, Direction::TopLeft, Direction::Right });
+    node3.addNeighbours({ Direction::Top, Direction::TopRight, Direction::Right });
 
     auto& node4 = netLine[m_goalpostRight];
     node4.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
@@ -118,20 +118,20 @@ void Board::setBottomBorders()
         borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft, Direction::Left });
 
-        auto& goalNode = netLine[i];
-        goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        auto& netNode = netLine[i];
+        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
 
     // Right borders
-    for (std::size_t i = m_goalpostRight; i < netLine.size(); i++) {
+    for (std::size_t i = m_goalpostRight + 1; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft, Direction::Left });
 
-        auto& goalNode = netLine[i];
-        goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        auto& netNode = netLine[i];
+        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
