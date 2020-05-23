@@ -66,17 +66,16 @@ Skips View::filterDirsForTopNetLine(Position nodePos)
     {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
         {
-            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
         }
         else
         {
-            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
+                         Skip{Direction::TopLeft}};
         }
     }
 
-    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
+    return Skips{};
 }
 
 Skips View::filterDirsForTopBorderLine(Position nodePos)
@@ -87,17 +86,15 @@ Skips View::filterDirsForTopBorderLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::make_tuple(std::set<Direction>{Direction::TopRight},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::TopRight}, Skip{Direction::TopLeft}};
         }
     }
 
-    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
+    return Skips{};
 }
 
 Skips View::filterDirsForBottomNetLine(Position nodePos)
@@ -108,17 +105,16 @@ Skips View::filterDirsForBottomNetLine(Position nodePos)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
-            return std::make_tuple(std::set<Direction>{Direction::Top, Direction::TopRight, Direction::Right},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
+                         Skip{Direction::TopLeft}};
         }
         else if (nodePos.x == m_board.getGoalpostRight())
         {
-            return std::make_tuple(std::set<Direction>{Direction::TopRight, Direction::Right},
-                                   std::set<Direction>{Direction::TopLeft});
+            return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{Direction::TopLeft}};
         }
     }
 
-    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
+    return Skips{};
 }
 
 Skips View::filterDirsForRightLine(Position nodePos)
@@ -127,11 +123,10 @@ Skips View::filterDirsForRightLine(Position nodePos)
 
     if (nodePos.x == rightLine)
     {
-        return std::make_tuple(std::set<Direction>{Direction::TopRight, Direction::Right},
-                               std::set<Direction>{});
+        return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{}};
     }
 
-    return std::make_tuple(std::set<Direction>{}, std::set<Direction>{});
+    return Skips{};
 }
 
 void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
