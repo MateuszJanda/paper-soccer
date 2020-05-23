@@ -34,19 +34,19 @@ std::set<Direction> View::filterDirsForOutOfBorder(Position nodePos)
 {
     std::set<Direction> skip;
 
+    skip.merge(filterDirsForTopNetLine(nodePos));
     skip.merge(filterDirsForTopBorderLine(nodePos));
-    skip.merge(filterDirsForBottomBorderLine(nodePos));
-    skip.merge(filterDirsForTopGoalLine(nodePos));
+    skip.merge(filterDirsForBottomNetLine(nodePos));
     skip.merge(filterDirsForRightLine(nodePos));
 
     return skip;
 }
 
-std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
+std::set<Direction> View::filterDirsForTopNetLine(Position nodePos)
 {
-    const std::size_t firstLine = 0;
+    const std::size_t topNetLine = 0;
 
-    if (nodePos.y == firstLine)
+    if (nodePos.y == topNetLine)
     {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
         {
@@ -61,11 +61,30 @@ std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
     return std::set<Direction>{};
 }
 
-std::set<Direction> View::filterDirsForBottomBorderLine(Position nodePos)
+std::set<Direction> View::filterDirsForTopBorderLine(Position nodePos)
 {
-    const std::size_t lastLine = m_board.getHeight() - 1;
+    const std::size_t topBorderLine = 1;
 
-    if (nodePos.y == lastLine)
+    if (nodePos.y == topBorderLine)
+    {
+        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
+        {
+            return std::set<Direction>{Direction::Top, Direction::TopRight};
+        }
+        else if (nodePos.x == m_board.getGoalpostRight())
+        {
+            return std::set<Direction>{Direction::TopRight};
+        }
+    }
+
+    return std::set<Direction>{};
+}
+
+std::set<Direction> View::filterDirsForBottomNetLine(Position nodePos)
+{
+    const std::size_t bottomNetLine = m_board.getHeight() - 1;
+
+    if (nodePos.y == bottomNetLine)
     {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
         {
@@ -74,25 +93,6 @@ std::set<Direction> View::filterDirsForBottomBorderLine(Position nodePos)
         else if (nodePos.x == m_board.getGoalpostRight())
         {
             return std::set<Direction>{Direction::TopRight, Direction::Right};
-        }
-    }
-
-    return std::set<Direction>{};
-}
-
-std::set<Direction> View::filterDirsForTopGoalLine(Position nodePos)
-{
-    const std::size_t firstGoalLine = 1;
-
-    if (nodePos.y == firstGoalLine)
-    {
-        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
-        {
-            return std::set<Direction>{Direction::Top, Direction::TopRight};
-        }
-        else if (nodePos.x == m_board.getGoalpostRight())
-        {
-            return std::set<Direction>{Direction::Right};
         }
     }
 
@@ -112,7 +112,7 @@ std::set<Direction> View::filterDirsForRightLine(Position nodePos)
 }
 
 void View::drawCell(Position nodePos, std::set<Direction> skip)
-{
+{   
     if (not skip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
     {
         drawVerticalToTopLine(nodePos);

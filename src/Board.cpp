@@ -52,7 +52,7 @@ void Board::setHorizontalBorders()
 void Board::setTopBorders()
 {
     // Left borders
-    auto& goalLine = m_graph[0];
+    auto& netLine = m_graph[0];
     auto& borderLine = m_graph[1];
 
     for (std::size_t i = 0; i < m_goalpostLeft; i++) {
@@ -60,19 +60,19 @@ void Board::setTopBorders()
         borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right });
 
-        auto& goalNode = goalLine[i];
+        auto& goalNode = netLine[i];
         goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
 
     // Right borders
-    for (std::size_t i = m_goalpostRight; i < goalLine.size(); i++) {
+    for (std::size_t i = m_goalpostRight; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right });
 
-        auto& goalNode = goalLine[i];
+        auto& goalNode = netLine[i];
         goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
@@ -81,27 +81,27 @@ void Board::setTopBorders()
 
 void Board::setTopGaol()
 {
-    auto& goalLine = m_graph[0];
+    auto& netLine = m_graph[0];
     auto& borderLine = m_graph[1];
 
     // Goal corners
     auto& node1 = borderLine[m_goalpostLeft];
     node1.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top });
 
-    auto& node2 = goalLine[m_goalpostLeft];
+    auto& node2 = netLine[m_goalpostLeft];
     node2.addNeighbours({ Direction::Bottom, Direction::BottomLeft, Direction::Left,
         Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right });
 
     auto& node3 = borderLine[m_goalpostRight];
     node3.addNeighbours({ Direction::Top, Direction::TopLeft, Direction::Right });
 
-    auto& node4 = goalLine[m_goalpostRight];
+    auto& node4 = netLine[m_goalpostRight];
     node4.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
         Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom });
 
     // Goal net
-    for (int i = m_goalpostLeft; i <= m_goalpostRight; i++) {
-        auto& node = goalLine[i];
+    for (int i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
+        auto& node = netLine[i];
         node.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right });
     }
@@ -110,7 +110,7 @@ void Board::setTopGaol()
 void Board::setBottomBorders()
 {
     // Left borders
-    auto& goalLine = m_graph[m_graph.size() - 1];
+    auto& netLine = m_graph[m_graph.size() - 1];
     auto& borderLine = m_graph[m_graph.size() - 2];
 
     for (std::size_t i = 0; i < m_goalpostLeft; i++) {
@@ -118,19 +118,19 @@ void Board::setBottomBorders()
         borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft, Direction::Left });
 
-        auto& goalNode = goalLine[i];
+        auto& goalNode = netLine[i];
         goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
     }
 
     // Right borders
-    for (std::size_t i = m_goalpostRight; i < goalLine.size(); i++) {
+    for (std::size_t i = m_goalpostRight; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
         borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft, Direction::Left });
 
-        auto& goalNode = goalLine[i];
+        auto& goalNode = netLine[i];
         goalNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft });
@@ -139,27 +139,27 @@ void Board::setBottomBorders()
 
 void Board::setBottomGaol()
 {
-    auto& goalLine = m_graph[m_graph.size() - 1];
+    auto& netLine = m_graph[m_graph.size() - 1];
     auto& borderLine = m_graph[m_graph.size() - 2];
 
     // Goal corners
     auto& node1 = borderLine[m_goalpostLeft];
     node1.addNeighbours({ Direction::Bottom, Direction::BottomLeft, Direction::Left });
 
-    auto& node2 = goalLine[m_goalpostLeft];
+    auto& node2 = netLine[m_goalpostLeft];
     node2.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
         Direction::BottomLeft, Direction::Left, Direction::TopLeft, Direction::Top });
 
     auto& node3 = borderLine[m_goalpostRight];
     node3.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom });
 
-    auto& node4 = goalLine[m_goalpostRight];
+    auto& node4 = netLine[m_goalpostRight];
     node4.addNeighbours({ Direction::Top, Direction::TopRight, Direction::BottomRight,
         Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left });
 
     // Goal net
-    for (std::size_t i = m_goalpostLeft; i <= m_goalpostRight; i++) {
-        auto& node = goalLine[i];
+    for (std::size_t i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
+        auto& node = netLine[i];
         node.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
             Direction::BottomLeft, Direction::Left });
     }
@@ -260,11 +260,11 @@ void Board::updateBallAndGraph(Direction dir)
     setBallPosition(newPos);
 }
 
-bool Board::canReachGoal(Direction dir, int goalLine) const
+bool Board::canReachGoal(Direction dir, int netLine) const
 {
     const auto newPos = directionToPosition(m_ballPos, dir);
     for (std::size_t x = m_goalpostLeft; x <= m_goalpostRight; x++) {
-        if (newPos.y == goalLine and newPos.x == x) {
+        if (newPos.y == netLine and newPos.x == x) {
             return true;
         }
     }

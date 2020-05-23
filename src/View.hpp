@@ -18,9 +18,9 @@ public:
     void drawCell(PaperSoccer::Position nodePos, std::set<PaperSoccer::Direction> skip);
 
     std::set<Direction> filterDirsForOutOfBorder(Position nodePos);
+    std::set<Direction> filterDirsForTopNetLine(Position nodePos);
+    std::set<Direction> filterDirsForBottomNetLine(Position nodePos);
     std::set<Direction> filterDirsForTopBorderLine(Position nodePos);
-    std::set<Direction> filterDirsForBottomBorderLine(Position nodePos);
-    std::set<Direction> filterDirsForTopGoalLine(Position nodePos);
     std::set<Direction> filterDirsForRightLine(Position nodePos);
 
 private:
