@@ -10,7 +10,7 @@ class NodeTest : public testing::Test {
 public:
     Node node;
 
-    std::array<Direction, 8> allDirs {
+    std::array<Direction, 8> allDirs{
         Direction::Top,
         Direction::TopLeft,
         Direction::Right,
@@ -18,8 +18,7 @@ public:
         Direction::Bottom,
         Direction::BottomLeft,
         Direction::Left,
-        Direction::TopRight
-    };
+        Direction::TopRight};
 };
 
 TEST_F(NodeTest, checkAddNeighbour)
@@ -36,7 +35,7 @@ TEST_F(NodeTest, checkAddTwoNeighbours)
     ASSERT_FALSE(node.hasNeighbour(Direction::Top));
     ASSERT_FALSE(node.hasNeighbour(Direction::Left));
 
-    node.addNeighbours({ Direction::Top, Direction::Left });
+    node.addNeighbours({Direction::Top, Direction::Left});
 
     ASSERT_TRUE(node.hasNeighbour(Direction::Top));
     ASSERT_TRUE(node.hasNeighbour(Direction::Left));
@@ -98,7 +97,7 @@ TEST_F(NodeTest, whenTwoNeighbourAdded_thenReturnDegreeTwo)
 
 TEST_F(NodeTest, checkCanEnter)
 {
-    std::array<Direction, 6> dirs {
+    std::array<Direction, 6> dirs{
         Direction::Top,
         Direction::TopRight,
         Direction::Right,
@@ -128,7 +127,7 @@ TEST_F(NodeTest, checkIsLonely)
 
 TEST_F(NodeTest, checkNeighboursPositionsIfNoNeighbours)
 {
-    ASSERT_THAT(node.neighboursPositions(Position { 1, 1 }), ElementsAre());
+    ASSERT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre());
 }
 
 TEST_F(NodeTest, checkNeighboursPositions)
@@ -136,7 +135,7 @@ TEST_F(NodeTest, checkNeighboursPositions)
     ASSERT_TRUE(node.addNeighbour(Direction::Top));
     ASSERT_TRUE(node.addNeighbour(Direction::Left));
 
-    ASSERT_THAT(node.neighboursPositions(Position { 1, 1 }), ElementsAre(Position { 1, 0 }, Position { 0, 1 }));
+    ASSERT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre(Position{1, 0}, Position{0, 1}));
 }
 
 }

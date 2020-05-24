@@ -4,40 +4,40 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
-namespace PaperSoccer
-{
+namespace PaperSoccer {
 
 namespace {
-const Skip EMPTY;
-const Skip ALL{Direction::Top, Direction::TopRight, Direction::Right};
-const Skip TOP_TOPRIGHT{Direction::Top, Direction::TopRight};
-const Skip TOPRIGHT{Direction::TopRight};
-const Skip TOPLEFT{Direction::TopLeft};
-const Skip TOPRIGHT_RIGHT{Direction::TopRight, Direction::Right};
-const Skip TOP_RIGHT{Direction::Top, Direction::Right};
-const Skip RIGHT{Direction::Right};
+    const Skip EMPTY;
+    const Skip ALL{Direction::Top, Direction::TopRight, Direction::Right};
+    const Skip TOP_TOPRIGHT{Direction::Top, Direction::TopRight};
+    const Skip TOPRIGHT{Direction::TopRight};
+    const Skip TOPLEFT{Direction::TopLeft};
+    const Skip TOPRIGHT_RIGHT{Direction::TopRight, Direction::Right};
+    const Skip TOP_RIGHT{Direction::Top, Direction::Right};
+    const Skip RIGHT{Direction::Right};
 
-constexpr std::size_t WIDTH{9};
-constexpr std::size_t HEIGHT{13};
+    constexpr std::size_t WIDTH{9};
+    constexpr std::size_t HEIGHT{13};
 
-constexpr std::size_t TOP_NET_LINE{0};
-constexpr std::size_t BOTTOM_NET_LINE{HEIGHT-1};
-constexpr std::size_t TOP_BORDER_LINE{TOP_NET_LINE+1};
-constexpr std::size_t BOTTOM_BORDER_LINE{BOTTOM_NET_LINE-1};
-constexpr std::size_t CENTER_LINE{6};
-constexpr std::size_t RIGHT_LINE{WIDTH-1};
-constexpr std::size_t GOALPOST_LEFT{3};
-constexpr std::size_t GOALPOST_RIGHT{5};
+    constexpr std::size_t TOP_NET_LINE{0};
+    constexpr std::size_t BOTTOM_NET_LINE{HEIGHT - 1};
+    constexpr std::size_t TOP_BORDER_LINE{TOP_NET_LINE + 1};
+    constexpr std::size_t BOTTOM_BORDER_LINE{BOTTOM_NET_LINE - 1};
+    constexpr std::size_t CENTER_LINE{6};
+    constexpr std::size_t RIGHT_LINE{WIDTH - 1};
+    constexpr std::size_t GOALPOST_LEFT{3};
+    constexpr std::size_t GOALPOST_RIGHT{5};
 
-const Position NODE_POS{0, 0};
-const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
+    const Position NODE_POS{0, 0};
+    const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
 }
 
 using namespace testing;
 
 class ViewTest : public testing::Test {
 public:
-    ViewTest() : view(boardMock, ncursesMock)
+    ViewTest()
+        : view(boardMock, ncursesMock)
     {
         EXPECT_CALL(boardMock, getGoalpostLeft()).WillRepeatedly(Return(GOALPOST_LEFT));
         EXPECT_CALL(boardMock, getGoalpostRight()).WillRepeatedly(Return(GOALPOST_RIGHT));
@@ -86,7 +86,7 @@ TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotAGoal)
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_LEFT+1, BOTTOM_NET_LINE});
+    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_LEFT + 1, BOTTOM_NET_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
@@ -165,7 +165,7 @@ TEST_F(ViewTest, checkDrawCellTopPath)
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
     int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 -1 + View::Y_OFFSET;
+    int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "|"));
 
     x = NODE_POS.x * 3 + View::X_OFFSET;
@@ -229,7 +229,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
-    Position nodePos{WIDTH-1,0};
+    Position nodePos{WIDTH - 1, 0};
 
     int x = nodePos.x * 3 + View::X_OFFSET;
     int y = nodePos.y * 2 + View::Y_OFFSET;
@@ -253,8 +253,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NEIGHBOUR_POS.x * 3 -1 + View::X_OFFSET;
-    int y = NEIGHBOUR_POS.y * 2 -1 + View::Y_OFFSET;
+    int x = NEIGHBOUR_POS.x * 3 - 1 + View::X_OFFSET;
+    int y = NEIGHBOUR_POS.y * 2 - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "\\"));
 
     x = NODE_POS.x * 3 + View::X_OFFSET;
@@ -279,6 +279,5 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
 }
-
 
 }
