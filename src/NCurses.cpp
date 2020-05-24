@@ -17,9 +17,9 @@ void NCurses::print(int x, int y, std::string str)
     mvprintw(y, x, str.c_str());
 }
 
-void NCurses::wait()
+int NCurses::getChar()
 {
-    getch();
+    return getch();
 }
 
 NCurses::~NCurses()

@@ -1,5 +1,7 @@
 # Create paper-soccer exe
 add_executable(${CMAKE_PROJECT_NAME}
+    Game.cpp
+    Game.hpp
     Board.cpp
     Board.hpp
     Node.cpp

@@ -1,3 +1,4 @@
+#include "Game.hpp"
 #include "Board.hpp"
 #include "NCurses.hpp"
 #include "Node.hpp"
@@ -14,5 +15,7 @@ int main(int argc, char** argv)
     NCurses nn;
     View v{b, nn};
     v.drawBoard();
-    nn.wait();
+
+    Game game{b, nn, v};
+    game.run();
 }

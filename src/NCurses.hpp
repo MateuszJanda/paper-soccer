@@ -8,7 +8,7 @@ class NCurses : public INCurses {
 public:
     NCurses();
     void print(int x, int y, std::string str) override;
-    void wait();
+    int getChar() override;
 
     ~NCurses();
 };

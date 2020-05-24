@@ -8,6 +8,7 @@ namespace PaperSoccer {
 class NCursesMock : public INCurses {
 public:
     MOCK_METHOD3(print, void(int, int, std::string));
+    MOCK_METHOD0(getChar, int());
 };
 
 } // namespace PaperSoccer
