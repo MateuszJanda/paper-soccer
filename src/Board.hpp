@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Node.hpp"
 #include "IBoard.hpp"
+#include "Node.hpp"
 #include <cstddef>
 #include <vector>
 

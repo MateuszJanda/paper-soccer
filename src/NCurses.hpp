@@ -4,7 +4,6 @@
 
 namespace PaperSoccer {
 
-
 class NCurses : public INCurses {
 public:
     NCurses();

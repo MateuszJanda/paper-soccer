@@ -5,15 +5,15 @@
 namespace PaperSoccer {
 
 namespace {
-    constexpr std::size_t X_OFFSET { 1 };
-    constexpr std::size_t Y_OFFSET { 1 + 2 };
-    constexpr std::size_t GOAL_WIDTH { 2 };
+    constexpr std::size_t X_OFFSET{1};
+    constexpr std::size_t Y_OFFSET{1 + 2};
+    constexpr std::size_t GOAL_WIDTH{2};
 }
 
 Board::Board(std::size_t width, std::size_t height)
-    : m_ballPos { static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2) }
-    , m_goalpostLeft { ((width + X_OFFSET) / 2) - (GOAL_WIDTH / 2) }
-    , m_goalpostRight { ((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2) }
+    : m_ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)}
+    , m_goalpostLeft{((width + X_OFFSET) / 2) - (GOAL_WIDTH / 2)}
+    , m_goalpostRight{((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2)}
 {
     if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
         throw std::range_error("Can't build border with this dimensions.");
@@ -21,7 +21,7 @@ Board::Board(std::size_t width, std::size_t height)
 
     // Empty graph
     for (std::size_t i = 0; i < height + Y_OFFSET; i++) {
-        m_graph.push_back(std::vector { width + X_OFFSET, Node {} });
+        m_graph.push_back(std::vector{width + X_OFFSET, Node{}});
     }
 
     setBorders();
@@ -40,12 +40,12 @@ void Board::setHorizontalBorders()
 {
     for (auto& row : m_graph) {
         auto& leftNode = row[0];
-        leftNode.addNeighbours({ Direction::Top, Direction::TopLeft, Direction::Left,
-            Direction::BottomLeft, Direction::Bottom });
+        leftNode.addNeighbours({Direction::Top, Direction::TopLeft, Direction::Left,
+            Direction::BottomLeft, Direction::Bottom});
 
         auto& rightNode = row[row.size() - 1];
-        rightNode.addNeighbours({ Direction::Top, Direction::TopRight, Direction::Right,
-            Direction::BottomRight, Direction::Bottom });
+        rightNode.addNeighbours({Direction::Top, Direction::TopRight, Direction::Right,
+            Direction::BottomRight, Direction::Bottom});
     }
 }
 
@@ -57,25 +57,25 @@ void Board::setTopBorders()
 
     for (std::size_t i = 0; i < m_goalpostLeft; i++) {
         auto& borderNode = borderLine[i];
-        borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
-            Direction::TopRight, Direction::Right });
+        borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
 
         auto& netNode = netLine[i];
-        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        netNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft });
+            Direction::BottomLeft});
     }
 
     // Right borders
     for (std::size_t i = m_goalpostRight + 1; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
-        borderNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
-            Direction::TopRight, Direction::Right });
+        borderNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
 
         auto& netNode = netLine[i];
-        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        netNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft });
+            Direction::BottomLeft});
     }
 }
 
@@ -86,24 +86,24 @@ void Board::setTopGaol()
 
     // Goal corners
     auto& node1 = borderLine[m_goalpostLeft];
-    node1.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top });
+    node1.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top});
 
     auto& node2 = netLine[m_goalpostLeft];
-    node2.addNeighbours({ Direction::Bottom, Direction::BottomLeft, Direction::Left,
-        Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right });
+    node2.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left,
+        Direction::TopLeft, Direction::Top, Direction::TopRight, Direction::Right});
 
     auto& node3 = borderLine[m_goalpostRight];
-    node3.addNeighbours({ Direction::Top, Direction::TopRight, Direction::Right });
+    node3.addNeighbours({Direction::Top, Direction::TopRight, Direction::Right});
 
     auto& node4 = netLine[m_goalpostRight];
-    node4.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
-        Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom });
+    node4.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+        Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom});
 
     // Goal net
     for (int i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
         auto& node = netLine[i];
-        node.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
-            Direction::TopRight, Direction::Right });
+        node.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
+            Direction::TopRight, Direction::Right});
     }
 }
 
@@ -115,25 +115,25 @@ void Board::setBottomBorders()
 
     for (std::size_t i = 0; i < m_goalpostLeft; i++) {
         auto& borderNode = borderLine[i];
-        borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft, Direction::Left });
+        borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
+            Direction::BottomLeft, Direction::Left});
 
         auto& netNode = netLine[i];
-        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        netNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft });
+            Direction::BottomLeft});
     }
 
     // Right borders
     for (std::size_t i = m_goalpostRight + 1; i < netLine.size(); i++) {
         auto& borderNode = borderLine[i];
-        borderNode.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft, Direction::Left });
+        borderNode.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
+            Direction::BottomLeft, Direction::Left});
 
         auto& netNode = netLine[i];
-        netNode.addNeighbours({ Direction::Left, Direction::TopLeft, Direction::Top,
+        netNode.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft });
+            Direction::BottomLeft});
     }
 }
 
@@ -144,24 +144,24 @@ void Board::setBottomGaol()
 
     // Goal corners
     auto& node1 = borderLine[m_goalpostLeft];
-    node1.addNeighbours({ Direction::Bottom, Direction::BottomLeft, Direction::Left });
+    node1.addNeighbours({Direction::Bottom, Direction::BottomLeft, Direction::Left});
 
     auto& node2 = netLine[m_goalpostLeft];
-    node2.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
-        Direction::BottomLeft, Direction::Left, Direction::TopLeft, Direction::Top });
+    node2.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
+        Direction::BottomLeft, Direction::Left, Direction::TopLeft, Direction::Top});
 
     auto& node3 = borderLine[m_goalpostRight];
-    node3.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom });
+    node3.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom});
 
     auto& node4 = netLine[m_goalpostRight];
-    node4.addNeighbours({ Direction::Top, Direction::TopRight, Direction::BottomRight,
-        Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left });
+    node4.addNeighbours({Direction::Top, Direction::TopRight, Direction::BottomRight,
+        Direction::Bottom, Direction::BottomLeft, Direction::Right, Direction::Left});
 
     // Goal net
     for (std::size_t i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
         auto& node = netLine[i];
-        node.addNeighbours({ Direction::Right, Direction::BottomRight, Direction::Bottom,
-            Direction::BottomLeft, Direction::Left });
+        node.addNeighbours({Direction::Right, Direction::BottomRight, Direction::Bottom,
+            Direction::BottomLeft, Direction::Left});
     }
 }
 
@@ -187,7 +187,7 @@ std::size_t Board::getGoalpostRight() const
 void Board::setBallPosition(Position pos)
 {
     if (not isPositionInGraph(pos)) {
-        throw std::out_of_range { "Position out of graph." };
+        throw std::out_of_range{"Position out of graph."};
     }
     m_ballPos = pos;
 }
@@ -274,14 +274,14 @@ bool Board::canReachGoal(Direction dir, int netLine) const
 
 bool Board::isDeadEnd() const
 {
-    const std::array<Direction, 8> allDirs { Direction::Top,
+    const std::array<Direction, 8> allDirs{Direction::Top,
         Direction::TopLeft,
         Direction::Right,
         Direction::BottomRight,
         Direction::Bottom,
         Direction::BottomLeft,
         Direction::Left,
-        Direction::TopRight };
+        Direction::TopRight};
 
     for (const auto dir : allDirs) {
         const auto newPos = directionToPosition(m_ballPos, dir);

@@ -4,20 +4,18 @@
 #include "Position.hpp"
 #include <set>
 
-
 namespace PaperSoccer {
 
-View::View(IBoard& board, INCurses &ncurses) : m_board{board}, m_ncurses{ncurses}
+View::View(IBoard& board, INCurses& ncurses)
+    : m_board{board}
+    , m_ncurses{ncurses}
 {
-
 }
 
 void View::drawBoard()
 {
-    for(std::size_t y = 0; y < m_board.getHeight(); y++)
-    {
-        for(std::size_t x = 0; x < m_board.getWidth(); x++)
-        {
+    for (std::size_t y = 0; y < m_board.getHeight(); y++) {
+        for (std::size_t x = 0; x < m_board.getWidth(); x++) {
             Position nodePos{x, y};
             auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
             drawCell(nodePos, nodeSkip, neighSkip);
@@ -56,16 +54,12 @@ Skips View::filterDirsForTopNetLine(Position nodePos)
 {
     const std::size_t topNetLine = 0;
 
-    if (nodePos.y == topNetLine)
-    {
-        if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight())
-        {
+    if (nodePos.y == topNetLine) {
+        if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
-        }
-        else
-        {
+        } else {
             return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
-                         Skip{Direction::TopLeft}};
+                Skip{Direction::TopLeft}};
         }
     }
 
@@ -76,14 +70,10 @@ Skips View::filterDirsForTopBorderLine(Position nodePos)
 {
     const std::size_t topBorderLine = 1;
 
-    if (nodePos.y == topBorderLine)
-    {
-        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
-        {
+    if (nodePos.y == topBorderLine) {
+        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
-        }
-        else if (nodePos.x == m_board.getGoalpostRight())
-        {
+        } else if (nodePos.x == m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::TopRight}, Skip{Direction::TopLeft}};
         }
     }
@@ -95,15 +85,11 @@ Skips View::filterDirsForBottomNetLine(Position nodePos)
 {
     const std::size_t bottomNetLine = m_board.getHeight() - 1;
 
-    if (nodePos.y == bottomNetLine)
-    {
-        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight())
-        {
+    if (nodePos.y == bottomNetLine) {
+        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
-                         Skip{Direction::TopLeft}};
-        }
-        else if (nodePos.x == m_board.getGoalpostRight())
-        {
+                Skip{Direction::TopLeft}};
+        } else if (nodePos.x == m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{Direction::TopLeft}};
         }
     }
@@ -115,8 +101,7 @@ Skips View::filterDirsForRightLine(Position nodePos)
 {
     const std::size_t rightLine = m_board.getWidth() - 1;
 
-    if (nodePos.x == rightLine)
-    {
+    if (nodePos.x == rightLine) {
         return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{}};
     }
 
@@ -125,40 +110,31 @@ Skips View::filterDirsForRightLine(Position nodePos)
 
 void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
 {
-    if (not nodeSkip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top))
-    {
+    if (not nodeSkip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top)) {
         drawVerticalToTopLine(nodePos);
     }
 
-    if (not nodeSkip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right))
-    {
+    if (not nodeSkip.contains(Direction::Right) and m_board.hasNeighbour(nodePos, Direction::Right)) {
         drawHorizontalToRightLine(nodePos);
     }
 
     bool topRight = false;
-    if (not nodeSkip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight))
-    {
+    if (not nodeSkip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight)) {
         topRight = true;
     }
 
     bool topLeft = false;
     const Position neighbourPos{nodePos.x + 1, nodePos.y};
     if (not neighSkip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
-        and m_board.hasNeighbour(neighbourPos, Direction::TopLeft))
-    {
+        and m_board.hasNeighbour(neighbourPos, Direction::TopLeft)) {
         topLeft = true;
     }
 
-    if (topRight and topLeft)
-    {
+    if (topRight and topLeft) {
         drawCrossToRight(nodePos);
-    }
-    else if (topRight)
-    {
+    } else if (topRight) {
         drawHypotenuseToTopRight(nodePos);
-    }
-    else if (topLeft)
-    {
+    } else if (topLeft) {
         drawHypotenuseToTopLeft(neighbourPos);
     }
     drawMarker(nodePos);

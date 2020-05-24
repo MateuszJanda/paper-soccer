@@ -1,7 +1,7 @@
 #include "Board.hpp"
+#include "NCurses.hpp"
 #include "Node.hpp"
 #include "View.hpp"
-#include "NCurses.hpp"
 #include <iostream>
 
 using namespace std;
@@ -9,7 +9,7 @@ using namespace std;
 int main(int argc, char** argv)
 {
     using namespace PaperSoccer;
-    Board b { 8, 10 };
+    Board b{8, 10};
 
     NCurses nn;
     View v{b, nn};

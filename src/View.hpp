@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Direction.hpp"
-#include "INCurses.hpp"
 #include "IBoard.hpp"
+#include "INCurses.hpp"
 #include <set>
 #include <tuple>
 
@@ -11,10 +11,9 @@ namespace PaperSoccer {
 using Skip = std::set<Direction>;
 using Skips = std::tuple<Skip, Skip>;
 
-class View
-{
+class View {
 public:
-    View(IBoard &board, INCurses& ncurses);
+    View(IBoard& board, INCurses& ncurses);
     void drawBoard();
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip);
 
