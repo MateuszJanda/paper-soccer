@@ -133,4 +133,18 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
+TEST_F(ViewTest, drawCell)
+{
+    Position p{0,0};
+    Skip nodeSkip{Direction::Right, Direction::TopRight};
+    Skip neighSkip{Direction::TopLeft};
+
+    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Top)).WillOnce(Return(false));
+    int x = p.x * 3 + 2;
+    int y = p.x * 2 + 2;
+    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+
+    view.drawCell(p, nodeSkip, neighSkip);
+}
+
 }
