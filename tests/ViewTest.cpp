@@ -8,26 +8,28 @@ namespace PaperSoccer
 {
 
 namespace {
-const std::set<Direction> EMPTY;
-const std::set<Direction> ALL{Direction::Top, Direction::TopRight, Direction::Right};
-const std::set<Direction> TOP_TOPRIGHT{Direction::Top, Direction::TopRight};
-const std::set<Direction> TOPRIGHT{Direction::TopRight};
-const std::set<Direction> TOPLEFT{Direction::TopLeft};
-const std::set<Direction> TOPRIGHT_RIGHT{Direction::TopRight, Direction::Right};
-const std::set<Direction> TOP_RIGHT{Direction::Top, Direction::Right};
-const std::set<Direction> RIGHT{Direction::Right};
+const Skip EMPTY;
+const Skip ALL{Direction::Top, Direction::TopRight, Direction::Right};
+const Skip TOP_TOPRIGHT{Direction::Top, Direction::TopRight};
+const Skip TOPRIGHT{Direction::TopRight};
+const Skip TOPLEFT{Direction::TopLeft};
+const Skip TOPRIGHT_RIGHT{Direction::TopRight, Direction::Right};
+const Skip TOP_RIGHT{Direction::Top, Direction::Right};
+const Skip RIGHT{Direction::Right};
 
-const std::size_t WIDTH{9};
-const std::size_t HEIGHT{13};
+constexpr std::size_t WIDTH{9};
+constexpr std::size_t HEIGHT{13};
 
-const std::size_t TOP_NET_LINE{0};
-const std::size_t BOTTOM_NET_LINE{HEIGHT-1};
-const std::size_t TOP_BORDER_LINE{TOP_NET_LINE+1};
-const std::size_t BOTTOM_BORDER_LINE{BOTTOM_NET_LINE-1};
-const std::size_t CENTER_LINE{6};
-const std::size_t RIGHT_LINE{WIDTH-1};
-const std::size_t GOALPOST_LEFT{3};
-const std::size_t GOALPOST_RIGHT{5};
+constexpr std::size_t TOP_NET_LINE{0};
+constexpr std::size_t BOTTOM_NET_LINE{HEIGHT-1};
+constexpr std::size_t TOP_BORDER_LINE{TOP_NET_LINE+1};
+constexpr std::size_t BOTTOM_BORDER_LINE{BOTTOM_NET_LINE-1};
+constexpr std::size_t CENTER_LINE{6};
+constexpr std::size_t RIGHT_LINE{WIDTH-1};
+constexpr std::size_t GOALPOST_LEFT{3};
+constexpr std::size_t GOALPOST_RIGHT{5};
+
+
 }
 
 using namespace testing;
