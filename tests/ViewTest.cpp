@@ -10,10 +10,11 @@ namespace PaperSoccer
 namespace {
 const std::set<Direction> EMPTY;
 const std::set<Direction> ALL{Direction::Top, Direction::TopRight, Direction::Right};
-const std::set<Direction> TTRIGHT{Direction::Top, Direction::TopRight};
-const std::set<Direction> TRIGHT{Direction::TopRight};
-const std::set<Direction> TLEFT{Direction::TopLeft};
-const std::set<Direction> RTRIGHT{Direction::TopRight, Direction::Right};
+const std::set<Direction> TOP_TOPRIGHT{Direction::Top, Direction::TopRight};
+const std::set<Direction> TOPRIGHT{Direction::TopRight};
+const std::set<Direction> TOPLEFT{Direction::TopLeft};
+const std::set<Direction> TOPRIGHT_RIGHT{Direction::TopRight, Direction::Right};
+const std::set<Direction> TOP_RIGHT{Direction::Top, Direction::Right};
 const std::set<Direction> RIGHT{Direction::Right};
 
 const std::size_t WIDTH{9};
@@ -56,14 +57,14 @@ TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenCorner)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{0, TOP_NET_LINE});
     ASSERT_EQ(nodeSkip, ALL);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenGoalpostLeft)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{GOALPOST_LEFT, TOP_NET_LINE});
-    ASSERT_EQ(nodeSkip, TTRIGHT);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(nodeSkip, TOP_TOPRIGHT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotThisLine)
@@ -77,7 +78,7 @@ TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotAGoal)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{0, BOTTOM_NET_LINE});
     ASSERT_EQ(nodeSkip, ALL);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
@@ -90,8 +91,8 @@ TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
 TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenGoalpostRight)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_RIGHT, BOTTOM_NET_LINE});
-    ASSERT_EQ(nodeSkip, RTRIGHT);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(nodeSkip, TOPRIGHT_RIGHT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenNotThisLine)
@@ -104,8 +105,8 @@ TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenNotThisLine)
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenCorner)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{0, TOP_BORDER_LINE});
-    ASSERT_EQ(nodeSkip, TTRIGHT);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(nodeSkip, TOP_TOPRIGHT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostLeft)
@@ -118,8 +119,8 @@ TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostLeft)
 TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostRight)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{GOALPOST_RIGHT, TOP_BORDER_LINE});
-    ASSERT_EQ(nodeSkip, TRIGHT);
-    ASSERT_EQ(neighSkip, TLEFT);
+    ASSERT_EQ(nodeSkip, TOPRIGHT);
+    ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkFilterDirsForRightLineWhenNotThisLine)
@@ -132,43 +133,34 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenNotThisLine)
 TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
 {
     const auto [nodeSkip, neighSkip] = view.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE});
-    ASSERT_EQ(nodeSkip, RTRIGHT);
+    ASSERT_EQ(nodeSkip, TOPRIGHT_RIGHT);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::Right, Direction::TopRight};
-    Skip neighSkip{Direction::TopLeft};
-
     int x = p.x * 3 + 2;
     int y = p.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, ALL, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Right, Direction::TopRight};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Top)).WillOnce(Return(false));
     int x = p.x * 3 + 2;
     int y = p.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOPRIGHT_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopPath)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Right, Direction::TopRight};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Top)).WillOnce(Return(true));
     int x = p.x * 3 + 2;
     int y = p.y * 2 -1 + 2;
@@ -179,30 +171,24 @@ TEST_F(ViewTest, checkDrawCellTopPath)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOPRIGHT_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top,Direction::TopRight};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Right)).WillOnce(Return(false));
     int x = p.x * 3 + 2;
     int y = p.y * 2 + 2;
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOP_TOPRIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPath)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::TopRight};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Right)).WillOnce(Return(true));
     int x = p.x * 3 + 1 + 2;
     int y = p.y * 2 + 2;
@@ -213,30 +199,24 @@ TEST_F(ViewTest, checkDrawCellRightPath)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOP_TOPRIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::Right};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(false));
     int x = p.x * 3 + 2;
     int y = p.y * 2 + 2;
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOP_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPath)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top,Direction::Right};
-    Skip neighSkip{Direction::TopLeft};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(true));
     int x = p.x * 3 + 1 + 2;
     int y = p.y * 2 - 1 + 2;
@@ -247,29 +227,23 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOP_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
     Position p{WIDTH-1,0};
-    Skip nodeSkip{Direction::Top, Direction::Right, Direction::TopRight};
-    Skip neighSkip{};
-
     int x = p.x * 3 + 2;
     int y = p.y * 2 + 2;
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, ALL, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::Right, Direction::TopRight};
-    Skip neighSkip{};
-
     Position p1{1, 0};
     EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(false));
     int x = p.x * 3 + 2;
@@ -277,15 +251,12 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, ALL, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::Right, Direction::TopRight};
-    Skip neighSkip{};
-
     Position p1{1, 0};
     EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(true));
     int x = p1.x * 3 -1 + 2;
@@ -297,16 +268,12 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, ALL, EMPTY);
 }
-
 
 TEST_F(ViewTest, checkDrawCellCrossPath)
 {
     Position p{0,0};
-    Skip nodeSkip{Direction::Top, Direction::Right};
-    Skip neighSkip{};
-
     EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(true));
     Position p1{1, 0};
     EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(true));
@@ -319,7 +286,7 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
 
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, nodeSkip, neighSkip);
+    view.drawCell(p, TOP_RIGHT, EMPTY);
 }
 
 
