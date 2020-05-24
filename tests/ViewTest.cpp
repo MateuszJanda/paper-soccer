@@ -29,7 +29,8 @@ constexpr std::size_t RIGHT_LINE{WIDTH-1};
 constexpr std::size_t GOALPOST_LEFT{3};
 constexpr std::size_t GOALPOST_RIGHT{5};
 
-
+const Position NODE_POS{0, 0};
+const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
 }
 
 using namespace testing;
@@ -141,154 +142,142 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
-    Position p{0,0};
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, ALL, TOPLEFT);
+    view.drawCell(NODE_POS, ALL, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Top)).WillOnce(Return(false));
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(false));
+
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOPRIGHT_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopPath)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Top)).WillOnce(Return(true));
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 -1 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 -1 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "|"));
-    x = p.x * 3 + 2;
-    y = p.y * 2 + 2;
 
+    x = NODE_POS.x * 3 + 2;
+    y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOPRIGHT_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Right)).WillOnce(Return(false));
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(false));
 
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOP_TOPRIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPath)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::Right)).WillOnce(Return(true));
-    int x = p.x * 3 + 1 + 2;
-    int y = p.y * 2 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(true));
 
+    int x = NODE_POS.x * 3 + 1 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "--"));
-    x = p.x * 3 + 2;
-    y = p.y * 2 + 2;
 
+    x = NODE_POS.x * 3 + 2;
+    y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOP_TOPRIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(false));
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(false));
 
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOP_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPath)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(true));
-    int x = p.x * 3 + 1 + 2;
-    int y = p.y * 2 - 1 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
 
+    int x = NODE_POS.x * 3 + 1 + 2;
+    int y = NODE_POS.y * 2 - 1 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "/"));
-    x = p.x * 3 + 2;
-    y = p.y * 2 + 2;
 
+    x = NODE_POS.x * 3 + 2;
+    y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOP_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
-    Position p{WIDTH-1,0};
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    Position nodePos{WIDTH-1,0};
 
+    int x = nodePos.x * 3 + 2;
+    int y = nodePos.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, ALL, EMPTY);
+    view.drawCell(nodePos, ALL, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 {
-    Position p{0,0};
-    Position p1{1, 0};
-    EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(false));
-    int x = p.x * 3 + 2;
-    int y = p.y * 2 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(false));
 
+    int x = NODE_POS.x * 3 + 2;
+    int y = NODE_POS.y * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, ALL, EMPTY);
+    view.drawCell(NODE_POS, ALL, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
-    Position p{0,0};
-    Position p1{1, 0};
-    EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(true));
-    int x = p1.x * 3 -1 + 2;
-    int y = p1.y * 2 -1 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
+    int x = NEIGHBOUR_POS.x * 3 -1 + 2;
+    int y = NEIGHBOUR_POS.y * 2 -1 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "\\"));
-    x = p.x * 3 + 2;
-    y = p.x * 2 + 2;
 
+    x = NODE_POS.x * 3 + 2;
+    y = NODE_POS.x * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, ALL, EMPTY);
+    view.drawCell(NODE_POS, ALL, EMPTY);
 }
 
 TEST_F(ViewTest, checkDrawCellCrossPath)
 {
-    Position p{0,0};
-    EXPECT_CALL(boardMock, hasNeighbour(p, Direction::TopRight)).WillOnce(Return(true));
-    Position p1{1, 0};
-    EXPECT_CALL(boardMock, hasNeighbour(p1, Direction::TopLeft)).WillOnce(Return(true));
-    int x = p.x * 3 + 1 + 2;
-    int y = p.y * 2 - 1 + 2;
+    EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
+    EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
+    int x = NODE_POS.x * 3 + 1 + 2;
+    int y = NODE_POS.y * 2 - 1 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "><"));
-    x = p.x * 3 + 2;
-    y = p.x * 2 + 2;
 
+    x = NODE_POS.x * 3 + 2;
+    y = NODE_POS.x * 2 + 2;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(p, TOP_RIGHT, EMPTY);
+    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
 }
 
 
