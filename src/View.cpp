@@ -7,12 +7,6 @@
 
 namespace PaperSoccer {
 
-namespace {
-constexpr int X_OFFSET{2};
-constexpr int Y_OFFSET{2};
-
-}
-
 View::View(IBoard& board, INCurses &ncurses) : m_board{board}, m_ncurses{ncurses}
 {
 

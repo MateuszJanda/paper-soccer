@@ -13,7 +13,6 @@ using Skips = std::tuple<Skip, Skip>;
 
 class View
 {
-
 public:
     View(IBoard &board, INCurses& ncurses);
     void drawBoard();
@@ -24,6 +23,9 @@ public:
     Skips filterDirsForBottomNetLine(Position nodePos);
     Skips filterDirsForTopBorderLine(Position nodePos);
     Skips filterDirsForRightLine(Position nodePos);
+
+    static constexpr int X_OFFSET{2};
+    static constexpr int Y_OFFSET{2};
 
 private:
     void drawVerticalToTopLine(Position nodePos);
