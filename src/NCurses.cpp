@@ -1,12 +1,12 @@
 #include "NCurses.hpp"
 #include <ncurses.h>
-#include <locale.h>
+#include <clocale>
 
 namespace PaperSoccer {
 
 NCurses::NCurses()
 {
-    setlocale(LC_ALL, "");
+    std::setlocale(LC_ALL, "");
     initscr();
     printw("Hello World !!!");
     refresh();
