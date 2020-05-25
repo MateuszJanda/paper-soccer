@@ -12,7 +12,11 @@ int main(int argc, char** argv)
     using namespace PaperSoccer;
     Board b{8, 10};
 
+    cout << "⸝ᐟᐠ৲" << endl;
+    cout << "><" << endl;
+
     NCurses nn;
+//    nn.getChar();
     View v{b, nn};
     v.drawBoard();
 

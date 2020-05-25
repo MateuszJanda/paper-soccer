@@ -152,19 +152,31 @@ void View::drawHorizontalToRightLine(Position nodePos)
 
 void View::drawCrossToRight(Position nodePos)
 {
-    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "><");
+    // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+    // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
+    const std::string symbol = "><";
+    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawHypotenuseToTopRight(Position nodePos)
 {
-    // ⸝ᐟ
-    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "/");
+    // / - U+002F https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+    // ⸝⸍ - U+2e1d U+2e0d https://en.wikipedia.org/wiki/Supplemental_Punctuation
+    // ᐟ  - U+141f https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
+    // ৴  - U+09f4 https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
+    const std::string symbol = " /";
+    m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawHypotenuseToTopLeft(Position nodePos)
 {
-    // ヽ৲
-    m_ncurses.print(nodePos.x * 3 - 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "\\");
+    // \ - U+005C https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+    // ⸌⸜ - U+2e0c U+2e1c https://en.wikipedia.org/wiki/Supplemental_Punctuation
+    // ᐠ  - U+1420 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
+    // ৲  - U+09f2 https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
+    // ヽ  - U+30FD https://en.wikipedia.org/wiki/Katakana_(Unicode_block)
+    const std::string symbol = " \\";
+    m_ncurses.print(nodePos.x * 3 - 2 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawMarker(Position nodePos)

@@ -1,10 +1,12 @@
 #include "NCurses.hpp"
 #include <ncurses.h>
+#include <locale.h>
 
 namespace PaperSoccer {
 
 NCurses::NCurses()
 {
+    setlocale(LC_ALL, "");
     initscr();
     printw("Hello World !!!");
     refresh();
