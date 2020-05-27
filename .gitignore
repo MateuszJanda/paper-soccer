@@ -10,3 +10,4 @@ lib/
 lib/googletest
 src/libpaper-soccer_lib.a
 *~
+*.swp

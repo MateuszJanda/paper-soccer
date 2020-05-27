@@ -15,6 +15,14 @@ add_executable(${CMAKE_PROJECT_NAME}
     main.cpp
 )
 
+# Boost asio is header only
+include_directories(${Boost_INCLUDE_DIR})
+target_link_libraries(${CMAKE_PROJECT_NAME} ${Boost_LIBRARIES})
+
+# Boost system is required by Boost asio
+find_package(Boost REQUIRED COMPONENTS system)
 target_link_libraries(${CMAKE_PROJECT_NAME}
+    pthread
     ncursesw
+    ${Boost_SYSTEM_LIBRARY}
 )

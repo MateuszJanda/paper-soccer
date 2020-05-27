@@ -4,6 +4,7 @@
 #include "Node.hpp"
 #include "View.hpp"
 #include <iostream>
+#include <boost/asio.hpp>
 
 using namespace std;
 
@@ -11,9 +12,6 @@ int main(int argc, char** argv)
 {
     using namespace PaperSoccer;
     Board b{8, 10};
-
-    cout << "⸝ᐟᐠ৲" << endl;
-    cout << "><" << endl;
 
     NCurses nn;
 //    nn.getChar();
