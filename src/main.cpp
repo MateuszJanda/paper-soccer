@@ -23,9 +23,9 @@ public:
     void accept()
     {
         m_acceptor.async_accept(m_socket,
-            [this](boost::system::error_code ec)
+            [this](boost::system::error_code errorCode)
             {
-                if (!ec)
+                if (not errorCode)
                 {
 //                    std::make_shared<chat_session>(std::move(m_socket), room_)->start();
                     std::cout << "accept" << "\n";
@@ -56,8 +56,10 @@ int main(int argc, char** argv)
     }
     catch (std::exception& e)
     {
-      std::cerr << "Exception: " << e.what() << "\n";
+        std::cerr << "Exception: " << e.what() << "\n";
     }
+
+    cout << "Exit" << "\n";
 
 //    Board b{8, 10};
 
