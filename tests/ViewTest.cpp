@@ -218,7 +218,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
     int x = NODE_POS.x * 3 + 1 + View::X_OFFSET;
     int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "/"));
+    EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍"));
 
     x = NODE_POS.x * 3 + View::X_OFFSET;
     y = NODE_POS.y * 2 + View::Y_OFFSET;
@@ -253,9 +253,9 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NEIGHBOUR_POS.x * 3 - 1 + View::X_OFFSET;
+    int x = NEIGHBOUR_POS.x * 3 - 2 + View::X_OFFSET;
     int y = NEIGHBOUR_POS.y * 2 - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "\\"));
+    EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜"));
 
     x = NODE_POS.x * 3 + View::X_OFFSET;
     y = NODE_POS.x * 2 + View::Y_OFFSET;
@@ -271,7 +271,7 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
 
     int x = NODE_POS.x * 3 + 1 + View::X_OFFSET;
     int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "><"));
+    EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ"));
 
     x = NODE_POS.x * 3 + View::X_OFFSET;
     y = NODE_POS.x * 2 + View::Y_OFFSET;

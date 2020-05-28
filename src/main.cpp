@@ -45,29 +45,29 @@ int main(int argc, char** argv)
 {
     using namespace PaperSoccer;
 
-    try
-    {
-        boost::asio::io_service io_service;
-        tcp::endpoint endpoint(tcp::v4(), 8787);
+//    try
+//    {
+//        boost::asio::io_service io_service;
+//        tcp::endpoint endpoint(tcp::v4(), 8787);
 
-        Server server{io_service, endpoint};
+//        Server server{io_service, endpoint};
 
-        io_service.run();
-    }
-    catch (std::exception& e)
-    {
-        std::cerr << "Exception: " << e.what() << "\n";
-    }
+//        io_service.run();
+//    }
+//    catch (std::exception& e)
+//    {
+//        std::cerr << "Exception: " << e.what() << "\n";
+//    }
 
-    cout << "Exit" << "\n";
+//    cout << "Exit" << "\n";
 
-//    Board b{8, 10};
+    Board b{8, 10};
 
-//    NCurses nn;
-////    nn.getChar();
-//    View v{b, nn};
-//    v.drawBoard();
+    NCurses nn;
+//    nn.getChar();
+    View v{b, nn};
+    v.drawBoard();
 
-//    Game game{b, nn, v};
-//    game.run();
+    Game game{b, nn, v};
+    game.run();
 }
