@@ -23,6 +23,8 @@ public:
     Skips filterDirsForTopBorderLine(Position nodePos);
     Skips filterDirsForRightLine(Position nodePos);
 
+    void printText(int x, int y, std::string str);
+
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{2};
 

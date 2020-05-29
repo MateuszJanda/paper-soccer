@@ -11,6 +11,9 @@ public:
     Game(IBoard& board, INCurses& ncurses, View &view);
 
     void run();
+    void run1();
+    void on_input();
+    void ddd(int d);
 
 private:
     IBoard& m_board;

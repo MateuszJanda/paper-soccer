@@ -184,4 +184,9 @@ void View::drawMarker(Position nodePos)
     m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y * 2 + Y_OFFSET, "+");
 }
 
+void View::printText(int x, int y, std::string str)
+{
+    m_ncurses.print(x, y, str);
+}
+
 }
