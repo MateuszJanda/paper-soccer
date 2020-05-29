@@ -13,7 +13,7 @@ public:
     void run();
     void run1();
     void on_input();
-    void ddd(int d);
+    void ddd(int d, int x, int y);
 
 private:
     IBoard& m_board;

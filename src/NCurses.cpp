@@ -8,6 +8,13 @@ NCurses::NCurses()
 {
     std::setlocale(LC_ALL, "");
     initscr();
+    noecho();
+    // set the cursor mode - Invisible
+    curs_set(0);
+
+    keypad(stdscr, TRUE);
+    mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, NULL);
+
     printw("Hello World !!!");
     refresh();
 }
@@ -19,9 +26,27 @@ void NCurses::print(int x, int y, std::string str)
     mvprintw(y, x, str.c_str());
 }
 
-int NCurses::getChar()
+std::tuple<int, int, int> NCurses::getChar()
 {
-    return getch();
+    int c = getch();
+    MEVENT event;
+    switch(c)
+    {
+    case KEY_MOUSE:
+        if(getmouse(&event) == OK)
+        {
+//            printw("Click");
+            if(event.bstate & BUTTON1_PRESSED) // This works for left-click
+            {
+                return std::make_tuple(1000, event.x, event.y);
+            }
+        }
+        break;
+    default:
+        return std::make_tuple(c, 0, 0);
+    }
+
+    std::make_tuple(c, 0, 0);
 }
 
 NCurses::~NCurses()

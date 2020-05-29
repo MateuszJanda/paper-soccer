@@ -50,47 +50,17 @@ Game::Game(IBoard& board, INCurses& ncurses, View& view)
 
 void Game::run()
 {
+    int i =0;
     while(1)
     {
-        int c = m_ncurses.getChar();
-        switch(c) {
-        case 'q':
-            m_board.moveBall(Direction::TopLeft);
-            m_view.drawBoard();
-            break;
-        case 'w':
-            m_board.moveBall(Direction::Top);
-            m_view.drawBoard();
-            break;
-        case 'e':
-            m_board.moveBall(Direction::TopRight);
-            m_view.drawBoard();
-            break;
-        case 'a':
-            m_board.moveBall(Direction::Left);
-            m_view.drawBoard();
-            break;
-        case 'd':
-            m_board.moveBall(Direction::Right);
-            m_view.drawBoard();
-            break;
-        case 'z':
-            m_board.moveBall(Direction::BottomLeft);
-            m_view.drawBoard();
-            break;
-        case 'x':
-            m_board.moveBall(Direction::Bottom);
-            m_view.drawBoard();
-            break;
-        case 'c':
-            m_board.moveBall(Direction::BottomRight);
-            m_view.drawBoard();
-            break;
-        }
+        auto [c, x, y] = m_ncurses.getChar();
+        ddd(c, x, y);
+        m_view.printText(0, 1, std::to_string(i));
+        i++;
     }
 }
 
-void Game::ddd(int c)
+void Game::ddd(int c, int x, int y)
 {
     switch(c) {
     case 'q':
@@ -126,6 +96,13 @@ void Game::ddd(int c)
         m_view.drawBoard();
         break;
     }
+
+    if (c == 1000)
+    {
+        std::stringstream sss;
+        sss << "Mouse " << x << " " << y << "                             ";
+        m_view.printText(0, 1, sss.str());
+    }
 }
 
 void Game::on_input()
@@ -136,8 +113,8 @@ void Game::on_input()
 
     while(1)
     {
-        int c = m_ncurses.getChar();
-        ddd(c);
+        auto [c, x, y] = m_ncurses.getChar();
+        ddd(c, x, y);
     }
 }
 
@@ -150,6 +127,8 @@ void Game::run1()
 
     std::function<void(boost::system::error_code)> input_loop;
 
+    // https://www.boost.org/doc/libs/1_73_0/doc/html/boost_asio/overview/core/threads.html
+    // Asynchronous completion handlers will only be called from threads that are currently calling io_context::run().
     boost::asio::io_context io_context;
     boost::asio::posix::stream_descriptor d(io_context, 0);
     input_loop = [&, this](boost::system::error_code ec) {
