@@ -13,10 +13,7 @@ Server::Server(boost::asio::io_context &ioContext, const boost::asio::ip::tcp::e
       m_board{8, 10},
       m_view{m_board, m_ncurses}
 {
-    m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
-//    setInputLoop();
-    inputLoop(boost::system::error_code{});
-//    accept();
+    accept();
 }
 
 void Server::accept()
@@ -26,8 +23,8 @@ void Server::accept()
         {
             if (not errorCode) {
                 std::cout << "accept" << "\n";
-//                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
-//                setInputLoop();
+                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
+                setInputLoop();
             }
 
         });
@@ -52,19 +49,7 @@ void Server::inputLoop(boost::system::error_code errorCode)
 
 void Server::setInputLoop()
 {
-    std::function<void(boost::system::error_code)> iii;
-
-    iii = [&, this](boost::system::error_code errorCode) {
-        if (not errorCode) {
-            onInput();
-            m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, iii);
-        } else {
-            std::cout << "error" << "\n";
-        }
-    };
-
-//    std::cout << "input loop" << "\n";
-    iii(boost::system::error_code{});
+    inputLoop(boost::system::error_code{});
 }
 
 }
