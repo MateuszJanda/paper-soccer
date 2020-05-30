@@ -73,5 +73,5 @@ int main(int argc, char** argv)
     v.drawBoard();
 
     Game game{b, nn, v};
-    game.run();
+    game.run1();
 }

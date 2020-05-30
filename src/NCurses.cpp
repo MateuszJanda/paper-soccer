@@ -6,11 +6,20 @@ namespace PaperSoccer {
 
 NCurses::NCurses()
 {
+    // https://stackoverflow.com/questions/59341959/schedule-an-asynchronous-event-that-will-complete-when-stdin-has-waiting-data-in
+
     std::setlocale(LC_ALL, "");
     initscr();
     noecho();
     // set the cursor mode - Invisible
     curs_set(0);
+
+//    ESCDELAY = 0;
+    set_escdelay(0);
+    // If delay is zero, then non-blocking read is used (i.e., read returns ERR if no input is waiting)
+    timeout(0);
+    // The cbreak routine disables line buffering and erase/kill character-processing
+    cbreak();
 
     keypad(stdscr, TRUE);
     mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, NULL);
@@ -46,7 +55,7 @@ std::tuple<int, int, int> NCurses::getChar()
         return std::make_tuple(c, 0, 0);
     }
 
-    std::make_tuple(c, 0, 0);
+    return std::make_tuple(c, 0, 0);
 }
 
 NCurses::~NCurses()

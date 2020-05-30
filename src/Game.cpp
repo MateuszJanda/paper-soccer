@@ -58,6 +58,7 @@ void Game::run()
         m_view.printText(0, 1, std::to_string(i));
         i++;
     }
+//    m_view.printText(0, 1, "exit loop");
 }
 
 void Game::ddd(int c, int x, int y)
@@ -108,14 +109,18 @@ void Game::ddd(int c, int x, int y)
 void Game::on_input()
 {
     std::stringstream ss;
-    ss << "OnLoop: " << std::this_thread::get_id();
+//    ss << "OnLoop: " << std::this_thread::get_id();
     m_view.printText(0, 1, ss.str());
 
     while(1)
     {
         auto [c, x, y] = m_ncurses.getChar();
+        m_view.printText(0, 1, std::to_string(c));
+        if (c == /*ERR*/ -1)
+                break;
         ddd(c, x, y);
     }
+
 }
 
 
@@ -144,6 +149,9 @@ void Game::run1()
 
 //    }
     input_loop(boost::system::error_code{});
+
+    m_view.printText(0, 0, "after loop");
+
     using namespace std::literals;
 
 
