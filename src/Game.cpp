@@ -10,36 +10,6 @@ namespace PaperSoccer {
 
 using boost::asio::ip::tcp;
 
-//class Server
-//{
-//public:
-//    Server(boost::asio::io_context& io_context, const tcp::endpoint& endpoint)
-//        : m_acceptor(io_context, endpoint),
-//          m_socket(io_context)
-//    {
-//        accept();
-//    }
-
-//    void accept()
-//    {
-//        m_acceptor.async_accept(m_socket,
-//            [this](boost::system::error_code errorCode)
-//            {
-//                if (not errorCode)
-//                {
-////                    std::make_shared<chat_session>(std::move(m_socket), room_)->start();
-//                    std::cout << "accept" << "\n";
-//                }
-//            });
-//    }
-
-
-//private:
-//    tcp::acceptor m_acceptor;
-//    tcp::socket m_socket;
-//};
-
-
 Game::Game(IBoard& board, INCurses& ncurses, View& view)
   : m_board{board}
   , m_ncurses{ncurses}
@@ -158,6 +128,22 @@ void Game::run1()
 //    io_context.run_for(10s);
     std::thread t([&io_context](){ io_context.run(); });
     t.join();
+}
+
+void Game::run2(boost::asio::io_context& ioContext)
+{
+    dxx = std::make_shared<boost::asio::posix::stream_descriptor>(ioContext, 0);
+    input_loop = [&, this](boost::system::error_code ec) {
+        if (!ec) {
+            on_input();
+            dxx->async_wait(boost::asio::posix::descriptor::wait_type::wait_read, input_loop);
+        }
+        std::cout << "run2 error" << std::endl;
+    };
+
+    input_loop(boost::system::error_code{});
+//    std::thread t([&ioContext](){ ioContext.run(); });
+//    t.join();
 }
 
 }

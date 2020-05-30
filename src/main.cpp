@@ -1,3 +1,5 @@
+#include "Server.hpp"
+#include "Client.hpp"
 #include "Game.hpp"
 #include "Board.hpp"
 #include "NCurses.hpp"
@@ -13,9 +15,9 @@ using boost::asio::ip::tcp;
 //class Server
 //{
 //public:
-//    Server(boost::asio::io_context& io_context, const tcp::endpoint& endpoint)
-//        : m_acceptor(io_context, endpoint),
-//          m_socket(io_context)
+//    Server(boost::asio::ioContext& ioContext, const tcp::endpoint& endpoint)
+//        : m_acceptor(ioContext, endpoint),
+//          m_socket(ioContext)
 //    {
 //        accept();
 //    }
@@ -45,33 +47,38 @@ int main(int argc, char** argv)
 {
     using namespace PaperSoccer;
 
-//    try
+    boost::asio::io_context ioContext;
+    boost::asio::executor_work_guard<boost::asio::io_context::executor_type> guard{ioContext.get_executor()};
+
+//    std::shared_ptr<Server> server;
+//    if (argc == 2 and std::string(argv[1]) == "-s")
 //    {
-//        cout << "Server start" << "\n";
-////        boost::asio::io_service io_service;
-//        boost::asio::io_context io_context;
+//        std::cout << "server start" << "\n";
+//        boost::asio::ip::tcp::endpoint endpoint{tcp::v4(), 8787};
+//        server = std::make_shared<Server>(ioContext, endpoint);
 
-//        tcp::endpoint endpoint(tcp::v4(), 8787);
 
-//        Server server{io_context, endpoint};
 
-////        io_service.run();
-//        io_context.run();
+
 //    }
-//    catch (std::exception& e)
+//    else
 //    {
-//        std::cerr << "Exception: " << e.what() << "\n";
 //    }
 
-//    cout << "Exit" << "\n";
+//    std::cout << "thread before" << "\n";
+//    std::thread t([&ioContext](){ ioContext.run(); });
+//    t.join();
+//    std::cout << "thread end" << "\n";
+
 
     Board b{8, 10};
-
     NCurses nn;
-//    nn.getChar();
     View v{b, nn};
     v.drawBoard();
 
     Game game{b, nn, v};
-    game.run1();
+    game.run2(ioContext);
+
+    std::thread t([&ioContext](){ ioContext.run(); });
+    t.join();
 }
