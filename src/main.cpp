@@ -50,35 +50,35 @@ int main(int argc, char** argv)
     boost::asio::io_context ioContext;
     boost::asio::executor_work_guard<boost::asio::io_context::executor_type> guard{ioContext.get_executor()};
 
-//    std::shared_ptr<Server> server;
-//    if (argc == 2 and std::string(argv[1]) == "-s")
-//    {
-//        std::cout << "server start" << "\n";
-//        boost::asio::ip::tcp::endpoint endpoint{tcp::v4(), 8787};
-//        server = std::make_shared<Server>(ioContext, endpoint);
+    std::shared_ptr<Server> server;
+    if (argc == 2 and std::string(argv[1]) == "-s")
+    {
+        std::cout << "server start" << "\n";
+        boost::asio::ip::tcp::endpoint endpoint{tcp::v4(), 8787};
+        server = std::make_shared<Server>(ioContext, endpoint);
 
 
 
 
-//    }
-//    else
-//    {
-//    }
+    }
+    else
+    {
+    }
 
-//    std::cout << "thread before" << "\n";
-//    std::thread t([&ioContext](){ ioContext.run(); });
-//    t.join();
-//    std::cout << "thread end" << "\n";
-
-
-    Board b{8, 10};
-    NCurses nn;
-    View v{b, nn};
-    v.drawBoard();
-
-    Game game{b, nn, v};
-    game.run2(ioContext);
-
+    std::cout << "thread before" << "\n";
     std::thread t([&ioContext](){ ioContext.run(); });
     t.join();
+    std::cout << "thread end" << "\n";
+
+
+//    Board b{8, 10};
+//    NCurses nn;
+//    View v{b, nn};
+//    v.drawBoard();
+
+//    Game game{b, nn, v};
+//    game.run2(ioContext);
+
+//    std::thread t([&ioContext](){ ioContext.run(); });
+//    t.join();
 }

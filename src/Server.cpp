@@ -1,18 +1,21 @@
 #include "Server.hpp"
 #include <iostream>
 #include <memory>
+#include <functional>
 
 namespace PaperSoccer {
 
 Server::Server(boost::asio::io_context &ioContext, const boost::asio::ip::tcp::endpoint& endpoint)
     : m_ioContext{ioContext},
       m_acceptor{ioContext, endpoint},
+      m_desc{ioContext, 0},
       m_ncurses{},
       m_board{8, 10},
       m_view{m_board, m_ncurses}
 {
     m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
-    setInputLoop();
+//    setInputLoop();
+    inputLoop(boost::system::error_code{});
 //    accept();
 }
 
@@ -35,23 +38,33 @@ void Server::onInput()
     m_game->on_input();
 }
 
+void Server::inputLoop(boost::system::error_code errorCode)
+{
+    using namespace std::placeholders;
+
+    if (not errorCode) {
+        onInput();
+        m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, std::bind(&Server::inputLoop, this, _1));
+    } else {
+        std::cout << "error" << "\n";
+    }
+}
 
 void Server::setInputLoop()
 {
-    std::function<void(boost::system::error_code)> inputLoop;
+    std::function<void(boost::system::error_code)> iii;
 
-    boost::asio::posix::stream_descriptor desc(m_ioContext, 0);
-    inputLoop = [&, this](boost::system::error_code errorCode) {
+    iii = [&, this](boost::system::error_code errorCode) {
         if (not errorCode) {
             onInput();
-            desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, inputLoop);
+            m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, iii);
         } else {
             std::cout << "error" << "\n";
         }
     };
 
 //    std::cout << "input loop" << "\n";
-    inputLoop(boost::system::error_code{});
+    iii(boost::system::error_code{});
 }
 
 }

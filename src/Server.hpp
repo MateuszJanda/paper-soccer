@@ -16,15 +16,18 @@ public:
     void accept();
     void setInputLoop();
     void onInput();
+    void inputLoop(boost::system::error_code errorCode);
 
 private:
     boost::asio::io_context& m_ioContext;
     boost::asio::ip::tcp::acceptor m_acceptor;
+    boost::asio::posix::stream_descriptor m_desc;
 
     NCurses m_ncurses;
     Board m_board;
     View m_view;
     std::shared_ptr<Game> m_game;
+
 };
 
 
