@@ -4,6 +4,7 @@
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "View.hpp"
+#include "TmpMoveMsg.hpp"
 #include <boost/asio.hpp>
 
 namespace PaperSoccer {
@@ -18,7 +19,7 @@ public:
     void on_input();
     void ddd(int d, int x, int y);
     void readInitMsg();
-    void send(Direction dir);
+    void send();
     Direction direct(int c);
 
 private:
@@ -29,6 +30,8 @@ private:
 
     std::shared_ptr<boost::asio::posix::stream_descriptor> dxx;
     std::function<void(boost::system::error_code)> input_loop;
+
+    TmpMoveMsg msg;
 };
 
 }

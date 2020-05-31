@@ -1,6 +1,7 @@
 #ifndef TMP_MOVE_MSG_HPP
 #define TMP_MOVE_MSG_HPP
 
+#include <cstring>
 #include "Direction.hpp"
 
 namespace PaperSoccer {
@@ -13,27 +14,31 @@ struct TmpMoveMsg
 {
     TmpMoveMsg(Direction dir);
 
-    const char* data() const
-    {
-      return data_;
-    }
-
     char* data()
     {
+//      std::memcpy(data_, (void*)header, HEADER_LENGTH);
+//      std::memcpy(data_ + HEADER_LENGTH, (void*)dir, DIRECTION_LENGTH);
       return data_;
     }
 
     std::size_t length() const
     {
-      return HEADER_LENGTH + BODY_LENGTH;
+      return HEADER_LENGTH + DIRECTION_LENGTH;
+    }
+
+    bool decode()
+    {
+//      std::strncat((char*)header, data_, HEADER_LENGTH);
+//      std::strncat((char*)dir, data_ + HEADER_LENGTH, DIRECTION_LENGTH);
+      return true;
     }
 
     Header header;
     Direction dir;
 
     static const std::size_t HEADER_LENGTH = sizeof(header);
-    static const std::size_t BODY_LENGTH = sizeof(dir);
-    char data_[HEADER_LENGTH + BODY_LENGTH];
+    static const std::size_t DIRECTION_LENGTH = sizeof(dir);
+    char data_[HEADER_LENGTH + DIRECTION_LENGTH];
 };
 
 }

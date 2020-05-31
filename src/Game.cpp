@@ -15,7 +15,8 @@ Game::Game(IBoard& board, INCurses& ncurses, View& view, tcp::socket socket)
   : m_board{board}
   , m_ncurses{ncurses}
   , m_view{view}
-  , m_socket{std::move(socket)}
+  , m_socket{std::move(socket)},
+    msg{Direction::Top}
 {
 
 }
@@ -102,21 +103,20 @@ void Game::ddd(int c, int x, int y)
         m_view.printText(0, 1, sss.str());
     } else if (c != -1) {
         Direction dir = direct(c);
-        send(dir);
+        msg.dir = dir;
+        send();
     }
 }
 
-void Game::send(Direction dir)
+void Game::send()
 {
-    TmpMoveMsg msg{dir};
-
     boost::asio::async_write(m_socket,
         boost::asio::buffer(msg.data(), msg.length()),
         [this](boost::system::error_code ec, std::size_t /*length*/)
         {
             if (ec)
             {
-                m_socket.close();
+//                m_socket.close(); ???
             }
         });
 }
@@ -193,7 +193,20 @@ void Game::run2(boost::asio::io_context& ioContext)
 
 void Game::readInitMsg()
 {
-
+    boost::asio::async_read(m_socket,
+        boost::asio::buffer(msg.data_, msg.length()),
+        [&, this](boost::system::error_code ec, std::size_t /*length*/)
+        {
+            if (!ec && msg.decode())
+            {
+                m_board.moveBall(msg.dir);
+                m_view.drawBoard();
+            }
+            else
+            {
+                // m_socket.close(); ???
+            }
+        });
 }
 
 }
