@@ -13,6 +13,7 @@ Server::Server(boost::asio::io_context &ioContext, const boost::asio::ip::tcp::e
       m_board{8, 10},
       m_view{m_board, m_ncurses}
 {
+    std::cout << "tutaj " << "\n";
     accept();
 }
 
