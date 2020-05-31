@@ -2,18 +2,19 @@
 #define DIRECTION_HPP
 
 #include "Position.hpp"
+#include <cstdint>
 
 namespace PaperSoccer {
 
-enum class Direction {
-    Top,
-    TopRight,
-    Right,
-    BottomRight,
-    Bottom,
-    BottomLeft,
-    Left,
-    TopLeft,
+enum class Direction : std::int32_t {
+    Top = 0,
+    TopRight = 1,
+    Right = 2,
+    BottomRight = 3,
+    Bottom = 4,
+    BottomLeft = 5,
+    Left = 6,
+    TopLeft = 7,
 };
 
 constexpr Position directionToPosition(Position pos, Direction dir)

@@ -10,7 +10,7 @@ namespace PaperSoccer {
 
 class Game {
 public:
-    Game(IBoard& board, INCurses& ncurses, View &view);
+    Game(IBoard& board, INCurses& ncurses, View &view, boost::asio::ip::tcp::socket socket);
 
     void run();
     void run1();
@@ -18,11 +18,14 @@ public:
     void on_input();
     void ddd(int d, int x, int y);
     void readInitMsg();
+    void send(Direction dir);
+    Direction direct(int c);
 
 private:
     IBoard& m_board;
     INCurses& m_ncurses;
     View& m_view;
+    boost::asio::ip::tcp::socket m_socket;
 
     std::shared_ptr<boost::asio::posix::stream_descriptor> dxx;
     std::function<void(boost::system::error_code)> input_loop;

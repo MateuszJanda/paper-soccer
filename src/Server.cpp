@@ -24,7 +24,7 @@ void Server::accept()
         {
             if (not errorCode) {
                 std::cout << "accept" << "\n";
-                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
+                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view, std::move(socket));
                 setupInputLoop();
             }
 

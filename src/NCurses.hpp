@@ -1,5 +1,5 @@
-#ifndef NCURSES_HPP
-#define NCURSES_HPP
+#ifndef N_CURSES_HPP
+#define N_CURSES_HPP
 
 #include "INCurses.hpp"
 
@@ -16,4 +16,4 @@ public:
 
 }
 
-#endif // NCURSES_HPP
+#endif // N_CURSES_HPP

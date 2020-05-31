@@ -1,5 +1,5 @@
-#ifndef IBOARD_HPP
-#define IBOARD_HPP
+#ifndef I_BOARD_HPP
+#define I_BOARD_HPP
 
 #include "Node.hpp"
 #include <cstddef>
@@ -31,4 +31,4 @@ public:
 
 } // namespace PaperSoccer
 
-#endif // IBOARD_HPP
+#endif // I_BOARD_HPP

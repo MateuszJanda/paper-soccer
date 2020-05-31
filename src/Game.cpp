@@ -2,6 +2,7 @@
 #include <iostream>
 #include <thread>
 #include <sstream>
+#include <TmpMoveMsg.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/posix/descriptor.hpp>
 
@@ -10,10 +11,11 @@ namespace PaperSoccer {
 
 using boost::asio::ip::tcp;
 
-Game::Game(IBoard& board, INCurses& ncurses, View& view)
+Game::Game(IBoard& board, INCurses& ncurses, View& view, tcp::socket socket)
   : m_board{board}
   , m_ncurses{ncurses}
   , m_view{view}
+  , m_socket{std::move(socket)}
 {
 
 }
@@ -30,6 +32,31 @@ void Game::run()
     }
 //    m_view.printText(0, 1, "exit loop");
 }
+
+Direction Game::direct(int c)
+{
+    switch(c) {
+    case 'q':
+        return Direction::TopLeft;
+    case 'w':
+        return Direction::Top;
+    case 'e':
+        return Direction::TopRight;
+    case 'a':
+        return Direction::Left;
+    case 'd':
+        return Direction::Right;
+    case 'z':
+        return Direction::BottomLeft;
+    case 'x':
+        return Direction::Bottom;
+    case 'c':
+        return Direction::BottomRight;
+    }
+
+    return Direction::Top;
+}
+
 
 void Game::ddd(int c, int x, int y)
 {
@@ -73,7 +100,25 @@ void Game::ddd(int c, int x, int y)
         std::stringstream sss;
         sss << "Mouse " << x << " " << y << "                             ";
         m_view.printText(0, 1, sss.str());
+    } else if (c != -1) {
+        Direction dir = direct(c);
+        send(dir);
     }
+}
+
+void Game::send(Direction dir)
+{
+    TmpMoveMsg msg{dir};
+
+    boost::asio::async_write(m_socket,
+        boost::asio::buffer(msg.data(), msg.length()),
+        [this](boost::system::error_code ec, std::size_t /*length*/)
+        {
+            if (ec)
+            {
+                m_socket.close();
+            }
+        });
 }
 
 void Game::on_input()

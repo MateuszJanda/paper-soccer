@@ -1,5 +1,5 @@
-#ifndef INCURSES_HPP
-#define INCURSES_HPP
+#ifndef I_N_CURSES_HPP
+#define I_N_CURSES_HPP
 
 #include <string>
 #include <tuple>
@@ -15,4 +15,4 @@ public:
 };
 
 }
-#endif // INCURSES_HPP
+#endif // I_N_CURSES_HPP

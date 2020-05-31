@@ -21,10 +21,12 @@ void Client::connect(const boost::asio::ip::tcp::resolver::results_type& endpoin
         {
             if (not errorCode)
             {
-                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
+                m_game = std::make_shared<Game>(m_board, m_ncurses, m_view, std::move(m_socket));
+                m_game->readInitMsg();
+
                 setupInputLoop();
 
-                m_game->readInitMsg();
+
             }
         });
 }
