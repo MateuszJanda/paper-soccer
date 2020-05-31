@@ -15,8 +15,7 @@ public:
     Server(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::endpoint& endpoint);
 
     void accept();
-    void setInputLoop();
-    void onInput();
+    void setupInputLoop();
     void inputLoop(boost::system::error_code errorCode);
 
 private:

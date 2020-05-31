@@ -146,4 +146,9 @@ void Game::run2(boost::asio::io_context& ioContext)
 //    t.join();
 }
 
+void Game::readInitMsg()
+{
+
+}
+
 }

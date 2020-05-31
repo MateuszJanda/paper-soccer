@@ -13,10 +13,11 @@ using namespace PaperSoccer;
 
 void runServer()
 {
+    using boost::asio::io_context;
     using boost::asio::ip::tcp;
 
-    boost::asio::io_context ioContext;
-    boost::asio::executor_work_guard<boost::asio::io_context::executor_type> guard{ioContext.get_executor()};
+    io_context ioContext;
+    boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
     std::cout << "server start" << "\n";
     tcp::endpoint endpoint{tcp::v4(), 8787};
@@ -29,7 +30,21 @@ void runServer()
 
 void runClient()
 {
+    using boost::asio::io_context;
+    using boost::asio::ip::tcp;
 
+    io_context ioContext;
+    boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
+
+    std::cout << "client start" << "\n";
+    tcp::resolver res{ioContext};
+    auto endpoints = res.resolve("localhost", "8787");
+
+    Client client{ioContext, endpoints};
+
+    std::cout << "thread before" << "\n";
+    std::thread t([&ioContext](){ ioContext.run(); });
+    t.join();
 }
 
 int main(int argc, char** argv)
@@ -40,6 +55,7 @@ int main(int argc, char** argv)
     }
     else
     {
+        runClient();
     }
 
 //    Board b{8, 10};

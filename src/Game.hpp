@@ -17,6 +17,7 @@ public:
     void run2(boost::asio::io_context& io_context);
     void on_input();
     void ddd(int d, int x, int y);
+    void readInitMsg();
 
 private:
     IBoard& m_board;

@@ -25,15 +25,10 @@ void Server::accept()
             if (not errorCode) {
                 std::cout << "accept" << "\n";
                 m_game = std::make_shared<Game>(m_board, m_ncurses, m_view);
-                setInputLoop();
+                setupInputLoop();
             }
 
         });
-}
-
-void Server::onInput()
-{
-    m_game->on_input();
 }
 
 void Server::inputLoop(boost::system::error_code errorCode)
@@ -41,14 +36,14 @@ void Server::inputLoop(boost::system::error_code errorCode)
     using namespace std::placeholders;
 
     if (not errorCode) {
-        onInput();
+        m_game->on_input();
         m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, std::bind(&Server::inputLoop, this, _1));
     } else {
         std::cout << "error" << "\n";
     }
 }
 
-void Server::setInputLoop()
+void Server::setupInputLoop()
 {
     inputLoop(boost::system::error_code{});
 }
