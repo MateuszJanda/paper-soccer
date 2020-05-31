@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NCURSES_HPP
+#define NCURSES_HPP
 
 #include "INCurses.hpp"
 
@@ -14,3 +15,5 @@ public:
 };
 
 }
+
+#endif // NCURSES_HPP

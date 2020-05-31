@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NODE_HPP
+#define NODE_HPP
 
 #include "Direction.hpp"
 #include "Position.hpp"
@@ -23,3 +24,5 @@ private:
 };
 
 } // namespace PaperSoccer
+
+#endif // NODE_HPP

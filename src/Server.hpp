@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SERVER_HPP
+#define SERVER_HPP
 
 #include <boost/asio.hpp>
 #include "NCurses.hpp"
@@ -32,3 +33,5 @@ private:
 
 
 }
+
+#endif // SERVER_HPP

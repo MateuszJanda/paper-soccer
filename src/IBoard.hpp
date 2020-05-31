@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IBOARD_HPP
+#define IBOARD_HPP
 
 #include "Node.hpp"
 #include <cstddef>
@@ -29,3 +30,5 @@ public:
 };
 
 } // namespace PaperSoccer
+
+#endif // IBOARD_HPP

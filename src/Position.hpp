@@ -1,4 +1,5 @@
-#pragma once
+#ifndef POSITION_HPP
+#define POSITION_HPP
 
 #include <utility>
 
@@ -29,3 +30,5 @@ public:
 };
 
 } // namespace PaperSoccer
+
+#endif // POSITION_HPP

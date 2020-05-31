@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GAME_HPP
+#define GAME_HPP
 
 #include "IBoard.hpp"
 #include "INCurses.hpp"
@@ -27,3 +28,5 @@ private:
 };
 
 }
+
+#endif // GAME_HPP

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CLIENT_HPP
+#define CLIENT_HPP
 
 namespace PaperSoccer {
 
@@ -9,3 +10,5 @@ public:
 };
 
 }
+
+#endif // CLIENT_HPP

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef INCURSES_HPP
+#define INCURSES_HPP
 
 #include <string>
 #include <tuple>
@@ -14,3 +15,4 @@ public:
 };
 
 }
+#endif // INCURSES_HPP

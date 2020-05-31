@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DIRECTION_HPP
+#define DIRECTION_HPP
 
 #include "Position.hpp"
 
@@ -76,3 +77,5 @@ constexpr Direction reverseDirection(Direction dir)
 }
 
 } // namespace PaperSoccer
+
+#endif // DIRECTION_HPP

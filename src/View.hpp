@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VIEW_HPP
+#define VIEW_HPP
 
 #include "Direction.hpp"
 #include "IBoard.hpp"
@@ -41,3 +42,5 @@ private:
 };
 
 }
+
+#endif // VIEW_HPP
