@@ -14,10 +14,10 @@ struct TmpMoveMsg
 {
     TmpMoveMsg(Direction dir);
 
-    char* data()
+    uint8_t* data()
     {
-//      std::memcpy(data_, (void*)header, HEADER_LENGTH);
-//      std::memcpy(data_ + HEADER_LENGTH, (void*)dir, DIRECTION_LENGTH);
+      std::memcpy(data_, &header, HEADER_LENGTH);
+      std::memcpy(data_ + HEADER_LENGTH, &dir, DIRECTION_LENGTH);
       return data_;
     }
 
@@ -28,8 +28,8 @@ struct TmpMoveMsg
 
     bool decode()
     {
-//      std::strncat((char*)header, data_, HEADER_LENGTH);
-//      std::strncat((char*)dir, data_ + HEADER_LENGTH, DIRECTION_LENGTH);
+      std::strncat((char*)&header, (const char*)data_, HEADER_LENGTH);
+      std::strncat((char*)&dir, (const char*)data_ + HEADER_LENGTH, DIRECTION_LENGTH);
       return true;
     }
 
@@ -38,7 +38,7 @@ struct TmpMoveMsg
 
     static const std::size_t HEADER_LENGTH = sizeof(header);
     static const std::size_t DIRECTION_LENGTH = sizeof(dir);
-    char data_[HEADER_LENGTH + DIRECTION_LENGTH];
+    uint8_t data_[HEADER_LENGTH + DIRECTION_LENGTH] = {};
 };
 
 }

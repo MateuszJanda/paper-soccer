@@ -5,6 +5,7 @@
 #include "NCurses.hpp"
 #include "Node.hpp"
 #include "View.hpp"
+#include "TmpMoveMsg.hpp"
 #include <iostream>
 #include <boost/asio.hpp>
 
