@@ -11,6 +11,8 @@ public:
     void print(int x, int y, std::string str) override;
     std::tuple<int, int, int> getChar() override;
 
+    void refreshView() override;
+
     ~NCurses();
 };
 

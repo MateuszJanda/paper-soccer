@@ -58,6 +58,11 @@ std::tuple<int, int, int> NCurses::getChar()
     return std::make_tuple(c, 0, 0);
 }
 
+void NCurses::refreshView()
+{
+    refresh();
+}
+
 NCurses::~NCurses()
 {
     endwin();

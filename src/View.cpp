@@ -21,6 +21,8 @@ void View::drawBoard()
             drawCell(nodePos, nodeSkip, neighSkip);
         }
     }
+
+    m_ncurses.refreshView();
 }
 
 Skips View::filterDirsForOutOfBorder(Position nodePos)
