@@ -28,7 +28,7 @@ void Game::run()
     {
         auto [c, x, y] = m_ncurses.getChar();
         ddd(c, x, y);
-        m_view.printText(0, 1, std::to_string(i));
+//        m_view.printText(0, 1, std::to_string(i));
         i++;
     }
 //    m_view.printText(0, 1, "exit loop");
@@ -100,7 +100,7 @@ void Game::ddd(int c, int x, int y)
     {
         std::stringstream sss;
         sss << "Mouse " << x << " " << y << "                             ";
-        m_view.printText(0, 1, sss.str());
+//        m_view.printText(0, 1, sss.str());
     } else if (c != -1) {
         Direction dir = direct(c);
         msg.dir = dir;
@@ -125,12 +125,12 @@ void Game::on_input()
 {
     std::stringstream ss;
 //    ss << "OnLoop: " << std::this_thread::get_id();
-    m_view.printText(0, 1, ss.str());
+//    m_view.printText(0, 1, ss.str());
 
     while(1)
     {
         auto [c, x, y] = m_ncurses.getChar();
-        m_view.printText(0, 1, std::to_string(c));
+//        m_view.printText(0, 1, std::to_string(c));
         if (c == /*ERR*/ -1)
                 break;
         ddd(c, x, y);
@@ -199,11 +199,14 @@ void Game::readInitMsg()
         {
             if (!ec && msg.decode())
             {
+                m_view.printText(0, 1, "read");
                 m_board.moveBall(msg.dir);
                 m_view.drawBoard();
+                readInitMsg();
             }
             else
             {
+                m_view.printText(0, 1, "Error");
                 // m_socket.close(); ???
             }
         });

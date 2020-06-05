@@ -20,11 +20,11 @@ void runServer()
     io_context ioContext;
     boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
-    std::cout << "server start" << "\n";
+//    std::cout << "server start" << "\n";
     tcp::endpoint endpoint{tcp::v4(), 8787};
     Server server{ioContext, endpoint};
 
-    std::cout << "thread before" << "\n";
+//    std::cout << "thread before" << "\n";
     std::thread t([&ioContext](){ ioContext.run(); });
     t.join();
 }
@@ -37,13 +37,13 @@ void runClient()
     io_context ioContext;
     boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
-    std::cout << "client start" << "\n";
+//    std::cout << "client start" << "\n";
     tcp::resolver res{ioContext};
     auto endpoints = res.resolve("localhost", "8787");
 
     Client client{ioContext, endpoints};
 
-    std::cout << "thread before" << "\n";
+//    std::cout << "thread before" << "\n";
     std::thread t([&ioContext](){ ioContext.run(); });
     t.join();
 }

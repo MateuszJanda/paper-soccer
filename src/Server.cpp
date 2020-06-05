@@ -13,7 +13,7 @@ Server::Server(boost::asio::io_context &ioContext, const boost::asio::ip::tcp::e
       m_board{8, 10},
       m_view{m_board, m_ncurses}
 {
-    std::cout << "tutaj " << "\n";
+//    std::cout << "tutaj " << "\n";
     accept();
 }
 
@@ -23,7 +23,7 @@ void Server::accept()
         [this](boost::system::error_code errorCode, boost::asio::ip::tcp::socket socket)
         {
             if (not errorCode) {
-                std::cout << "accept" << "\n";
+//                std::cout << "accept" << "\n";
                 m_game = std::make_shared<Game>(m_board, m_ncurses, m_view, std::move(socket));
                 m_game->readInitMsg();
                 setupInputLoop();
@@ -40,7 +40,7 @@ void Server::inputLoop(boost::system::error_code errorCode)
         m_game->on_input();
         m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read, std::bind(&Server::inputLoop, this, _1));
     } else {
-        std::cout << "error" << "\n";
+//        std::cout << "error" << "\n";
     }
 }
 
