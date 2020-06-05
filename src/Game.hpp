@@ -13,14 +13,14 @@ class Game {
 public:
     Game(IBoard& board, INCurses& ncurses, View &view, boost::asio::ip::tcp::socket socket);
 
-    void run();
-    void run1();
-    void run2(boost::asio::io_context& io_context);
+//    void run();
+//    void run1();
+//    void run2(boost::asio::io_context& io_context);
     void on_input();
-    void ddd(int d, int x, int y);
-    void readInitMsg();
+    void makeMove(int d, int x, int y);
+    void readMsg();
     void send();
-    Direction direct(int c);
+    Direction keyToDirection(int c);
 
 private:
     IBoard& m_board;
