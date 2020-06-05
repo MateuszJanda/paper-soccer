@@ -4,6 +4,7 @@
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "View.hpp"
+#include "INetwork.hpp"
 #include "TmpMoveMsg.hpp"
 #include <boost/asio.hpp>
 
@@ -11,27 +12,19 @@ namespace PaperSoccer {
 
 class Game {
 public:
-    Game(IBoard& board, INCurses& ncurses, View &view, boost::asio::ip::tcp::socket socket);
+    Game(INetwork& network, IBoard& board, INCurses& ncurses, View &view);
 
-//    void run();
-//    void run1();
-//    void run2(boost::asio::io_context& io_context);
-    void on_input();
+    void run();
+    void handleKeyboardMouseInput();
     void makeMove(int d, int x, int y);
-    void readMsg();
-    void send();
+    void handleReadMsg(const TmpMoveMsg &msg);
     Direction keyToDirection(int c);
 
 private:
+    INetwork& m_network;
     IBoard& m_board;
     INCurses& m_ncurses;
     View& m_view;
-    boost::asio::ip::tcp::socket m_socket;
-
-    std::shared_ptr<boost::asio::posix::stream_descriptor> dxx;
-    std::function<void(boost::system::error_code)> input_loop;
-
-    TmpMoveMsg msg;
 };
 
 }

@@ -23,8 +23,14 @@ void runServer()
     tcp::endpoint endpoint{tcp::v4(), 8787};
     Server server{ioContext, endpoint};
 
+    Board board{8, 10};
+    NCurses ncurses;
+    View view{board, ncurses};
+    Game game{server, board, ncurses, view};
+    game.run();
 
-
+    // https://www.boost.org/doc/libs/1_73_0/doc/html/boost_asio/overview/core/threads.html
+    // Asynchronous completion handlers will only be called from threads that are currently calling io_context::run().
     std::thread t([&ioContext](){ ioContext.run(); });
     t.join();
 }
@@ -37,13 +43,17 @@ void runClient()
     io_context ioContext;
     boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
-//    std::cout << "client start" << "\n";
     tcp::resolver res{ioContext};
     auto endpoints = res.resolve("localhost", "8787");
 
     Client client{ioContext, endpoints};
 
-//    std::cout << "thread before" << "\n";
+    Board board{8, 10};
+    NCurses ncurses;
+    View view{board, ncurses};
+    Game game{client, board, ncurses, view};
+    game.run();
+
     std::thread t([&ioContext](){ ioContext.run(); });
     t.join();
 }
