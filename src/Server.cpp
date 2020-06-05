@@ -3,6 +3,8 @@
 #include <memory>
 #include <functional>
 
+using namespace  std;
+
 namespace PaperSoccer {
 
 Server::Server(boost::asio::io_context &ioContext, const boost::asio::ip::tcp::endpoint& endpoint)
@@ -23,10 +25,12 @@ void Server::run(std::function<void()> handleKey, std::function<void(const TmpMo
 void Server::accept()
 {
     m_socket = std::make_shared<boost::asio::ip::tcp::socket>(m_ioContext);
-    m_acceptor.async_accept(
-        [this](boost::system::error_code errorCode, boost::asio::ip::tcp::socket socket)
+    m_acceptor.async_accept(*m_socket,
+        [this](boost::system::error_code errorCode)
         {
             if (not errorCode) {
+//                cout << "accept socket open: " << socket.is_open() << "\n";
+                cout << "accept socket open: " << m_socket->is_open() << "\n";
                 setupHandlers();
             }
         });
@@ -51,10 +55,12 @@ void Server::onReadMsg()
         {
             if (!ec && msg.decode())
             {
+//                cout << "read ok" << "\n";
                 handleReadMsg(msg);
             }
             else
             {
+//                cout << "read fail" << "\n";
                 // m_socket.close(); ???
             }
         });
