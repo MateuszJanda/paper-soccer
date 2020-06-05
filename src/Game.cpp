@@ -122,7 +122,7 @@ void Game::handleKeyboardMouseInput()
 
 void Game::handleReadMsg(const TmpMoveMsg& msg)
 {
-    m_view.printText(0, 1, "read");
+//    m_view.printText(0, 1, "read");
     m_board.moveBall(msg.dir);
     m_view.drawBoard();
 }

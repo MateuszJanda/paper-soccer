@@ -5,6 +5,8 @@
 
 namespace PaperSoccer {
 
+void rawPrint(int x, int y, std::string str);
+
 class NCurses : public INCurses {
 public:
     NCurses();

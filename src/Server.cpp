@@ -1,9 +1,8 @@
 #include "Server.hpp"
+#include "NCurses.hpp"
 #include <iostream>
 #include <memory>
 #include <functional>
-
-using namespace  std;
 
 namespace PaperSoccer {
 
@@ -29,8 +28,6 @@ void Server::accept()
         [this](boost::system::error_code errorCode)
         {
             if (not errorCode) {
-//                cout << "accept socket open: " << socket.is_open() << "\n";
-                cout << "accept socket open: " << m_socket->is_open() << "\n";
                 setupHandlers();
             }
         });
@@ -51,15 +48,18 @@ void Server::onReadMsg()
 {
     boost::asio::async_read(*m_socket,
         boost::asio::buffer(msg.data_, msg.length()),
-        [&, this](boost::system::error_code ec, std::size_t /*length*/)
+        [this](boost::system::error_code ec, std::size_t /*length*/)
         {
+            counter++;
             if (!ec && msg.decode())
             {
-//                cout << "read ok" << "\n";
                 handleReadMsg(msg);
+                rawPrint(0, 0, "ok read " + std::to_string((int)msg.dir) + "       ");
+                onReadMsg();
             }
             else
             {
+                rawPrint(0, 0, "error read " + std::to_string(counter) + "       ");
 //                cout << "read fail" << "\n";
                 // m_socket.close(); ???
             }
@@ -85,11 +85,23 @@ void Server::onWrite()
     boost::asio::async_write(*m_socket,
         boost::asio::buffer(m_messageQueue.front().data(),
                             m_messageQueue.front().length()),
-        [this](boost::system::error_code ec, std::size_t /*length*/)
+        [this](boost::system::error_code ec, std::size_t length)
         {
+            counter++;
+            if (ec)
+            {
+                rawPrint(0, 0, "error write " + std::to_string(counter) + "       ");
+            }
+            else
+            {
+                rawPrint(0, 0, "write " + std::to_string(counter) + "       ");
+            }
+
+
             m_messageQueue.pop_front();
             if (!m_messageQueue.empty())
             {
+                rawPrint(0, 0, "write " + std::to_string(counter) + " " + std::to_string(length) + " ");
               onWrite();
             }
             else

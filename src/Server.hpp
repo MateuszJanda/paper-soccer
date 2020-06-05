@@ -35,6 +35,7 @@ private:
     std::function<void()> handleKeyboardMouseInput;
     std::function<void(const TmpMoveMsg&)> handleReadMsg;
 
+        int counter{0};
     TmpMoveMsg msg;
     std::deque<TmpMoveMsg> m_messageQueue;
 };

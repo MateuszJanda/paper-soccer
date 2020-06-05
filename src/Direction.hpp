@@ -6,7 +6,7 @@
 
 namespace PaperSoccer {
 
-enum class Direction : std::int32_t {
+enum class Direction : std::uint8_t {
     Top = 0,
     TopRight = 1,
     Right = 2,

@@ -1,4 +1,5 @@
 #include "Client.hpp"
+#include "NCurses.hpp"
 
 namespace PaperSoccer {
 
@@ -51,6 +52,7 @@ void Client::onReadMsg()
             if (!ec && msg.decode())
             {
                 handleReadMsg(msg);
+                onReadMsg();
             }
             else
             {
@@ -79,12 +81,24 @@ void Client::onWrite()
     boost::asio::async_write(m_socket,
         boost::asio::buffer(m_messageQueue.front().data(),
                             m_messageQueue.front().length()),
-        [this](boost::system::error_code ec, std::size_t /*length*/)
+        [this](boost::system::error_code ec, std::size_t length)
         {
+            counter++;
+            if (ec)
+            {
+                rawPrint(0, 0, "error write " + std::to_string(counter) + "       ");
+            }
+            else
+            {
+//                rawPrint(0, 0, "write " + std::to_string(counter) + "       ");
+                rawPrint(0, 0, "write " + std::to_string(m_socket.is_open()) + "       ");
+            }
+
             m_messageQueue.pop_front();
             if (!m_messageQueue.empty())
             {
-              onWrite();
+                rawPrint(0, 0, "write " + std::to_string(counter) + " " + std::to_string(length) + " ");
+                  onWrite();
             }
             else
             {

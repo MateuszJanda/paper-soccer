@@ -1,5 +1,7 @@
 # Create paper-soccer exe
 add_executable(${CMAKE_PROJECT_NAME}
+    NCurses.cpp
+    NCurses.hpp
     Server.cpp
     Server.hpp
     Client.cpp
@@ -14,8 +16,6 @@ add_executable(${CMAKE_PROJECT_NAME}
     Node.hpp
     Position.hpp
     Direction.hpp
-    NCurses.cpp
-    NCurses.hpp
     View.cpp
     View.hpp
     main.cpp

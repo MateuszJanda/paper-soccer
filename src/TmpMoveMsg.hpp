@@ -6,7 +6,7 @@
 
 namespace PaperSoccer {
 
-enum class Header : std::int32_t {
+enum class Header : std::uint8_t {
     TmpMove = 0
 };
 
