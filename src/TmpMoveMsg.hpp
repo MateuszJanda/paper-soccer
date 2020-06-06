@@ -28,8 +28,10 @@ struct TmpMoveMsg
 
     bool decode()
     {
-      std::strncat((char*)&header, (const char*)data_, HEADER_LENGTH);
-      std::strncat((char*)&dir, (const char*)data_ + HEADER_LENGTH, DIRECTION_LENGTH);
+//      std::strncat((char*)&header, (const char*)data_, HEADER_LENGTH);
+        header = (Header)data_[0];
+//      std::strncat((char*)&dir, (const char*)data_ + HEADER_LENGTH, DIRECTION_LENGTH);
+        dir = (Direction)data_[1];
       return true;
     }
 
