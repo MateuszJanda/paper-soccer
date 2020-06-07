@@ -1,4 +1,5 @@
-#pragma once
+#ifndef BOARD_MOCK
+#define BOARD_MOCK
 
 #include "IBoard.hpp"
 #include "gmock/gmock.h"
@@ -18,3 +19,5 @@ public:
 };
 
 } // namespace PaperSoccer
+
+#endif // BOARD_MOCK

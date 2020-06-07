@@ -1,4 +1,5 @@
-#pragma once
+#ifndef VIEW_MOCK
+#define VIEW_MOCK
 
 #include "IView.hpp"
 #include "gmock/gmock.h"
@@ -11,3 +12,5 @@ public:
 };
 
 } // namespace PaperSoccer
+
+#endif // VIEW_MOCK
