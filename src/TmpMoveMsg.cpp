@@ -8,4 +8,4 @@ TmpMoveMsg::TmpMoveMsg(Direction dir)
 {
 }
 
-}
+} // namespace PaperSoccer

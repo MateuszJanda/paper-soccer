@@ -138,4 +138,4 @@ TEST_F(NodeTest, checkNeighboursPositions)
     ASSERT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre(Position{1, 0}, Position{0, 1}));
 }
 
-}
+} // namespace PaperSoccer

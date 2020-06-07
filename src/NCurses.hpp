@@ -18,6 +18,6 @@ public:
     ~NCurses();
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // N_CURSES_HPP

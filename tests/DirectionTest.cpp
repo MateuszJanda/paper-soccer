@@ -71,4 +71,4 @@ TEST(DirectionTest, checkReverseDirection)
     }
 }
 
-}
+} // namespace PaperSoccer

@@ -42,6 +42,6 @@ struct TmpMoveMsg {
     uint8_t data_[HEADER_LENGTH + DIRECTION_LENGTH] = {};
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // TMP_MOVE_MSG_HPP

@@ -120,4 +120,4 @@ void Game::handleReadMsg(const TmpMoveMsg& msg)
     m_view.drawBoard();
 }
 
-}
+} // namespace PaperSoccer

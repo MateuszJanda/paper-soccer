@@ -30,4 +30,4 @@ TEST(PositionTest, checkAdd)
     ASSERT_EQ(p1, p2);
 }
 
-}
+} // namespace PaperSoccer

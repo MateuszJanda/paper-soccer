@@ -191,4 +191,4 @@ void View::printText(int x, int y, std::string str)
     m_ncurses.print(x, y, str);
 }
 
-}
+} // namespace PaperSoccer

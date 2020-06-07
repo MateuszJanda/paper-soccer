@@ -25,8 +25,8 @@ public:
 
 private:
     boost::asio::io_context& m_ioContext;
-    const boost::asio::ip::tcp::resolver::results_type& m_endpoints;
     boost::asio::ip::tcp::socket m_socket;
+    const boost::asio::ip::tcp::resolver::results_type& m_endpoints;
     boost::asio::posix::stream_descriptor m_desc;
 
     std::function<void()> handleKeyboardMouseInput;
@@ -37,6 +37,6 @@ private:
     std::deque<TmpMoveMsg> m_messageQueue;
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // CLIENT_HPP

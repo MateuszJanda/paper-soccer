@@ -185,4 +185,4 @@ TEST_F(BoardTest, checkMoveBallAndBounceOffTheGoalpost)
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);
 }
 
-}
+} // namespace PaperSoccer

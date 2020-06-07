@@ -280,4 +280,4 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
 }
 
-}
+} // namespace PaperSoccer

@@ -8,6 +8,7 @@ namespace PaperSoccer {
 
 Server::Server(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::endpoint& endpoint)
     : m_ioContext{ioContext}
+    , m_socket{ioContext}
     , m_acceptor{ioContext, endpoint}
     , m_desc{ioContext, 0}
     , msg{Direction::Top}
@@ -23,8 +24,7 @@ void Server::run(std::function<void()> handleKey, std::function<void(const TmpMo
 
 void Server::accept()
 {
-    m_socket = std::make_shared<boost::asio::ip::tcp::socket>(m_ioContext);
-    m_acceptor.async_accept(*m_socket,
+    m_acceptor.async_accept(m_socket,
         [this](boost::system::error_code errorCode) {
             if (not errorCode) {
                 setupHandlers();
@@ -45,7 +45,7 @@ void Server::onKeyboardMouseInput(boost::system::error_code errorCode)
 
 void Server::onReadMsg()
 {
-    boost::asio::async_read(*m_socket,
+    boost::asio::async_read(m_socket,
         boost::asio::buffer(msg.data_, msg.length()),
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             counter++;
@@ -75,7 +75,7 @@ void Server::send(const TmpMoveMsg& msg)
 
 void Server::onWrite()
 {
-    boost::asio::async_write(*m_socket,
+    boost::asio::async_write(m_socket,
         boost::asio::buffer(m_messageQueue.front().data(),
             m_messageQueue.front().length()),
         [this](boost::system::error_code ec, std::size_t length) {
@@ -102,4 +102,4 @@ void Server::setupHandlers()
     onKeyboardMouseInput(boost::system::error_code{});
 }
 
-}
+} // namespace PaperSoccer

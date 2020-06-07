@@ -41,6 +41,6 @@ private:
     INCurses& m_ncurses;
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // VIEW_HPP

@@ -96,4 +96,4 @@ void Client::setupHandlers()
     onKeyboardMouseInput(boost::system::error_code{});
 }
 
-}
+} // namespace PaperSoccer

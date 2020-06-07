@@ -27,6 +27,6 @@ private:
     View& m_view;
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // GAME_HPP

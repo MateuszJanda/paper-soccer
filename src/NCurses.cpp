@@ -73,4 +73,4 @@ NCurses::~NCurses()
     endwin();
 }
 
-}
+} // namespace PaperSoccer

@@ -26,9 +26,9 @@ public:
 
 private:
     boost::asio::io_context& m_ioContext;
+    boost::asio::ip::tcp::socket m_socket;
     boost::asio::ip::tcp::acceptor m_acceptor;
     boost::asio::posix::stream_descriptor m_desc;
-    std::shared_ptr<boost::asio::ip::tcp::socket> m_socket;
 
     std::function<void()> handleKeyboardMouseInput;
     std::function<void(const TmpMoveMsg&)> handleReadMsg;
@@ -38,6 +38,6 @@ private:
     std::deque<TmpMoveMsg> m_messageQueue;
 };
 
-}
+} // namespace PaperSoccer
 
 #endif // SERVER_HPP

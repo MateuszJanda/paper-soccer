@@ -15,5 +15,6 @@ public:
     virtual ~INCurses() = default;
 };
 
-}
+} // namespace PaperSoccer
+
 #endif // I_N_CURSES_HPP
