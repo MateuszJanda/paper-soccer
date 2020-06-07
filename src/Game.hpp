@@ -5,14 +5,13 @@
 #include "INCurses.hpp"
 #include "INetwork.hpp"
 #include "TmpMoveMsg.hpp"
-#include "View.hpp"
-#include <boost/asio.hpp>
+#include "IView.hpp"
 
 namespace PaperSoccer {
 
 class Game {
 public:
-    Game(INetwork& network, IBoard& board, INCurses& ncurses, View& view);
+    Game(INetwork& network, IBoard& board, INCurses& ncurses, IView &view);
 
     void run();
     void handleKeyboardMouseInput();
@@ -24,7 +23,7 @@ private:
     INetwork& m_network;
     IBoard& m_board;
     INCurses& m_ncurses;
-    View& m_view;
+    IView& m_view;
 };
 
 } // namespace PaperSoccer

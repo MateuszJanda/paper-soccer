@@ -1,16 +1,10 @@
 #include "Game.hpp"
 #include <TmpMoveMsg.hpp>
-#include <boost/asio.hpp>
-#include <boost/asio/posix/descriptor.hpp>
-#include <iostream>
 #include <sstream>
-#include <thread>
 
 namespace PaperSoccer {
 
-using boost::asio::ip::tcp;
-
-Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, View& view)
+Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     : m_network{network}
     , m_board{board}
     , m_ncurses{ncurses}

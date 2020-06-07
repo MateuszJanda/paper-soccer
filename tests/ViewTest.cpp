@@ -44,6 +44,7 @@ public:
         EXPECT_CALL(boardMock, getHeight()).WillRepeatedly(Return(HEIGHT));
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
+
     StrictMock<BoardMock> boardMock;
     StrictMock<NCursesMock> ncursesMock;
     View view;

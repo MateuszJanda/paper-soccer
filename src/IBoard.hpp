@@ -17,6 +17,8 @@ enum MoveStatus {
 
 class IBoard {
 public:
+    virtual ~IBoard() = default;
+
     virtual std::size_t getWidth() const = 0;
     virtual std::size_t getHeight() const = 0;
     virtual std::size_t getGoalpostLeft() const = 0;
@@ -25,8 +27,6 @@ public:
     virtual Position getBallPosition() const = 0;
     virtual bool hasNeighbour(Position pos, Direction dir) const = 0;
     virtual MoveStatus moveBall(Direction dir) = 0;
-
-    virtual ~IBoard() = default;
 };
 
 } // namespace PaperSoccer

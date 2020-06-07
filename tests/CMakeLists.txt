@@ -3,6 +3,8 @@ set(BINARY runTests)
 set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCES
+    ${SOURCES_DIR}/Game.cpp
+    ${SOURCES_DIR}/TmpMoveMsg.cpp
     ${SOURCES_DIR}/Board.cpp
     ${SOURCES_DIR}/Node.cpp
     ${SOURCES_DIR}/View.cpp
@@ -15,6 +17,7 @@ add_test(NAME ${BINARY} COMMAND ${BINARY})
 
 add_executable(${BINARY}
     runTests.cpp
+    GameTest.cpp
     BoardTest.cpp
     NodeTest.cpp
     PositionTest.cpp
