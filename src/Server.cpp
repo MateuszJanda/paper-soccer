@@ -15,10 +15,15 @@ Server::Server(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::e
 {
 }
 
-void Server::run(std::function<void()> handleKey, std::function<void(const TmpMoveMsg&)> handleR)
+void Server::registerHandlers(std::function<void()> handleKey,
+                      std::function<void(const TmpMoveMsg&)> handleMoveMsg)
 {
-    handleKeyboardMouseInput = handleKey;
-    handleReadMsg = handleR;
+    m_handleKeyboardMouseInput = handleKey;
+    m_handleMoveMsg = handleMoveMsg;
+}
+
+void Server::run()
+{
     accept();
 }
 
@@ -37,7 +42,7 @@ void Server::onKeyboardMouseInput(boost::system::error_code errorCode)
     using namespace std::placeholders;
 
     if (not errorCode) {
-        handleKeyboardMouseInput();
+        m_handleKeyboardMouseInput();
         m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read,
             std::bind(&Server::onKeyboardMouseInput, this, _1));
     }
@@ -50,7 +55,7 @@ void Server::onReadMsg()
         [this](boost::system::error_code ec, std::size_t /*length*/) {
             counter++;
             if (!ec && msg.decode()) {
-                handleReadMsg(msg);
+                m_handleMoveMsg(msg);
                 rawPrint(0, 0, "ok read " + std::to_string((int)msg.dir) + "       ");
                 onReadMsg();
             } else {

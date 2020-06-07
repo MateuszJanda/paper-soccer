@@ -12,10 +12,16 @@ Client::Client(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::r
 {
 }
 
-void Client::run(std::function<void()> handleKey, std::function<void(const TmpMoveMsg&)> handleR)
+void Client::registerHandlers(std::function<void()> handleKey,
+                      std::function<void(const TmpMoveMsg&)> handleMoveMsg)
 {
-    handleKeyboardMouseInput = handleKey;
-    handleReadMsg = handleR;
+    m_handleKeyboardMouseInput = handleKey;
+    m_handleMoveMsg = handleMoveMsg;
+}
+
+
+void Client::run()
+{
     connect(m_endpoints);
 }
 
@@ -34,7 +40,7 @@ void Client::onKeyboardMouseInput(boost::system::error_code errorCode)
     using namespace std::placeholders;
 
     if (not errorCode) {
-        handleKeyboardMouseInput();
+        m_handleKeyboardMouseInput();
         m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read,
             std::bind(&Client::onKeyboardMouseInput, this, _1));
     }
@@ -46,7 +52,7 @@ void Client::onReadMsg()
         boost::asio::buffer(msg.data_, msg.length()),
         [&, this](boost::system::error_code ec, std::size_t /*length*/) {
             if (!ec && msg.decode()) {
-                handleReadMsg(msg);
+                m_handleMoveMsg(msg);
                 onReadMsg();
             } else {
                 // m_socket.close(); ???

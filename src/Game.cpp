@@ -22,8 +22,9 @@ void Game::run()
 {
     using namespace std::placeholders;
 
-    m_network.run(std::bind(&Game::handleKeyboardMouseInput, this),
-        std::bind(&Game::handleReadMsg, this, _1));
+    m_network.registerHandlers(std::bind(&Game::handleKeyboardMouseInput, this),
+        std::bind(&Game::handleMoveMsg, this, _1));
+    m_network.run();
 }
 
 Direction Game::keyToDirection(int c)
@@ -113,7 +114,7 @@ void Game::handleKeyboardMouseInput()
     }
 }
 
-void Game::handleReadMsg(const TmpMoveMsg& msg)
+void Game::handleMoveMsg(const TmpMoveMsg& msg)
 {
     //    m_view.printText(0, 1, "read");
     m_board.moveBall(msg.dir);

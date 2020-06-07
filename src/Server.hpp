@@ -17,7 +17,9 @@ public:
     void accept();
     void setupHandlers();
 
-    void run(std::function<void()> handleKey, std::function<void(const TmpMoveMsg&)> handleR) override;
+    void registerHandlers(std::function<void()> handleKey,
+                          std::function<void(const TmpMoveMsg&)> handleMoveMsg) override;
+    void run() override;
     void send(const TmpMoveMsg& msg) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
@@ -30,8 +32,8 @@ private:
     boost::asio::ip::tcp::acceptor m_acceptor;
     boost::asio::posix::stream_descriptor m_desc;
 
-    std::function<void()> handleKeyboardMouseInput;
-    std::function<void(const TmpMoveMsg&)> handleReadMsg;
+    std::function<void()> m_handleKeyboardMouseInput;
+    std::function<void(const TmpMoveMsg&)> m_handleMoveMsg;
 
     int counter{0};
     TmpMoveMsg msg;
