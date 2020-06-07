@@ -1,13 +1,13 @@
-#include "Server.hpp"
+#include "Board.hpp"
 #include "Client.hpp"
 #include "Game.hpp"
-#include "Board.hpp"
 #include "NCurses.hpp"
 #include "Node.hpp"
-#include "View.hpp"
+#include "Server.hpp"
 #include "TmpMoveMsg.hpp"
-#include <iostream>
+#include "View.hpp"
 #include <boost/asio.hpp>
+#include <iostream>
 
 using namespace std;
 using namespace PaperSoccer;
@@ -31,7 +31,7 @@ void runServer()
 
     // https://www.boost.org/doc/libs/1_73_0/doc/html/boost_asio/overview/core/threads.html
     // Asynchronous completion handlers will only be called from threads that are currently calling io_context::run().
-    std::thread t([&ioContext](){ ioContext.run(); });
+    std::thread t([&ioContext]() { ioContext.run(); });
     t.join();
 }
 
@@ -54,29 +54,26 @@ void runClient()
     Game game{client, board, ncurses, view};
     game.run();
 
-    std::thread t([&ioContext](){ ioContext.run(); });
+    std::thread t([&ioContext]() { ioContext.run(); });
     t.join();
 }
 
 int main(int argc, char** argv)
 {
-    if (argc == 2 and std::string(argv[1]) == "-s")
-    {
+    if (argc == 2 and std::string(argv[1]) == "-s") {
         runServer();
-    }
-    else
-    {
+    } else {
         runClient();
     }
 
-//    Board b{8, 10};
-//    NCurses nn;
-//    View v{b, nn};
-//    v.drawBoard();
+    //    Board b{8, 10};
+    //    NCurses nn;
+    //    View v{b, nn};
+    //    v.drawBoard();
 
-//    Game game{b, nn, v};
-//    game.run2(ioContext);
+    //    Game game{b, nn, v};
+    //    game.run2(ioContext);
 
-//    std::thread t([&ioContext](){ ioContext.run(); });
-//    t.join();
+    //    std::thread t([&ioContext](){ ioContext.run(); });
+    //    t.join();
 }

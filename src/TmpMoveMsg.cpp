@@ -2,12 +2,10 @@
 
 namespace PaperSoccer {
 
-
-TmpMoveMsg::TmpMoveMsg(Direction dir) :
-    header{Header::TmpMove},
-    dir{dir}
+TmpMoveMsg::TmpMoveMsg(Direction dir)
+    : header{Header::TmpMove}
+    , dir{dir}
 {
-
 }
 
 }

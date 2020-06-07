@@ -1,6 +1,6 @@
 #include "NCurses.hpp"
-#include <ncurses.h>
 #include <clocale>
+#include <ncurses.h>
 
 namespace PaperSoccer {
 
@@ -21,7 +21,7 @@ NCurses::NCurses()
     // set the cursor mode - Invisible
     curs_set(0);
 
-//    ESCDELAY = 0;
+    //    ESCDELAY = 0;
     set_escdelay(0);
     // If delay is zero, then non-blocking read is used (i.e., read returns ERR if no input is waiting)
     timeout(0);
@@ -46,13 +46,11 @@ std::tuple<int, int, int> NCurses::getChar()
 {
     int c = getch();
     MEVENT event;
-    switch(c)
-    {
+    switch (c) {
     case KEY_MOUSE:
-        if(getmouse(&event) == OK)
-        {
-//            printw("Click");
-            if(event.bstate & BUTTON1_PRESSED) // This works for left-click
+        if (getmouse(&event) == OK) {
+            //            printw("Click");
+            if (event.bstate & BUTTON1_PRESSED) // This works for left-click
             {
                 return std::make_tuple(1000, event.x, event.y);
             }

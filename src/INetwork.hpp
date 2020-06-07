@@ -1,10 +1,9 @@
 #ifndef I_NETWORK_HPP
 #define I_NETWORK_HPP
 
-#include <boost/asio.hpp>
 #include "TmpMoveMsg.hpp"
+#include <boost/asio.hpp>
 #include <functional>
-
 
 namespace PaperSoccer {
 

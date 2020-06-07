@@ -1,24 +1,23 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include <boost/asio.hpp>
 #include "INetwork.hpp"
 #include "TmpMoveMsg.hpp"
-#include <functional>
+#include <boost/asio.hpp>
 #include <deque>
+#include <functional>
 
 namespace PaperSoccer {
 
-class Client : public INetwork
-{
+class Client : public INetwork {
 public:
-    Client(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::resolver::results_type &endpoints);
+    Client(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::resolver::results_type& endpoints);
 
     void connect(const boost::asio::ip::tcp::resolver::results_type& endpoints);
     void setupHandlers();
 
-    void run(std::function<void()> handleKey, std::function<void(const TmpMoveMsg &)> handleR) override;
-    void send(const TmpMoveMsg &msg) override;
+    void run(std::function<void()> handleKey, std::function<void(const TmpMoveMsg&)> handleR) override;
+    void send(const TmpMoveMsg& msg) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
     void onReadMsg();

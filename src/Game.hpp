@@ -3,21 +3,21 @@
 
 #include "IBoard.hpp"
 #include "INCurses.hpp"
-#include "View.hpp"
 #include "INetwork.hpp"
 #include "TmpMoveMsg.hpp"
+#include "View.hpp"
 #include <boost/asio.hpp>
 
 namespace PaperSoccer {
 
 class Game {
 public:
-    Game(INetwork& network, IBoard& board, INCurses& ncurses, View &view);
+    Game(INetwork& network, IBoard& board, INCurses& ncurses, View& view);
 
     void run();
     void handleKeyboardMouseInput();
     void makeMove(int d, int x, int y);
-    void handleReadMsg(const TmpMoveMsg &msg);
+    void handleReadMsg(const TmpMoveMsg& msg);
     Direction keyToDirection(int c);
 
 private:

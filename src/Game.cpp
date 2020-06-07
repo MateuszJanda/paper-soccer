@@ -1,37 +1,34 @@
 #include "Game.hpp"
-#include <iostream>
-#include <thread>
-#include <sstream>
 #include <TmpMoveMsg.hpp>
 #include <boost/asio.hpp>
 #include <boost/asio/posix/descriptor.hpp>
-
+#include <iostream>
+#include <sstream>
+#include <thread>
 
 namespace PaperSoccer {
 
 using boost::asio::ip::tcp;
 
-Game::Game(INetwork &network, IBoard& board, INCurses& ncurses, View& view)
-  : m_network{network},
-    m_board{board}
-  , m_ncurses{ncurses}
-  , m_view{view}
+Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, View& view)
+    : m_network{network}
+    , m_board{board}
+    , m_ncurses{ncurses}
+    , m_view{view}
 {
-
 }
 
 void Game::run()
 {
     using namespace std::placeholders;
 
-
     m_network.run(std::bind(&Game::handleKeyboardMouseInput, this),
-                  std::bind(&Game::handleReadMsg, this, _1));
+        std::bind(&Game::handleReadMsg, this, _1));
 }
 
 Direction Game::keyToDirection(int c)
 {
-    switch(c) {
+    switch (c) {
     case 'q':
         return Direction::TopLeft;
     case 'w':
@@ -53,10 +50,9 @@ Direction Game::keyToDirection(int c)
     return Direction::Top;
 }
 
-
 void Game::makeMove(int c, int x, int y)
 {
-    switch(c) {
+    switch (c) {
     case 'q':
         m_board.moveBall(Direction::TopLeft);
         m_view.drawBoard();
@@ -91,11 +87,10 @@ void Game::makeMove(int c, int x, int y)
         break;
     }
 
-    if (c == 1000)
-    {
+    if (c == 1000) {
         std::stringstream sss;
         sss << "Mouse " << x << " " << y << "                             ";
-//        m_view.printText(0, 1, sss.str());
+        //        m_view.printText(0, 1, sss.str());
     } else if (c != -1) {
         Direction dir = keyToDirection(c);
         TmpMoveMsg msg{dir};
@@ -106,23 +101,21 @@ void Game::makeMove(int c, int x, int y)
 void Game::handleKeyboardMouseInput()
 {
     std::stringstream ss;
-//    ss << "OnLoop: " << std::this_thread::get_id();
-//    m_view.printText(0, 1, ss.str());
+    //    ss << "OnLoop: " << std::this_thread::get_id();
+    //    m_view.printText(0, 1, ss.str());
 
-    while(1)
-    {
+    while (1) {
         auto [c, x, y] = m_ncurses.getChar();
-//        m_view.printText(0, 1, std::to_string(c));
+        //        m_view.printText(0, 1, std::to_string(c));
         if (c == /*ERR*/ -1)
-                break;
+            break;
         makeMove(c, x, y);
     }
-
 }
 
 void Game::handleReadMsg(const TmpMoveMsg& msg)
 {
-//    m_view.printText(0, 1, "read");
+    //    m_view.printText(0, 1, "read");
     m_board.moveBall(msg.dir);
     m_view.drawBoard();
 }
