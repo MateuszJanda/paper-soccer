@@ -16,7 +16,7 @@ public:
 
     void run();
     void handleKeyboardMouseInput();
-    void makeMove(int d, int x, int y);
+    void makeMove(int key);
     void handleMoveMsg(const TmpMoveMsg& msg);
     Direction keyToDirection(int c);
 
