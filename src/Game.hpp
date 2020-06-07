@@ -6,6 +6,7 @@
 #include "INetwork.hpp"
 #include "TmpMoveMsg.hpp"
 #include "IView.hpp"
+#include <map>
 
 namespace PaperSoccer {
 
@@ -24,6 +25,8 @@ private:
     IBoard& m_board;
     INCurses& m_ncurses;
     IView& m_view;
+
+    const std::map<char, Direction> m_keyMap;
 };
 
 } // namespace PaperSoccer

@@ -42,25 +42,22 @@ void NCurses::print(int x, int y, std::string str)
     mvprintw(y, x, str.c_str());
 }
 
-std::tuple<int, int, int> NCurses::getChar()
+std::optional<Input> NCurses::getChar()
 {
     int c = getch();
     MEVENT event;
-    switch (c) {
-    case KEY_MOUSE:
-        if (getmouse(&event) == OK) {
-            //            printw("Click");
-            if (event.bstate & BUTTON1_PRESSED) // This works for left-click
-            {
-                return std::make_tuple(1000, event.x, event.y);
-            }
-        }
-        break;
-    default:
-        return std::make_tuple(c, 0, 0);
+
+    if (c == ERR)
+    {
+        return std::nullopt;
+    }
+    // This works for left-click
+    else if (c == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED))
+    {
+        return MouseData{event.x, event.y};
     }
 
-    return std::make_tuple(c, 0, 0);
+    return KeyData{c};
 }
 
 void NCurses::refreshView()

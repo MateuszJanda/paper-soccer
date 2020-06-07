@@ -23,9 +23,14 @@ public:
     Game game;
 };
 
-
-TEST_F(GameTest, first)
+TEST_F(GameTest, run)
 {
+    using namespace std::placeholders;
+
+    EXPECT_CALL(networkMock, registerHandlers(_, _));
+    EXPECT_CALL(networkMock, run());
+
+    game.run();
 }
 
 } // namespace PaperSoccer

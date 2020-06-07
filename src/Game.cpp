@@ -4,11 +4,23 @@
 
 namespace PaperSoccer {
 
+template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+
 Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     : m_network{network}
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}
+    , m_keyMap{{'q', Direction::TopLeft},
+          {'u', Direction::TopLeft},
+          {'i', Direction::Top},
+          {'o', Direction::TopRight},
+          {'j', Direction::Left},
+          {'l', Direction::Right},
+          {'m', Direction::BottomLeft},
+          {',', Direction::Bottom},
+          {'.', Direction::BottomRight}}
 {
 }
 
@@ -87,7 +99,9 @@ void Game::makeMove(int c, int x, int y)
         sss << "Mouse " << x << " " << y << "                             ";
         //        m_view.printText(0, 1, sss.str());
     } else if (c != -1) {
+
         Direction dir = keyToDirection(c);
+//        m_ncurses.print(0, 0, "send " + std::to_string(int(dir))) ;
         TmpMoveMsg msg{dir};
         m_network.send(msg);
     }
@@ -95,22 +109,28 @@ void Game::makeMove(int c, int x, int y)
 
 void Game::handleKeyboardMouseInput()
 {
-    std::stringstream ss;
-    //    ss << "OnLoop: " << std::this_thread::get_id();
-    //    m_view.printText(0, 1, ss.str());
+    while (true) {
+//        auto [c, x, y] = m_ncurses.getChar();
+        auto v = m_ncurses.getChar();
 
-    while (1) {
-        auto [c, x, y] = m_ncurses.getChar();
-        //        m_view.printText(0, 1, std::to_string(c));
-        if (c == /*ERR*/ -1)
+        if (not v)
             break;
-        makeMove(c, x, y);
+
+        std::visit(overloaded {
+            [this](const KeyData& data) { makeMove(data.key, 0, 0); },
+            [this](const MouseData& data) {  },
+        }, *v);
+
+//        if (c == /*ERR*/ -1)
+//            break;
+
+//        makeMove(c, x, y);
     }
+        m_ncurses.print(0, 0, "end ") ;
 }
 
 void Game::handleMoveMsg(const TmpMoveMsg& msg)
 {
-    //    m_view.printText(0, 1, "read");
     m_board.moveBall(msg.dir);
     m_view.drawBoard();
 }

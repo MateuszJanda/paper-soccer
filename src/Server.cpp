@@ -16,7 +16,7 @@ Server::Server(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::e
 }
 
 void Server::registerHandlers(std::function<void()> handleKey,
-                      std::function<void(const TmpMoveMsg&)> handleMoveMsg)
+    std::function<void(const TmpMoveMsg&)> handleMoveMsg)
 {
     m_handleKeyboardMouseInput = handleKey;
     m_handleMoveMsg = handleMoveMsg;
