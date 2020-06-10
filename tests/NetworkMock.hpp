@@ -1,5 +1,5 @@
-#ifndef NETWORK_MOCK
-#define NETWORK_MOCK
+#ifndef NETWORK_MOCK_HPP
+#define NETWORK_MOCK_HPP
 
 #include "INetwork.hpp"
 #include "gmock/gmock.h"
@@ -16,4 +16,4 @@ public:
 
 } // namespace PaperSoccer
 
-#endif // NETWORK_MOCK
+#endif // NETWORK_MOCK_HPP

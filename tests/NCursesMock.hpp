@@ -1,5 +1,5 @@
-#ifndef NCURSES_MOCK
-#define NCURSES_MOCK
+#ifndef NCURSES_MOCK_HPP
+#define NCURSES_MOCK_HPP
 
 #include "INCurses.hpp"
 #include "gmock/gmock.h"
@@ -15,4 +15,4 @@ public:
 
 } // namespace PaperSoccer
 
-#endif // NCURSES_MOCK
+#endif // NCURSES_MOCK_HPP
