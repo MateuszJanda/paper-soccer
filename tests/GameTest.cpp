@@ -33,4 +33,27 @@ TEST_F(GameTest, run)
     game.run();
 }
 
+TEST_F(GameTest, notKnownKey)
+{
+    game.makeUserMove('0');
+}
+
+TEST_F(GameTest, makeUserMove)
+{
+    EXPECT_CALL(boardMock, moveBall(Direction::Left));
+    EXPECT_CALL(viewMock, drawBoard());
+    EXPECT_CALL(networkMock, sendMove(Direction::Left));
+
+    game.makeUserMove('j');
+}
+
+TEST_F(GameTest, onEnemyMove)
+{
+    EXPECT_CALL(boardMock, moveBall(Direction::Bottom));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.onEnemyMove(Direction::Bottom);
+
+}
+
 } // namespace PaperSoccer

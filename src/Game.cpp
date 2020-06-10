@@ -32,18 +32,6 @@ void Game::run()
     m_network.run();
 }
 
-void Game::makeUserMove(int key)
-{
-    if (not m_keyMap.contains(key))
-        return;
-
-    Direction dir = m_keyMap.at(key);
-    m_board.moveBall(dir);
-    m_view.drawBoard();
-
-    m_network.sendMove(dir);
-}
-
 void Game::onKeyboardMouseInput()
 {
     while (true) {
@@ -56,8 +44,19 @@ void Game::onKeyboardMouseInput()
             [this](const KeyData& data) { makeUserMove(data.key); },
             [this](const MouseData& data) {  },
         }, *v);
-
     }
+}
+
+void Game::makeUserMove(int key)
+{
+    if (not m_keyMap.contains(key))
+        return;
+
+    Direction dir = m_keyMap.at(key);
+    m_board.moveBall(dir);
+    m_view.drawBoard();
+
+    m_network.sendMove(dir);
 }
 
 void Game::onEnemyMove(const Direction& dir)
