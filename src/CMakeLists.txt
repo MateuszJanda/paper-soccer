@@ -2,6 +2,8 @@
 add_executable(${CMAKE_PROJECT_NAME}
     NCurses.cpp
     NCurses.hpp
+    Network.cpp
+    Network.hpp
     Server.cpp
     Server.hpp
     Client.cpp
