@@ -15,11 +15,11 @@ Server::Server(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::e
 {
 }
 
-void Server::registerHandlers(std::function<void()> handleKey,
-    std::function<void(const TmpMoveMsg&)> handleMoveMsg)
+void Server::registerHandlers(std::function<void()> handleKeyboardMouseInput,
+    std::function<void(const TmpMoveMsg&)> handleMove)
 {
-    m_handleKeyboardMouseInput = handleKey;
-    m_handleMoveMsg = handleMoveMsg;
+    m_handleKeyboardMouseInput = handleKeyboardMouseInput;
+    m_handleMoveMsg = handleMove;
 }
 
 void Server::run()
@@ -48,7 +48,7 @@ void Server::onKeyboardMouseInput(boost::system::error_code errorCode)
     }
 }
 
-void Server::onReadMsg()
+void Server::onRead()
 {
     boost::asio::async_read(m_socket,
         boost::asio::buffer(msg.data_, msg.length()),
@@ -57,7 +57,7 @@ void Server::onReadMsg()
             if (!ec && msg.decode()) {
                 m_handleMoveMsg(msg);
                 rawPrint(0, 0, "ok read " + std::to_string((int)msg.dir) + "       ");
-                onReadMsg();
+                onRead();
             } else {
                 rawPrint(0, 0, "error read " + std::to_string(counter) + "       ");
                 //                cout << "read fail" << "\n";
@@ -103,7 +103,7 @@ void Server::onWrite()
 
 void Server::setupHandlers()
 {
-    onReadMsg();
+    onRead();
     onKeyboardMouseInput(boost::system::error_code{});
 }
 

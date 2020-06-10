@@ -16,8 +16,8 @@ public:
     void connect(const boost::asio::ip::tcp::resolver::results_type& endpoints);
     void setupHandlers();
 
-    void registerHandlers(std::function<void()> handleKey,
-                          std::function<void(const TmpMoveMsg&)> handleMoveMsg) override;
+    void registerHandlers(std::function<void()> handleKeyboardMouseInput,
+                          std::function<void(const TmpMoveMsg&)> handleMove) override;
     void run() override;
     void send(const TmpMoveMsg& msg) override;
 

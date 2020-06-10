@@ -17,13 +17,13 @@ public:
     void accept();
     void setupHandlers();
 
-    void registerHandlers(std::function<void()> handleKey,
-                          std::function<void(const TmpMoveMsg&)> handleMoveMsg) override;
+    void registerHandlers(std::function<void()> handleKeyboardMouseInput,
+                          std::function<void(const TmpMoveMsg&)> handleMove) override;
     void run() override;
     void send(const TmpMoveMsg& msg) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
-    void onReadMsg();
+    void onRead();
     void onWrite();
 
 private:

@@ -28,8 +28,8 @@ void Game::run()
 {
     using namespace std::placeholders;
 
-    m_network.registerHandlers(std::bind(&Game::handleKeyboardMouseInput, this),
-        std::bind(&Game::handleMoveMsg, this, _1));
+    m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
+        std::bind(&Game::onMove, this, _1));
     m_network.run();
 }
 
@@ -46,7 +46,7 @@ void Game::makeMove(int key)
     m_network.send(msg);
 }
 
-void Game::handleKeyboardMouseInput()
+void Game::onKeyboardMouseInput()
 {
     while (true) {
         auto v = m_ncurses.getChar();
@@ -62,7 +62,7 @@ void Game::handleKeyboardMouseInput()
     }
 }
 
-void Game::handleMoveMsg(const TmpMoveMsg& msg)
+void Game::onMove(const TmpMoveMsg& msg)
 {
     m_board.moveBall(msg.dir);
     m_view.drawBoard();

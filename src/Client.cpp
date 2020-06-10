@@ -12,11 +12,11 @@ Client::Client(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::r
 {
 }
 
-void Client::registerHandlers(std::function<void()> handleKey,
-    std::function<void(const TmpMoveMsg&)> handleMoveMsg)
+void Client::registerHandlers(std::function<void()> handleKeyboardMouseInput,
+    std::function<void(const TmpMoveMsg&)> handleMove)
 {
-    m_handleKeyboardMouseInput = handleKey;
-    m_handleMoveMsg = handleMoveMsg;
+    m_handleKeyboardMouseInput = handleKeyboardMouseInput;
+    m_handleMoveMsg = handleMove;
 }
 
 void Client::run()

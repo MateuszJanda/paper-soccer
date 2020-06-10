@@ -15,9 +15,9 @@ public:
     Game(INetwork& network, IBoard& board, INCurses& ncurses, IView &view);
 
     void run();
-    void handleKeyboardMouseInput();
+    void onKeyboardMouseInput();
+    void onMove(const TmpMoveMsg& msg);
     void makeMove(int key);
-    void handleMoveMsg(const TmpMoveMsg& msg);
     Direction keyToDirection(int c);
 
 private:

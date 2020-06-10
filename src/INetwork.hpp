@@ -10,8 +10,8 @@ class INetwork {
 public:
     virtual ~INetwork() = default;
 
-    virtual void registerHandlers(std::function<void()> handleKey,
-                                  std::function<void(const TmpMoveMsg&)> handleMoveMsg) = 0;
+    virtual void registerHandlers(std::function<void()> handleKeyboardMouseInput,
+                                  std::function<void(const TmpMoveMsg&)> handleMove) = 0;
     virtual void run() = 0;
     virtual void send(const TmpMoveMsg& msg) = 0;
 };
