@@ -35,15 +35,15 @@ void Game::run()
 void Game::onKeyboardMouseInput()
 {
     while (true) {
-        auto v = m_ncurses.getChar();
+        auto input = m_ncurses.getInput();
 
-        if (not v)
+        if (not input)
             break;
 
         std::visit(overloaded {
             [this](const KeyData& data) { makeUserMove(data.key); },
             [this](const MouseData& data) {  },
-        }, *v);
+        }, *input);
     }
 }
 

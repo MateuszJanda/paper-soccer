@@ -37,11 +37,11 @@ TEST_F(GameTest, onKeyboardInput)
 {
     InSequence s;
 
-    EXPECT_CALL(ncursesMock, getChar()).WillOnce(Return(std::make_optional(KeyData{.key='j'})));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyData{.key='j'})));
     EXPECT_CALL(boardMock, moveBall(Direction::Left));
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
-    EXPECT_CALL(ncursesMock, getChar()).WillOnce(Return(std::nullopt));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
     game.onKeyboardMouseInput();
 }
@@ -50,8 +50,8 @@ TEST_F(GameTest, onMosueInput)
 {
     InSequence s;
 
-    EXPECT_CALL(ncursesMock, getChar()).WillOnce(Return(std::make_optional(MouseData{.x=2, .y=1})));
-    EXPECT_CALL(ncursesMock, getChar()).WillOnce(Return(std::nullopt));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(MouseData{.x=2, .y=1})));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
     game.onKeyboardMouseInput();
 }

@@ -26,7 +26,7 @@ public:
     virtual ~INCurses() = default;
 
     virtual void print(int x, int y, std::string str) = 0;
-    virtual std::optional<Input> getChar() = 0;
+    virtual std::optional<Input> getInput() = 0;
     virtual void refreshView() = 0;
 };
 

@@ -35,6 +35,11 @@ NCurses::NCurses()
     refresh();
 }
 
+NCurses::~NCurses()
+{
+    endwin();
+}
+
 void NCurses::print(int x, int y, std::string str)
 {
     int pair = 0;
@@ -42,32 +47,27 @@ void NCurses::print(int x, int y, std::string str)
     mvprintw(y, x, str.c_str());
 }
 
-std::optional<Input> NCurses::getChar()
+std::optional<Input> NCurses::getInput()
 {
-    int c = getch();
+    int key = getch();
     MEVENT event;
 
-    if (c == ERR)
+    if (key == ERR)
     {
         return std::nullopt;
     }
     // This works for left-click
-    else if (c == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED))
+    else if (key == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED))
     {
-        return MouseData{event.x, event.y};
+        return MouseData{.x=event.x, .y=event.y};
     }
 
-    return KeyData{c};
+    return KeyData{.key=key};
 }
 
 void NCurses::refreshView()
 {
     refresh();
-}
-
-NCurses::~NCurses()
-{
-    endwin();
 }
 
 } // namespace PaperSoccer

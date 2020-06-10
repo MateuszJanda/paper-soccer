@@ -10,12 +10,12 @@ void rawPrint(int x, int y, std::string str);
 class NCurses : public INCurses {
 public:
     NCurses();
+    ~NCurses() override;
+
     void print(int x, int y, std::string str) override;
-    std::optional<Input> getChar() override;
+    std::optional<Input> getInput() override;
 
     void refreshView() override;
-
-    ~NCurses() override;
 };
 
 } // namespace PaperSoccer
