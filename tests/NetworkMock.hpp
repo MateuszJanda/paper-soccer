@@ -9,9 +9,9 @@ namespace PaperSoccer {
 class NetworkMock : public INetwork {
 public:
     MOCK_METHOD0(run, void());
-    MOCK_METHOD1(send, void(const TmpMoveMsg&));
+    MOCK_METHOD1(sendMove, void(const Direction&));
     MOCK_METHOD2(registerHandlers, void(std::function<void()>,
-                                        std::function<void(const TmpMoveMsg&)>));
+                                        std::function<void(const Direction&)>));
 };
 
 } // namespace PaperSoccer

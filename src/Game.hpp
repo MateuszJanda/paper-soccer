@@ -4,7 +4,6 @@
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "INetwork.hpp"
-#include "TmpMoveMsg.hpp"
 #include "IView.hpp"
 #include <map>
 
@@ -16,9 +15,8 @@ public:
 
     void run();
     void onKeyboardMouseInput();
-    void onMove(const TmpMoveMsg& msg);
-    void makeMove(int key);
-    Direction keyToDirection(int c);
+    void onEnemyMove(const Direction& dir);
+    void makeUserMove(int key);
 
 private:
     INetwork& m_network;

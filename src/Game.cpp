@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <TmpMoveMsg.hpp>
 #include <sstream>
 
 namespace PaperSoccer {
@@ -29,11 +28,11 @@ void Game::run()
     using namespace std::placeholders;
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
-        std::bind(&Game::onMove, this, _1));
+        std::bind(&Game::onEnemyMove, this, _1));
     m_network.run();
 }
 
-void Game::makeMove(int key)
+void Game::makeUserMove(int key)
 {
     if (not m_keyMap.contains(key))
         return;
@@ -42,8 +41,7 @@ void Game::makeMove(int key)
     m_board.moveBall(dir);
     m_view.drawBoard();
 
-    TmpMoveMsg msg{dir};
-    m_network.send(msg);
+    m_network.sendMove(dir);
 }
 
 void Game::onKeyboardMouseInput()
@@ -55,16 +53,16 @@ void Game::onKeyboardMouseInput()
             break;
 
         std::visit(overloaded {
-            [this](const KeyData& data) { makeMove(data.key); },
+            [this](const KeyData& data) { makeUserMove(data.key); },
             [this](const MouseData& data) {  },
         }, *v);
 
     }
 }
 
-void Game::onMove(const TmpMoveMsg& msg)
+void Game::onEnemyMove(const Direction& dir)
 {
-    m_board.moveBall(msg.dir);
+    m_board.moveBall(dir);
     m_view.drawBoard();
 }
 
