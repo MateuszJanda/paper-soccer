@@ -2,7 +2,7 @@
 #define NETWORK_HPP
 
 #include "INetwork.hpp"
-#include "TmpMoveMsg.hpp"
+#include "MoveMsg.hpp"
 #include <boost/asio.hpp>
 #include <deque>
 #include <functional>
@@ -37,8 +37,8 @@ private:
     std::function<void()> m_handleKeyboardMouseInput;
     std::function<void(const Direction&)> m_handleEnemyMove;
 
-    TmpMoveMsg msg;
-    std::deque<TmpMoveMsg> m_messageQueue;
+    MoveMsg msg;
+    std::deque<MoveMsg> m_messageQueue;
 };
 
 } // namespace PaperSoccer

@@ -4,7 +4,7 @@ set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCES
     ${SOURCES_DIR}/Game.cpp
-    ${SOURCES_DIR}/TmpMoveMsg.cpp
+    ${SOURCES_DIR}/MoveMsg.cpp
     ${SOURCES_DIR}/Board.cpp
     ${SOURCES_DIR}/Node.cpp
     ${SOURCES_DIR}/View.cpp

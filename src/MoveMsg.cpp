@@ -1,8 +1,8 @@
-#include "TmpMoveMsg.hpp"
+#include "MoveMsg.hpp"
 
 namespace PaperSoccer {
 
-TmpMoveMsg::TmpMoveMsg(Direction dir)
+MoveMsg::MoveMsg(Direction dir)
     : header{Header::TmpMove}
     , dir{dir}
 {

@@ -10,8 +10,8 @@ enum class Header : std::uint8_t {
     TmpMove = 0
 };
 
-struct TmpMoveMsg {
-    TmpMoveMsg(Direction dir);
+struct MoveMsg {
+    MoveMsg(Direction dir);
 
     uint8_t* data()
     {

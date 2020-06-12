@@ -55,7 +55,7 @@ void Network::sendMove(const Direction& dir)
     boost::asio::post(m_ioContext,
         [this, dir]() {
             bool writeInProgress = !m_messageQueue.empty();
-            m_messageQueue.push_back(TmpMoveMsg{dir});
+            m_messageQueue.push_back(MoveMsg{dir});
             if (!writeInProgress) {
                 onWrite();
             }
