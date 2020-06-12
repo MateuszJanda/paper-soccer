@@ -11,7 +11,7 @@ namespace PaperSoccer {
 class Board : public IBoard {
 public:
     Board(std::size_t width, std::size_t height);
-    void reset() const override;
+    void reset() override;
     std::size_t getWidth() const override;
     std::size_t getHeight() const override;
     std::size_t getGoalpostLeft() const override;

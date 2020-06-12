@@ -66,21 +66,19 @@ TEST_F(GameTest, onMosueInput)
     game.onKeyboardMouseInput();
 }
 
-
-TEST_F(GameTest, makeUserMoveButKeyNotKnown)
+TEST_F(GameTest, userKeyButKeyNotKnown)
 {
-    game.makeUserMove('0');
+    game.userKey('0');
 }
 
-TEST_F(GameTest, makeUserMove)
+TEST_F(GameTest, userKey)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left));
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
-    game.makeUserMove('j');
+    game.userKey('j');
 }
-
 
 TEST_F(GameTest, onEnemyMove)
 {
@@ -88,7 +86,6 @@ TEST_F(GameTest, onEnemyMove)
     EXPECT_CALL(viewMock, drawBoard());
 
     game.onEnemyMove(Direction::Bottom);
-
 }
 
 } // namespace PaperSoccer

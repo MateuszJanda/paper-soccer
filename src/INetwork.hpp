@@ -2,6 +2,8 @@
 #define I_NETWORK_HPP
 
 #include "Direction.hpp"
+#include "Turn.hpp"
+#include "Goal.hpp"
 #include <functional>
 
 namespace PaperSoccer {

@@ -5,20 +5,11 @@
 #include "INCurses.hpp"
 #include "INetwork.hpp"
 #include "IView.hpp"
+#include "Goal.hpp"
+#include "Turn.hpp"
 #include <map>
 
 namespace PaperSoccer {
-
-enum Turn {
-    None,
-    User,
-    Enemy
-};
-
-enum UserGoal {
-    Top,
-    Bottom
-};
 
 class Game {
 public:
