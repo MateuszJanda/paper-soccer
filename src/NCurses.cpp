@@ -56,13 +56,17 @@ std::optional<Input> NCurses::getInput()
     {
         return std::nullopt;
     }
+    else if (key == '\n')
+    {
+        return EnterInput{};
+    }
     // This works for left-click
     else if (key == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED))
     {
-        return MouseData{.x=event.x, .y=event.y};
+        return MouseInput{.x=event.x, .y=event.y};
     }
 
-    return KeyData{.key=key};
+    return KeyInput{.key=key};
 }
 
 void NCurses::refreshView()

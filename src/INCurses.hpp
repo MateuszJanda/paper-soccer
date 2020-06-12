@@ -8,18 +8,21 @@
 namespace PaperSoccer {
 
 
-struct KeyData {
+struct KeyInput {
     int key;
 };
 
-struct MouseData
+struct EnterInput {
+};
+
+struct MouseInput
 {
     int x;
     int y;
 };
 
 
-using Input = std::variant<KeyData, MouseData>;
+using Input = std::variant<KeyInput, EnterInput, MouseInput>;
 
 class INCurses {
 public:

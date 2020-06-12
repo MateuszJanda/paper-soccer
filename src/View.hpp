@@ -27,6 +27,12 @@ public:
 
     void printText(int x, int y, std::string str);
 
+    void setContinueStatus() override;
+    void setEnemyTurnStatus() override;
+    void setReadyToEndTurnStatus() override;
+    void setLostStatus() override;
+    void setWinStatus() override;
+
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{2};
 

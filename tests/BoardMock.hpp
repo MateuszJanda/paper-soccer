@@ -8,6 +8,7 @@ namespace PaperSoccer {
 
 class BoardMock : public IBoard {
 public:
+    MOCK_METHOD0(reset, void());
     MOCK_CONST_METHOD0(getWidth, std::size_t());
     MOCK_CONST_METHOD0(getHeight, std::size_t());
     MOCK_CONST_METHOD0(getGoalpostLeft, std::size_t());

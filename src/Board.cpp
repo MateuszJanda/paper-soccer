@@ -16,7 +16,7 @@ Board::Board(std::size_t width, std::size_t height)
     , m_goalpostRight{((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2)}
 {
     if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
-        throw std::range_error("Can't build border with this dimensions.");
+        throw std::range_error{"Can't build border with this dimensions."};
     }
 
     // Empty graph
@@ -25,6 +25,11 @@ Board::Board(std::size_t width, std::size_t height)
     }
 
     setBorders();
+}
+
+void Board::reset()
+{
+
 }
 
 void Board::setBorders()
@@ -251,7 +256,7 @@ void Board::updateBallAndGraph(Direction dir)
 {
     const auto newPos = directionToPosition(m_ballPos, dir);
     if (not isPositionInGraph(newPos)) {
-        throw std::out_of_range("New position out of graph.");
+        throw std::out_of_range{"New position out of graph."};
     }
 
     m_graph[m_ballPos.y][m_ballPos.x].addNeighbour(dir);
