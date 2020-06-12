@@ -37,7 +37,7 @@ void Game::onInitNewGame()
 {
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     m_currentTurn = m_firstTurn;
-    m_userGoal = UserGoal::Top;
+    m_userGoal = Goal::Top;
     m_userStatus = MoveStatus::Continue;
     m_enemyStatus = MoveStatus::Continue;
 
@@ -54,11 +54,11 @@ void Game::onInitNewGame()
     }
 
     Turn turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
-    UserGoal enemyGoal = (m_userGoal == UserGoal::Top) ? UserGoal::Bottom : UserGoal::Top;
+    Goal enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
     m_network.sendNewGame(turnForEnemy, enemyGoal);
 }
 
-void Game::onNewGame(Turn firstTurn, UserGoal userGoal)
+void Game::onNewGame(Turn firstTurn, Goal userGoal)
 {
     m_firstTurn = firstTurn;
     m_currentTurn = m_firstTurn;
@@ -124,14 +124,14 @@ void Game::userEndTurn()
     }
 
     if (m_userStatus == MoveStatus::DeadEnd or
-            (m_userStatus == MoveStatus::TopGoal and m_userGoal == UserGoal::Top) or
-            (m_userStatus == MoveStatus::BottomGoal and m_userGoal == UserGoal::Bottom))
+            (m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
+            (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
     {
         m_currentTurn = Turn::None;
         m_view.setLostStatus();
     }
-    else if ((m_userStatus == MoveStatus::TopGoal and m_userGoal == UserGoal::Bottom) or
-             (m_userStatus == MoveStatus::BottomGoal and m_userGoal == UserGoal::Top))
+    else if ((m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
+             (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
     {
         m_currentTurn = Turn::None;
         m_view.setWinStatus();
@@ -172,14 +172,14 @@ void Game::onEnemyEndTurn()
     }
 
     if (m_enemyStatus == MoveStatus::DeadEnd or
-            (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == UserGoal::Top) or
-            (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == UserGoal::Bottom))
+            (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
+            (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
     {
         m_currentTurn = Turn::None;
         m_view.setWinStatus();
     }
-    else if ((m_enemyStatus == MoveStatus::TopGoal and m_userGoal == UserGoal::Bottom) or
-             (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == UserGoal::Top))
+    else if ((m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
+             (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
     {
         m_currentTurn = Turn::None;
         m_view.setLostStatus();

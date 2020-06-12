@@ -20,7 +20,7 @@ public:
                           std::function<void(const Direction &)> handleEnemyMove) override;
     void sendMove(const Direction& dir) override;
     void sendEndTurn() override;
-    void sendNewGame(Turn, UserGoal) override;
+    void sendNewGame(Turn, Goal) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
     void onRead();

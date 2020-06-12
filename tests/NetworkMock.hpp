@@ -14,7 +14,7 @@ public:
         std::function<void(const Direction&)>));
     MOCK_METHOD1(sendMove, void(const Direction&));
     MOCK_METHOD0(sendEndTurn, void());
-    MOCK_METHOD2(sendNewGame, void(Turn, UserGoal));
+    MOCK_METHOD2(sendNewGame, void(Turn, Goal));
 };
 
 } // namespace PaperSoccer

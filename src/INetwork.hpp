@@ -18,7 +18,7 @@ public:
     virtual void run() = 0;
     virtual void sendMove(const Direction& dir) = 0;
     virtual void sendEndTurn() = 0;
-    virtual void sendNewGame(Turn, UserGoal) = 0;
+    virtual void sendNewGame(Turn, Goal) = 0;
 };
 
 }

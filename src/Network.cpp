@@ -67,7 +67,7 @@ void Network::sendEndTurn()
 
 }
 
-void Network::sendNewGame(Turn, UserGoal)
+void Network::sendNewGame(Turn, Goal)
 {
 
 }

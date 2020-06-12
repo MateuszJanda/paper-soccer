@@ -17,7 +17,7 @@ public:
 
     void run();
     void onInitNewGame();
-    void onNewGame(Turn firstTurn, UserGoal userGoal);
+    void onNewGame(Turn firstTurn, Goal userGoal);
 
     void onKeyboardMouseInput();
 
@@ -37,7 +37,7 @@ private:
 
     Turn m_firstTurn{Turn::None};
     Turn m_currentTurn{Turn::None};
-    UserGoal m_userGoal{UserGoal::Top};
+    Goal m_userGoal{Goal::Top};
     MoveStatus m_userStatus{MoveStatus::Continue};
     MoveStatus m_enemyStatus{MoveStatus::Continue};
 };
