@@ -1,5 +1,5 @@
-#ifndef TMP_MOVE_MSG_HPP
-#define TMP_MOVE_MSG_HPP
+#ifndef MOVE_MSG_HPP
+#define MOVE_MSG_HPP
 
 #include "Direction.hpp"
 #include <cstring>
@@ -44,4 +44,4 @@ struct MoveMsg {
 
 } // namespace PaperSoccer
 
-#endif // TMP_MOVE_MSG_HPP
+#endif // MOVE_MSG_HPP
