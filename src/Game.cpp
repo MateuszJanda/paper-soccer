@@ -28,6 +28,7 @@ void Game::run()
     using namespace std::placeholders;
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
+        std::bind(&Game::onInitNewGame, this),
         std::bind(&Game::onEnemyMove, this, _1));
     m_network.run();
 }

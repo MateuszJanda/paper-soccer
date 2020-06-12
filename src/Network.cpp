@@ -13,10 +13,12 @@ Network::Network(boost::asio::io_context& ioContext)
 }
 
 void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
+    std::function<void()> handleInitNewGame,
     std::function<void(const Direction&)> handleEnemyMove)
 {
     m_handleKeyboardMouseInput = handleKeyboardMouseInput;
     m_handleEnemyMove = handleEnemyMove;
+    m_handleInitNewGame = m_handleInitNewGame;
 }
 
 void Network::onKeyboardMouseInput(boost::system::error_code errorCode)

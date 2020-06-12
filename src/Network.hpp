@@ -16,6 +16,7 @@ public:
     void setupHandlers();
 
     void registerHandlers(std::function<void()> handleKeyboardMouseInput,
+                          std::function<void()> handleInitNewGame,
                           std::function<void(const Direction &)> handleEnemyMove) override;
     void sendMove(const Direction& dir) override;
     void sendEndTurn() override;
@@ -27,6 +28,7 @@ public:
 
 protected:
     boost::asio::ip::tcp::socket m_socket;
+    std::function<void()> m_handleInitNewGame;
 
 private:
     boost::asio::io_context& m_ioContext;

@@ -20,6 +20,11 @@ void Server::accept()
         [this](boost::system::error_code errorCode) {
             if (not errorCode) {
                 setupHandlers();
+
+                if (m_handleInitNewGame)
+                {
+                    m_handleInitNewGame();
+                }
             }
         });
 }
