@@ -29,8 +29,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ${Boost_LIBRARIES})
 
 # Boost system is required by Boost asio
 find_package(Boost REQUIRED COMPONENTS system)
+# Boost serialization
+find_package(Boost REQUIRED COMPONENTS serialization)
 target_link_libraries(${CMAKE_PROJECT_NAME}
     pthread
     ncursesw
     ${Boost_SYSTEM_LIBRARY}
+    ${Boost_SERIALIZATION_LIBRARY}
 )

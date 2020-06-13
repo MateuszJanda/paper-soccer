@@ -4,6 +4,9 @@
 #include "INetwork.hpp"
 #include "MoveMsg.hpp"
 #include <boost/asio.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/vector.hpp>
 #include <deque>
 #include <functional>
 
@@ -23,7 +26,8 @@ public:
     void sendNewGame(Turn, Goal) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
-    void onRead();
+    void onReadHeader();
+    void onReadMoveMsg();
     void onWrite();
 
 protected:
@@ -37,8 +41,19 @@ private:
     std::function<void()> m_handleKeyboardMouseInput;
     std::function<void(const Direction&)> m_handleEnemyMove;
 
-    MoveMsg msg;
-    std::deque<MoveMsg> m_messageQueue;
+    enum { header_length = 8 };
+    /// Holds an outbound header.
+    std::string outbound_header_;
+    /// Holds the outbound data.
+    std::string outbound_data_;
+    /// Holds an inbound header.
+    char inbound_header_[header_length];
+    /// Holds the inbound data.
+    std::vector<char> inbound_data_;
+
+    MoveMsg1 msg;
+//    std::deque<MoveMsg1> m_messageQueue;
+    std::deque<boost::asio::const_buffer> m_messageQueue;
 };
 
 } // namespace PaperSoccer
