@@ -100,24 +100,33 @@ void Game::onKeyboardMouseInput()
 
 void Game::userKey(int key)
 {
-    if (m_currentTurn != Turn::User or not m_keyMap.contains(key)) {
+    if (m_keyMap.contains(key)) {
+        Direction dir = m_keyMap.at(key);
+        userMove(dir);
+    }
+}
+
+void Game::userMove(Direction dir)
+{
+    if (m_currentTurn != Turn::User or m_userStatus != MoveStatus::Continue) {
         return;
     }
 
-    Direction dir = m_keyMap.at(key);
     const auto status = m_board.moveBall(dir);
     m_view.drawBoard();
 
-    if (status != MoveStatus::Illegal) {
-        m_userStatus = status;
-
-        if (m_userStatus != MoveStatus::Continue)
-        {
-            m_view.setReadyToEndTurnStatus();
-        }
-
-        m_network.sendMove(dir);
+    if (status == MoveStatus::Illegal) {
+        return;
     }
+
+    m_userStatus = status;
+
+    if (m_userStatus != MoveStatus::Continue)
+    {
+        m_view.setReadyToEndTurnStatus();
+    }
+
+    m_network.sendMove(dir);
 }
 
 void Game::userEndTurn()

@@ -22,6 +22,7 @@ public:
 
     void onKeyboardMouseInput();
     void userKey(int key);
+    void userMove(Direction dir);
     void userEndTurn();
 
     void onEnemyMove(const Direction& dir);

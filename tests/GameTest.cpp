@@ -106,45 +106,52 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenMosueInput)
     game.onKeyboardMouseInput();
 }
 
-TEST_F(GameTest, userKeyWhenEnemyTurn)
-{
-    game.setCurrentTurn(Turn::Enemy);
-    game.userKey('j');
-}
-
-TEST_F(GameTest, userKeyWhenNoneTurn)
-{
-    game.setCurrentTurn(Turn::None);
-    game.userKey('j');
-}
-
-
 TEST_F(GameTest, userKeyWhenKeyNotKnown)
 {
-    game.setCurrentTurn(Turn::User);
     game.userKey('0');
 }
 
-TEST_F(GameTest, userKeyWhenUserTurnAndProperKeyAndIllegalMove)
+TEST_F(GameTest, userMoveWhenEnemyTurn)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.userMove(Direction::Left);
+}
+
+TEST_F(GameTest, userMoveWhenNoneTurn)
+{
+    game.setCurrentTurn(Turn::None);
+    game.userMove(Direction::Left);
+}
+
+TEST_F(GameTest, userMoveWhenCurrentUserStatusIsNotContinue)
+{
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Stop);
+    game.userMove(Direction::Left);
+}
+
+TEST_F(GameTest, userMoveWhenUserTurnAndNextIllegalMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
     EXPECT_CALL(viewMock, drawBoard());
 
     game.setCurrentTurn(Turn::User);
-    game.userKey('j');
+    game.setUserStatus(MoveStatus::Continue);
+    game.userMove(Direction::Left);
 }
 
-TEST_F(GameTest, userKeyWhenUserTurnAndProperKeyAndContinueMove)
+TEST_F(GameTest, userMoveWhenUserTurnAndNextContinueMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Continue));
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
     game.setCurrentTurn(Turn::User);
-    game.userKey('j');
+    game.setUserStatus(MoveStatus::Continue);
+    game.userMove(Direction::Left);
 }
 
-TEST_F(GameTest, userKeyWhenUserTurnAndProperKeyAndStopMove)
+TEST_F(GameTest, userMoveWhenUserTurnAndNextStopMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Stop));
     EXPECT_CALL(viewMock, drawBoard());
@@ -152,7 +159,8 @@ TEST_F(GameTest, userKeyWhenUserTurnAndProperKeyAndStopMove)
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
     game.setCurrentTurn(Turn::User);
-    game.userKey('j');
+    game.setUserStatus(MoveStatus::Continue);
+    game.userMove(Direction::Left);
 }
 
 TEST_F(GameTest, userEndTurnWhenNoneTurn)
