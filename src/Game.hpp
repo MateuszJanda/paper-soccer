@@ -28,6 +28,7 @@ public:
     void onEnemyEndTurn();
 
     void setCurrentTurn(Turn turn);
+    void setFirstTurn(Turn turn);
 
 private:
     INetwork& m_network;

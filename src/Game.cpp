@@ -199,4 +199,9 @@ void Game::setCurrentTurn(Turn turn)
     m_currentTurn = turn;
 }
 
+void Game::setFirstTurn(Turn turn)
+{
+    m_firstTurn = turn;
+}
+
 } // namespace PaperSoccer
