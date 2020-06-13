@@ -1,5 +1,7 @@
 #include "Game.hpp"
 #include <sstream>
+#include <iostream>
+#include "NCurses.hpp"
 
 namespace PaperSoccer {
 
@@ -36,6 +38,9 @@ void Game::run()
 
 void Game::onInitNewGame()
 {
+//    rawPrint(0, 0, "onInitNewGame();");
+    std::cout << "onInitNewGame()\n";
+
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     m_currentTurn = m_firstTurn;
     m_userGoal = Goal::Top;

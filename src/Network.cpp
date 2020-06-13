@@ -18,7 +18,7 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     std::function<void(const Direction&)> handleEnemyMove)
 {
     m_handleKeyboardMouseInput = handleKeyboardMouseInput;
-    m_handleInitNewGame = m_handleInitNewGame;
+    m_handleInitNewGame = handleInitNewGame;
     m_handleNewGame = handleNewGame;
     m_handleEnemyMove = handleEnemyMove;
 }
