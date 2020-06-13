@@ -239,6 +239,31 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
     game.userEndTurn();
 }
 
+TEST_F(GameTest, onEnemyMoveWhenUserTurn)
+{
+    game.setCurrentTurn(Turn::User);
+
+    ASSERT_ANY_THROW(game.onEnemyMove(Direction::Top));
+}
+
+TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndIllegalMove)
+{
+    EXPECT_CALL(boardMock, moveBall(Direction::Top)).WillOnce(Return(MoveStatus::Illegal));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::Enemy);
+    ASSERT_ANY_THROW(game.onEnemyMove(Direction::Top));
+}
+
+TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndLegalMove)
+{
+    EXPECT_CALL(boardMock, moveBall(Direction::Top)).WillOnce(Return(MoveStatus::Continue));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.onEnemyMove(Direction::Top);
+}
+
 TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAdnCorrectMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Bottom)).WillOnce(Return(MoveStatus::Continue));
