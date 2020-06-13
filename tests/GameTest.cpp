@@ -168,12 +168,16 @@ TEST_F(GameTest, userEndTurnWhenNoneTurn)
     game.setCurrentTurn(Turn::None);
     game.setUserStatus(MoveStatus::Stop);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenEnemyTurn)
 {
     game.setCurrentTurn(Turn::Enemy);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndContinueMove)
@@ -181,6 +185,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndContinueMove)
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Continue);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::User);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
@@ -191,6 +197,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::DeadEnd);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
@@ -202,6 +210,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
     game.setUserStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Top);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
@@ -213,6 +223,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
     game.setUserStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Bottom);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
@@ -224,6 +236,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
     game.setUserStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Bottom);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
@@ -235,6 +249,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
     game.setUserStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Top);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
@@ -245,6 +261,8 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Stop);
     game.userEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
 }
 
 TEST_F(GameTest, onEnemyMoveWhenUserTurn)
