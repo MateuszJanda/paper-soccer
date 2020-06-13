@@ -16,17 +16,18 @@ public:
     Game(INetwork& network, IBoard& board, INCurses& ncurses, IView &view);
 
     void run();
+
     void onInitNewGame();
     void onNewGame(const Turn& firstTurn, const Goal& userGoal);
 
     void onKeyboardMouseInput();
-
     void userKey(int key);
     void userEndTurn();
 
-
     void onEnemyMove(const Direction& dir);
     void onEnemyEndTurn();
+
+    void setCurrentTurn(Turn turn);
 
 private:
     INetwork& m_network;

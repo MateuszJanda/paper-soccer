@@ -33,16 +33,16 @@ TEST_F(GameTest, run)
     game.run();
 }
 
-TEST_F(GameTest, onKeyboardKeyInput)
+TEST_F(GameTest, onKeyboardMouseInputBreakWhenNullOpt)
 {
     InSequence s;
 
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyInput{.key='j'})));
-    EXPECT_CALL(boardMock, moveBall(Direction::Left));
+    EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
     EXPECT_CALL(viewMock, drawBoard());
-    EXPECT_CALL(networkMock, sendMove(Direction::Left));
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
+    game.setCurrentTurn(Turn::User);
     game.onKeyboardMouseInput();
 }
 
@@ -71,20 +71,22 @@ TEST_F(GameTest, userKeyButKeyNotKnown)
     game.userKey('0');
 }
 
-TEST_F(GameTest, userKey)
+TEST_F(GameTest, userKeyWhenUserTurnAndProperKey)
 {
-    EXPECT_CALL(boardMock, moveBall(Direction::Left));
+    EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Continue));
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
+    game.setCurrentTurn(Turn::User);
     game.userKey('j');
 }
 
-TEST_F(GameTest, onEnemyMove)
+TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAdnCorrectMove)
 {
-    EXPECT_CALL(boardMock, moveBall(Direction::Bottom));
+    EXPECT_CALL(boardMock, moveBall(Direction::Bottom)).WillOnce(Return(MoveStatus::Continue));
     EXPECT_CALL(viewMock, drawBoard());
 
+    game.setCurrentTurn(Turn::Enemy);
     game.onEnemyMove(Direction::Bottom);
 }
 

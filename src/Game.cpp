@@ -194,4 +194,9 @@ void Game::onEnemyEndTurn()
     }
 }
 
+void Game::setCurrentTurn(Turn turn)
+{
+    m_currentTurn = turn;
+}
+
 } // namespace PaperSoccer
