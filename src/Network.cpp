@@ -105,7 +105,7 @@ void Network::sendNewGame(Turn turn, Goal goal)
 void Network::sendMove(const Direction& dir)
 {
     // Write data
-    MoveMsg1 m{dir};
+    MoveMsg m{dir};
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
         archive << m;
@@ -266,7 +266,7 @@ void Network::onReadMoveMsg(std::size_t inbound_data_size)
                 return;
             }
 
-            MoveMsg1 msg;
+            MoveMsg msg;
             try
             {
               std::string archive_data(&inbound_data_[0], inbound_data_.size());

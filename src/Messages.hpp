@@ -34,9 +34,9 @@ struct NewGameMsg
     }
 };
 
-struct MoveMsg1
+struct MoveMsg
 {
-    MoveMsg1(Direction dir = Direction::Top)
+    MoveMsg(Direction dir = Direction::Top)
         : dir{dir}
     {
     }

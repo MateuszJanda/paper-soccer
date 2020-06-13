@@ -56,9 +56,9 @@ private:
     /// Holds the inbound data.
     std::vector<char> inbound_data_;
 
-//    MoveMsg1 msg;
+//    MoveMsg msg;
 //    NewGameMsg newGameMsg;
-//    std::deque<MoveMsg1> m_messageQueue;
+//    std::deque<MoveMsg> m_messageQueue;
     std::deque<boost::asio::const_buffer> m_messageQueue;
 };
 
