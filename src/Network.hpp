@@ -15,7 +15,8 @@ public:
     void registerHandlers(std::function<void()> handleKeyboardMouseInput,
                           std::function<void()> handleInitNewGame,
                           std::function<void(const Turn&, const Goal&)> handleNewGame,
-                          std::function<void(const Direction &)> handleEnemyMove) override;
+                          std::function<void(const Direction &)> handleEnemyMove,
+                          std::function<void()> handleEnemyEndTurn) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
 
@@ -27,6 +28,7 @@ public:
     void onReadHeader();
     void onReadNewGameMsg(std::size_t inbound_data_size);
     void onReadMoveMsg(std::size_t inbound_data_size);
+    void onReadEndTurnMsg(std::size_t inbound_data_size);
 
 protected:
     void setupHandlers();
@@ -41,6 +43,7 @@ private:
     std::function<void()> m_handleKeyboardMouseInput;
     std::function<void(const Turn&, const Goal&)> m_handleNewGame;
     std::function<void(const Direction&)> m_handleEnemyMove;
+    std::function<void()> m_handleEnemyEndTurn;
 
     enum { header_length = 8 };
     enum { msgId_length = 8 };

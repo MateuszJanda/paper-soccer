@@ -32,7 +32,8 @@ void Game::run()
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
         std::bind(&Game::onInitNewGame, this),
         std::bind(&Game::onNewGame, this, _1, _2),
-        std::bind(&Game::onEnemyMove, this, _1));
+        std::bind(&Game::onEnemyMove, this, _1),
+        std::bind(&Game::onEnemyEndTurn, this));
     m_network.run();
 }
 
@@ -175,6 +176,7 @@ void Game::onEnemyMove(const Direction& dir)
 
 void Game::onEnemyEndTurn()
 {
+    std::cout << "enemy end turn \n";
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy end turn in user turn."};
     }
