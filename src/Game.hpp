@@ -29,6 +29,8 @@ public:
 
     void setCurrentTurn(Turn turn);
     void setFirstTurn(Turn turn);
+    void setUserStatus(MoveStatus status);
+    void setUserGoal(Goal goal);
 
 private:
     INetwork& m_network;

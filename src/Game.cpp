@@ -204,4 +204,14 @@ void Game::setFirstTurn(Turn turn)
     m_firstTurn = turn;
 }
 
+void Game::setUserStatus(MoveStatus status)
+{
+    m_userStatus = status;
+}
+
+void Game::setUserGoal(Goal goal)
+{
+    m_userGoal = goal;
+}
+
 } // namespace PaperSoccer

@@ -112,6 +112,12 @@ TEST_F(GameTest, userKeyWhenEnemyTurn)
     game.userKey('j');
 }
 
+TEST_F(GameTest, userKeyWhenNoneTurn)
+{
+    game.setCurrentTurn(Turn::None);
+    game.userKey('j');
+}
+
 
 TEST_F(GameTest, userKeyWhenKeyNotKnown)
 {
@@ -147,6 +153,90 @@ TEST_F(GameTest, userKeyWhenUserTurnAndProperKeyAndStopMove)
 
     game.setCurrentTurn(Turn::User);
     game.userKey('j');
+}
+
+TEST_F(GameTest, userEndTurnWhenNoneTurn)
+{
+    game.setCurrentTurn(Turn::None);
+    game.setUserStatus(MoveStatus::Stop);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenEnemyTurn)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndContinueMove)
+{
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Continue);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
+{
+    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::DeadEnd);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
+{
+    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::TopGoal);
+    game.setUserGoal(Goal::Top);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
+{
+    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::BottomGoal);
+    game.setUserGoal(Goal::Bottom);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
+{
+    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::TopGoal);
+    game.setUserGoal(Goal::Bottom);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
+{
+    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::BottomGoal);
+    game.setUserGoal(Goal::Top);
+    game.userEndTurn();
+}
+
+TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
+{
+    EXPECT_CALL(viewMock, setEnemyTurnStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Stop);
+    game.userEndTurn();
 }
 
 TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAdnCorrectMove)
