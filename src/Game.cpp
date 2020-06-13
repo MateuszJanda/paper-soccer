@@ -29,6 +29,7 @@ void Game::run()
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
         std::bind(&Game::onInitNewGame, this),
+        std::bind(&Game::onNewGame, this, _1, _2),
         std::bind(&Game::onEnemyMove, this, _1));
     m_network.run();
 }
@@ -58,7 +59,7 @@ void Game::onInitNewGame()
     m_network.sendNewGame(turnForEnemy, enemyGoal);
 }
 
-void Game::onNewGame(Turn firstTurn, Goal userGoal)
+void Game::onNewGame(const Turn &firstTurn, const Goal &userGoal)
 {
     m_firstTurn = firstTurn;
     m_currentTurn = m_firstTurn;

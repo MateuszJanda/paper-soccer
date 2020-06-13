@@ -17,7 +17,7 @@ public:
 
     void run();
     void onInitNewGame();
-    void onNewGame(Turn firstTurn, Goal userGoal);
+    void onNewGame(const Turn& firstTurn, const Goal& userGoal);
 
     void onKeyboardMouseInput();
 

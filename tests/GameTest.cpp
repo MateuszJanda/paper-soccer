@@ -27,7 +27,7 @@ TEST_F(GameTest, run)
 {
     using namespace std::placeholders;
 
-    EXPECT_CALL(networkMock, registerHandlers(_, _, _));
+    EXPECT_CALL(networkMock, registerHandlers(_, _, _, _));
     EXPECT_CALL(networkMock, run());
 
     game.run();
