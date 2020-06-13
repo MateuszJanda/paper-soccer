@@ -30,6 +30,7 @@ public:
     void setCurrentTurn(Turn turn);
     void setFirstTurn(Turn turn);
     void setUserStatus(MoveStatus status);
+    void setEnemyStatus(MoveStatus status);
     void setUserGoal(Goal goal);
 
 private:

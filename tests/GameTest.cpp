@@ -264,13 +264,75 @@ TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndLegalMove)
     game.onEnemyMove(Direction::Top);
 }
 
-TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAdnCorrectMove)
+TEST_F(GameTest, onEnemyEndTurnWhenUserTurn)
 {
-    EXPECT_CALL(boardMock, moveBall(Direction::Bottom)).WillOnce(Return(MoveStatus::Continue));
-    EXPECT_CALL(viewMock, drawBoard());
+    game.setCurrentTurn(Turn::User);
+    ASSERT_ANY_THROW(game.onEnemyEndTurn());
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenUEnemyTurnAndEnemyShouldContinue)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::Continue);
+    ASSERT_ANY_THROW(game.onEnemyEndTurn());
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
+{
+    EXPECT_CALL(viewMock, setLostStatus());
 
     game.setCurrentTurn(Turn::Enemy);
-    game.onEnemyMove(Direction::Bottom);
+    game.setEnemyStatus(MoveStatus::TopGoal);
+    game.setUserGoal(Goal::Top);
+    game.onEnemyEndTurn();
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
+{
+    EXPECT_CALL(viewMock, setLostStatus());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::BottomGoal);
+    game.setUserGoal(Goal::Bottom);
+    game.onEnemyEndTurn();
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
+{
+    EXPECT_CALL(viewMock, setWinStatus());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::DeadEnd);
+    game.onEnemyEndTurn();
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
+{
+    EXPECT_CALL(viewMock, setWinStatus());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::TopGoal);
+    game.setUserGoal(Goal::Bottom);
+    game.onEnemyEndTurn();
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
+{
+    EXPECT_CALL(viewMock, setWinStatus());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::BottomGoal);
+    game.setUserGoal(Goal::Top);
+    game.onEnemyEndTurn();
+}
+
+TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
+{
+    EXPECT_CALL(viewMock, setContinueStatus());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::Stop);
+    game.onEnemyEndTurn();
 }
 
 } // namespace PaperSoccer

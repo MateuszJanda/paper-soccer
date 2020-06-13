@@ -174,18 +174,19 @@ void Game::onEnemyEndTurn()
         throw std::invalid_argument{"Enemy end turn but doesn't make all moves."};
     }
 
-    if (m_enemyStatus == MoveStatus::DeadEnd or
+    if (
             (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
             (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
     {
         m_currentTurn = Turn::None;
-        m_view.setWinStatus();
+        m_view.setLostStatus();
     }
-    else if ((m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
+    else if (m_enemyStatus == MoveStatus::DeadEnd or
+             (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
              (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
     {
         m_currentTurn = Turn::None;
-        m_view.setLostStatus();
+        m_view.setWinStatus();
     }
     else
     {
@@ -207,6 +208,11 @@ void Game::setFirstTurn(Turn turn)
 void Game::setUserStatus(MoveStatus status)
 {
     m_userStatus = status;
+}
+
+void Game::setEnemyStatus(MoveStatus status)
+{
+    m_enemyStatus = status;
 }
 
 void Game::setUserGoal(Goal goal)
