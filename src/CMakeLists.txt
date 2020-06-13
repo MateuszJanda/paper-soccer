@@ -8,8 +8,6 @@ add_executable(${CMAKE_PROJECT_NAME}
     Server.hpp
     Client.cpp
     Client.hpp
-    MoveMsg.cpp
-    MoveMsg.hpp
     Game.cpp
     Game.hpp
     Board.cpp
