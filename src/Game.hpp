@@ -29,8 +29,10 @@ public:
     void onEnemyEndTurn();
 
     void setCurrentTurn(Turn turn);
+    Turn getCurrentTurn() const;
     void setFirstTurn(Turn turn);
     void setUserStatus(MoveStatus status);
+    MoveStatus getUserStatus() const;
     void setEnemyStatus(MoveStatus status);
     void setUserGoal(Goal goal);
 

@@ -290,9 +290,13 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
     EXPECT_CALL(viewMock, setLostStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Top);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
@@ -300,9 +304,13 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
     EXPECT_CALL(viewMock, setLostStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Bottom);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
@@ -310,8 +318,12 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
     EXPECT_CALL(viewMock, setWinStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::DeadEnd);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
@@ -319,9 +331,13 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
     EXPECT_CALL(viewMock, setWinStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Bottom);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
@@ -329,9 +345,13 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
     EXPECT_CALL(viewMock, setWinStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Top);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::None);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
@@ -339,8 +359,12 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
     EXPECT_CALL(viewMock, setContinueStatus());
 
     game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::Stop);
     game.onEnemyEndTurn();
+
+    EXPECT_EQ(game.getCurrentTurn(), Turn::User);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }
 
 } // namespace PaperSoccer

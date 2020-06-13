@@ -176,7 +176,6 @@ void Game::onEnemyMove(const Direction& dir)
 
 void Game::onEnemyEndTurn()
 {
-    std::cout << "enemy end turn \n";
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy end turn in user turn."};
     }
@@ -202,6 +201,7 @@ void Game::onEnemyEndTurn()
     else
     {
         m_currentTurn = Turn::User;
+        m_userStatus = MoveStatus::Continue;
         m_view.setContinueStatus();
     }
 }
@@ -209,6 +209,11 @@ void Game::onEnemyEndTurn()
 void Game::setCurrentTurn(Turn turn)
 {
     m_currentTurn = turn;
+}
+
+Turn Game::getCurrentTurn() const
+{
+    return m_currentTurn;
 }
 
 void Game::setFirstTurn(Turn turn)
@@ -219,6 +224,11 @@ void Game::setFirstTurn(Turn turn)
 void Game::setUserStatus(MoveStatus status)
 {
     m_userStatus = status;
+}
+
+MoveStatus Game::getUserStatus() const
+{
+    return m_userStatus;
 }
 
 void Game::setEnemyStatus(MoveStatus status)
