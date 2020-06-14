@@ -35,6 +35,7 @@ public:
     MoveStatus getUserStatus() const;
     void setEnemyStatus(MoveStatus status);
     void setUserGoal(Goal goal);
+    void setMatchStatus(MatchStatus status);
     MatchStatus getMatchStatus() const;
 
 private:

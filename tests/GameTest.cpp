@@ -101,6 +101,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenKeyInput)
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
     game.setCurrentTurn(Turn::User);
+    game.setMatchStatus(MatchStatus::InProgress);
     game.onKeyboardMouseInput();
 }
 
@@ -127,6 +128,27 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenMosueInput)
 TEST_F(GameTest, userKeyWhenKeyNotKnown)
 {
     game.userKey('0');
+}
+
+TEST_F(GameTest, userKeyWhenGameIsConnecting)
+{
+    game.setMatchStatus(MatchStatus::Connecting);
+    game.userKey('j');
+}
+
+TEST_F(GameTest, userKeyWhenGameIsReadyForNew)
+{
+    game.setMatchStatus(MatchStatus::ReadyForNew);
+    game.userKey('j');
+}
+
+TEST_F(GameTest, userKeyWhenGameInProgress)
+{
+    EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setMatchStatus(MatchStatus::InProgress);
+    game.userKey('j');
 }
 
 TEST_F(GameTest, userMoveWhenEnemyTurn)

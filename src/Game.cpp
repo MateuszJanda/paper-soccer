@@ -103,7 +103,7 @@ void Game::onKeyboardMouseInput()
 
 void Game::userKey(int key)
 {
-    if (m_keyMap.contains(key)) {
+    if (m_match == MatchStatus::InProgress and m_keyMap.contains(key)) {
         Direction dir = m_keyMap.at(key);
         userMove(dir);
     }
@@ -241,6 +241,11 @@ void Game::setEnemyStatus(MoveStatus status)
 void Game::setUserGoal(Goal goal)
 {
     m_userGoal = goal;
+}
+
+void Game::setMatchStatus(MatchStatus status)
+{
+    m_match = status;
 }
 
 MatchStatus Game::getMatchStatus() const
