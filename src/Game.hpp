@@ -35,6 +35,7 @@ public:
     MoveStatus getUserStatus() const;
     void setEnemyStatus(MoveStatus status);
     void setUserGoal(Goal goal);
+    MatchStatus getMatchStatus() const;
 
 private:
     INetwork& m_network;
@@ -43,8 +44,9 @@ private:
     IView& m_view;
     const std::map<char, Direction> m_keyMap;
 
-    Turn m_firstTurn{Turn::None};
-    Turn m_currentTurn{Turn::None};
+    MatchStatus m_match{MatchStatus::Connecting};
+    Turn m_firstTurn{Turn::User};
+    Turn m_currentTurn{Turn::User};
     Goal m_userGoal{Goal::Top};
     MoveStatus m_userStatus{MoveStatus::Continue};
     MoveStatus m_enemyStatus{MoveStatus::Continue};

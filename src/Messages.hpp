@@ -17,7 +17,7 @@ enum class MsgId : std::uint8_t {
 
 struct NewGameMsg
 {
-    NewGameMsg(Turn turn = Turn::None, Goal goal = Goal::Top)
+    NewGameMsg(Turn turn = Turn::User, Goal goal = Goal::Top)
         : turn{turn},
           goal{goal}
     {

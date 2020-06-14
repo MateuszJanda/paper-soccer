@@ -39,6 +39,7 @@ void Game::run()
 
 void Game::onInitNewGame()
 {
+    m_match = MatchStatus::InProgress;
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     m_currentTurn = m_firstTurn;
     m_userGoal = Goal::Top;
@@ -64,6 +65,7 @@ void Game::onInitNewGame()
 
 void Game::onNewGame(const Turn &firstTurn, const Goal &userGoal)
 {
+    m_match = MatchStatus::InProgress;
     m_firstTurn = firstTurn;
     m_currentTurn = m_firstTurn;
     m_userGoal = userGoal;
@@ -109,7 +111,7 @@ void Game::userKey(int key)
 
 void Game::userMove(Direction dir)
 {
-    if (m_currentTurn != Turn::User or m_userStatus != MoveStatus::Continue) {
+    if (m_currentTurn == Turn::Enemy or m_userStatus != MoveStatus::Continue) {
         return;
     }
 
@@ -132,7 +134,7 @@ void Game::userMove(Direction dir)
 
 void Game::userEndTurn()
 {
-    if (m_currentTurn != Turn::User or m_userStatus == MoveStatus::Continue) {
+    if (m_currentTurn == Turn::Enemy or m_userStatus == MoveStatus::Continue) {
         return;
     }
 
@@ -140,13 +142,13 @@ void Game::userEndTurn()
             (m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
             (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
     {
-        m_currentTurn = Turn::None;
+        m_match = MatchStatus::ReadyForNew;
         m_view.setLostStatus();
     }
     else if ((m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
              (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
     {
-        m_currentTurn = Turn::None;
+        m_match = MatchStatus::ReadyForNew;
         m_view.setWinStatus();
     }
     else
@@ -188,14 +190,14 @@ void Game::onEnemyEndTurn()
             (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
             (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
     {
-        m_currentTurn = Turn::None;
+        m_match = MatchStatus::ReadyForNew;
         m_view.setLostStatus();
     }
     else if (m_enemyStatus == MoveStatus::DeadEnd or
              (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
              (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
     {
-        m_currentTurn = Turn::None;
+        m_match = MatchStatus::ReadyForNew;
         m_view.setWinStatus();
     }
     else
@@ -239,6 +241,11 @@ void Game::setEnemyStatus(MoveStatus status)
 void Game::setUserGoal(Goal goal)
 {
     m_userGoal = goal;
+}
+
+MatchStatus Game::getMatchStatus() const
+{
+    return m_match;
 }
 
 } // namespace PaperSoccer

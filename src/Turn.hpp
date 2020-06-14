@@ -6,10 +6,16 @@
 namespace PaperSoccer {
 
 enum class Turn : std::uint8_t {
-    None,
     User,
-    Enemy
+    Enemy,
 };
+
+enum class MatchStatus : std::uint8_t {
+    Connecting,
+    InProgress,
+    ReadyForNew,
+};
+
 
 } // namespace PaperSoccer
 
