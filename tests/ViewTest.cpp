@@ -45,6 +45,15 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
 
+    void expectDrawStatus()
+    {
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 1, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 2, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 3, _));
+        EXPECT_CALL(ncursesMock, refreshView());
+    }
+
     StrictMock<BoardMock> boardMock;
     StrictMock<NCursesMock> ncursesMock;
     View view;
@@ -279,6 +288,36 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
+}
+
+TEST_F(ViewTest, checkSetContinueStatus)
+{
+    expectDrawStatus();
+    view.setContinueStatus();
+}
+
+TEST_F(ViewTest, checkSetEnemyTurnStatus)
+{
+    expectDrawStatus();
+    view.setEnemyTurnStatus();
+}
+
+TEST_F(ViewTest, checkSetReadyToEndTurnStatus)
+{
+    expectDrawStatus();
+    view.setReadyToEndTurnStatus();
+}
+
+TEST_F(ViewTest, checkSetLostStatus)
+{
+    expectDrawStatus();
+    view.setLostStatus();
+}
+
+TEST_F(ViewTest, checkSetWinStatus)
+{
+    expectDrawStatus();
+    view.setWinStatus();
 }
 
 } // namespace PaperSoccer
