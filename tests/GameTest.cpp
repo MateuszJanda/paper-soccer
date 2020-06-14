@@ -151,6 +151,22 @@ TEST_F(GameTest, userKeyWhenGameInProgress)
     game.userKey('j');
 }
 
+TEST_F(GameTest, userKeyWhenRequestForNewGameDuringGame)
+{
+    game.setMatchStatus(MatchStatus::InProgress);
+    game.userKey('n');
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
+}
+
+TEST_F(GameTest, userKeyWhenRequestForNewGameAfterGame)
+{
+    game.setMatchStatus(MatchStatus::GameEnd);
+    game.userKey('n');
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+}
+
 TEST_F(GameTest, userMoveWhenEnemyTurn)
 {
     game.setCurrentTurn(Turn::Enemy);
@@ -290,6 +306,38 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
     EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
 }
 
+TEST_F(GameTest, userRequestNewGameWhenGameInProgress)
+{
+    game.setMatchStatus(MatchStatus::InProgress);
+    game.userRequestNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
+}
+
+TEST_F(GameTest, userRequestNewGameWhenGameEnd)
+{
+    game.setMatchStatus(MatchStatus::GameEnd);
+    game.userRequestNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+}
+
+TEST_F(GameTest, userRequesNewGmeWhenEnemyReadyForNewGame)
+{
+    EXPECT_CALL(boardMock, reset());
+    EXPECT_CALL(viewMock, drawBoard());
+    EXPECT_CALL(viewMock, setEnemyTurnStatus());
+    EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
+
+    game.setFirstTurn(Turn::User);
+    game.setMatchStatus(MatchStatus::EnemyReadyForNew);
+    game.userRequestNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
+    EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
+}
+
 TEST_F(GameTest, onEnemyMoveWhenUserTurn)
 {
     game.setCurrentTurn(Turn::User);
@@ -407,6 +455,38 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
     game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getCurrentTurn(), Turn::User);
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
+}
+
+TEST_F(GameTest, onEnemyReadyForNewGameWhenGameInProgress)
+{
+    game.setMatchStatus(MatchStatus::InProgress);
+    game.onEnemyReadyForNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
+}
+
+TEST_F(GameTest, onEnemyReadyForNewGameWhenGameEnd)
+{
+    game.setMatchStatus(MatchStatus::GameEnd);
+    game.onEnemyReadyForNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::EnemyReadyForNew);
+}
+
+TEST_F(GameTest, onEnemyReadyForNewGameWhenUserReadyForNewGame)
+{
+    EXPECT_CALL(boardMock, reset());
+    EXPECT_CALL(viewMock, drawBoard());
+    EXPECT_CALL(viewMock, setEnemyTurnStatus());
+    EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
+
+    game.setFirstTurn(Turn::User);
+    game.setMatchStatus(MatchStatus::ReadyForNew);
+    game.onEnemyReadyForNewGame();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
+    EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }
 
