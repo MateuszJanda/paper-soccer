@@ -1,12 +1,11 @@
 #ifndef I_N_CURSES_HPP
 #define I_N_CURSES_HPP
 
+#include <optional>
 #include <string>
 #include <variant>
-#include <optional>
 
 namespace PaperSoccer {
-
 
 struct KeyInput {
     int key;
@@ -15,12 +14,10 @@ struct KeyInput {
 struct EnterInput {
 };
 
-struct MouseInput
-{
+struct MouseInput {
     int x;
     int y;
 };
-
 
 using Input = std::variant<KeyInput, EnterInput, MouseInput>;
 

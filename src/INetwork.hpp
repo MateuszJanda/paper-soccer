@@ -2,8 +2,8 @@
 #define I_NETWORK_HPP
 
 #include "Direction.hpp"
-#include "Turn.hpp"
 #include "Goal.hpp"
+#include "Turn.hpp"
 #include <functional>
 
 namespace PaperSoccer {
@@ -16,7 +16,8 @@ public:
         std::function<void()> handleInitNewGame,
         std::function<void(const Turn&, const Goal&)> handleNewGame,
         std::function<void(const Direction&)> handleEnemyMove,
-        std::function<void()> handleEnemyEndTurn) = 0;
+        std::function<void()> handleEnemyEndTurn)
+        = 0;
     virtual void run() = 0;
     virtual void sendMove(const Direction& dir) = 0;
     virtual void sendEndTurn() = 0;

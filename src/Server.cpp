@@ -21,8 +21,7 @@ void Server::accept()
             if (not errorCode) {
                 setupHandlers();
 
-                if (m_handleInitNewGame)
-                {
+                if (m_handleInitNewGame) {
                     m_handleInitNewGame();
                 }
             }

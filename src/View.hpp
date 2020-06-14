@@ -2,9 +2,9 @@
 #define VIEW_HPP
 
 #include "Direction.hpp"
-#include "IView.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
+#include "IView.hpp"
 #include <set>
 #include <tuple>
 

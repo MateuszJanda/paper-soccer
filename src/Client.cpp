@@ -3,8 +3,8 @@
 namespace PaperSoccer {
 
 Client::Client(boost::asio::io_context& ioContext, const boost::asio::ip::tcp::resolver::results_type& endpoints)
-    : Network{ioContext},
-      m_endpoints{endpoints}
+    : Network{ioContext}
+    , m_endpoints{endpoints}
 {
 }
 

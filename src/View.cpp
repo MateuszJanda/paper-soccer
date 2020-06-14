@@ -193,27 +193,22 @@ void View::printText(int x, int y, std::string str)
 
 void View::setContinueStatus()
 {
-
 }
 
 void View::setEnemyTurnStatus()
 {
-
 }
 
 void View::setReadyToEndTurnStatus()
 {
-
 }
 
 void View::setLostStatus()
 {
-
 }
 
 void View::setWinStatus()
 {
-
 }
 
 } // namespace PaperSoccer

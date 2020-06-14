@@ -1,11 +1,11 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include "Goal.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "INetwork.hpp"
 #include "IView.hpp"
-#include "Goal.hpp"
 #include "Turn.hpp"
 #include <map>
 
@@ -13,7 +13,7 @@ namespace PaperSoccer {
 
 class Game {
 public:
-    Game(INetwork& network, IBoard& board, INCurses& ncurses, IView &view);
+    Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view);
 
     void run();
 

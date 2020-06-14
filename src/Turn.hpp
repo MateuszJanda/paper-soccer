@@ -16,7 +16,6 @@ enum class MatchStatus : std::uint8_t {
     ReadyForNew,
 };
 
-
 } // namespace PaperSoccer
 
 #endif // TURN_HPP

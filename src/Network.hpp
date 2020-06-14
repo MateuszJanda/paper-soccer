@@ -13,10 +13,10 @@ public:
     Network(boost::asio::io_context& ioContext);
 
     void registerHandlers(std::function<void()> handleKeyboardMouseInput,
-                          std::function<void()> handleInitNewGame,
-                          std::function<void(const Turn&, const Goal&)> handleNewGame,
-                          std::function<void(const Direction &)> handleEnemyMove,
-                          std::function<void()> handleEnemyEndTurn) override;
+        std::function<void()> handleInitNewGame,
+        std::function<void(const Turn&, const Goal&)> handleNewGame,
+        std::function<void(const Direction&)> handleEnemyMove,
+        std::function<void()> handleEnemyEndTurn) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
 
@@ -55,13 +55,13 @@ private:
 
     char inbound_hhh[msgId_length + header_length];
     /// Holds an inbound header.
-//    char inbound_header_[header_length];
+    //    char inbound_header_[header_length];
     /// Holds the inbound data.
     std::vector<char> inbound_data_;
 
-//    MoveMsg msg;
-//    NewGameMsg newGameMsg;
-//    std::deque<MoveMsg> m_messageQueue;
+    //    MoveMsg msg;
+    //    NewGameMsg newGameMsg;
+    //    std::deque<MoveMsg> m_messageQueue;
     std::deque<boost::asio::const_buffer> m_messageQueue;
 };
 

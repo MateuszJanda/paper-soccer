@@ -2,10 +2,10 @@
 #define MESSAGES_HPP
 
 #include "Direction.hpp"
-#include "Turn.hpp"
 #include "Goal.hpp"
-#include <vector>
+#include "Turn.hpp"
 #include <cstring>
+#include <vector>
 
 namespace PaperSoccer {
 
@@ -15,11 +15,10 @@ enum class MsgId : std::uint8_t {
     EndTurn = 2
 };
 
-struct NewGameMsg
-{
+struct NewGameMsg {
     NewGameMsg(Turn turn = Turn::User, Goal goal = Goal::Top)
-        : turn{turn},
-          goal{goal}
+        : turn{turn}
+        , goal{goal}
     {
     }
 
@@ -30,13 +29,12 @@ struct NewGameMsg
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & turn;
-        ar & goal;
+        ar& turn;
+        ar& goal;
     }
 };
 
-struct MoveMsg
-{
+struct MoveMsg {
     MoveMsg(Direction dir = Direction::Top)
         : dir{dir}
     {
@@ -48,12 +46,11 @@ struct MoveMsg
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & dir;
+        ar& dir;
     }
 };
 
-struct EndTurnMsg
-{
+struct EndTurnMsg {
     EndTurnMsg()
     {
     }

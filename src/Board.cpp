@@ -29,7 +29,6 @@ Board::Board(std::size_t width, std::size_t height)
 
 void Board::reset()
 {
-
 }
 
 void Board::setBorders()

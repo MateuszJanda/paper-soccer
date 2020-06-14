@@ -1,12 +1,31 @@
 #include "Game.hpp"
-#include <sstream>
-#include <iostream>
 #include "NCurses.hpp"
+#include <iostream>
+#include <sstream>
 
 namespace PaperSoccer {
 
-template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+template <class... Ts>
+struct overloaded : Ts... {
+    using Ts::operator()...;
+};
+
+template <class... Ts>
+overloaded(Ts...)->overloaded<Ts...>;
+
+namespace {
+
+    bool isGoalToOwn(MoveStatus status, Goal goal)
+    {
+        return (status == MoveStatus::TopGoal and goal == Goal::Top) or (status == MoveStatus::BottomGoal and goal == Goal::Bottom);
+    }
+
+    bool isGoalToEnemy(MoveStatus status, Goal goal)
+    {
+        return (status == MoveStatus::TopGoal and goal == Goal::Bottom) or (status == MoveStatus::BottomGoal and goal == Goal::Top);
+    }
+
+} // namespace anonymous
 
 Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     : m_network{network}
@@ -49,12 +68,9 @@ void Game::onInitNewGame()
     m_board.reset();
     m_view.drawBoard();
 
-    if (m_currentTurn == Turn::User)
-    {
+    if (m_currentTurn == Turn::User) {
         m_view.setContinueStatus();
-    }
-    else
-    {
+    } else {
         m_view.setEnemyTurnStatus();
     }
 
@@ -63,7 +79,7 @@ void Game::onInitNewGame()
     m_network.sendNewGame(turnForEnemy, enemyGoal);
 }
 
-void Game::onNewGame(const Turn &firstTurn, const Goal &userGoal)
+void Game::onNewGame(const Turn& firstTurn, const Goal& userGoal)
 {
     m_match = MatchStatus::InProgress;
     m_firstTurn = firstTurn;
@@ -75,37 +91,38 @@ void Game::onNewGame(const Turn &firstTurn, const Goal &userGoal)
     m_board.reset();
     m_view.drawBoard();
 
-    if (m_currentTurn == Turn::User)
-    {
+    if (m_currentTurn == Turn::User) {
         m_view.setContinueStatus();
-    }
-    else
-    {
+    } else {
         m_view.setEnemyTurnStatus();
     }
 }
 
 void Game::onKeyboardMouseInput()
 {
-    while (true) {
+    for (;;) {
         auto input = m_ncurses.getInput();
 
         if (not input)
             break;
 
-        std::visit(overloaded {
-            [this](const KeyInput& data) { userKey(data.key); },
-            [this](const EnterInput& data) { userEndTurn(); },
-            [this](const MouseInput& data) {  },
-        }, *input);
+        std::visit(overloaded{
+                       [this](const KeyInput& data) { userKey(data.key); },
+                       [this](const EnterInput& data) { userEndTurn(); },
+                       [this](const MouseInput& data) {},
+                   },
+            *input);
     }
 }
 
 void Game::userKey(int key)
 {
-    if (m_match == MatchStatus::InProgress and m_keyMap.contains(key)) {
+    if (m_keyMap.contains(key) and m_match == MatchStatus::InProgress) {
         Direction dir = m_keyMap.at(key);
         userMove(dir);
+    }
+
+    if (key == 'n' and m_match == MatchStatus::ReadyForNew) {
     }
 }
 
@@ -124,8 +141,7 @@ void Game::userMove(Direction dir)
 
     m_userStatus = status;
 
-    if (m_userStatus != MoveStatus::Continue)
-    {
+    if (m_userStatus != MoveStatus::Continue) {
         m_view.setReadyToEndTurnStatus();
     }
 
@@ -138,21 +154,13 @@ void Game::userEndTurn()
         return;
     }
 
-    if (m_userStatus == MoveStatus::DeadEnd or
-            (m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
-            (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
-    {
+    if (m_userStatus == MoveStatus::DeadEnd or isGoalToOwn(m_userStatus, m_userGoal)) {
         m_match = MatchStatus::ReadyForNew;
         m_view.setLostStatus();
-    }
-    else if ((m_userStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
-             (m_userStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
-    {
+    } else if (isGoalToEnemy(m_userStatus, m_userGoal)) {
         m_match = MatchStatus::ReadyForNew;
         m_view.setWinStatus();
-    }
-    else
-    {
+    } else {
         m_currentTurn = Turn::Enemy;
         m_view.setEnemyTurnStatus();
     }
@@ -186,22 +194,13 @@ void Game::onEnemyEndTurn()
         throw std::invalid_argument{"Enemy end turn but doesn't make all moves."};
     }
 
-    if (
-            (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Top) or
-            (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Bottom))
-    {
+    if (isGoalToOwn(m_enemyStatus, m_userGoal)) {
         m_match = MatchStatus::ReadyForNew;
         m_view.setLostStatus();
-    }
-    else if (m_enemyStatus == MoveStatus::DeadEnd or
-             (m_enemyStatus == MoveStatus::TopGoal and m_userGoal == Goal::Bottom) or
-             (m_enemyStatus == MoveStatus::BottomGoal and m_userGoal == Goal::Top))
-    {
+    } else if (m_enemyStatus == MoveStatus::DeadEnd or isGoalToEnemy(m_enemyStatus, m_userGoal)) {
         m_match = MatchStatus::ReadyForNew;
         m_view.setWinStatus();
-    }
-    else
-    {
+    } else {
         m_currentTurn = Turn::User;
         m_userStatus = MoveStatus::Continue;
         m_view.setContinueStatus();
