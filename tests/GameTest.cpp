@@ -1,7 +1,7 @@
 #include "Game.hpp"
-#include "NetworkMock.hpp"
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
+#include "NetworkMock.hpp"
 #include "ViewMock.hpp"
 #include "gtest/gtest.h"
 
@@ -95,7 +95,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenKeyInput)
 {
     InSequence s;
 
-    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyInput{.key='j'})));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyInput{.key = 'j'})));
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
@@ -119,7 +119,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenMosueInput)
 {
     InSequence s;
 
-    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(MouseInput{.x=2, .y=1})));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(MouseInput{.x = 2, .y = 1})));
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
     game.onKeyboardMouseInput();
