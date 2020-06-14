@@ -92,10 +92,10 @@ std::string Network::encodeMsgId(MsgId msgId)
     msgIdStream << std::setw(MSG_ID_LENGTH) << std::hex << static_cast<std::underlying_type_t<MsgId>>(msgId);
 
     if (not msgIdStream || msgIdStream.str().size() != MSG_ID_LENGTH) {
-        throw std::length_error{"Can't encode msgId length."};
+        throw std::length_error{"Can't encode msgId."};
     }
 
-     return msgIdStream.str();
+    return msgIdStream.str();
 }
 
 template<typename Msg>
@@ -114,7 +114,7 @@ std::string Network::encodeDataSize(const std::string& data)
     dataSizeStream << std::setw(DATA_SIZE_LENGTH) << std::hex << data.size();
 
     if (not dataSizeStream || dataSizeStream.str().size() != DATA_SIZE_LENGTH) {
-        throw std::length_error{"Can't encode msgId length."};
+        throw std::length_error{"Can't encode dataSize."};
     }
 
     return dataSizeStream.str();
