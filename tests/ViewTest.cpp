@@ -143,8 +143,8 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT);
@@ -154,8 +154,8 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
@@ -165,12 +165,12 @@ TEST_F(ViewTest, checkDrawCellTopPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "|"));
 
-    x = NODE_POS.x * 3 + View::X_OFFSET;
-    y = NODE_POS.y * 2 + View::Y_OFFSET;
+    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
@@ -180,8 +180,8 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
@@ -191,12 +191,12 @@ TEST_F(ViewTest, checkDrawCellRightPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * 3 + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "--"));
 
-    x = NODE_POS.x * 3 + View::X_OFFSET;
-    y = NODE_POS.y * 2 + View::Y_OFFSET;
+    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
@@ -206,8 +206,8 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
@@ -217,12 +217,12 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * 3 + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍"));
 
-    x = NODE_POS.x * 3 + View::X_OFFSET;
-    y = NODE_POS.y * 2 + View::Y_OFFSET;
+    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
@@ -232,8 +232,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
     Position nodePos{WIDTH - 1, 0};
 
-    int x = nodePos.x * 3 + View::X_OFFSET;
-    int y = nodePos.y * 2 + View::Y_OFFSET;
+    int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
+    int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(nodePos, ALL, EMPTY);
@@ -243,8 +243,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * 3 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, ALL, EMPTY);
@@ -254,12 +254,12 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NEIGHBOUR_POS.x * 3 - 2 + View::X_OFFSET;
-    int y = NEIGHBOUR_POS.y * 2 - 1 + View::Y_OFFSET;
+    int x = NEIGHBOUR_POS.x * View::X_FACTOR - 2 + View::X_OFFSET;
+    int y = NEIGHBOUR_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜"));
 
-    x = NODE_POS.x * 3 + View::X_OFFSET;
-    y = NODE_POS.x * 2 + View::Y_OFFSET;
+    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, ALL, EMPTY);
@@ -270,12 +270,12 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * 3 + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * 2 - 1 + View::Y_OFFSET;
+    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ"));
 
-    x = NODE_POS.x * 3 + View::X_OFFSET;
-    y = NODE_POS.x * 2 + View::Y_OFFSET;
+    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
