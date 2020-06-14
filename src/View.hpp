@@ -35,6 +35,8 @@ public:
 
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{2};
+    static constexpr int X_FACTOR{3};
+    static constexpr int Y_FACTOR{2};
 
 private:
     void drawVerticalToTopLine(Position nodePos);
@@ -43,6 +45,8 @@ private:
     void drawHypotenuseToTopRight(Position nodePos);
     void drawHypotenuseToTopLeft(Position nodePos);
     void drawMarker(Position nodePos);
+
+    void drawStatus(std::string line1, std::string line2);
 
     IBoard& m_board;
     INCurses& m_ncurses;

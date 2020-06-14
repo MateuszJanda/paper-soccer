@@ -11,6 +11,13 @@
 
 namespace PaperSoccer {
 
+enum class MatchStatus : std::uint8_t {
+    Connecting,
+    InProgress,
+    ReadyForNew,
+};
+
+
 class Game {
 public:
     Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view);

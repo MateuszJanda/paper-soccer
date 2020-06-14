@@ -10,12 +10,6 @@ enum class Turn : std::uint8_t {
     Enemy,
 };
 
-enum class MatchStatus : std::uint8_t {
-    Connecting,
-    InProgress,
-    ReadyForNew,
-};
-
 } // namespace PaperSoccer
 
 #endif // TURN_HPP

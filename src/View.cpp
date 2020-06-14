@@ -144,12 +144,12 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
 
 void View::drawVerticalToTopLine(Position nodePos)
 {
-    m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, "|");
+    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, "|");
 }
 
 void View::drawHorizontalToRightLine(Position nodePos)
 {
-    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 + Y_OFFSET, "--");
+    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "--");
 }
 
 void View::drawCrossToRight(Position nodePos)
@@ -157,7 +157,7 @@ void View::drawCrossToRight(Position nodePos)
     // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     const std::string symbol = "ᐳᐸ";
-    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawHypotenuseToTopRight(Position nodePos)
@@ -167,7 +167,7 @@ void View::drawHypotenuseToTopRight(Position nodePos)
     // ᐟ  - U+141f        https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     // ৴  - U+09f4        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     const std::string symbol = "⸝⸍";
-    m_ncurses.print(nodePos.x * 3 + 1 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawHypotenuseToTopLeft(Position nodePos)
@@ -178,12 +178,12 @@ void View::drawHypotenuseToTopLeft(Position nodePos)
     // ৲  - U+09f2        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     // ヽ  - U+30FD       https://en.wikipedia.org/wiki/Katakana_(Unicode_block)
     const std::string symbol = "⸌⸜";
-    m_ncurses.print(nodePos.x * 3 - 2 + X_OFFSET, nodePos.y * 2 - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(nodePos.x * X_FACTOR - 2 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
 }
 
 void View::drawMarker(Position nodePos)
 {
-    m_ncurses.print(nodePos.x * 3 + X_OFFSET, nodePos.y * 2 + Y_OFFSET, "+");
+    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "+");
 }
 
 void View::printText(int x, int y, std::string str)
@@ -193,22 +193,39 @@ void View::printText(int x, int y, std::string str)
 
 void View::setContinueStatus()
 {
+    drawStatus("  Your turn.  ", "  Make move   ");
 }
 
 void View::setEnemyTurnStatus()
 {
+    drawStatus("  Enemy turn. ", "     Wait     ");
 }
 
 void View::setReadyToEndTurnStatus()
 {
+    drawStatus("  End turn.   ", " Press Enter  ");
 }
 
 void View::setLostStatus()
 {
+    drawStatus("   You Lost.  ", " New game (n) ");
 }
 
 void View::setWinStatus()
 {
+    drawStatus("   You Win.   ", " New game (n) ");
+}
+
+void View::drawStatus(std::string line1, std::string line2)
+{
+    const int x = X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
+    const int y = Y_OFFSET;
+    m_ncurses.print(x, y + 0, "+--------------+");
+    m_ncurses.print(x, y + 1, "|" + line1 + "|");
+    m_ncurses.print(x, y + 2, "|" + line2 + "|");
+    m_ncurses.print(x, y + 3, "+--------------+");
+
+    m_ncurses.refreshView();
 }
 
 } // namespace PaperSoccer
