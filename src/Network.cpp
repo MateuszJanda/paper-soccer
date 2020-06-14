@@ -1,5 +1,4 @@
 #include "Network.hpp"
-#include "Messages.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -52,95 +51,28 @@ void Network::onKeyboardMouseInput(boost::system::error_code errorCode)
 
 void Network::sendNewGame(Turn turn, Goal goal)
 {
-    // Write data
-    NewGameMsg m{turn, goal};
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << m;
-    outbound_data_ = archive_stream.str();
-
-    // Write data size on 8 characters
-    std::ostringstream msgId_stream;
-    msgId_stream << std::setw(msgId_length) << std::hex << static_cast<std::underlying_type_t<MsgId>>(m.msgId);
-
-    if (!msgId_stream || msgId_stream.str().size() != msgId_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
-    }
-
-    outbound_msgId = msgId_stream.str();
-
-    // Write data size on 8 characters
-    std::ostringstream header_stream;
-    header_stream << std::setw(header_length) << std::hex << outbound_data_.size();
-
-    if (!header_stream || header_stream.str().size() != header_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
-    }
-
-    outbound_header_ = header_stream.str();
-
-    //    std::vector<boost::asio::const_buffer> buffers;
-    //    buffers.push_back(boost::asio::buffer(outbound_header_));
-    //    buffers.push_back(boost::asio::buffer(outbound_data_));
-    //    boost::asio::async_write(socket_, buffers, handler);
-
-    boost::asio::post(m_ioContext,
-        [this]() {
-            bool writeInProgress = not m_messageQueue.empty();
-            m_messageQueue.push_back(boost::asio::buffer(outbound_msgId));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_header_));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_data_));
-            if (not writeInProgress) {
-                onWrite();
-            }
-        });
+    NewGameMsg msg{turn, goal};
+    sendMsg(msg);
 }
 
 void Network::sendMove(const Direction& dir)
 {
-    // Write data
-    MoveMsg m{dir};
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << m;
-    outbound_data_ = archive_stream.str();
+    MoveMsg msg{dir};
+    sendMsg(msg);
+}
 
-    // Write data size on 8 characters
-    std::ostringstream msgId_stream;
-    msgId_stream << std::setw(msgId_length) << std::hex << static_cast<std::underlying_type_t<MsgId>>(m.msgId);
+void Network::sendEndTurn()
+{
+    EndTurnMsg msg{};
+    sendMsg(msg);
+}
 
-    if (!msgId_stream || msgId_stream.str().size() != msgId_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
-    }
-
-    outbound_msgId = msgId_stream.str();
-
-    // Write data size on 8 characters
-    std::ostringstream header_stream;
-    header_stream << std::setw(header_length) << std::hex << outbound_data_.size();
-
-    if (!header_stream || header_stream.str().size() != header_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
-    }
-
-    outbound_header_ = header_stream.str();
-
-    //    std::vector<boost::asio::const_buffer> buffers;
-    //    buffers.push_back(boost::asio::buffer(outbound_header_));
-    //    buffers.push_back(boost::asio::buffer(outbound_data_));
-    //    boost::asio::async_write(socket_, buffers, handler);
+template<typename Msg>
+void Network::sendMsg(const Msg& msg)
+{
+    outbound_msgId = encodeMsgId(msg.msgId);
+    outbound_data_ = encodeData(msg);
+    outbound_header_ = encodeDataSize(outbound_data_);
 
     boost::asio::post(m_ioContext,
         [this]() {
@@ -154,56 +86,38 @@ void Network::sendMove(const Direction& dir)
         });
 }
 
-void Network::sendEndTurn()
+std::string Network::encodeMsgId(MsgId msgId)
 {
-    // Write data
-    EndTurnMsg m;
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << m;
-    outbound_data_ = archive_stream.str();
+    std::ostringstream msgIdStream;
+    msgIdStream << std::setw(MSG_ID_LENGTH) << std::hex << static_cast<std::underlying_type_t<MsgId>>(msgId);
 
-    // Write data size on 8 characters
-    std::ostringstream msgId_stream;
-    msgId_stream << std::setw(msgId_length) << std::hex << static_cast<std::underlying_type_t<MsgId>>(m.msgId);
-
-    if (!msgId_stream || msgId_stream.str().size() != msgId_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
+    if (not msgIdStream || msgIdStream.str().size() != MSG_ID_LENGTH) {
+        throw std::length_error{"Can't encode msgId length."};
     }
 
-    outbound_msgId = msgId_stream.str();
+     return msgIdStream.str();
+}
 
-    // Write data size on 8 characters
-    std::ostringstream header_stream;
-    header_stream << std::setw(header_length) << std::hex << outbound_data_.size();
+template<typename Msg>
+std::string Network::encodeData(const Msg& msg)
+{
+    std::ostringstream archiveStream;
+    boost::archive::text_oarchive archive(archiveStream);
+    archive << msg;
 
-    if (!header_stream || header_stream.str().size() != header_length) {
-        // Something went wrong, inform the caller.
-        //      boost::system::error_code error(boost::asio::error::invalid_argument);
-        //      m_socket.io_service().post(boost::bind(handler, error));
-        return;
+    return archiveStream.str();
+}
+
+std::string Network::encodeDataSize(const std::string& data)
+{
+    std::ostringstream dataSizeStream;
+    dataSizeStream << std::setw(DATA_SIZE_LENGTH) << std::hex << data.size();
+
+    if (not dataSizeStream || dataSizeStream.str().size() != DATA_SIZE_LENGTH) {
+        throw std::length_error{"Can't encode msgId length."};
     }
 
-    outbound_header_ = header_stream.str();
-
-    //    std::vector<boost::asio::const_buffer> buffers;
-    //    buffers.push_back(boost::asio::buffer(outbound_header_));
-    //    buffers.push_back(boost::asio::buffer(outbound_data_));
-    //    boost::asio::async_write(socket_, buffers, handler);
-
-    boost::asio::post(m_ioContext,
-        [this]() {
-            bool writeInProgress = not m_messageQueue.empty();
-            m_messageQueue.push_back(boost::asio::buffer(outbound_msgId));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_header_));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_data_));
-            if (not writeInProgress) {
-                onWrite();
-            }
-        });
+    return dataSizeStream.str();
 }
 
 void Network::onWrite()
@@ -234,14 +148,14 @@ void Network::onReadHeader()
             }
 
             // Determine the msgId
-            std::istringstream is(std::string(inbound_hhh, msgId_length));
+            std::istringstream is(std::string(inbound_hhh, MSG_ID_LENGTH));
             std::uint8_t msgId = 0;
             if (!(is >> std::hex >> msgId)) {
                 return;
             }
 
             // Determine the length
-            is = std::istringstream(std::string(inbound_hhh + header_length, header_length));
+            is = std::istringstream(std::string(inbound_hhh + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH));
             std::size_t inbound_data_size = 0;
             if (!(is >> std::hex >> inbound_data_size)) {
                 return;
@@ -275,8 +189,8 @@ void Network::onReadNewGameMsg(std::size_t inbound_data_size)
             NewGameMsg msg;
             try {
                 std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archive_stream(archive_data);
-                boost::archive::text_iarchive archive(archive_stream);
+                std::istringstream archiveStream(archive_data);
+                boost::archive::text_iarchive archive(archiveStream);
                 archive >> msg;
             } catch (std::exception& e) {
                 // Unable to decode data.
@@ -308,8 +222,8 @@ void Network::onReadMoveMsg(std::size_t inbound_data_size)
             MoveMsg msg;
             try {
                 std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archive_stream(archive_data);
-                boost::archive::text_iarchive archive(archive_stream);
+                std::istringstream archiveStream(archive_data);
+                boost::archive::text_iarchive archive(archiveStream);
                 archive >> msg;
             } catch (std::exception& e) {
                 // Unable to decode data.
@@ -341,8 +255,8 @@ void Network::onReadEndTurnMsg(std::size_t inbound_data_size)
             EndTurnMsg msg;
             try {
                 std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archive_stream(archive_data);
-                boost::archive::text_iarchive archive(archive_stream);
+                std::istringstream archiveStream(archive_data);
+                boost::archive::text_iarchive archive(archiveStream);
                 archive >> msg;
             } catch (std::exception& e) {
                 // Unable to decode data.

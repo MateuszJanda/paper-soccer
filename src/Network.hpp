@@ -2,6 +2,7 @@
 #define NETWORK_HPP
 
 #include "INetwork.hpp"
+#include "Messages.hpp"
 #include <boost/asio.hpp>
 #include <deque>
 #include <functional>
@@ -23,6 +24,13 @@ public:
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
     void sendEndTurn() override;
+
+    template<typename Msg>
+    void sendMsg(const Msg& msg);
+    std::string encodeMsgId(MsgId msgId);
+    template<typename Msg>
+    std::string encodeData(const Msg& msg);
+    std::string encodeDataSize(const std::string& data);
     void onWrite();
 
     void onReadHeader();
@@ -45,15 +53,16 @@ private:
     std::function<void(const Direction&)> m_handleEnemyMove;
     std::function<void()> m_handleEnemyEndTurn;
 
-    enum { header_length = 8 };
-    enum { msgId_length = 8 };
+    static constexpr int MSG_ID_LENGTH{8};
+    static constexpr int DATA_SIZE_LENGTH{8};
+
     std::string outbound_msgId;
     /// Holds an outbound header.
     std::string outbound_header_;
     /// Holds the outbound data.
     std::string outbound_data_;
 
-    char inbound_hhh[msgId_length + header_length];
+    char inbound_hhh[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
     /// Holds an inbound header.
     //    char inbound_header_[header_length];
     /// Holds the inbound data.
