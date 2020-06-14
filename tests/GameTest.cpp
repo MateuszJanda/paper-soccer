@@ -35,7 +35,7 @@ TEST_F(GameTest, run)
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::Connecting);
 }
 
-TEST_F(GameTest, onInitNewGameWhenFirstTurnIsUser)
+TEST_F(GameTest, initNewGameWhenFirstTurnIsUser)
 {
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawBoard());
@@ -43,14 +43,14 @@ TEST_F(GameTest, onInitNewGameWhenFirstTurnIsUser)
     EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
 
     game.setFirstTurn(Turn::User);
-    game.onInitNewGame();
+    game.initNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }
 
-TEST_F(GameTest, onInitNewGameWhenFirstTurnIsEnemy)
+TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
 {
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawBoard());
@@ -58,7 +58,7 @@ TEST_F(GameTest, onInitNewGameWhenFirstTurnIsEnemy)
     EXPECT_CALL(networkMock, sendNewGame(Turn::Enemy, Goal::Bottom));
 
     game.setFirstTurn(Turn::Enemy);
-    game.onInitNewGame();
+    game.initNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::User);
@@ -136,9 +136,9 @@ TEST_F(GameTest, userKeyWhenGameIsConnecting)
     game.userKey('j');
 }
 
-TEST_F(GameTest, userKeyWhenGameIsReadyForNew)
+TEST_F(GameTest, userKeyWhenGameEnd)
 {
-    game.setMatchStatus(MatchStatus::ReadyForNew);
+    game.setMatchStatus(MatchStatus::GameEnd);
     game.userKey('j');
 }
 
@@ -223,7 +223,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
     game.setUserStatus(MoveStatus::DeadEnd);
     game.userEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
@@ -236,7 +236,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
     game.setUserGoal(Goal::Top);
     game.userEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
@@ -249,7 +249,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
     game.setUserGoal(Goal::Bottom);
     game.userEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
@@ -262,7 +262,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
     game.setUserGoal(Goal::Bottom);
     game.userEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
@@ -275,7 +275,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
     game.setUserGoal(Goal::Top);
     game.userEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
 }
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
@@ -338,7 +338,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
     game.setUserGoal(Goal::Top);
     game.onEnemyEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
@@ -352,7 +352,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
     game.setUserGoal(Goal::Bottom);
     game.onEnemyEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
@@ -365,7 +365,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
     game.setEnemyStatus(MoveStatus::DeadEnd);
     game.onEnemyEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
@@ -379,7 +379,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
     game.setUserGoal(Goal::Bottom);
     game.onEnemyEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 
@@ -393,7 +393,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
     game.setUserGoal(Goal::Top);
     game.onEnemyEndTurn();
 
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
 }
 

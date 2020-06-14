@@ -32,7 +32,8 @@ Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}
-    , m_keyMap{{'q', Direction::TopLeft},
+    , NEW_GAME_KEY{'n'}
+    , DIR_KEYS{{'q', Direction::TopLeft},
           {'u', Direction::TopLeft},
           {'i', Direction::Top},
           {'o', Direction::TopRight},
@@ -49,14 +50,14 @@ void Game::run()
     using namespace std::placeholders;
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
-        std::bind(&Game::onInitNewGame, this),
+        std::bind(&Game::initNewGame, this),
         std::bind(&Game::onNewGame, this, _1, _2),
         std::bind(&Game::onEnemyMove, this, _1),
         std::bind(&Game::onEnemyEndTurn, this));
     m_network.run();
 }
 
-void Game::onInitNewGame()
+void Game::initNewGame()
 {
     m_match = MatchStatus::InProgress;
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
@@ -117,12 +118,11 @@ void Game::onKeyboardMouseInput()
 
 void Game::userKey(int key)
 {
-    if (m_keyMap.contains(key) and m_match == MatchStatus::InProgress) {
-        Direction dir = m_keyMap.at(key);
+    if (DIR_KEYS.contains(key) and m_match == MatchStatus::InProgress) {
+        Direction dir = DIR_KEYS.at(key);
         userMove(dir);
-    }
-
-    if (key == 'n' and m_match == MatchStatus::ReadyForNew) {
+    } else if (key == NEW_GAME_KEY) {
+        userRequestNewGame();
     }
 }
 
@@ -155,10 +155,10 @@ void Game::userEndTurn()
     }
 
     if (m_userStatus == MoveStatus::DeadEnd or isGoalToOwn(m_userStatus, m_userGoal)) {
-        m_match = MatchStatus::ReadyForNew;
+        m_match = MatchStatus::GameEnd;
         m_view.setLostStatus();
     } else if (isGoalToEnemy(m_userStatus, m_userGoal)) {
-        m_match = MatchStatus::ReadyForNew;
+        m_match = MatchStatus::GameEnd;
         m_view.setWinStatus();
     } else {
         m_currentTurn = Turn::Enemy;
@@ -166,6 +166,15 @@ void Game::userEndTurn()
     }
 
     m_network.sendEndTurn();
+}
+
+void Game::userRequestNewGame()
+{
+    if (m_match == MatchStatus::GameEnd) {
+        m_match = MatchStatus::ReadyForNew;
+    } else if (m_match == MatchStatus::EnemyReadyForNew) {
+        initNewGame();
+    }
 }
 
 void Game::onEnemyMove(const Direction& dir)
@@ -195,15 +204,24 @@ void Game::onEnemyEndTurn()
     }
 
     if (isGoalToOwn(m_enemyStatus, m_userGoal)) {
-        m_match = MatchStatus::ReadyForNew;
+        m_match = MatchStatus::GameEnd;
         m_view.setLostStatus();
     } else if (m_enemyStatus == MoveStatus::DeadEnd or isGoalToEnemy(m_enemyStatus, m_userGoal)) {
-        m_match = MatchStatus::ReadyForNew;
+        m_match = MatchStatus::GameEnd;
         m_view.setWinStatus();
     } else {
         m_currentTurn = Turn::User;
         m_userStatus = MoveStatus::Continue;
         m_view.setContinueStatus();
+    }
+}
+
+void Game::onEnemyReadyForNewGame()
+{
+    if (m_match == MatchStatus::GameEnd) {
+        m_match = MatchStatus::EnemyReadyForNew;
+    } else if (m_match == MatchStatus::ReadyForNew) {
+        initNewGame();
     }
 }
 

@@ -14,7 +14,9 @@ namespace PaperSoccer {
 enum class MatchStatus : std::uint8_t {
     Connecting,
     InProgress,
+    GameEnd,
     ReadyForNew,
+    EnemyReadyForNew,
 };
 
 
@@ -24,16 +26,18 @@ public:
 
     void run();
 
-    void onInitNewGame();
+    void initNewGame();
     void onNewGame(const Turn& firstTurn, const Goal& userGoal);
 
     void onKeyboardMouseInput();
     void userKey(int key);
     void userMove(Direction dir);
     void userEndTurn();
+    void userRequestNewGame();
 
     void onEnemyMove(const Direction& dir);
     void onEnemyEndTurn();
+    void onEnemyReadyForNewGame();
 
     void setCurrentTurn(Turn turn);
     Turn getCurrentTurn() const;
@@ -50,7 +54,9 @@ private:
     IBoard& m_board;
     INCurses& m_ncurses;
     IView& m_view;
-    const std::map<char, Direction> m_keyMap;
+
+    const char NEW_GAME_KEY;
+    const std::map<char, Direction> DIR_KEYS;
 
     MatchStatus m_match{MatchStatus::Connecting};
     Turn m_firstTurn{Turn::User};
