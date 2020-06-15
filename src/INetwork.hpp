@@ -13,8 +13,8 @@ public:
     virtual void registerHandlers(std::function<void()> handleKeyboardMouseInput,
         std::function<void()> handleInitNewGame,
         std::function<void(NewGameMsg)> handleNewGame,
-        std::function<void(const Direction&)> handleEnemyMove,
-        std::function<void()> handleEnemyEndTurn)
+        std::function<void(MoveMsg)> handleEnemyMove,
+        std::function<void(EndTurnMsg)> handleEnemyEndTurn)
         = 0;
     virtual void run() = 0;
     virtual void sendMove(const Direction& dir) = 0;

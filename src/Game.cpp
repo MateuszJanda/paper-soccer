@@ -53,7 +53,7 @@ void Game::run()
         std::bind(&Game::initNewGame, this),
         std::bind(&Game::onNewGame, this, _1),
         std::bind(&Game::onEnemyMove, this, _1),
-        std::bind(&Game::onEnemyEndTurn, this));
+        std::bind(&Game::onEnemyEndTurn, this, _1));
     m_network.run();
 }
 
@@ -177,13 +177,13 @@ void Game::userRequestNewGame()
     }
 }
 
-void Game::onEnemyMove(const Direction& dir)
+void Game::onEnemyMove(MoveMsg msg)
 {
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy move in user turn."};
     }
 
-    const auto status = m_board.moveBall(dir);
+    const auto status = m_board.moveBall(msg.dir);
     m_view.drawBoard();
 
     if (status == MoveStatus::Illegal) {
@@ -193,7 +193,7 @@ void Game::onEnemyMove(const Direction& dir)
     m_enemyStatus = status;
 }
 
-void Game::onEnemyEndTurn()
+void Game::onEnemyEndTurn(EndTurnMsg)
 {
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy end turn in user turn."};

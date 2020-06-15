@@ -18,8 +18,8 @@ Network::Network(boost::asio::io_context& ioContext)
 void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     std::function<void()> handleInitNewGame,
     std::function<void(NewGameMsg)> handleNewGame,
-    std::function<void(const Direction&)> handleEnemyMove,
-    std::function<void()> handleEnemyEndTurn)
+    std::function<void(MoveMsg)> handleEnemyMove,
+    std::function<void(EndTurnMsg)> handleEnemyEndTurn)
 {
     m_handleKeyboardMouseInput = handleKeyboardMouseInput;
     m_handleInitNewGame = handleInitNewGame;
@@ -153,13 +153,12 @@ void Network::onRead()
             switch (msgId) {
             case MsgId::NewGame:
                 onReadMsg<NewGameMsg>(dataSize, m_handleNewGame);
-//                onReadNewGameMsg(dataSize);
                 break;
             case MsgId::Move:
-                onReadMoveMsg(dataSize);
+                onReadMsg<MoveMsg>(dataSize, m_handleEnemyMove);
                 break;
             case MsgId::EndTurn:
-                onReadEndTurnMsg(dataSize);
+                onReadMsg<EndTurnMsg>(dataSize, m_handleEnemyEndTurn);
                 break;
             default:
                 throw std::invalid_argument{"Can't recognize msgId."};
@@ -203,80 +202,14 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
                 return;
             }
 
-            Msg msg;
             std::string archiveData{&inbound_data_[0], inbound_data_.size()};
             std::istringstream archiveStream{archiveData};
             boost::archive::text_iarchive archive{archiveStream};
+            Msg msg;
             archive >> msg;
 
             if (handlerFunc) {
                 handlerFunc(msg);
-            }
-
-            onRead();
-        });
-}
-
-void Network::onReadMoveMsg(std::size_t inbound_data_size)
-{
-    inbound_data_.resize(inbound_data_size);
-
-    boost::asio::async_read(m_socket,
-        boost::asio::buffer(boost::asio::buffer(inbound_data_)),
-        [this](boost::system::error_code errorCode, std::size_t length) {
-            if (errorCode) {
-                m_socket.close();
-                return;
-            }
-
-            MoveMsg msg;
-            try {
-                std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archiveStream(archive_data);
-                boost::archive::text_iarchive archive(archiveStream);
-                archive >> msg;
-            } catch (std::exception& e) {
-                // Unable to decode data.
-                //              boost::system::error_code error(boost::asio::error::invalid_argument);
-                //              boost::get<0>(handler)(error);
-                return;
-            }
-
-            if (m_handleEnemyMove) {
-                m_handleEnemyMove(msg.dir);
-            }
-
-            onRead();
-        });
-}
-
-void Network::onReadEndTurnMsg(std::size_t inbound_data_size)
-{
-    inbound_data_.resize(inbound_data_size);
-
-    boost::asio::async_read(m_socket,
-        boost::asio::buffer(boost::asio::buffer(inbound_data_)),
-        [this](boost::system::error_code errorCode, std::size_t length) {
-            if (errorCode) {
-                m_socket.close();
-                return;
-            }
-
-            EndTurnMsg msg;
-            try {
-                std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archiveStream(archive_data);
-                boost::archive::text_iarchive archive(archiveStream);
-                archive >> msg;
-            } catch (std::exception& e) {
-                // Unable to decode data.
-                //              boost::system::error_code error(boost::asio::error::invalid_argument);
-                //              boost::get<0>(handler)(error);
-                return;
-            }
-
-            if (m_handleEnemyEndTurn) {
-                m_handleEnemyEndTurn();
             }
 
             onRead();

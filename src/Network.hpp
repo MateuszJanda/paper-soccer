@@ -16,8 +16,8 @@ public:
     void registerHandlers(std::function<void()> handleKeyboardMouseInput,
         std::function<void()> handleInitNewGame,
         std::function<void(NewGameMsg)> handleNewGame,
-        std::function<void(const Direction&)> handleEnemyMove,
-        std::function<void()> handleEnemyEndTurn) override;
+        std::function<void(MoveMsg)> handleEnemyMove,
+        std::function<void(EndTurnMsg)> handleEnemyEndTurn) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
 
@@ -36,14 +36,8 @@ public:
     void onRead();
     MsgId decodeMsgId(const std::string& inboundData);
     std::size_t decodeDataSize(const std::string& data);
-
-//    void onReadNewGameMsg(std::size_t inbound_data_size);
-
     template<typename Msg>
     void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
-
-    void onReadMoveMsg(std::size_t inbound_data_size);
-    void onReadEndTurnMsg(std::size_t inbound_data_size);
 
 protected:
     void setupHandlers();
@@ -57,22 +51,22 @@ private:
 
     std::function<void()> m_handleKeyboardMouseInput;
     std::function<void(NewGameMsg)> m_handleNewGame;
-    std::function<void(const Direction&)> m_handleEnemyMove;
-    std::function<void()> m_handleEnemyEndTurn;
+    std::function<void(MoveMsg)> m_handleEnemyMove;
+    std::function<void(EndTurnMsg)> m_handleEnemyEndTurn;
 
     static constexpr int MSG_ID_LENGTH{8};
     static constexpr int DATA_SIZE_LENGTH{8};
 
     std::string outbound_msgId;
-    /// Holds an outbound header.
+    // Holds an outbound header.
     std::string outbound_header_;
-    /// Holds the outbound data.
+    // Holds the outbound data.
     std::string outbound_data_;
 
     char inbound_hhh[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
-    /// Holds an inbound header.
+    // Holds an inbound header.
     //    char inbound_header_[header_length];
-    /// Holds the inbound data.
+    // Holds the inbound data.
     std::vector<char> inbound_data_;
 
     //    MoveMsg msg;

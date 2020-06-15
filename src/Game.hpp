@@ -34,8 +34,8 @@ public:
     void userEndTurn();
     void userRequestNewGame();
 
-    void onEnemyMove(const Direction& dir);
-    void onEnemyEndTurn();
+    void onEnemyMove(MoveMsg msg);
+    void onEnemyEndTurn(EndTurnMsg);
     void onEnemyReadyForNewGame();
 
     void setCurrentTurn(Turn turn);
