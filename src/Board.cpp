@@ -269,6 +269,11 @@ void Board::updateBallAndGraph(Direction dir)
     setBallPosition(newPos);
 }
 
+bool Board::undoBallMove(Direction dir)
+{
+    return false;
+}
+
 bool Board::canReachGoal(Direction dir, int netLine) const
 {
     const auto newPos = directionToPosition(m_ballPos, dir);

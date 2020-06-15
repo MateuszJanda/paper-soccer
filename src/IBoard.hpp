@@ -28,6 +28,7 @@ public:
     virtual Position getBallPosition() const = 0;
     virtual bool hasNeighbour(Position pos, Direction dir) const = 0;
     virtual MoveStatus moveBall(Direction dir) = 0;
+    virtual bool undoBallMove(Direction dir) = 0;
 };
 
 } // namespace PaperSoccer

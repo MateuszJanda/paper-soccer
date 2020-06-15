@@ -17,6 +17,7 @@ public:
     MOCK_CONST_METHOD0(getBallPosition, Position());
     MOCK_CONST_METHOD2(hasNeighbour, bool(Position, Direction));
     MOCK_METHOD1(moveBall, MoveStatus(Direction));
+    MOCK_METHOD1(undoBallMove, bool(Direction));
 };
 
 } // namespace PaperSoccer

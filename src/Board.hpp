@@ -20,6 +20,7 @@ public:
     Position getBallPosition() const;
     bool hasNeighbour(Position pos, Direction dir) const override;
     MoveStatus moveBall(Direction dir) override;
+    bool undoBallMove(Direction dir) override;
 
 private:
     void setBorders();
