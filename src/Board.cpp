@@ -27,7 +27,7 @@ void Board::reset()
     }
 
     // Empty graph
-    m_graph = std::vector<std::vector<Node>>{};
+    m_graph.clear();
     for (std::size_t i = 0; i < m_height + Y_OFFSET; i++) {
         m_graph.push_back(std::vector{m_width + X_OFFSET, Node{}});
     }
@@ -264,14 +264,28 @@ void Board::updateBallAndGraph(Direction dir)
     }
 
     m_graph[m_ballPos.y][m_ballPos.x].addNeighbour(dir);
-    const auto reverse = reverseDirection(dir);
-    m_graph[newPos.y][newPos.x].addNeighbour(reverse);
+    const auto reverseDir = reverseDirection(dir);
+    m_graph[newPos.y][newPos.x].addNeighbour(reverseDir);
     setBallPosition(newPos);
 }
 
 bool Board::undoBallMove(Direction dir)
 {
-    return false;
+    auto& currentNode = m_graph[m_ballPos.y][m_ballPos.x];
+    if (not currentNode.hasNeighbour(dir)) {
+        return false;
+    }
+
+    const auto prevPos = directionToPosition(m_ballPos, dir);
+    if (not isPositionInGraph(prevPos)) {
+        return false;
+    }
+
+    currentNode.delNeighbour(dir);
+    const auto reverseDir = reverseDirection(dir);
+    m_graph[prevPos.y][prevPos.x].delNeighbour(reverseDir);
+    setBallPosition(prevPos);
+    return true;
 }
 
 bool Board::canReachGoal(Direction dir, int netLine) const

@@ -10,8 +10,9 @@ namespace PaperSoccer {
 enum class MsgId : std::uint8_t {
     NewGame = 0,
     Move = 1,
-    EndTurn = 2,
-    ReadyForNewGame = 3
+    UndoMove = 2,
+    EndTurn = 3,
+    ReadyForNewGame = 4
 };
 
 struct NewGameMsg {
@@ -48,6 +49,20 @@ struct MoveMsg {
         ar& dir;
     }
 };
+
+struct UndoMoveMsg {
+    UndoMoveMsg()
+    {
+    }
+
+    static constexpr MsgId msgId{MsgId::UndoMove};
+
+    template <typename Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+    }
+};
+
 
 struct EndTurnMsg {
     EndTurnMsg()

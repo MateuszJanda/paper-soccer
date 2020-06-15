@@ -32,7 +32,6 @@ Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}
-    , NEW_GAME_KEY{'n'}
     , DIR_KEYS{{'q', Direction::TopLeft},
           {'u', Direction::TopLeft},
           {'i', Direction::Top},
@@ -111,7 +110,7 @@ void Game::onKeyboardMouseInput()
         std::visit(overloaded{
                        [this](const KeyInput& data) { userKey(data.key); },
                        [this](const EnterInput& data) { userEndTurn(); },
-                       [this](const MouseInput& data) {},
+                       [this](const MouseInput& data) { },
                    },
             *input);
     }
@@ -124,6 +123,8 @@ void Game::userKey(int key)
         userMove(dir);
     } else if (key == NEW_GAME_KEY) {
         userRequestNewGame();
+    } else if (key == UNDO_MOVE_KEY) {
+//        userUndoMove();
     }
 }
 
@@ -146,6 +147,7 @@ void Game::userMove(Direction dir)
         m_view.setReadyToEndTurnStatus();
     }
 
+    m_dirPath.push_back(dir);
     m_network.sendMove(dir);
 }
 
@@ -166,6 +168,7 @@ void Game::userEndTurn()
         m_view.setEnemyTurnStatus();
     }
 
+    m_dirPath.clear();
     m_network.sendEndTurn();
 }
 
@@ -177,6 +180,20 @@ void Game::userRequestNewGame()
     } else if (m_match == MatchStatus::EnemyReadyForNew) {
         initNewGame();
     }
+}
+
+void Game::userUndoMove()
+{
+    if (m_dirPath.empty()) {
+        return;
+    }
+
+    const auto dir = m_dirPath.back();
+    m_dirPath.pop_back();
+    const auto reverseDir = reverseDirection(dir);
+    m_board.undoBallMove(reverseDir);
+    m_userStatus = MoveStatus::Continue;
+    m_view.drawBoard();
 }
 
 void Game::onEnemyMove(MoveMsg msg)

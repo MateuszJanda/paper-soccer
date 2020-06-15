@@ -30,11 +30,14 @@ public:
 
     void onKeyboardMouseInput();
     void userKey(int key);
+    void userMouse(int x, int y);
     void userMove(Direction dir);
     void userEndTurn();
     void userRequestNewGame();
+    void userUndoMove();
 
     void onEnemyMove(MoveMsg msg);
+    void onEnemyUndoMove(MoveMsg msg);
     void onEnemyEndTurn(EndTurnMsg);
     void onEnemyReadyForNewGame(ReadyForNewGameMsg);
 
@@ -54,7 +57,8 @@ private:
     INCurses& m_ncurses;
     IView& m_view;
 
-    const char NEW_GAME_KEY;
+    const char NEW_GAME_KEY{'n'};
+    const char UNDO_MOVE_KEY{'z'};
     const std::map<char, Direction> DIR_KEYS;
 
     MatchStatus m_match{MatchStatus::Connecting};
@@ -63,6 +67,7 @@ private:
     Goal m_userGoal{Goal::Top};
     MoveStatus m_userStatus{MoveStatus::Continue};
     MoveStatus m_enemyStatus{MoveStatus::Continue};
+    std::vector<Direction> m_dirPath;
 };
 
 } // namespace PaperSoccer
