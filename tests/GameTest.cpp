@@ -71,7 +71,7 @@ TEST_F(GameTest, onNewGameWhenUserTurn)
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(viewMock, setContinueStatus());
 
-    game.onNewGame(Turn::User, Goal::Bottom);
+    game.onNewGame(NewGameMsg{Turn::User, Goal::Bottom});
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::User);
@@ -84,7 +84,7 @@ TEST_F(GameTest, onNewGameWhenEnemyTurn)
     EXPECT_CALL(viewMock, drawBoard());
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
 
-    game.onNewGame(Turn::Enemy, Goal::Bottom);
+    game.onNewGame(NewGameMsg{Turn::Enemy, Goal::Bottom});
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);

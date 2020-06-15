@@ -1,9 +1,7 @@
 #ifndef I_NETWORK_HPP
 #define I_NETWORK_HPP
 
-#include "Direction.hpp"
-#include "Goal.hpp"
-#include "Turn.hpp"
+#include "Messages.hpp"
 #include <functional>
 
 namespace PaperSoccer {
@@ -14,7 +12,7 @@ public:
 
     virtual void registerHandlers(std::function<void()> handleKeyboardMouseInput,
         std::function<void()> handleInitNewGame,
-        std::function<void(const Turn&, const Goal&)> handleNewGame,
+        std::function<void(NewGameMsg)> handleNewGame,
         std::function<void(const Direction&)> handleEnemyMove,
         std::function<void()> handleEnemyEndTurn)
         = 0;

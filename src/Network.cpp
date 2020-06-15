@@ -17,7 +17,7 @@ Network::Network(boost::asio::io_context& ioContext)
 
 void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     std::function<void()> handleInitNewGame,
-    std::function<void(const Turn&, const Goal&)> handleNewGame,
+    std::function<void(NewGameMsg)> handleNewGame,
     std::function<void(const Direction&)> handleEnemyMove,
     std::function<void()> handleEnemyEndTurn)
 {
@@ -152,7 +152,8 @@ void Network::onRead()
 
             switch (msgId) {
             case MsgId::NewGame:
-                onReadNewGameMsg(dataSize);
+                onReadMsg<NewGameMsg>(dataSize, m_handleNewGame);
+//                onReadNewGameMsg(dataSize);
                 break;
             case MsgId::Move:
                 onReadMoveMsg(dataSize);
@@ -189,33 +190,27 @@ std::size_t Network::decodeDataSize(const std::string& inboundData)
     return dataSize;
 }
 
-void Network::onReadNewGameMsg(std::size_t inbound_data_size)
+template<typename Msg>
+void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc)
 {
-    inbound_data_.resize(inbound_data_size);
+    inbound_data_.resize(dataSize);
 
     boost::asio::async_read(m_socket,
         boost::asio::buffer(boost::asio::buffer(inbound_data_)),
-        [this](boost::system::error_code errorCode, std::size_t length) {
+        [this, handlerFunc](boost::system::error_code errorCode, std::size_t length) {
             if (errorCode) {
                 m_socket.close();
                 return;
             }
 
-            NewGameMsg msg;
-            try {
-                std::string archive_data(&inbound_data_[0], inbound_data_.size());
-                std::istringstream archiveStream(archive_data);
-                boost::archive::text_iarchive archive(archiveStream);
-                archive >> msg;
-            } catch (std::exception& e) {
-                // Unable to decode data.
-                //              boost::system::error_code error(boost::asio::error::invalid_argument);
-                //              boost::get<0>(handler)(error);
-                return;
-            }
+            Msg msg;
+            std::string archiveData{&inbound_data_[0], inbound_data_.size()};
+            std::istringstream archiveStream{archiveData};
+            boost::archive::text_iarchive archive{archiveStream};
+            archive >> msg;
 
-            if (m_handleNewGame) {
-                m_handleNewGame(msg.turn, msg.goal);
+            if (handlerFunc) {
+                handlerFunc(msg);
             }
 
             onRead();

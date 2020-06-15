@@ -15,7 +15,7 @@ public:
 
     void registerHandlers(std::function<void()> handleKeyboardMouseInput,
         std::function<void()> handleInitNewGame,
-        std::function<void(const Turn&, const Goal&)> handleNewGame,
+        std::function<void(NewGameMsg)> handleNewGame,
         std::function<void(const Direction&)> handleEnemyMove,
         std::function<void()> handleEnemyEndTurn) override;
 
@@ -37,7 +37,11 @@ public:
     MsgId decodeMsgId(const std::string& inboundData);
     std::size_t decodeDataSize(const std::string& data);
 
-    void onReadNewGameMsg(std::size_t inbound_data_size);
+//    void onReadNewGameMsg(std::size_t inbound_data_size);
+
+    template<typename Msg>
+    void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
+
     void onReadMoveMsg(std::size_t inbound_data_size);
     void onReadEndTurnMsg(std::size_t inbound_data_size);
 
@@ -52,7 +56,7 @@ private:
     boost::asio::posix::stream_descriptor m_desc;
 
     std::function<void()> m_handleKeyboardMouseInput;
-    std::function<void(const Turn&, const Goal&)> m_handleNewGame;
+    std::function<void(NewGameMsg)> m_handleNewGame;
     std::function<void(const Direction&)> m_handleEnemyMove;
     std::function<void()> m_handleEnemyEndTurn;
 
