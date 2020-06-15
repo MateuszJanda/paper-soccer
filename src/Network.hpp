@@ -33,7 +33,10 @@ public:
     std::string encodeDataSize(const std::string& data);
     void onWrite();
 
-    void onReadHeader();
+    void onRead();
+    MsgId decodeMsgId(const std::string& inboundData);
+    std::size_t decodeDataSize(const std::string& data);
+
     void onReadNewGameMsg(std::size_t inbound_data_size);
     void onReadMoveMsg(std::size_t inbound_data_size);
     void onReadEndTurnMsg(std::size_t inbound_data_size);

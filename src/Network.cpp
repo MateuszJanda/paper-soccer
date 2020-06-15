@@ -30,7 +30,7 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
 
 void Network::setupHandlers()
 {
-    onReadHeader();
+    onRead();
     onKeyboardMouseInput(boost::system::error_code{});
 }
 
@@ -137,7 +137,7 @@ void Network::onWrite()
         });
 }
 
-void Network::onReadHeader()
+void Network::onRead()
 {
     boost::asio::async_read(m_socket,
         boost::asio::buffer(boost::asio::buffer(inbound_hhh)),
@@ -147,31 +147,46 @@ void Network::onReadHeader()
                 return;
             }
 
-            // Determine the msgId
-            std::istringstream is(std::string(inbound_hhh, MSG_ID_LENGTH));
-            std::uint8_t msgId = 0;
-            if (!(is >> std::hex >> msgId)) {
-                return;
-            }
+            const auto msgId = decodeMsgId(std::string{inbound_hhh, MSG_ID_LENGTH});
+            const auto dataSize = decodeDataSize(std::string{inbound_hhh + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
 
-            // Determine the length
-            is = std::istringstream(std::string(inbound_hhh + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH));
-            std::size_t inbound_data_size = 0;
-            if (!(is >> std::hex >> inbound_data_size)) {
-                return;
+            switch (msgId) {
+            case MsgId::NewGame:
+                onReadNewGameMsg(dataSize);
+                break;
+            case MsgId::Move:
+                onReadMoveMsg(dataSize);
+                break;
+            case MsgId::EndTurn:
+                onReadEndTurnMsg(dataSize);
+                break;
+            default:
+                throw std::invalid_argument{"Can't recognize msgId."};
+                break;
             }
-
-            MsgId mmm = static_cast<MsgId>(msgId);
-            if (mmm == MsgId::NewGame) {
-                onReadNewGameMsg(inbound_data_size);
-            } else if (mmm == MsgId::Move) {
-                onReadMoveMsg(inbound_data_size);
-            } else if (mmm == MsgId::EndTurn) {
-                onReadEndTurnMsg(inbound_data_size);
-            }
-
-            return; // !!
         });
+}
+
+MsgId Network::decodeMsgId(const std::string& inboundData)
+{
+    std::istringstream is{inboundData};
+    std::uint8_t msgId{0};
+    if (not (is >> std::hex >> msgId)) {
+        throw std::invalid_argument{"Can't decode msgId."};
+    }
+
+    return  static_cast<MsgId>(msgId);
+}
+
+std::size_t Network::decodeDataSize(const std::string& inboundData)
+{
+    std::istringstream is{inboundData};
+    std::size_t dataSize{0};
+    if (!(is >> std::hex >> dataSize)) {
+        throw std::invalid_argument{"Can't decode dataSize."};
+    }
+
+    return dataSize;
 }
 
 void Network::onReadNewGameMsg(std::size_t inbound_data_size)
@@ -203,7 +218,7 @@ void Network::onReadNewGameMsg(std::size_t inbound_data_size)
                 m_handleNewGame(msg.turn, msg.goal);
             }
 
-            onReadHeader();
+            onRead();
         });
 }
 
@@ -236,7 +251,7 @@ void Network::onReadMoveMsg(std::size_t inbound_data_size)
                 m_handleEnemyMove(msg.dir);
             }
 
-            onReadHeader();
+            onRead();
         });
 }
 
@@ -269,7 +284,7 @@ void Network::onReadEndTurnMsg(std::size_t inbound_data_size)
                 m_handleEnemyEndTurn();
             }
 
-            onReadHeader();
+            onRead();
         });
 }
 

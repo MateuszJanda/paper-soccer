@@ -4,8 +4,6 @@
 #include "Direction.hpp"
 #include "Goal.hpp"
 #include "Turn.hpp"
-#include <cstring>
-#include <vector>
 
 namespace PaperSoccer {
 
