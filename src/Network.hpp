@@ -17,7 +17,8 @@ public:
         std::function<void()> handleInitNewGame,
         std::function<void(NewGameMsg)> handleNewGame,
         std::function<void(MoveMsg)> handleEnemyMove,
-        std::function<void(EndTurnMsg)> handleEnemyEndTurn) override;
+        std::function<void(EndTurnMsg)> handleEnemyEndTurn,
+        std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg) override;
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
 
@@ -55,6 +56,7 @@ private:
     std::function<void(NewGameMsg)> m_handleNewGame;
     std::function<void(MoveMsg)> m_handleEnemyMove;
     std::function<void(EndTurnMsg)> m_handleEnemyEndTurn;
+    std::function<void(ReadyForNewGameMsg)> m_handleReadyForNewGameMsg;
 
     static constexpr int MSG_ID_LENGTH{8};
     static constexpr int DATA_SIZE_LENGTH{8};

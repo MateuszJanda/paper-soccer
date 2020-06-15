@@ -36,7 +36,7 @@ public:
 
     void onEnemyMove(MoveMsg msg);
     void onEnemyEndTurn(EndTurnMsg);
-    void onEnemyReadyForNewGame();
+    void onEnemyReadyForNewGame(ReadyForNewGameMsg);
 
     void setCurrentTurn(Turn turn);
     Turn getCurrentTurn() const;

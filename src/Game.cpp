@@ -53,7 +53,8 @@ void Game::run()
         std::bind(&Game::initNewGame, this),
         std::bind(&Game::onNewGame, this, _1),
         std::bind(&Game::onEnemyMove, this, _1),
-        std::bind(&Game::onEnemyEndTurn, this, _1));
+        std::bind(&Game::onEnemyEndTurn, this, _1),
+        std::bind(&Game::onEnemyReadyForNewGame, this, _1));
     m_network.run();
 }
 
@@ -216,7 +217,7 @@ void Game::onEnemyEndTurn(EndTurnMsg)
     }
 }
 
-void Game::onEnemyReadyForNewGame()
+void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)
 {
     if (m_match == MatchStatus::GameEnd) {
         m_match = MatchStatus::EnemyReadyForNew;

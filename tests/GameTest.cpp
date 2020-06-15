@@ -27,7 +27,7 @@ TEST_F(GameTest, run)
 {
     using namespace std::placeholders;
 
-    EXPECT_CALL(networkMock, registerHandlers(_, _, _, _, _));
+    EXPECT_CALL(networkMock, registerHandlers(_, _, _, _, _, _));
     EXPECT_CALL(networkMock, run());
 
     game.run();
@@ -461,7 +461,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
 TEST_F(GameTest, onEnemyReadyForNewGameWhenGameInProgress)
 {
     game.setMatchStatus(MatchStatus::InProgress);
-    game.onEnemyReadyForNewGame();
+    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
 }
@@ -469,7 +469,7 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenGameInProgress)
 TEST_F(GameTest, onEnemyReadyForNewGameWhenGameEnd)
 {
     game.setMatchStatus(MatchStatus::GameEnd);
-    game.onEnemyReadyForNewGame();
+    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::EnemyReadyForNew);
 }
@@ -483,7 +483,7 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenUserReadyForNewGame)
 
     game.setFirstTurn(Turn::User);
     game.setMatchStatus(MatchStatus::ReadyForNew);
-    game.onEnemyReadyForNewGame();
+    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);

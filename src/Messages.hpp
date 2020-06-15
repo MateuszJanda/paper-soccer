@@ -10,7 +10,8 @@ namespace PaperSoccer {
 enum class MsgId : std::uint8_t {
     NewGame = 0,
     Move = 1,
-    EndTurn = 2
+    EndTurn = 2,
+    ReadyForNewGame = 3
 };
 
 struct NewGameMsg {
@@ -20,7 +21,7 @@ struct NewGameMsg {
     {
     }
 
-    const MsgId msgId{MsgId::NewGame};
+    static constexpr MsgId msgId{MsgId::NewGame};
     Turn turn;
     Goal goal;
 
@@ -38,7 +39,7 @@ struct MoveMsg {
     {
     }
 
-    const MsgId msgId{MsgId::Move};
+    static constexpr MsgId msgId{MsgId::Move};
     Direction dir{Direction::Top};
 
     template <typename Archive>
@@ -53,7 +54,20 @@ struct EndTurnMsg {
     {
     }
 
-    const MsgId msgId{MsgId::EndTurn};
+    static constexpr MsgId msgId{MsgId::EndTurn};
+
+    template <typename Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+    }
+};
+
+struct ReadyForNewGameMsg {
+    ReadyForNewGameMsg()
+    {
+    }
+
+    static constexpr MsgId msgId{MsgId::ReadyForNewGame};
 
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)
