@@ -35,9 +35,11 @@ public:
 
     void onRead();
     MsgId decodeMsgId(const std::string& inboundData);
-    std::size_t decodeDataSize(const std::string& data);
+    std::size_t decodeDataSize(const std::string& inboundData);
     template<typename Msg>
     void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
+    template<typename Msg>
+    Msg decodeData(const std::vector<char>& inboundData);
 
 protected:
     void setupHandlers();
@@ -58,15 +60,10 @@ private:
     static constexpr int DATA_SIZE_LENGTH{8};
 
     std::string outbound_msgId;
-    // Holds an outbound header.
     std::string outbound_header_;
-    // Holds the outbound data.
     std::string outbound_data_;
 
     char inbound_hhh[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
-    // Holds an inbound header.
-    //    char inbound_header_[header_length];
-    // Holds the inbound data.
     std::vector<char> inbound_data_;
 
     //    MoveMsg msg;

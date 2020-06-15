@@ -2,7 +2,6 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
-#include <memory>
 #include <sstream>
 #include <type_traits>
 
@@ -202,18 +201,25 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
                 return;
             }
 
-            std::string archiveData{&inbound_data_[0], inbound_data_.size()};
-            std::istringstream archiveStream{archiveData};
-            boost::archive::text_iarchive archive{archiveStream};
-            Msg msg;
-            archive >> msg;
-
+            Msg msg = decodeData<Msg>(inbound_data_);
             if (handlerFunc) {
                 handlerFunc(msg);
             }
 
             onRead();
         });
+}
+
+template<typename Msg>
+Msg Network::decodeData(const std::vector<char>& inboundData)
+{
+    std::string archiveData{&inboundData[0], inboundData.size()};
+    std::istringstream archiveStream{archiveData};
+    boost::archive::text_iarchive archive{archiveStream};
+    Msg msg;
+    archive >> msg;
+
+    return msg;
 }
 
 } // namespace PaperSoccer
