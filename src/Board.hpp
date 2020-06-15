@@ -34,10 +34,12 @@ private:
     bool isDeadEnd() const;
     bool isPositionInGraph(Position pos) const;
 
-    Position m_ballPos;
-    std::vector<std::vector<Node>> m_graph;
+    const std::size_t m_width;
+    const std::size_t m_height;
     const std::size_t m_goalpostLeft;
     const std::size_t m_goalpostRight;
+    Position m_ballPos;
+    std::vector<std::vector<Node>> m_graph;
 };
 
 } // namespace PaperSoccer

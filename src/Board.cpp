@@ -11,24 +11,31 @@ namespace {
 }
 
 Board::Board(std::size_t width, std::size_t height)
-    : m_ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)}
+    : m_width{width}
+    , m_height{height}
     , m_goalpostLeft{((width + X_OFFSET) / 2) - (GOAL_WIDTH / 2)}
     , m_goalpostRight{((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2)}
+    , m_ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)}
 {
-    if (width < 4 or width % 2 == 1 or height < 4 or height % 2 == 1) {
-        throw std::range_error{"Can't build border with this dimensions."};
-    }
-
-    // Empty graph
-    for (std::size_t i = 0; i < height + Y_OFFSET; i++) {
-        m_graph.push_back(std::vector{width + X_OFFSET, Node{}});
-    }
-
-    setBorders();
+    reset();
 }
 
 void Board::reset()
 {
+    if (m_width < 4 or m_width % 2 == 1 or m_height < 4 or m_height % 2 == 1) {
+        throw std::range_error{"Can't build border with this dimensions."};
+    }
+
+
+    // Empty graph
+    m_graph = std::vector<std::vector<Node>>{};
+    for (std::size_t i = 0; i < m_height + Y_OFFSET; i++) {
+        m_graph.push_back(std::vector{m_width + X_OFFSET, Node{}});
+    }
+
+    setBorders();
+    setBallPosition(Position{static_cast<int>((m_width + X_OFFSET) / 2),
+                             static_cast<int>((m_height + Y_OFFSET) / 2)});
 }
 
 void Board::setBorders()

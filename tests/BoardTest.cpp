@@ -44,6 +44,27 @@ TEST_F(BoardTest, checkBallPosition)
     ASSERT_EQ(board.getBallPosition(), CENTER);
 }
 
+TEST_F(BoardTest, checkReset)
+{
+    board.moveBall(Direction::Top);
+    board.reset();
+
+    ASSERT_EQ(board.getWidth(), GRPAH_WIDTH);
+    ASSERT_EQ(board.getHeight(), GRAPH_HEIGHT);
+    ASSERT_EQ(board.getBallPosition(), CENTER);
+
+    for (const auto dir : {Direction::Top,
+                           Direction::TopRight,
+                           Direction::Right,
+                           Direction::BottomRight ,
+                           Direction::Bottom ,
+                           Direction::BottomLeft,
+                           Direction::Left ,
+                           Direction::TopLeft}) {
+        ASSERT_FALSE(board.hasNeighbour(CENTER, dir));
+    }
+}
+
 TEST_F(BoardTest, checkHasNeighbourOutOfRange)
 {
     ASSERT_FALSE(board.hasNeighbour(Position{-1, 0}, Direction::Top));
