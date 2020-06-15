@@ -68,6 +68,12 @@ void Network::sendEndTurn()
     sendMsg(msg);
 }
 
+void Network::sendReadyForNewGame()
+{
+    ReadyForNewGameMsg msg{};
+    sendMsg(msg);
+}
+
 template<typename Msg>
 void Network::sendMsg(const Msg& msg)
 {

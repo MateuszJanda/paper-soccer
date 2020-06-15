@@ -25,6 +25,7 @@ public:
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
     void sendEndTurn() override;
+    void sendReadyForNewGame() override;
 
     template<typename Msg>
     void sendMsg(const Msg& msg);

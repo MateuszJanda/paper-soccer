@@ -173,6 +173,7 @@ void Game::userRequestNewGame()
 {
     if (m_match == MatchStatus::GameEnd) {
         m_match = MatchStatus::ReadyForNew;
+        m_network.sendReadyForNewGame();
     } else if (m_match == MatchStatus::EnemyReadyForNew) {
         initNewGame();
     }

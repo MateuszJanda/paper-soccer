@@ -161,6 +161,8 @@ TEST_F(GameTest, userKeyWhenRequestForNewGameDuringGame)
 
 TEST_F(GameTest, userKeyWhenRequestForNewGameAfterGame)
 {
+    EXPECT_CALL(networkMock, sendReadyForNewGame());
+
     game.setMatchStatus(MatchStatus::GameEnd);
     game.userKey('n');
 
@@ -316,6 +318,8 @@ TEST_F(GameTest, userRequestNewGameWhenGameInProgress)
 
 TEST_F(GameTest, userRequestNewGameWhenGameEnd)
 {
+    EXPECT_CALL(networkMock, sendReadyForNewGame());
+
     game.setMatchStatus(MatchStatus::GameEnd);
     game.userRequestNewGame();
 
