@@ -14,8 +14,8 @@ View::View(IBoard& board, INCurses& ncurses)
 
 void View::drawBoard()
 {
-    for (std::size_t y = 0; y < m_board.getHeight(); y++) {
-        for (std::size_t x = 0; x < m_board.getWidth(); x++) {
+    for (auto y = 0; y < m_board.getHeight(); y++) {
+        for (auto x = 0; x < m_board.getWidth(); x++) {
             Position nodePos{x, y};
             auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
             drawCell(nodePos, nodeSkip, neighSkip);
@@ -112,6 +112,8 @@ Skips View::filterDirsForRightLine(Position nodePos)
 
 void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
 {
+    clearLines(nodePos);
+
     if (not nodeSkip.contains(Direction::Top) and m_board.hasNeighbour(nodePos, Direction::Top)) {
         drawVerticalToTopLine(nodePos);
     }
@@ -139,6 +141,7 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
     } else if (topLeft) {
         drawHypotenuseToTopLeft(neighbourPos);
     }
+
     drawMarker(nodePos);
 }
 
@@ -179,6 +182,13 @@ void View::drawHypotenuseToTopLeft(Position nodePos)
     // ヽ  - U+30FD       https://en.wikipedia.org/wiki/Katakana_(Unicode_block)
     const std::string symbol = "⸌⸜";
     m_ncurses.print(nodePos.x * X_FACTOR - 2 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
+}
+
+void View::clearLines(Position nodePos)
+{
+    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, " ");
+    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "  ");
+    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, "  ");
 }
 
 void View::drawMarker(Position nodePos)

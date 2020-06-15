@@ -39,6 +39,7 @@ public:
     static constexpr int Y_FACTOR{2};
 
 private:
+    void clearLines(Position nodePos);
     void drawVerticalToTopLine(Position nodePos);
     void drawHorizontalToRightLine(Position nodePos);
     void drawCrossToRight(Position nodePos);

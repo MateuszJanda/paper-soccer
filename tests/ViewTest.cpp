@@ -45,6 +45,21 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
 
+    void expectClearLines(Position nodePos = NODE_POS)
+    {
+        int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
+        int y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+        EXPECT_CALL(ncursesMock, print(x, y, " "));
+
+        x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
+        y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
+        EXPECT_CALL(ncursesMock, print(x, y, "  "));
+
+        x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
+        y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+        EXPECT_CALL(ncursesMock, print(x, y, "  "));
+    }
+
     void expectDrawStatus()
     {
         EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _));
@@ -152,6 +167,8 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
+    expectClearLines();
+
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
@@ -161,6 +178,8 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(false));
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
@@ -172,6 +191,8 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 
 TEST_F(ViewTest, checkDrawCellTopPath)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
@@ -187,6 +208,8 @@ TEST_F(ViewTest, checkDrawCellTopPath)
 
 TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(false));
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
@@ -198,6 +221,8 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 
 TEST_F(ViewTest, checkDrawCellRightPath)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(true));
 
     int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
@@ -213,6 +238,8 @@ TEST_F(ViewTest, checkDrawCellRightPath)
 
 TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(false));
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
@@ -224,6 +251,8 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 
 TEST_F(ViewTest, checkDrawCellTopRightPath)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
 
     int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
@@ -240,6 +269,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
     Position nodePos{WIDTH - 1, 0};
+    expectClearLines(nodePos);
 
     int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
     int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
@@ -250,6 +280,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(false));
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
@@ -261,6 +293,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 
 TEST_F(ViewTest, checkDrawCellTopLeftPath)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
     int x = NEIGHBOUR_POS.x * View::X_FACTOR - 2 + View::X_OFFSET;
@@ -276,6 +310,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 
 TEST_F(ViewTest, checkDrawCellCrossPath)
 {
+    expectClearLines();
+
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 

@@ -26,7 +26,6 @@ void Board::reset()
         throw std::range_error{"Can't build border with this dimensions."};
     }
 
-
     // Empty graph
     m_graph = std::vector<std::vector<Node>>{};
     for (std::size_t i = 0; i < m_height + Y_OFFSET; i++) {
@@ -34,8 +33,7 @@ void Board::reset()
     }
 
     setBorders();
-    setBallPosition(Position{static_cast<int>((m_width + X_OFFSET) / 2),
-                             static_cast<int>((m_height + Y_OFFSET) / 2)});
+    setBallPosition(Position{static_cast<int>((m_width + X_OFFSET) / 2), static_cast<int>((m_height + Y_OFFSET) / 2)});
 }
 
 void Board::setBorders()
