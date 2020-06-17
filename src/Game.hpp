@@ -19,7 +19,9 @@ enum class MatchStatus : std::uint8_t {
     EnemyReadyForNew,
 };
 
+
 class Game {
+    friend class FooTest;
 public:
     Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view);
 

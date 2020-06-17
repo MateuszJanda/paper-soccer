@@ -154,7 +154,7 @@ TEST_F(GameTest, userKeyWhenGameInProgress)
 TEST_F(GameTest, userKeyWhenRequestForNewGameDuringGame)
 {
     game.setMatchStatus(MatchStatus::InProgress);
-    game.userKey('n');
+    game.userKey(Game::NEW_GAME_KEY);
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
 }
@@ -164,7 +164,7 @@ TEST_F(GameTest, userKeyWhenRequestForNewGameAfterGame)
     EXPECT_CALL(networkMock, sendReadyForNewGame());
 
     game.setMatchStatus(MatchStatus::GameEnd);
-    game.userKey('n');
+    game.userKey(Game::NEW_GAME_KEY);
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
 }
