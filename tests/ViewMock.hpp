@@ -14,6 +14,7 @@ public:
     MOCK_METHOD0(setReadyToEndTurnStatus, void());
     MOCK_METHOD0(setLostStatus, void());
     MOCK_METHOD0(setWinStatus, void());
+    MOCK_METHOD2(isStatusButton, bool(int, int));
 };
 
 } // namespace PaperSoccer

@@ -238,4 +238,9 @@ void View::drawStatus(std::string line1, std::string line2)
     m_ncurses.refreshView();
 }
 
+bool View::isStatusButton(int x, int y)
+{
+    return false;
+}
+
 } // namespace PaperSoccer

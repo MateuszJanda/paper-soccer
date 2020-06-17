@@ -33,6 +33,8 @@ public:
     void setLostStatus() override;
     void setWinStatus() override;
 
+    bool isStatusButton(int x, int y) override;
+
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{2};
     static constexpr int X_FACTOR{3};

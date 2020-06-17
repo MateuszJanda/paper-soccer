@@ -13,6 +13,7 @@ public:
     virtual void setReadyToEndTurnStatus() = 0;
     virtual void setLostStatus() = 0;
     virtual void setWinStatus() = 0;
+    virtual bool isStatusButton(int x, int y) = 0;
 };
 
 } // namespace PaperSoccer

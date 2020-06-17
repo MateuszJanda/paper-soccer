@@ -175,8 +175,7 @@ void Game::userMouse(int x, int y)
 //        return;
 //    }
 
-//    const auto dir = m_view.checkMove(x, y);
-//    if (dir) {
+//    else if (const auto dir = m_view.checkMove(x, y); dir) {
 //        userMove(*dir);
 //    }
 }
