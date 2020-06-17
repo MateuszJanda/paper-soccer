@@ -18,6 +18,7 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     std::function<void()> handleInitNewGame,
     std::function<void(NewGameMsg)> handleNewGame,
     std::function<void(MoveMsg)> handleEnemyMove,
+    std::function<void(UndoMoveMsg)> handleEnemyUndoMove,
     std::function<void(EndTurnMsg)> handleEnemyEndTurn,
     std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg)
 {
@@ -25,6 +26,7 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     m_handleInitNewGame = handleInitNewGame;
     m_handleNewGame = handleNewGame;
     m_handleEnemyMove = handleEnemyMove;
+    m_handleEnemyUndoMove = handleEnemyUndoMove;
     m_handleEnemyEndTurn = handleEnemyEndTurn;
     m_handleReadyForNewGameMsg = handleReadyForNewGameMsg;
 }
@@ -59,6 +61,12 @@ void Network::sendNewGame(Turn turn, Goal goal)
 void Network::sendMove(const Direction& dir)
 {
     MoveMsg msg{dir};
+    sendMsg(msg);
+}
+
+void Network::sendUndoMove()
+{
+    UndoMoveMsg msg{};
     sendMsg(msg);
 }
 
@@ -163,6 +171,9 @@ void Network::onRead()
                 break;
             case MsgId::Move:
                 onReadMsg<MoveMsg>(dataSize, m_handleEnemyMove);
+                break;
+            case MsgId::UndoMove:
+                onReadMsg<UndoMoveMsg>(dataSize, m_handleEnemyUndoMove);
                 break;
             case MsgId::EndTurn:
                 onReadMsg<EndTurnMsg>(dataSize, m_handleEnemyEndTurn);

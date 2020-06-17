@@ -43,6 +43,7 @@ void Game::run()
         std::bind(&Game::initNewGame, this),
         std::bind(&Game::onNewGame, this, _1),
         std::bind(&Game::onEnemyMove, this, _1),
+        std::bind(&Game::onEnemyUndoMove, this, _1),
         std::bind(&Game::onEnemyEndTurn, this, _1),
         std::bind(&Game::onEnemyReadyForNewGame, this, _1));
     m_network.run();
@@ -203,6 +204,20 @@ void Game::onEnemyMove(MoveMsg msg)
     m_enemyStatus = status;
 }
 
+void Game::onEnemyUndoMove(UndoMoveMsg)
+{
+    if (m_currentTurn == Turn::User or m_dirPath.empty()) {
+        return;
+    }
+
+    const auto dir = m_dirPath.back();
+    m_dirPath.pop_back();
+    const auto reverseDir = reverseDirection(dir);
+    m_board.undoBallMove(reverseDir);
+    m_enemyStatus = MoveStatus::Continue;
+    m_view.drawBoard();
+}
+
 void Game::onEnemyEndTurn(EndTurnMsg)
 {
     if (m_currentTurn == Turn::User) {
@@ -263,6 +278,11 @@ MoveStatus Game::getUserStatus() const
 void Game::setEnemyStatus(MoveStatus status)
 {
     m_enemyStatus = status;
+}
+
+MoveStatus Game::getEnemyStatus() const
+{
+    return m_enemyStatus;
 }
 
 void Game::setUserGoal(Goal goal)

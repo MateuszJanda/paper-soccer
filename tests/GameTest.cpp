@@ -27,7 +27,7 @@ TEST_F(GameTest, run)
 {
     using namespace std::placeholders;
 
-    EXPECT_CALL(networkMock, registerHandlers(_, _, _, _, _, _));
+    EXPECT_CALL(networkMock, registerHandlers(_, _, _, _, _, _, _));
     EXPECT_CALL(networkMock, run());
 
     game.run();
@@ -365,13 +365,6 @@ TEST_F(GameTest, userRequesNewGmeWhenEnemyReadyForNewGame)
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }
 
-TEST_F(GameTest, onEnemyMoveWhenUserTurn)
-{
-    game.setCurrentTurn(Turn::User);
-
-    ASSERT_ANY_THROW(game.onEnemyMove(Direction::Top));
-}
-
 TEST_F(GameTest, userUndoMoveWhenEnemyTurn)
 {
     game.setCurrentTurn(Turn::Enemy);
@@ -407,6 +400,13 @@ TEST_F(GameTest, userUndoMoveWhenUserTurnWithDirPath)
     EXPECT_THAT(game.getDirectionPath(), ElementsAre());
 }
 
+TEST_F(GameTest, onEnemyMoveWhenUserTurn)
+{
+    game.setCurrentTurn(Turn::User);
+
+    ASSERT_ANY_THROW(game.onEnemyMove(Direction::Top));
+}
+
 TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndIllegalMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Top)).WillOnce(Return(MoveStatus::Illegal));
@@ -423,6 +423,41 @@ TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndLegalMove)
 
     game.setCurrentTurn(Turn::Enemy);
     game.onEnemyMove(Direction::Top);
+}
+
+TEST_F(GameTest, onEnemyUndoMoveWhenUserTurn)
+{
+    game.setCurrentTurn(Turn::User);
+    game.setEnemyStatus(MoveStatus::Stop);
+    game.setDirectionPath({Direction::Top});
+    game.onEnemyUndoMove(UndoMoveMsg{});
+
+    EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Stop);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre(Direction::Top));
+}
+
+TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithEmptyDirPath)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::Stop);
+    game.setDirectionPath({});
+    game.onEnemyUndoMove(UndoMoveMsg{});
+
+    EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Stop);
+}
+
+TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithDirPath)
+{
+    EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.setEnemyStatus(MoveStatus::Stop);
+    game.setDirectionPath({Direction::Top});
+    game.onEnemyUndoMove(UndoMoveMsg{});
+
+    EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Continue);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenUserTurn)

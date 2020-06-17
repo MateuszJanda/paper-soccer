@@ -14,12 +14,14 @@ public:
         std::function<void()> handleInitNewGame,
         std::function<void(NewGameMsg)> handleNewGame,
         std::function<void(MoveMsg)> handleEnemyMove,
+        std::function<void(UndoMoveMsg)> handleEnemyUndoMove,
         std::function<void(EndTurnMsg)> handleEnemyEndTurn,
         std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg)
         = 0;
     virtual void run() = 0;
     virtual void sendNewGame(Turn turn, Goal goal) = 0;
     virtual void sendMove(const Direction& dir) = 0;
+    virtual void sendUndoMove() = 0;
     virtual void sendEndTurn() = 0;
     virtual void sendReadyForNewGame() = 0;
 };

@@ -17,6 +17,7 @@ public:
         std::function<void()> handleInitNewGame,
         std::function<void(NewGameMsg)> handleNewGame,
         std::function<void(MoveMsg)> handleEnemyMove,
+        std::function<void(UndoMoveMsg)> handleEnemyUndoMove,
         std::function<void(EndTurnMsg)> handleEnemyEndTurn,
         std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg) override;
 
@@ -24,6 +25,7 @@ public:
 
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
+    void sendUndoMove() override;
     void sendEndTurn() override;
     void sendReadyForNewGame() override;
 
@@ -56,6 +58,7 @@ private:
     std::function<void()> m_handleKeyboardMouseInput;
     std::function<void(NewGameMsg)> m_handleNewGame;
     std::function<void(MoveMsg)> m_handleEnemyMove;
+    std::function<void(UndoMoveMsg)> m_handleEnemyUndoMove;
     std::function<void(EndTurnMsg)> m_handleEnemyEndTurn;
     std::function<void(ReadyForNewGameMsg)> m_handleReadyForNewGameMsg;
 

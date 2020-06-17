@@ -21,7 +21,6 @@ enum class MatchStatus : std::uint8_t {
 
 
 class Game {
-    friend class FooTest;
 public:
     Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view);
 
@@ -39,7 +38,7 @@ public:
     void userUndoMove();
 
     void onEnemyMove(MoveMsg msg);
-    void onEnemyUndoMove(MoveMsg msg);
+    void onEnemyUndoMove(UndoMoveMsg);
     void onEnemyEndTurn(EndTurnMsg);
     void onEnemyReadyForNewGame(ReadyForNewGameMsg);
 
@@ -49,6 +48,7 @@ public:
     void setUserStatus(MoveStatus status);
     MoveStatus getUserStatus() const;
     void setEnemyStatus(MoveStatus status);
+    MoveStatus getEnemyStatus() const;
     void setUserGoal(Goal goal);
     void setMatchStatus(MatchStatus status);
     MatchStatus getMatchStatus() const;
