@@ -9,6 +9,74 @@ namespace PaperSoccer {
 
 using namespace testing;
 
+class TestableGame : public Game {
+public:
+    TestableGame(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
+        : Game(network, board, ncurses, view)
+    {
+    }
+
+    void setCurrentTurn(Turn turn)
+    {
+        m_currentTurn = turn;
+    }
+
+    Turn getCurrentTurn() const
+    {
+        return m_currentTurn;
+    }
+
+    void setFirstTurn(Turn turn)
+    {
+        m_firstTurn = turn;
+    }
+
+    void setUserStatus(MoveStatus status)
+    {
+        m_userStatus = status;
+    }
+
+    MoveStatus getUserStatus() const
+    {
+        return m_userStatus;
+    }
+
+    void setEnemyStatus(MoveStatus status)
+    {
+        m_enemyStatus = status;
+    }
+
+    MoveStatus getEnemyStatus() const
+    {
+        return m_enemyStatus;
+    }
+
+    void setUserGoal(Goal goal)
+    {
+        m_userGoal = goal;
+    }
+
+    void setMatchStatus(MatchStatus status)
+    {
+        m_match = status;
+    }
+
+    MatchStatus getMatchStatus() const
+    {
+        return m_match;
+    }
+
+    void setDirectionPath(std::vector<Direction> dirPath)
+    {
+        m_dirPath = dirPath;
+    }
+
+    std::vector<Direction> getDirectionPath() const
+    {
+        return m_dirPath;
+    }
+};
+
 class GameTest : public testing::Test {
 public:
     GameTest()
@@ -20,7 +88,7 @@ public:
     StrictMock<BoardMock> boardMock;
     StrictMock<ViewMock> viewMock;
     StrictMock<NCursesMock> ncursesMock;
-    Game game;
+    TestableGame game;
 };
 
 TEST_F(GameTest, run)

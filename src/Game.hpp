@@ -42,19 +42,6 @@ public:
     void onEnemyEndTurn(EndTurnMsg);
     void onEnemyReadyForNewGame(ReadyForNewGameMsg);
 
-    void setCurrentTurn(Turn turn);
-    Turn getCurrentTurn() const;
-    void setFirstTurn(Turn turn);
-    void setUserStatus(MoveStatus status);
-    MoveStatus getUserStatus() const;
-    void setEnemyStatus(MoveStatus status);
-    MoveStatus getEnemyStatus() const;
-    void setUserGoal(Goal goal);
-    void setMatchStatus(MatchStatus status);
-    MatchStatus getMatchStatus() const;
-    void setDirectionPath(std::vector<Direction> dirPath);
-    std::vector<Direction> getDirectionPath() const;
-
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'z'};
     const std::map<char, Direction> DIR_KEYS{{'q', Direction::TopLeft},
@@ -67,7 +54,7 @@ public:
                                              {',', Direction::Bottom},
                                              {'.', Direction::BottomRight}};
 
-private:
+protected:
     INetwork& m_network;
     IBoard& m_board;
     INCurses& m_ncurses;
