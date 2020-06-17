@@ -203,6 +203,7 @@ void Game::onEnemyMove(MoveMsg msg)
     }
 
     m_enemyStatus = status;
+    m_dirPath.push_back(msg.dir);
 }
 
 void Game::onEnemyUndoMove(UndoMoveMsg)
@@ -240,6 +241,8 @@ void Game::onEnemyEndTurn(EndTurnMsg)
         m_userStatus = MoveStatus::Continue;
         m_view.setContinueStatus();
     }
+
+    m_dirPath.clear();
 }
 
 void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)
