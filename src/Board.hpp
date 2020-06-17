@@ -3,7 +3,7 @@
 
 #include "IBoard.hpp"
 #include "Node.hpp"
-#include <cstddef>
+#include <array>
 #include <vector>
 
 namespace PaperSoccer {
@@ -34,6 +34,15 @@ private:
     bool canReachGoal(Direction dir, int goalLine) const;
     bool isDeadEnd() const;
     bool isPositionInGraph(Position pos) const;
+
+    static constexpr std::array<Direction, 8> ALL_DIRS{Direction::Top,
+        Direction::TopLeft,
+        Direction::Right,
+        Direction::BottomRight,
+        Direction::Bottom,
+        Direction::BottomLeft,
+        Direction::Left,
+        Direction::TopRight};
 
     const std::size_t m_width;
     const std::size_t m_height;

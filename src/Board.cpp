@@ -1,5 +1,4 @@
 #include "Board.hpp"
-#include <array>
 #include <iostream>
 
 namespace PaperSoccer {
@@ -302,16 +301,7 @@ bool Board::canReachGoal(Direction dir, int netLine) const
 
 bool Board::isDeadEnd() const
 {
-    const std::array<Direction, 8> allDirs{Direction::Top,
-        Direction::TopLeft,
-        Direction::Right,
-        Direction::BottomRight,
-        Direction::Bottom,
-        Direction::BottomLeft,
-        Direction::Left,
-        Direction::TopRight};
-
-    for (const auto dir : allDirs) {
+    for (const auto dir : ALL_DIRS) {
         const auto newPos = directionToPosition(m_ballPos, dir);
         if (not isPositionInGraph(newPos)) {
             continue;

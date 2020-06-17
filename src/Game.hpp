@@ -31,9 +31,9 @@ public:
 
     void onKeyboardMouseInput();
     void userKey(int key);
-    void userMouse(int x, int y);
     void userMove(Direction dir);
     void userUndoMove();
+    void userMouse(int x, int y);
     void userRequestNewGame();
     void userEndTurn();
 

@@ -11,6 +11,7 @@ namespace {
     constexpr std::size_t GRPAH_WIDTH{8 + 1};
     constexpr std::size_t GOALPOST_LEFT{3};
     constexpr std::size_t GOALPOST_RIGHT{5};
+    constexpr Position TOP_FROM_CENTER{4, 5};
     constexpr Position CENTER{4, 6};
 }
 
@@ -204,6 +205,26 @@ TEST_F(BoardTest, checkMoveBallAndBounceOffTheGoalpost)
 {
     board.setBallPosition(Position{3, 2});
     ASSERT_EQ(board.moveBall(Direction::Top), MoveStatus::Continue);
+}
+
+TEST_F(BoardTest, checkUndoBallMoveWhenDirectionIsIncorrect)
+{
+    board.moveBall(Direction::Top);
+    board.undoBallMove(Direction::Top);
+
+    ASSERT_TRUE(board.hasNeighbour(CENTER, Direction::Top));
+    ASSERT_TRUE(board.hasNeighbour(TOP_FROM_CENTER, Direction::Bottom));
+    ASSERT_EQ(board.getBallPosition(), TOP_FROM_CENTER);
+}
+
+TEST_F(BoardTest, checkUndoBallMoveWhenDirectionIsCorrect)
+{
+    board.moveBall(Direction::Top);
+    board.undoBallMove(Direction::Bottom);
+
+    ASSERT_FALSE(board.hasNeighbour(CENTER, Direction::Top));
+    ASSERT_FALSE(board.hasNeighbour(TOP_FROM_CENTER, Direction::Bottom));
+    ASSERT_EQ(board.getBallPosition(), CENTER);
 }
 
 } // namespace PaperSoccer

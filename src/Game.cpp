@@ -101,8 +101,8 @@ void Game::onKeyboardMouseInput()
 
         std::visit(overloaded{
                        [this](const KeyInput& data) { userKey(data.key); },
+                       [this](const MouseInput& data) { userMouse(data.x, data.y); },
                        [this](const EnterInput& data) { userEndTurn(); },
-                       [this](const MouseInput& data) { },
                    },
             *input);
     }
@@ -166,6 +166,19 @@ void Game::userRequestNewGame()
     } else if (m_match == MatchStatus::EnemyReadyForNew) {
         initNewGame();
     }
+}
+
+void Game::userMouse(int x, int y)
+{
+//    if (m_view.isStatusButton(x, y)) {
+//        userEndTurn();
+//        return;
+//    }
+
+//    const auto dir = m_view.checkMove(x, y);
+//    if (dir) {
+//        userMove(*dir);
+//    }
 }
 
 void Game::userEndTurn()
