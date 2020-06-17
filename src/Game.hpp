@@ -33,9 +33,9 @@ public:
     void userKey(int key);
     void userMouse(int x, int y);
     void userMove(Direction dir);
-    void userEndTurn();
-    void userRequestNewGame();
     void userUndoMove();
+    void userRequestNewGame();
+    void userEndTurn();
 
     void onEnemyMove(MoveMsg msg);
     void onEnemyUndoMove(UndoMoveMsg);

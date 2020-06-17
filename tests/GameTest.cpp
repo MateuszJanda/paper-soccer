@@ -182,6 +182,7 @@ TEST_F(GameTest, userKeyWhenUndoMoveInUserTurn)
 {
     EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
     EXPECT_CALL(viewMock, drawBoard());
+    EXPECT_CALL(networkMock, sendUndoMove());
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Stop);
@@ -390,6 +391,7 @@ TEST_F(GameTest, userUndoMoveWhenUserTurnWithDirPath)
 {
     EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
     EXPECT_CALL(viewMock, drawBoard());
+    EXPECT_CALL(networkMock, sendUndoMove());
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Stop);

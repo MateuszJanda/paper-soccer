@@ -113,10 +113,10 @@ void Game::userKey(int key)
     if (DIR_KEYS.contains(key) and m_match == MatchStatus::InProgress) {
         Direction dir = DIR_KEYS.at(key);
         userMove(dir);
-    } else if (key == NEW_GAME_KEY) {
-        userRequestNewGame();
     } else if (key == UNDO_MOVE_KEY) {
         userUndoMove();
+    } else if (key == NEW_GAME_KEY) {
+        userRequestNewGame();
     }
 }
 
@@ -143,6 +143,31 @@ void Game::userMove(Direction dir)
     m_network.sendMove(dir);
 }
 
+void Game::userUndoMove()
+{
+    if (m_currentTurn == Turn::Enemy or m_dirPath.empty()) {
+        return;
+    }
+
+    const auto dir = m_dirPath.back();
+    m_dirPath.pop_back();
+    const auto reverseDir = reverseDirection(dir);
+    m_board.undoBallMove(reverseDir);
+    m_userStatus = MoveStatus::Continue;
+    m_view.drawBoard();
+    m_network.sendUndoMove();
+}
+
+void Game::userRequestNewGame()
+{
+    if (m_match == MatchStatus::GameEnd) {
+        m_match = MatchStatus::ReadyForNew;
+        m_network.sendReadyForNewGame();
+    } else if (m_match == MatchStatus::EnemyReadyForNew) {
+        initNewGame();
+    }
+}
+
 void Game::userEndTurn()
 {
     if (m_currentTurn == Turn::Enemy or m_userStatus == MoveStatus::Continue) {
@@ -162,30 +187,6 @@ void Game::userEndTurn()
 
     m_dirPath.clear();
     m_network.sendEndTurn();
-}
-
-void Game::userRequestNewGame()
-{
-    if (m_match == MatchStatus::GameEnd) {
-        m_match = MatchStatus::ReadyForNew;
-        m_network.sendReadyForNewGame();
-    } else if (m_match == MatchStatus::EnemyReadyForNew) {
-        initNewGame();
-    }
-}
-
-void Game::userUndoMove()
-{
-    if (m_currentTurn == Turn::Enemy or m_dirPath.empty()) {
-        return;
-    }
-
-    const auto dir = m_dirPath.back();
-    m_dirPath.pop_back();
-    const auto reverseDir = reverseDirection(dir);
-    m_board.undoBallMove(reverseDir);
-    m_userStatus = MoveStatus::Continue;
-    m_view.drawBoard();
 }
 
 void Game::onEnemyMove(MoveMsg msg)
