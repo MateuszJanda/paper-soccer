@@ -135,7 +135,7 @@ TEST_F(NodeTest, checkNeighboursPositions)
     ASSERT_TRUE(node.addNeighbour(Direction::Top));
     ASSERT_TRUE(node.addNeighbour(Direction::Left));
 
-    ASSERT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre(Position{1, 0}, Position{0, 1}));
+    EXPECT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre(Position{1, 0}, Position{0, 1}));
 }
 
 } // namespace PaperSoccer

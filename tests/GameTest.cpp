@@ -169,6 +169,29 @@ TEST_F(GameTest, userKeyWhenRequestForNewGameAfterGame)
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
 }
 
+TEST_F(GameTest, userKeyWhenUndoMoveInEnemyTurn)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
+    game.userKey(Game::UNDO_MOVE_KEY);
+
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
+}
+
+TEST_F(GameTest, userKeyWhenUndoMoveInUserTurn)
+{
+    EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Stop);
+    game.setDirectionPath({Direction::Top});
+    game.userKey(Game::UNDO_MOVE_KEY);
+
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
+}
+
 TEST_F(GameTest, userMoveWhenEnemyTurn)
 {
     game.setCurrentTurn(Turn::Enemy);
@@ -347,6 +370,41 @@ TEST_F(GameTest, onEnemyMoveWhenUserTurn)
     game.setCurrentTurn(Turn::User);
 
     ASSERT_ANY_THROW(game.onEnemyMove(Direction::Top));
+}
+
+TEST_F(GameTest, userUndoMoveWhenEnemyTurn)
+{
+    game.setCurrentTurn(Turn::Enemy);
+    game.setUserStatus(MoveStatus::Stop);
+    game.setDirectionPath({Direction::Top});
+    game.userUndoMove();
+
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre(Direction::Top));
+}
+
+TEST_F(GameTest, userUndoMoveWhenUserTurnWithEmptyDirPath)
+{
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Stop);
+    game.setDirectionPath({});
+    game.userUndoMove();
+
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
+}
+
+TEST_F(GameTest, userUndoMoveWhenUserTurnWithDirPath)
+{
+    EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Stop);
+    game.setDirectionPath({Direction::Top});
+    game.userUndoMove();
+
+    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
 }
 
 TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndIllegalMove)

@@ -32,15 +32,6 @@ Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}
-    , DIR_KEYS{{'q', Direction::TopLeft},
-          {'u', Direction::TopLeft},
-          {'i', Direction::Top},
-          {'o', Direction::TopRight},
-          {'j', Direction::Left},
-          {'l', Direction::Right},
-          {'m', Direction::BottomLeft},
-          {',', Direction::Bottom},
-          {'.', Direction::BottomRight}}
 {
 }
 
@@ -124,7 +115,7 @@ void Game::userKey(int key)
     } else if (key == NEW_GAME_KEY) {
         userRequestNewGame();
     } else if (key == UNDO_MOVE_KEY) {
-//        userUndoMove();
+        userUndoMove();
     }
 }
 
@@ -184,7 +175,7 @@ void Game::userRequestNewGame()
 
 void Game::userUndoMove()
 {
-    if (m_dirPath.empty()) {
+    if (m_currentTurn == Turn::Enemy or m_dirPath.empty()) {
         return;
     }
 
@@ -287,6 +278,16 @@ void Game::setMatchStatus(MatchStatus status)
 MatchStatus Game::getMatchStatus() const
 {
     return m_match;
+}
+
+void Game::setDirectionPath(std::vector<Direction> dirPath)
+{
+    m_dirPath = dirPath;
+}
+
+std::vector<Direction> Game::getDirectionPath() const
+{
+    return m_dirPath;
 }
 
 } // namespace PaperSoccer

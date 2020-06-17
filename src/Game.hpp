@@ -50,16 +50,26 @@ public:
     void setUserGoal(Goal goal);
     void setMatchStatus(MatchStatus status);
     MatchStatus getMatchStatus() const;
+    void setDirectionPath(std::vector<Direction> dirPath);
+    std::vector<Direction> getDirectionPath() const;
+
+    static constexpr char NEW_GAME_KEY{'n'};
+    static constexpr char UNDO_MOVE_KEY{'z'};
+    const std::map<char, Direction> DIR_KEYS{{'q', Direction::TopLeft},
+                                             {'u', Direction::TopLeft},
+                                             {'i', Direction::Top},
+                                             {'o', Direction::TopRight},
+                                             {'j', Direction::Left},
+                                             {'l', Direction::Right},
+                                             {'m', Direction::BottomLeft},
+                                             {',', Direction::Bottom},
+                                             {'.', Direction::BottomRight}};
 
 private:
     INetwork& m_network;
     IBoard& m_board;
     INCurses& m_ncurses;
     IView& m_view;
-
-    const char NEW_GAME_KEY{'n'};
-    const char UNDO_MOVE_KEY{'z'};
-    const std::map<char, Direction> DIR_KEYS;
 
     MatchStatus m_match{MatchStatus::Connecting};
     Turn m_firstTurn{Turn::User};
