@@ -311,6 +311,39 @@ TEST_F(GameTest, userMoveWhenUserTurnAndNextStopMove)
     game.userMove(Direction::Left);
 }
 
+TEST_F(GameTest, userMouseWhenStatusButtonClickAndEndTurn)
+{
+    const int x = 1;
+    const int y = 2;
+    EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(true));
+    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(networkMock, sendEndTurn());
+
+    game.setCurrentTurn(Turn::User);
+    game.setDirectionPath({Direction::Top});
+    game.setUserStatus(MoveStatus::DeadEnd);
+    game.userMouse(x, y);
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
+}
+
+TEST_F(GameTest, userMouseWhenCorrectMoveClick)
+{
+    const int x = 1;
+    const int y = 2;
+    EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(false));
+    EXPECT_CALL(viewMock, getMoveDirection(x, y)).WillOnce(Return(Direction::Left));
+    EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
+    EXPECT_CALL(viewMock, drawBoard());
+
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Continue);
+    game.userMouse(x, y);
+
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
+}
+
 TEST_F(GameTest, userEndTurnWhenEnemyTurn)
 {
     game.setCurrentTurn(Turn::Enemy);
