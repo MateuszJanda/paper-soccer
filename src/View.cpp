@@ -243,11 +243,45 @@ int View::getStatusButtonXShift() const
     return X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
 }
 
-bool View::isStatusButton(int x, int y)
+bool View::isStatusButton(int x, int y) const
 {
     const auto buttonX = getStatusButtonXShift();
     const auto buttonY = Y_OFFSET;
     return x >= buttonX and x <= LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
+}
+
+std::optional<Direction> View::getMouseDirection(int x, int y) const
+{
+    const auto ballPos = m_board.getBallPosition();
+    const auto viewX = ballPos.x * X_FACTOR + X_OFFSET;
+    const auto viewY = ballPos.y * Y_FACTOR + Y_OFFSET;
+
+    if (x == viewX - X_FACTOR)
+    {
+        if (y == viewY - Y_FACTOR) {
+            return Direction::TopLeft;
+        } else if (y == viewY) {
+            return Direction::Left;
+        } else if (y == viewY + Y_FACTOR) {
+            return Direction::BottomLeft;
+        }
+    } else if (x == viewX) {
+        if (y == viewY - Y_FACTOR) {
+            return Direction::Top;
+        } else if (y == viewY + Y_FACTOR) {
+            return Direction::Bottom;
+        }
+    } else if (x == viewX + X_FACTOR) {
+        if (y == viewY - Y_FACTOR) {
+            return Direction::TopRight;
+        } else if (y == viewY) {
+            return Direction::Right;
+        } else if (y == viewY + Y_FACTOR) {
+            return Direction::BottomRight;
+        }
+    }
+
+    return std::nullopt;
 }
 
 } // namespace PaperSoccer

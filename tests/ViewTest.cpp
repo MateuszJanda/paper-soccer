@@ -368,4 +368,12 @@ TEST_F(ViewTest, checkIsStatusButtonClicked)
     ASSERT_TRUE(view.isStatusButton(x, y));
 }
 
+TEST_F(ViewTest, checkGetMouseDirection)
+{
+    const Position ballPos{1, 2};
+    EXPECT_CALL(boardMock, getBallPosition()).WillOnce(Return(ballPos));
+
+    ASSERT_EQ(view.getMouseDirection(1, 2), std::nullopt);
+}
+
 } // namespace PaperSoccer

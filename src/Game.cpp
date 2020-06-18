@@ -173,10 +173,9 @@ void Game::userMouse(int x, int y)
     if (m_view.isStatusButton(x, y)) {
         userEndTurn();
     }
-
-//    else if (const auto dir = m_view.checkMove(x, y); dir) {
-//        userMove(*dir);
-//    }
+    else if (const auto dir = m_view.getMouseDirection(x, y); dir) {
+        userMove(*dir);
+    }
 }
 
 void Game::userEndTurn()

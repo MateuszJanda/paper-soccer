@@ -191,6 +191,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenMosueInput)
     const int y = 1;
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(MouseInput{.x = x, .y = y})));
     EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(false));
+    EXPECT_CALL(viewMock, getMouseDirection(x, y)).WillOnce(Return(std::nullopt));
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
     game.onKeyboardMouseInput();
