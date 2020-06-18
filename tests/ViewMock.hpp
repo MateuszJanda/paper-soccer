@@ -15,7 +15,7 @@ public:
     MOCK_METHOD0(setLostStatus, void());
     MOCK_METHOD0(setWinStatus, void());
     MOCK_CONST_METHOD2(isStatusButton, bool(int, int));
-    MOCK_CONST_METHOD2(getMouseDirection, std::optional<Direction>(int, int));
+    MOCK_CONST_METHOD2(getMoveDirection, std::optional<Direction>(int, int));
 
     MOCK_METHOD3(printText, void(int, int, std::string));
 };

@@ -18,7 +18,7 @@ public:
     virtual void setLostStatus() = 0;
     virtual void setWinStatus() = 0;
     virtual bool isStatusButton(int x, int y) const = 0;
-    virtual std::optional<Direction> getMouseDirection(int x, int y) const = 0;
+    virtual std::optional<Direction> getMoveDirection(int x, int y) const = 0;
 
     virtual void printText(int x, int y, std::string s) = 0;
 };

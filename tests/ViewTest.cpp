@@ -383,16 +383,16 @@ TEST_F(ViewTest, checkGetMouseDirection)
     const Position ballPos{0, 0};
     EXPECT_CALL(boardMock, getBallPosition()).WillRepeatedly(Return(ballPos));
 
-    ASSERT_EQ(view.getMouseDirection(viewX(0), viewY(0)), std::nullopt);
+    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(0)), std::nullopt);
 
-    ASSERT_EQ(view.getMouseDirection(viewX(-1), viewY(-1)), Direction::TopLeft);
-    ASSERT_EQ(view.getMouseDirection(viewX(-1), viewY(0)), Direction::Left);
-    ASSERT_EQ(view.getMouseDirection(viewX(-1), viewY(1)), Direction::BottomLeft);
-    ASSERT_EQ(view.getMouseDirection(viewX(0), viewY(-1)), Direction::Top);
-    ASSERT_EQ(view.getMouseDirection(viewX(0), viewY(1)), Direction::Bottom);
-    ASSERT_EQ(view.getMouseDirection(viewX(1), viewY(-1)), Direction::TopRight);
-    ASSERT_EQ(view.getMouseDirection(viewX(1), viewY(0)), Direction::Right);
-    ASSERT_EQ(view.getMouseDirection(viewX(1), viewY(1)), Direction::BottomRight);
+    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(-1)), Direction::TopLeft);
+    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(0)), Direction::Left);
+    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(1)), Direction::BottomLeft);
+    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(-1)), Direction::Top);
+    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(1)), Direction::Bottom);
+    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(-1)), Direction::TopRight);
+    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(0)), Direction::Right);
+    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(1)), Direction::BottomRight);
 }
 
 } // namespace PaperSoccer

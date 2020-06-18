@@ -34,7 +34,7 @@ public:
     void setWinStatus() override;
 
     bool isStatusButton(int x, int y) const override;
-    std::optional<Direction> getMouseDirection(int x, int y) const override;
+    std::optional<Direction> getMoveDirection(int x, int y) const override;
 
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{2};

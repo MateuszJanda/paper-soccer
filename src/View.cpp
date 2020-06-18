@@ -250,7 +250,7 @@ bool View::isStatusButton(int x, int y) const
     return x >= buttonX and x <= LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
 }
 
-std::optional<Direction> View::getMouseDirection(int x, int y) const
+std::optional<Direction> View::getMoveDirection(int x, int y) const
 {
     const auto ballPos = m_board.getBallPosition();
     const auto viewX = ballPos.x * X_FACTOR + X_OFFSET;
