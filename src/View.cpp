@@ -203,44 +203,51 @@ void View::printText(int x, int y, std::string str)
 
 void View::setContinueStatus()
 {
-    drawStatus("  Your turn.  ", "  Make move   ");
+    drawStatusButton("  Your turn.  ", "  Make move   ");
 }
 
 void View::setEnemyTurnStatus()
 {
-    drawStatus("  Enemy turn. ", "     Wait     ");
+    drawStatusButton("  Enemy turn. ", "     Wait     ");
 }
 
 void View::setReadyToEndTurnStatus()
 {
-    drawStatus("  End turn.   ", " Press Enter  ");
+    drawStatusButton("  End turn.   ", "   (Enter)    ");
 }
 
 void View::setLostStatus()
 {
-    drawStatus("   You Lost.  ", " New game (n) ");
+    drawStatusButton("   You Lost.  ", " New game (n) ");
 }
 
 void View::setWinStatus()
 {
-    drawStatus("   You Win.   ", " New game (n) ");
+    drawStatusButton("   You Win.   ", " New game (n) ");
 }
 
-void View::drawStatus(std::string line1, std::string line2)
+void View::drawStatusButton(std::string line1, std::string line2)
 {
-    const int x = X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
+    const int x = getStatusButtonXShift();
     const int y = Y_OFFSET;
-    m_ncurses.print(x, y + 0, "+--------------+");
+    m_ncurses.print(x, y + 0, LINE);
     m_ncurses.print(x, y + 1, "|" + line1 + "|");
     m_ncurses.print(x, y + 2, "|" + line2 + "|");
-    m_ncurses.print(x, y + 3, "+--------------+");
+    m_ncurses.print(x, y + 3, LINE);
 
     m_ncurses.refreshView();
 }
 
+int View::getStatusButtonXShift() const
+{
+    return X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
+}
+
 bool View::isStatusButton(int x, int y)
 {
-    return false;
+    const auto buttonX = getStatusButtonXShift();
+    const auto buttonY = Y_OFFSET;
+    return x >= buttonX and x <= LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
 }
 
 } // namespace PaperSoccer

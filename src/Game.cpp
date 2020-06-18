@@ -170,10 +170,9 @@ void Game::userRequestNewGame()
 
 void Game::userMouse(int x, int y)
 {
-//    if (m_view.isStatusButton(x, y)) {
-//        userEndTurn();
-//        return;
-//    }
+    if (m_view.isStatusButton(x, y)) {
+        userEndTurn();
+    }
 
 //    else if (const auto dir = m_view.checkMove(x, y); dir) {
 //        userMove(*dir);

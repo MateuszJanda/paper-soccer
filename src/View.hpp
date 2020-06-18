@@ -25,7 +25,7 @@ public:
     Skips filterDirsForTopBorderLine(Position nodePos);
     Skips filterDirsForRightLine(Position nodePos);
 
-    void printText(int x, int y, std::string str);
+    void printText(int x, int y, std::string str) override;
 
     void setContinueStatus() override;
     void setEnemyTurnStatus() override;
@@ -39,6 +39,7 @@ public:
     static constexpr int Y_OFFSET{2};
     static constexpr int X_FACTOR{3};
     static constexpr int Y_FACTOR{2};
+    const std::string LINE{"+--------------+"};
 
 private:
     void clearLines(Position nodePos);
@@ -49,7 +50,8 @@ private:
     void drawHypotenuseToTopLeft(Position nodePos);
     void drawMarker(Position nodePos);
 
-    void drawStatus(std::string line1, std::string line2);
+    void drawStatusButton(std::string line1, std::string line2);
+    int getStatusButtonXShift() const;
 
     IBoard& m_board;
     INCurses& m_ncurses;

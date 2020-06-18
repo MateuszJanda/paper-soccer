@@ -1,6 +1,8 @@
 #ifndef I_VIEW_HPP
 #define I_VIEW_HPP
 
+#include <string>
+
 namespace PaperSoccer {
 
 class IView {
@@ -14,6 +16,8 @@ public:
     virtual void setLostStatus() = 0;
     virtual void setWinStatus() = 0;
     virtual bool isStatusButton(int x, int y) = 0;
+
+    virtual void printText(int x, int y, std::string s) = 0;
 };
 
 } // namespace PaperSoccer

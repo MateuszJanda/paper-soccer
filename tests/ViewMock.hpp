@@ -15,6 +15,8 @@ public:
     MOCK_METHOD0(setLostStatus, void());
     MOCK_METHOD0(setWinStatus, void());
     MOCK_METHOD2(isStatusButton, bool(int, int));
+
+    MOCK_METHOD3(printText, void(int, int, std::string));
 };
 
 } // namespace PaperSoccer

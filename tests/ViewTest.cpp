@@ -356,4 +356,16 @@ TEST_F(ViewTest, checkSetWinStatus)
     view.setWinStatus();
 }
 
+TEST_F(ViewTest, checkIsStatusButtonNotClicked)
+{
+    ASSERT_FALSE(view.isStatusButton(0, 0));
+}
+
+TEST_F(ViewTest, checkIsStatusButtonClicked)
+{
+    const auto x = View::X_OFFSET + WIDTH * View::X_FACTOR + 2;
+    const auto y = View::Y_OFFSET;
+    ASSERT_TRUE(view.isStatusButton(x, y));
+}
+
 } // namespace PaperSoccer

@@ -1,4 +1,5 @@
 #include "NCurses.hpp"
+#include <iostream>
 #include <clocale>
 #include <ncurses.h>
 
@@ -58,6 +59,7 @@ std::optional<Input> NCurses::getInput()
     }
     // Detect left-click
     else if (key == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED)) {
+//        std::cout << "click";
         return MouseInput{.x = event.x, .y = event.y};
     }
 
