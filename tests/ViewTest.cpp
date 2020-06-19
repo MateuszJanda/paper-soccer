@@ -357,13 +357,13 @@ TEST_F(ViewTest, checkSetReadyToEndTurnStatus)
 TEST_F(ViewTest, checkSetLostStatus)
 {
     expectDrawStatus();
-    view.setLostStatus();
+    view.setLostStatus(1, 1);
 }
 
 TEST_F(ViewTest, checkSetWinStatus)
 {
     expectDrawStatus();
-    view.setWinStatus();
+    view.setWinStatus(1, 1);
 }
 
 TEST_F(ViewTest, checkIsStatusButtonNotClicked)

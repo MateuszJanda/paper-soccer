@@ -86,6 +86,7 @@ void Game::resetGame()
     }
 
     m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
+    m_view.drawScore(m_userScore, m_enemyScore);
     m_view.drawBoard();
     m_view.drawPathMarkers(m_dirPath);
 }
@@ -190,10 +191,12 @@ void Game::userEndTurn()
 
     if (m_userStatus == MoveStatus::DeadEnd or isGoalToOwn(m_userStatus, m_userGoal)) {
         m_match = MatchStatus::GameEnd;
-        m_view.setLostStatus();
+        m_enemyScore += 1;
+        m_view.setLostStatus(m_userScore, m_enemyScore);
     } else if (isGoalToEnemy(m_userStatus, m_userGoal)) {
         m_match = MatchStatus::GameEnd;
-        m_view.setWinStatus();
+        m_userScore += 1;
+        m_view.setWinStatus(m_userScore, m_enemyScore);
     } else {
         m_currentTurn = Turn::Enemy;
         m_view.setEnemyTurnStatus();
@@ -253,10 +256,12 @@ void Game::onEnemyEndTurn(EndTurnMsg)
 
     if (isGoalToOwn(m_enemyStatus, m_userGoal)) {
         m_match = MatchStatus::GameEnd;
-        m_view.setLostStatus();
+        m_enemyScore += 1;
+        m_view.setLostStatus(m_userScore, m_enemyScore);
     } else if (m_enemyStatus == MoveStatus::DeadEnd or isGoalToEnemy(m_enemyStatus, m_userGoal)) {
         m_match = MatchStatus::GameEnd;
-        m_view.setWinStatus();
+        m_userScore += 1;
+        m_view.setWinStatus(m_userScore, m_enemyScore);
     } else {
         m_currentTurn = Turn::User;
         m_userStatus = MoveStatus::Continue;

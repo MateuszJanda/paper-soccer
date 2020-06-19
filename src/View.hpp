@@ -30,11 +30,12 @@ public:
 
     void printText(int x, int y, std::string str) override;
 
+    void drawScore(int userScore, int enemyScore) override;
     void setContinueStatus() override;
     void setEnemyTurnStatus() override;
     void setReadyToEndTurnStatus() override;
-    void setLostStatus() override;
-    void setWinStatus() override;
+    void setLostStatus(int userScore, int enemyScore) override;
+    void setWinStatus(int userScore, int enemyScore) override;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;

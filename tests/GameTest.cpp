@@ -316,7 +316,7 @@ TEST_F(GameTest, userMouseWhenStatusButtonClickAndEndTurn)
     const int x = 1;
     const int y = 2;
     EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(true));
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -367,7 +367,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndContinueMove)
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
 {
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -381,7 +381,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 {
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -396,7 +396,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 {
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -411,7 +411,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 {
-    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(viewMock, setWinStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -426,7 +426,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
 {
-    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(viewMock, setWinStatus(1, 1));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -599,7 +599,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenUEnemyTurnAndEnemyShouldContinue)
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
 {
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -615,7 +615,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
 {
-    EXPECT_CALL(viewMock, setLostStatus());
+    EXPECT_CALL(viewMock, setLostStatus(1, 1));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -631,7 +631,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
 {
-    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(viewMock, setWinStatus(1, 1));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -646,7 +646,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
 {
-    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(viewMock, setWinStatus(1, 1));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -662,7 +662,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
 {
-    EXPECT_CALL(viewMock, setWinStatus());
+    EXPECT_CALL(viewMock, setWinStatus(1, 1));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});

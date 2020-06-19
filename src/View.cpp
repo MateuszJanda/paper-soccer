@@ -200,7 +200,7 @@ void View::drawMarker(Position nodePos)
 void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys)
 {
     auto x = getStatusButtonXShift();
-    auto y = Y_OFFSET + 3 + 2;
+    auto y = Y_OFFSET + 3 + 5;
 
     m_ncurses.print(x, y, "Undo: " + std::string{undo});
     m_ncurses.print(x, y + 1, "New game: " + std::string{newGame});
@@ -289,13 +289,15 @@ void View::setReadyToEndTurnStatus()
     drawStatusButton("  End turn.   ", "   (Enter)    ");
 }
 
-void View::setLostStatus()
+void View::setLostStatus(int userScore, int enemyScore)
 {
+    drawScore(userScore, enemyScore);
     drawStatusButton("   You Lost.  ", " New game (n) ");
 }
 
-void View::setWinStatus()
+void View::setWinStatus(int userScore, int enemyScore)
 {
+    drawScore(userScore, enemyScore);
     drawStatusButton("   You Win.   ", " New game (n) ");
 }
 
@@ -314,6 +316,15 @@ void View::drawStatusButton(std::string line1, std::string line2)
 int View::getStatusButtonXShift() const
 {
     return X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
+}
+
+void View::drawScore(int userScore, int enemyScore)
+{
+    auto x = getStatusButtonXShift();
+    auto y = Y_OFFSET + 3 + 2;
+
+    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(userScore));
+    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(enemyScore));
 }
 
 bool View::isStatusButton(int x, int y) const

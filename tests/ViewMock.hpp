@@ -11,11 +11,12 @@ public:
     MOCK_METHOD0(drawBoard, void());
     MOCK_METHOD3(drawLegend, void(char, char, std::map<char, Direction>));
     MOCK_METHOD1(drawPathMarkers, void(std::vector<Direction>));
+    MOCK_METHOD2(drawScore, void(int, int));
     MOCK_METHOD0(setContinueStatus, void());
     MOCK_METHOD0(setEnemyTurnStatus, void());
     MOCK_METHOD0(setReadyToEndTurnStatus, void());
-    MOCK_METHOD0(setLostStatus, void());
-    MOCK_METHOD0(setWinStatus, void());
+    MOCK_METHOD2(setLostStatus, void(int, int));
+    MOCK_METHOD2(setWinStatus, void(int, int));
     MOCK_CONST_METHOD2(isStatusButton, bool(int, int));
     MOCK_CONST_METHOD2(getMoveDirection, std::optional<Direction>(int, int));
 

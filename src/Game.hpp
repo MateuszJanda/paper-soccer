@@ -62,6 +62,8 @@ protected:
     IView& m_view;
 
     MatchStatus m_match{MatchStatus::Connecting};
+    int m_userScore{0};
+    int m_enemyScore{0};
     Turn m_firstTurn{Turn::User};
     Turn m_currentTurn{Turn::User};
     Goal m_userGoal{Goal::Top};
