@@ -26,6 +26,7 @@ public:
     Skips filterDirsForRightLine(Position nodePos);
 
     void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) override;
+    void drawPathMarkers(std::vector<Direction> dirPath) override;
 
     void printText(int x, int y, std::string str) override;
 

@@ -2,6 +2,7 @@
 #include "Board.hpp"
 #include "Direction.hpp"
 #include "Position.hpp"
+//#include <ranges>
 #include <set>
 
 namespace PaperSoccer {
@@ -208,6 +209,7 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
     x += 4;
     y += 4;
 
+    // https://en.wikipedia.org/wiki/Arrows_(Unicode_block)
     m_ncurses.print(x - 2, y - 1, "↖");
     m_ncurses.print(x, y - 1, "↑");
     m_ncurses.print(x + 2, y - 1, "↗");
@@ -249,6 +251,22 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
             break;
         }
     }
+}
+
+void View::drawPathMarkers(std::vector<Direction> dirPath)
+{
+    Position nodePos = m_board.getBallPosition();
+    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
+
+// TODO: Supported in g++10
+//    for (auto v : std::ranges::views::reverse(dirPath))
+    for (auto it = dirPath.rbegin(); it != dirPath.rend(); ++it) {
+        auto reverseDir = reverseDirection(*it);
+        nodePos = directionToPosition(nodePos, reverseDir);
+        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
+    }
+
+    m_ncurses.refreshView();
 }
 
 void View::printText(int x, int y, std::string str)

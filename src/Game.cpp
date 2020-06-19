@@ -87,6 +87,7 @@ void Game::resetGame()
 
     m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
     m_view.drawBoard();
+    m_view.drawPathMarkers(m_dirPath);
 }
 
 void Game::onKeyboardMouseInput()
@@ -138,6 +139,7 @@ void Game::userMove(Direction dir)
     }
 
     m_dirPath.push_back(dir);
+    m_view.drawPathMarkers(m_dirPath);
     m_network.sendMove(dir);
 }
 
@@ -152,8 +154,11 @@ void Game::userUndoMove()
     const auto reverseDir = reverseDirection(dir);
     m_board.undoBallMove(reverseDir);
     m_userStatus = MoveStatus::Continue;
+
     m_view.setContinueStatus();
     m_view.drawBoard();
+    m_view.drawPathMarkers(m_dirPath);
+
     m_network.sendUndoMove();
 }
 
@@ -195,6 +200,9 @@ void Game::userEndTurn()
     }
 
     m_dirPath.clear();
+    m_view.drawBoard();
+    m_view.drawPathMarkers(m_dirPath);
+
     m_network.sendEndTurn();
 }
 
@@ -213,6 +221,7 @@ void Game::onEnemyMove(MoveMsg msg)
 
     m_enemyStatus = status;
     m_dirPath.push_back(msg.dir);
+    m_view.drawPathMarkers(m_dirPath);
 }
 
 void Game::onEnemyUndoMove(UndoMoveMsg)
@@ -226,8 +235,10 @@ void Game::onEnemyUndoMove(UndoMoveMsg)
     const auto reverseDir = reverseDirection(dir);
     m_board.undoBallMove(reverseDir);
     m_enemyStatus = MoveStatus::Continue;
+
     m_view.setEnemyTurnStatus();
     m_view.drawBoard();
+    m_view.drawPathMarkers(m_dirPath);
 }
 
 void Game::onEnemyEndTurn(EndTurnMsg)
@@ -253,6 +264,8 @@ void Game::onEnemyEndTurn(EndTurnMsg)
     }
 
     m_dirPath.clear();
+    m_view.drawBoard();
+    m_view.drawPathMarkers(m_dirPath);
 }
 
 void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)

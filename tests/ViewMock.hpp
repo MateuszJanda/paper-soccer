@@ -10,6 +10,7 @@ class ViewMock : public IView {
 public:
     MOCK_METHOD0(drawBoard, void());
     MOCK_METHOD3(drawLegend, void(char, char, std::map<char, Direction>));
+    MOCK_METHOD1(drawPathMarkers, void(std::vector<Direction>));
     MOCK_METHOD0(setContinueStatus, void());
     MOCK_METHOD0(setEnemyTurnStatus, void());
     MOCK_METHOD0(setReadyToEndTurnStatus, void());

@@ -3,6 +3,7 @@
 
 #include "Direction.hpp"
 #include <string>
+#include <vector>
 #include <map>
 #include <optional>
 
@@ -14,6 +15,7 @@ public:
 
     virtual void drawBoard() = 0;
     virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) = 0;
+    virtual void drawPathMarkers(std::vector<Direction> dirPath) = 0;
     virtual void setContinueStatus() = 0;
     virtual void setEnemyTurnStatus() = 0;
     virtual void setReadyToEndTurnStatus() = 0;
