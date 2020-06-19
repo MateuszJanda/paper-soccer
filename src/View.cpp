@@ -249,7 +249,6 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
             break;
         }
     }
-
 }
 
 void View::printText(int x, int y, std::string str)

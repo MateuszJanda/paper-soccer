@@ -152,6 +152,7 @@ void Game::userUndoMove()
     const auto reverseDir = reverseDirection(dir);
     m_board.undoBallMove(reverseDir);
     m_userStatus = MoveStatus::Continue;
+    m_view.setContinueStatus();
     m_view.drawBoard();
     m_network.sendUndoMove();
 }
@@ -225,6 +226,7 @@ void Game::onEnemyUndoMove(UndoMoveMsg)
     const auto reverseDir = reverseDirection(dir);
     m_board.undoBallMove(reverseDir);
     m_enemyStatus = MoveStatus::Continue;
+    m_view.setEnemyTurnStatus();
     m_view.drawBoard();
 }
 
