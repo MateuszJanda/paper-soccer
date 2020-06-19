@@ -3,6 +3,7 @@
 
 #include "Direction.hpp"
 #include <string>
+#include <map>
 #include <optional>
 
 namespace PaperSoccer {
@@ -12,6 +13,7 @@ public:
     virtual ~IView() = default;
 
     virtual void drawBoard() = 0;
+    virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) = 0;
     virtual void setContinueStatus() = 0;
     virtual void setEnemyTurnStatus() = 0;
     virtual void setReadyToEndTurnStatus() = 0;

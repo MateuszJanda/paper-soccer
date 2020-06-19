@@ -51,21 +51,11 @@ void Game::run()
 
 void Game::initNewGame()
 {
-    m_match = MatchStatus::InProgress;
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     m_currentTurn = m_firstTurn;
     m_userGoal = Goal::Top;
-    m_userStatus = MoveStatus::Continue;
-    m_enemyStatus = MoveStatus::Continue;
 
-    m_board.reset();
-    m_view.drawBoard();
-
-    if (m_currentTurn == Turn::User) {
-        m_view.setContinueStatus();
-    } else {
-        m_view.setEnemyTurnStatus();
-    }
+    resetGame();
 
     Turn turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     Goal enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
@@ -74,21 +64,29 @@ void Game::initNewGame()
 
 void Game::onNewGame(NewGameMsg msg)
 {
-    m_match = MatchStatus::InProgress;
     m_firstTurn = msg.turn;
     m_currentTurn = m_firstTurn;
     m_userGoal = msg.goal;
+
+    resetGame();
+}
+
+void Game::resetGame()
+{
+    m_match = MatchStatus::InProgress;
     m_userStatus = MoveStatus::Continue;
     m_enemyStatus = MoveStatus::Continue;
 
     m_board.reset();
-    m_view.drawBoard();
 
     if (m_currentTurn == Turn::User) {
         m_view.setContinueStatus();
     } else {
         m_view.setEnemyTurnStatus();
     }
+
+    m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
+    m_view.drawBoard();
 }
 
 void Game::onKeyboardMouseInput()

@@ -25,6 +25,8 @@ public:
     Skips filterDirsForTopBorderLine(Position nodePos);
     Skips filterDirsForRightLine(Position nodePos);
 
+    void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) override;
+
     void printText(int x, int y, std::string str) override;
 
     void setContinueStatus() override;

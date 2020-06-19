@@ -196,6 +196,62 @@ void View::drawMarker(Position nodePos)
     m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "+");
 }
 
+void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys)
+{
+    auto x = getStatusButtonXShift();
+    auto y = Y_OFFSET + 3 + 2;
+
+    m_ncurses.print(x, y, "Undo: " + std::string{undo});
+    m_ncurses.print(x, y + 1, "New game: " + std::string{newGame});
+
+    // Set at center of arrows
+    x += 4;
+    y += 4;
+
+    m_ncurses.print(x - 2, y - 1, "↖");
+    m_ncurses.print(x, y - 1, "↑");
+    m_ncurses.print(x + 2, y - 1, "↗");
+
+    m_ncurses.print(x - 2, y, "←");
+    m_ncurses.print(x + 2, y, "→");
+
+    m_ncurses.print(x - 2, y + 1, "↙");
+    m_ncurses.print(x, y + 1, "↓");
+    m_ncurses.print(x + 2, y + 1, "↘");
+
+    for (auto [key, dir] : dirKeys) {
+        switch (dir) {
+        case Direction::TopLeft:
+            m_ncurses.print(x - 4, y - 2, std::string{key});
+            break;
+        case Direction::Top:
+            m_ncurses.print(x, y - 2, std::string{key});
+            break;
+        case Direction::TopRight:
+            m_ncurses.print(x + 4, y - 2, std::string{key});
+            break;
+        case Direction::Left:
+            m_ncurses.print(x - 4, y, std::string{key});
+            break;
+        case Direction::Right:
+            m_ncurses.print(x + 4, y, std::string{key});
+            break;
+        case Direction::BottomLeft:
+            m_ncurses.print(x - 4, y + 2, std::string{key});
+            break;
+        case Direction::Bottom:
+            m_ncurses.print(x, y + 2, std::string{key});
+            break;
+        case Direction::BottomRight:
+            m_ncurses.print(x + 4, y + 2, std::string{key});
+            break;
+        default:
+            break;
+        }
+    }
+
+}
+
 void View::printText(int x, int y, std::string str)
 {
     m_ncurses.print(x, y, str);
