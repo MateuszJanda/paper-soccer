@@ -5,6 +5,7 @@
 #include "Node.hpp"
 #include "Server.hpp"
 #include "View.hpp"
+#include <boost/program_options.hpp>
 #include <boost/asio.hpp>
 #include <iostream>
 
@@ -57,12 +58,51 @@ void runClient()
     t.join();
 }
 
-int main(int argc, char** argv)
+boost::program_options::options_description usage()
 {
-    if (argc == 2 and std::string(argv[1]) == "-s") {
-        runServer();
-    } else {
-        runClient();
+    namespace po = boost::program_options;
+
+    po::options_description desc(
+                "\n"
+                "paper-soccer version 0.99 (C) 2020  Mateusz Janda <mateusz.janda at gmail.com>"
+                "\n\n"
+                "Options");
+    desc.add_options()
+        ("help,h", "display this help")
+        ("wait,w", "run as server, wait for connection")
+    ;
+
+    return desc;
+}
+
+int main(int argc, char* argv[])
+{
+    namespace po = boost::program_options;
+
+    auto desc = usage();
+
+    try {
+        po::variables_map vm;
+        po::store(po::parse_command_line(argc, argv, desc), vm);
+
+        if (vm.count("help")) {
+            cout << desc << "\n";
+            return 0;
+        }
+
+        if (vm.count("wait")) {
+            runServer();
+        } else {
+            runClient();
+        }
+    } catch (po::too_many_positional_options_error &e) {
+        cerr << e.what() << endl;
+        cout << desc << "\n";
+        exit(1);
+    } catch (po::error_with_option_name &e) {
+        cerr << e.what() << endl;
+        cout << desc << "\n";
+        exit(1);
     }
 
     //    Board b{8, 10};
