@@ -28,7 +28,7 @@ public:
 
     void initNewGame();
     void onNewGame(NewGameMsg msg);
-    void resetGame();
+    void resetSettings();
 
     void onKeyboardMouseInput();
     void userKey(int key);

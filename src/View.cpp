@@ -13,7 +13,7 @@ View::View(IBoard& board, INCurses& ncurses)
 {
 }
 
-void View::drawBoard()
+void View::drawBoard(std::vector<Direction> dirPath)
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
         for (auto x = 0; x < m_board.getWidth(); x++) {
@@ -23,6 +23,7 @@ void View::drawBoard()
         }
     }
 
+    drawPathMarkers(dirPath);
     m_ncurses.refreshView();
 }
 
@@ -265,8 +266,6 @@ void View::drawPathMarkers(std::vector<Direction> dirPath)
         nodePos = directionToPosition(nodePos, reverseDir);
         m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
     }
-
-    m_ncurses.refreshView();
 }
 
 void View::printText(int x, int y, std::string str)

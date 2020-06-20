@@ -55,7 +55,7 @@ void Game::initNewGame()
     m_currentTurn = m_firstTurn;
     m_userGoal = Goal::Top;
 
-    resetGame();
+    resetSettings();
 
     Turn turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     Goal enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
@@ -68,10 +68,10 @@ void Game::onNewGame(NewGameMsg msg)
     m_currentTurn = m_firstTurn;
     m_userGoal = msg.goal;
 
-    resetGame();
+    resetSettings();
 }
 
-void Game::resetGame()
+void Game::resetSettings()
 {
     m_match = MatchStatus::InProgress;
     m_userStatus = MoveStatus::Continue;
@@ -87,8 +87,7 @@ void Game::resetGame()
 
     m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
     m_view.drawScore(m_userScore, m_enemyScore);
-    m_view.drawBoard();
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 }
 
 void Game::onKeyboardMouseInput()
@@ -127,7 +126,6 @@ void Game::userMove(Direction dir)
     }
 
     const auto status = m_board.moveBall(dir);
-    m_view.drawBoard();
 
     if (status == MoveStatus::Illegal) {
         return;
@@ -140,7 +138,7 @@ void Game::userMove(Direction dir)
     }
 
     m_dirPath.push_back(dir);
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
     m_network.sendMove(dir);
 }
 
@@ -157,8 +155,7 @@ void Game::userUndoMove()
     m_userStatus = MoveStatus::Continue;
 
     m_view.setContinueStatus();
-    m_view.drawBoard();
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 
     m_network.sendUndoMove();
 }
@@ -203,8 +200,7 @@ void Game::userEndTurn()
     }
 
     m_dirPath.clear();
-    m_view.drawBoard();
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 
     m_network.sendEndTurn();
 }
@@ -216,7 +212,6 @@ void Game::onEnemyMove(MoveMsg msg)
     }
 
     const auto status = m_board.moveBall(msg.dir);
-    m_view.drawBoard();
 
     if (status == MoveStatus::Illegal) {
         throw std::invalid_argument{"Illegal move."};
@@ -224,7 +219,7 @@ void Game::onEnemyMove(MoveMsg msg)
 
     m_enemyStatus = status;
     m_dirPath.push_back(msg.dir);
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 }
 
 void Game::onEnemyUndoMove(UndoMoveMsg)
@@ -240,8 +235,7 @@ void Game::onEnemyUndoMove(UndoMoveMsg)
     m_enemyStatus = MoveStatus::Continue;
 
     m_view.setEnemyTurnStatus();
-    m_view.drawBoard();
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 }
 
 void Game::onEnemyEndTurn(EndTurnMsg)
@@ -269,8 +263,7 @@ void Game::onEnemyEndTurn(EndTurnMsg)
     }
 
     m_dirPath.clear();
-    m_view.drawBoard();
-    m_view.drawPathMarkers(m_dirPath);
+    m_view.drawBoard(m_dirPath);
 }
 
 void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)

@@ -30,7 +30,7 @@ namespace {
 
     const Position NODE_POS{0, 0};
     const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
-}
+} // namespace anonymous
 
 using namespace testing;
 

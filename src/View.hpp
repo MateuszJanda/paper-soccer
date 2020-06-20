@@ -16,8 +16,9 @@ using Skips = std::tuple<Skip, Skip>;
 class View : public IView {
 public:
     View(IBoard& board, INCurses& ncurses);
-    void drawBoard() override;
+    void drawBoard(std::vector<Direction> dirPath) override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip);
+    void drawPathMarkers(std::vector<Direction> dirPath);
 
     Skips filterDirsForOutOfBorder(Position nodePos);
     Skips filterDirsForTopNetLine(Position nodePos);
@@ -26,7 +27,6 @@ public:
     Skips filterDirsForRightLine(Position nodePos);
 
     void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) override;
-    void drawPathMarkers(std::vector<Direction> dirPath) override;
 
     void printText(int x, int y, std::string str) override;
 
