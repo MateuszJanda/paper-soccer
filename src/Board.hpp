@@ -19,6 +19,8 @@ public:
     void setBallPosition(Position pos) override;
     Position getBallPosition() const;
     bool hasNeighbour(Position pos, Direction dir) const override;
+    bool hasAllNeighbours(Position pos) const;
+    bool hasAnyNeighbour(Position pos) const;
     MoveStatus moveBall(Direction dir) override;
     bool undoBallMove(Direction dir) override;
 

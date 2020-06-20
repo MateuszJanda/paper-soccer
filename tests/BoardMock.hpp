@@ -16,6 +16,8 @@ public:
     MOCK_METHOD1(setBallPosition, void(Position));
     MOCK_CONST_METHOD0(getBallPosition, Position());
     MOCK_CONST_METHOD2(hasNeighbour, bool(Position, Direction));
+    MOCK_CONST_METHOD1(hasAllNeighbours, bool(Position));
+    MOCK_CONST_METHOD1(hasAnyNeighbour, bool(Position));
     MOCK_METHOD1(moveBall, MoveStatus(Direction));
     MOCK_METHOD1(undoBallMove, bool(Direction));
 };

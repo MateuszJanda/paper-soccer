@@ -19,7 +19,8 @@ void View::drawBoard(std::vector<Direction> dirPath)
         for (auto x = 0; x < m_board.getWidth(); x++) {
             Position nodePos{x, y};
             auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
-            drawCell(nodePos, nodeSkip, neighSkip);
+            auto visability = markerVisability(nodePos);
+            drawCell(nodePos, nodeSkip, neighSkip, visability);
         }
     }
 
@@ -112,7 +113,19 @@ Skips View::filterDirsForRightLine(Position nodePos)
     return Skips{};
 }
 
-void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
+MarkerVisability View::markerVisability(Position nodePos)
+{
+    if ((nodePos.y == 0 or nodePos.y == m_board.getHeight() - 1) and m_board.hasAllNeighbours(nodePos))
+    {
+        return MarkerVisability::Invisible;
+    } else if (m_board.hasAnyNeighbour(nodePos)) {
+        return MarkerVisability::Occupied;
+    }
+
+    return MarkerVisability::NotOccupied;
+}
+
+void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability)
 {
     clearLines(nodePos);
 
@@ -144,7 +157,7 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip)
         drawHypotenuseToTopLeft(neighbourPos);
     }
 
-    drawMarker(nodePos);
+    drawMarker(nodePos, visability);
 }
 
 void View::drawVerticalToTopLine(Position nodePos)
@@ -193,9 +206,13 @@ void View::clearLines(Position nodePos)
     m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, "  ");
 }
 
-void View::drawMarker(Position nodePos)
+void View::drawMarker(Position nodePos, MarkerVisability visability)
 {
-    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "+");
+    if (visability == MarkerVisability::Occupied) {
+        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "+");
+    } else if (visability == MarkerVisability::NotOccupied) {
+        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, ".");
+    }
 }
 
 void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys)

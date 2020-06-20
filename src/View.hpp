@@ -10,6 +10,12 @@
 
 namespace PaperSoccer {
 
+enum MarkerVisability {
+    Invisible,
+    NotOccupied,
+    Occupied
+};
+
 using Skip = std::set<Direction>;
 using Skips = std::tuple<Skip, Skip>;
 
@@ -17,7 +23,7 @@ class View : public IView {
 public:
     View(IBoard& board, INCurses& ncurses);
     void drawBoard(std::vector<Direction> dirPath) override;
-    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip);
+    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability);
     void drawPathMarkers(std::vector<Direction> dirPath);
 
     Skips filterDirsForOutOfBorder(Position nodePos);
@@ -25,6 +31,7 @@ public:
     Skips filterDirsForBottomNetLine(Position nodePos);
     Skips filterDirsForTopBorderLine(Position nodePos);
     Skips filterDirsForRightLine(Position nodePos);
+    MarkerVisability markerVisability(Position nodePos);
 
     void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) override;
 
@@ -53,7 +60,7 @@ private:
     void drawCrossToRight(Position nodePos);
     void drawHypotenuseToTopRight(Position nodePos);
     void drawHypotenuseToTopLeft(Position nodePos);
-    void drawMarker(Position nodePos);
+    void drawMarker(Position nodePos, MarkerVisability visability);
 
     void drawStatusButton(std::string line1, std::string line2);
     int getStatusButtonXShift() const;

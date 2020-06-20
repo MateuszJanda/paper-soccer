@@ -16,6 +16,8 @@ namespace {
     const Skip TOP_RIGHT{Direction::Top, Direction::Right};
     const Skip RIGHT{Direction::Right};
 
+    constexpr MarkerVisability INVISIBLE{MarkerVisability::Invisible};
+
     constexpr std::size_t WIDTH{9};
     constexpr std::size_t HEIGHT{13};
 
@@ -190,7 +192,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, TOPLEFT);
+    view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
@@ -203,7 +205,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopPath)
@@ -220,7 +222,7 @@ TEST_F(ViewTest, checkDrawCellTopPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
@@ -233,7 +235,7 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPath)
@@ -250,7 +252,7 @@ TEST_F(ViewTest, checkDrawCellRightPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
@@ -263,7 +265,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPath)
@@ -280,7 +282,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
@@ -292,7 +294,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
     int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(nodePos, ALL, EMPTY);
+    view.drawCell(nodePos, ALL, EMPTY, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
@@ -305,7 +307,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, EMPTY);
+    view.drawCell(NODE_POS, ALL, EMPTY, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPath)
@@ -322,7 +324,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, EMPTY);
+    view.drawCell(NODE_POS, ALL, EMPTY, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawCellCrossPath)
@@ -340,7 +342,7 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
+    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, INVISIBLE);
 }
 
 TEST_F(ViewTest, checkDrawPathMarkers)

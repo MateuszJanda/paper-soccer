@@ -215,6 +215,24 @@ bool Board::hasNeighbour(Position pos, Direction dir) const
     return node.hasNeighbour(dir);
 }
 
+bool Board::hasAllNeighbours(Position pos) const
+{
+    if (not isPositionInGraph(pos)) {
+        return false;
+    }
+    const auto& node = m_graph[pos.y][pos.x];
+    return node.degree() == 8;
+}
+
+bool Board::hasAnyNeighbour(Position pos) const
+{
+    if (not isPositionInGraph(pos)) {
+        return false;
+    }
+    const auto& node = m_graph[pos.y][pos.x];
+    return not node.isLonely();
+}
+
 MoveStatus Board::moveBall(Direction dir)
 {
     const auto& currentNode = m_graph[m_ballPos.y][m_ballPos.x];
