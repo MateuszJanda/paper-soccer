@@ -343,6 +343,24 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY);
 }
 
+TEST_F(ViewTest, checkDrawPathMarkers)
+{
+    const Position ballPos{0, 0};
+    EXPECT_CALL(boardMock, getBallPosition()).WillOnce(Return(ballPos));
+    EXPECT_CALL(ncursesMock, print(_, _, "*")).Times(2);
+
+    const std::vector<Direction> dirPath{Direction::Left};
+    view.drawPathMarkers(dirPath);
+}
+
+TEST_F(ViewTest, checkDrawLegend)
+{
+    EXPECT_CALL(ncursesMock, print(_, _, _)).Times(AtLeast(1));
+
+    const std::map<char, Direction> dirKeys{{'q', Direction::TopLeft}};
+    view.drawLegend('z', 'n', dirKeys);
+}
+
 TEST_F(ViewTest, checkSetContinueStatus)
 {
     expectDrawStatus();
