@@ -60,6 +60,13 @@ public:
         EXPECT_CALL(ncursesMock, print(x, y, "  "));
     }
 
+    void expectDrawScore()
+    {
+        const auto y = View::Y_OFFSET + 3 + 2;
+        EXPECT_CALL(ncursesMock, print(_, y + 0, _));
+        EXPECT_CALL(ncursesMock, print(_, y + 1, _));
+    }
+
     void expectDrawStatus()
     {
         EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _));
@@ -357,13 +364,15 @@ TEST_F(ViewTest, checkSetReadyToEndTurnStatus)
 TEST_F(ViewTest, checkSetLostStatus)
 {
     expectDrawStatus();
-    view.setLostStatus(1, 1);
+    expectDrawScore();
+    view.setLostStatus(0, 1);
 }
 
 TEST_F(ViewTest, checkSetWinStatus)
 {
     expectDrawStatus();
-    view.setWinStatus(1, 1);
+    expectDrawScore();
+    view.setWinStatus(1, 0);
 }
 
 TEST_F(ViewTest, checkIsStatusButtonNotClicked)
