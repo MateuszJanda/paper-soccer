@@ -1,3 +1,8 @@
+// paper-soccer - a free terminal version of paper soccer game
+// Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>
+// Homepage: github.com/MateuszJanda/paper-soccer
+// Ad maiorem Dei gloriam
+
 #include "Board.hpp"
 #include "Client.hpp"
 #include "Game.hpp"
@@ -104,17 +109,6 @@ int main(int argc, char* argv[])
         cout << desc << "\n";
         exit(1);
     }
-
-    //    Board b{8, 10};
-    //    NCurses nn;
-    //    View v{b, nn};
-    //    v.drawBoard();
-
-    //    Game game{b, nn, v};
-    //    game.run2(ioContext);
-
-    //    std::thread t([&ioContext](){ ioContext.run(); });
-    //    t.join();
 
     return 0;
 }

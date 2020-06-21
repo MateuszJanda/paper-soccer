@@ -1,3 +1,8 @@
+// paper-soccer - a free terminal version of paper soccer game
+// Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>
+// Homepage: github.com/MateuszJanda/paper-soccer
+// Ad maiorem Dei gloriam
+
 #include "Network.hpp"
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
