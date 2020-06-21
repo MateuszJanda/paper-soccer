@@ -28,7 +28,7 @@ NCurses::NCurses()
     cbreak();
 
     keypad(stdscr, TRUE);
-    mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, NULL);
+    mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, nullptr);
 
     refresh();
 }
@@ -40,12 +40,19 @@ NCurses::~NCurses()
 
 void NCurses::print(int x, int y, std::string str) const
 {
-    int pair = 0;
-    int ret = attr_set(A_NORMAL, (short)pair, (void*)&pair);
-    mvprintw(y, x, str.c_str());
+    const int pair{0};
+    auto ret = attr_set(A_NORMAL, (short)pair, (void*)&pair);
+    if (ret) {
+        throw std::runtime_error{"ncurses attr_set() error"};
+    }
+
+    ret = mvprintw(y, x, str.c_str());
+    if (ret) {
+        throw std::runtime_error{"ncurses mvprintw() error"};
+    }
 }
 
-std::optional<Input> NCurses::getInput() const
+std::optional<Input> NCurses::getInput() const noexcept
 {
     const int key = getch();
     MEVENT event;
@@ -63,12 +70,12 @@ std::optional<Input> NCurses::getInput() const
     return KeyInput{.key = key};
 }
 
-void NCurses::refreshView() const
+void NCurses::refreshView() const noexcept
 {
     refresh();
 }
 
-void NCurses::clearView() const
+void NCurses::clearView() const noexcept
 {
     clear();
 }

@@ -21,31 +21,31 @@ using Skips = std::tuple<Skip, Skip>;
 
 class View : public IView {
 public:
-    View(IBoard& board, INCurses& ncurses);
-    void clear() override;
-    void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) override;
-    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability);
+    View(const IBoard& board, const INCurses& ncurses);
+    void clear() const override;
+    void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) const override;
+    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
 
-    void drawNames(std::string topName, std::string bottomName);
-    void drawPathMarkers(std::vector<Direction> dirPath);
+    void drawNames(std::string topName, std::string bottomName) const;
+    void drawPathMarkers(std::vector<Direction> dirPath) const;
 
-    Skips filterDirsForOutOfBorder(Position nodePos);
-    Skips filterDirsForTopNetLine(Position nodePos);
-    Skips filterDirsForBottomNetLine(Position nodePos);
-    Skips filterDirsForTopBorderLine(Position nodePos);
-    Skips filterDirsForRightLine(Position nodePos);
-    MarkerVisability markerVisability(Position nodePos);
+    Skips filterDirsForOutOfBorder(Position nodePos) const;
+    Skips filterDirsForTopNetLine(Position nodePos) const;
+    Skips filterDirsForBottomNetLine(Position nodePos) const;
+    Skips filterDirsForTopBorderLine(Position nodePos) const;
+    Skips filterDirsForRightLine(Position nodePos) const;
+    MarkerVisability markerVisability(Position nodePos) const;
 
-    void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) override;
+    void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const override;
 
-    void printText(int x, int y, std::string str) override;
+    void printText(int x, int y, std::string str) const override;
 
-    void drawScore(int won, int lost) override;
-    void setContinueStatus() override;
-    void setEnemyTurnStatus() override;
-    void setReadyToEndTurnStatus() override;
-    void setLostStatus(int won, int lost) override;
-    void setWinStatus(int won, int lost) override;
+    void drawScore(int won, int lost) const override;
+    void setContinueStatus() const override;
+    void setEnemyTurnStatus() const override;
+    void setReadyToEndTurnStatus() const override;
+    void setLostStatus(int won, int lost) const override;
+    void setWinStatus(int won, int lost) const override;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
@@ -57,19 +57,19 @@ public:
     const std::string LINE{"+--------------+"};
 
 private:
-    void clearLines(Position nodePos);
-    void drawVerticalToTopLine(Position nodePos);
-    void drawHorizontalToRightLine(Position nodePos);
-    void drawCrossToRight(Position nodePos);
-    void drawHypotenuseToTopRight(Position nodePos);
-    void drawHypotenuseToTopLeft(Position nodePos);
-    void drawMarker(Position nodePos, MarkerVisability visability);
+    void clearLines(Position nodePos) const;
+    void drawVerticalToTopLine(Position nodePos) const;
+    void drawHorizontalToRightLine(Position nodePos) const;
+    void drawCrossToRight(Position nodePos) const;
+    void drawHypotenuseToTopRight(Position nodePos) const;
+    void drawHypotenuseToTopLeft(Position nodePos) const;
+    void drawMarker(Position nodePos, MarkerVisability visability) const;
 
-    void drawStatusButton(std::string line1, std::string line2);
+    void drawStatusButton(std::string line1, std::string line2) const;
     int getStatusButtonXShift() const;
 
-    IBoard& m_board;
-    INCurses& m_ncurses;
+    const IBoard& m_board;
+    const INCurses& m_ncurses;
 };
 
 } // namespace PaperSoccer

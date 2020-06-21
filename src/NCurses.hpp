@@ -13,10 +13,10 @@ public:
     ~NCurses() override;
 
     void print(int x, int y, std::string str) const override;
-    std::optional<Input> getInput() const override;
+    std::optional<Input> getInput() const noexcept override;
 
-    void refreshView() const override;
-    void clearView() const override;
+    void refreshView() const noexcept override;
+    void clearView() const noexcept override;
 };
 
 } // namespace PaperSoccer
