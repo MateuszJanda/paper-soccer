@@ -87,7 +87,16 @@ void Game::resetSettings()
 
     m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
     m_view.drawScore(m_userScore, m_enemyScore);
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
+}
+
+void Game::drawBoard()
+{
+    if (m_userGoal == Goal::Top) {
+        m_view.drawBoard("You", "Enemy", m_dirPath);
+    } else {
+        m_view.drawBoard("Enemy", "You", m_dirPath);
+    }
 }
 
 void Game::onKeyboardMouseInput()
@@ -138,7 +147,7 @@ void Game::userMove(Direction dir)
     }
 
     m_dirPath.push_back(dir);
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
     m_network.sendMove(dir);
 }
 
@@ -155,7 +164,7 @@ void Game::userUndoMove()
     m_userStatus = MoveStatus::Continue;
 
     m_view.setContinueStatus();
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
 
     m_network.sendUndoMove();
 }
@@ -200,7 +209,7 @@ void Game::userEndTurn()
     }
 
     m_dirPath.clear();
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
 
     m_network.sendEndTurn();
 }
@@ -219,7 +228,7 @@ void Game::onEnemyMove(MoveMsg msg)
 
     m_enemyStatus = status;
     m_dirPath.push_back(msg.dir);
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
 }
 
 void Game::onEnemyUndoMove(UndoMoveMsg)
@@ -235,7 +244,7 @@ void Game::onEnemyUndoMove(UndoMoveMsg)
     m_enemyStatus = MoveStatus::Continue;
 
     m_view.setEnemyTurnStatus();
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
 }
 
 void Game::onEnemyEndTurn(EndTurnMsg)
@@ -263,7 +272,7 @@ void Game::onEnemyEndTurn(EndTurnMsg)
     }
 
     m_dirPath.clear();
-    m_view.drawBoard(m_dirPath);
+    drawBoard();
 }
 
 void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)

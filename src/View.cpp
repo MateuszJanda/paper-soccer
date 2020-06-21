@@ -13,7 +13,7 @@ View::View(IBoard& board, INCurses& ncurses)
 {
 }
 
-void View::drawBoard(std::vector<Direction> dirPath)
+void View::drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath)
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
         for (auto x = 0; x < m_board.getWidth(); x++) {
@@ -24,6 +24,7 @@ void View::drawBoard(std::vector<Direction> dirPath)
         }
     }
 
+    drawNames(topName, bottomName);
     drawPathMarkers(dirPath);
     m_ncurses.refreshView();
 }
@@ -115,8 +116,7 @@ Skips View::filterDirsForRightLine(Position nodePos)
 
 MarkerVisability View::markerVisability(Position nodePos)
 {
-    if ((nodePos.y == 0 or nodePos.y == m_board.getHeight() - 1) and m_board.hasAllNeighbours(nodePos))
-    {
+    if ((nodePos.y == 0 or nodePos.y == m_board.getHeight() - 1) and m_board.hasAllNeighbours(nodePos)) {
         return MarkerVisability::Invisible;
     } else if (m_board.hasAnyNeighbour(nodePos)) {
         return MarkerVisability::Occupied;
@@ -271,6 +271,16 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
     }
 }
 
+void View::drawNames(std::string topName, std::string bottomName)
+{
+    auto x = m_board.getGoalpostRight() * X_FACTOR + 2 + X_OFFSET;
+    auto y = 1 + Y_OFFSET;
+    m_ncurses.print(x, y, topName);
+
+    y = (m_board.getHeight() - 1) * Y_FACTOR - 1 + Y_OFFSET;
+    m_ncurses.print(x, y, bottomName);
+}
+
 void View::drawPathMarkers(std::vector<Direction> dirPath)
 {
     Position nodePos = m_board.getBallPosition();
@@ -305,15 +315,15 @@ void View::setReadyToEndTurnStatus()
     drawStatusButton("  End turn.   ", "   (Enter)    ");
 }
 
-void View::setLostStatus(int userScore, int enemyScore)
+void View::setLostStatus(int wins, int lost)
 {
-    drawScore(userScore, enemyScore);
+    drawScore(wins, lost);
     drawStatusButton("   You Lost.  ", " New game (n) ");
 }
 
-void View::setWinStatus(int userScore, int enemyScore)
+void View::setWinStatus(int won, int lost)
 {
-    drawScore(userScore, enemyScore);
+    drawScore(won, lost);
     drawStatusButton("   You Win.   ", " New game (n) ");
 }
 
@@ -334,13 +344,13 @@ int View::getStatusButtonXShift() const
     return X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
 }
 
-void View::drawScore(int userScore, int enemyScore)
+void View::drawScore(int won, int lost)
 {
     auto x = getStatusButtonXShift();
     auto y = Y_OFFSET + 3 + 2;
 
-    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(userScore));
-    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(enemyScore));
+    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(won));
+    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(lost));
 }
 
 bool View::isStatusButton(int x, int y) const

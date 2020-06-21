@@ -8,7 +8,7 @@ namespace PaperSoccer {
 
 class ViewMock : public IView {
 public:
-    MOCK_METHOD1(drawBoard, void(std::vector<Direction>));
+    MOCK_METHOD3(drawBoard, void(std::string, std::string, std::vector<Direction>));
     MOCK_METHOD3(drawLegend, void(char, char, std::map<char, Direction>));
     MOCK_METHOD2(drawScore, void(int, int));
     MOCK_METHOD0(setContinueStatus, void());

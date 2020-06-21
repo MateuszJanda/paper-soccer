@@ -22,8 +22,10 @@ using Skips = std::tuple<Skip, Skip>;
 class View : public IView {
 public:
     View(IBoard& board, INCurses& ncurses);
-    void drawBoard(std::vector<Direction> dirPath) override;
+    void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability);
+
+    void drawNames(std::string topName, std::string bottomName);
     void drawPathMarkers(std::vector<Direction> dirPath);
 
     Skips filterDirsForOutOfBorder(Position nodePos);
@@ -37,12 +39,12 @@ public:
 
     void printText(int x, int y, std::string str) override;
 
-    void drawScore(int userScore, int enemyScore) override;
+    void drawScore(int won, int lost) override;
     void setContinueStatus() override;
     void setEnemyTurnStatus() override;
     void setReadyToEndTurnStatus() override;
-    void setLostStatus(int userScore, int enemyScore) override;
-    void setWinStatus(int userScore, int enemyScore) override;
+    void setLostStatus(int won, int lost) override;
+    void setWinStatus(int won, int lost) override;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;

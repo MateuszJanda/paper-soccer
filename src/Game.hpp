@@ -56,6 +56,8 @@ public:
                                              {'.', Direction::BottomRight}};
 
 protected:
+    void drawBoard();
+
     INetwork& m_network;
     IBoard& m_board;
     INCurses& m_ncurses;
