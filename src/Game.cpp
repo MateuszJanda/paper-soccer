@@ -40,20 +40,20 @@ void Game::run()
     using namespace std::placeholders;
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
-        std::bind(&Game::initNewGame, this),
-        std::bind(&Game::onNewGame, this, _1),
-        std::bind(&Game::onEnemyMove, this, _1),
-        std::bind(&Game::onEnemyUndoMove, this, _1),
-        std::bind(&Game::onEnemyEndTurn, this, _1),
-        std::bind(&Game::onEnemyReadyForNewGame, this, _1));
+        [this]() { initNewGame(); },
+        [this](NewGameMsg msg) { onNewGame(msg); },
+        [this](MoveMsg msg) { onEnemyMove(msg); },
+        [this](UndoMoveMsg) { onEnemyUndoMove(); },
+        [this](EndTurnMsg) { onEnemyEndTurn(); },
+        [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); });
     m_network.run();
 }
 
-void Game::initNewGame()
+void Game::initNewGame(Goal userGoal)
 {
     m_firstTurn = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
     m_currentTurn = m_firstTurn;
-    m_userGoal = Goal::Top;
+    m_userGoal = userGoal;
 
     resetSettings();
 
@@ -175,7 +175,7 @@ void Game::userRequestNewGame()
         m_match = MatchStatus::ReadyForNew;
         m_network.sendReadyForNewGame();
     } else if (m_match == MatchStatus::EnemyReadyForNew) {
-        initNewGame();
+        initNewGame(m_userGoal);
     }
 }
 
@@ -231,7 +231,7 @@ void Game::onEnemyMove(MoveMsg msg)
     drawBoard();
 }
 
-void Game::onEnemyUndoMove(UndoMoveMsg)
+void Game::onEnemyUndoMove()
 {
     if (m_currentTurn == Turn::User or m_dirPath.empty()) {
         return;
@@ -247,7 +247,7 @@ void Game::onEnemyUndoMove(UndoMoveMsg)
     drawBoard();
 }
 
-void Game::onEnemyEndTurn(EndTurnMsg)
+void Game::onEnemyEndTurn()
 {
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy end turn in user turn."};
@@ -275,13 +275,12 @@ void Game::onEnemyEndTurn(EndTurnMsg)
     drawBoard();
 }
 
-void Game::onEnemyReadyForNewGame(ReadyForNewGameMsg)
+void Game::onEnemyReadyForNewGame()
 {
     if (m_match == MatchStatus::GameEnd) {
         m_match = MatchStatus::EnemyReadyForNew;
-    } else if (m_match == MatchStatus::ReadyForNew) {
-        initNewGame();
     }
+
 }
 
 } // namespace PaperSoccer

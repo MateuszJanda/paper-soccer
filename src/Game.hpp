@@ -26,7 +26,7 @@ public:
 
     void run();
 
-    void initNewGame();
+    void initNewGame(Goal userGoal = Goal::Top);
     void onNewGame(NewGameMsg msg);
     void resetSettings();
 
@@ -39,9 +39,9 @@ public:
     void userEndTurn();
 
     void onEnemyMove(MoveMsg msg);
-    void onEnemyUndoMove(UndoMoveMsg);
-    void onEnemyEndTurn(EndTurnMsg);
-    void onEnemyReadyForNewGame(ReadyForNewGameMsg);
+    void onEnemyUndoMove();
+    void onEnemyEndTurn();
+    void onEnemyReadyForNewGame();
 
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'z'};

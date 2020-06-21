@@ -115,4 +115,6 @@ int main(int argc, char* argv[])
 
     //    std::thread t([&ioContext](){ ioContext.run(); });
     //    t.join();
+
+    return 0;
 }

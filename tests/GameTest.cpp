@@ -585,7 +585,7 @@ TEST_F(GameTest, onEnemyUndoMoveWhenUserTurn)
     game.setCurrentTurn(Turn::User);
     game.setEnemyStatus(MoveStatus::Stop);
     game.setDirectionPath({Direction::Top});
-    game.onEnemyUndoMove(UndoMoveMsg{});
+    game.onEnemyUndoMove();
 
     EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Stop);
     EXPECT_THAT(game.getDirectionPath(), ElementsAre(Direction::Top));
@@ -596,7 +596,7 @@ TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithEmptyDirPath)
     game.setCurrentTurn(Turn::Enemy);
     game.setEnemyStatus(MoveStatus::Stop);
     game.setDirectionPath(EMPTY_PATH);
-    game.onEnemyUndoMove(UndoMoveMsg{});
+    game.onEnemyUndoMove();
 
     EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Stop);
 }
@@ -610,7 +610,7 @@ TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithDirPath)
     game.setCurrentTurn(Turn::Enemy);
     game.setEnemyStatus(MoveStatus::Stop);
     game.setDirectionPath(DIR_PATH);
-    game.onEnemyUndoMove(UndoMoveMsg{});
+    game.onEnemyUndoMove();
 
     EXPECT_EQ(game.getEnemyStatus(), MoveStatus::Continue);
     EXPECT_THAT(game.getDirectionPath(), ElementsAre());
@@ -619,14 +619,14 @@ TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithDirPath)
 TEST_F(GameTest, onEnemyEndTurnWhenUserTurn)
 {
     game.setCurrentTurn(Turn::User);
-    ASSERT_ANY_THROW(game.onEnemyEndTurn(EndTurnMsg{}));
+    ASSERT_ANY_THROW(game.onEnemyEndTurn());
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenUEnemyTurnAndEnemyShouldContinue)
 {
     game.setCurrentTurn(Turn::Enemy);
     game.setEnemyStatus(MoveStatus::Continue);
-    ASSERT_ANY_THROW(game.onEnemyEndTurn(EndTurnMsg{}));
+    ASSERT_ANY_THROW(game.onEnemyEndTurn());
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
@@ -639,7 +639,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Top);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -656,7 +656,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Bottom);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -672,7 +672,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
     game.setDirectionPath({Direction::Top});
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::DeadEnd);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -689,7 +689,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::TopGoal);
     game.setUserGoal(Goal::Bottom);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -706,7 +706,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::BottomGoal);
     game.setUserGoal(Goal::Top);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -722,7 +722,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
     game.setDirectionPath({Direction::Top});
     game.setUserStatus(MoveStatus::Stop);
     game.setEnemyStatus(MoveStatus::Stop);
-    game.onEnemyEndTurn(EndTurnMsg{});
+    game.onEnemyEndTurn();
 
     EXPECT_EQ(game.getCurrentTurn(), Turn::User);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
@@ -732,7 +732,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
 TEST_F(GameTest, onEnemyReadyForNewGameWhenGameInProgress)
 {
     game.setMatchStatus(MatchStatus::InProgress);
-    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
+    game.onEnemyReadyForNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
 }
@@ -740,7 +740,7 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenGameInProgress)
 TEST_F(GameTest, onEnemyReadyForNewGameWhenGameEnd)
 {
     game.setMatchStatus(MatchStatus::GameEnd);
-    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
+    game.onEnemyReadyForNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::EnemyReadyForNew);
 }
@@ -756,7 +756,7 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenUserReadyForNewGame)
 
     game.setFirstTurn(Turn::User);
     game.setMatchStatus(MatchStatus::ReadyForNew);
-    game.onEnemyReadyForNewGame(ReadyForNewGameMsg{});
+    game.onEnemyReadyForNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
