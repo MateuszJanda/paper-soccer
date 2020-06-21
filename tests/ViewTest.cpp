@@ -18,6 +18,7 @@ namespace {
 
     constexpr MarkerVisability INVISIBLE{MarkerVisability::Invisible};
     constexpr MarkerVisability OCCUPIED{MarkerVisability::Occupied};
+    constexpr MarkerVisability NOT_OCCUPIED{MarkerVisability::NotOccupied};
 
     constexpr std::size_t WIDTH{9};
     constexpr std::size_t HEIGHT{13};
@@ -185,6 +186,49 @@ TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
+TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
+{
+    Position nodePos{0, 0};
+    EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
+    EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
+
+    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::NotOccupied);
+}
+
+TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
+{
+    Position nodePos{HEIGHT - 1, 0};
+    EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
+    EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
+
+    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::NotOccupied);
+}
+
+TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
+{
+    Position nodePos{0, 0};
+    EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
+
+    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
+}
+
+TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
+{
+    Position nodePos{HEIGHT - 1, 0};
+    EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
+
+    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
+}
+
+TEST_F(ViewTest, checkMarkerVisabilityWhenHasAnyNeighbours)
+{
+    Position nodePos{0, 0};
+    EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
+    EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(true));
+
+    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Occupied);
+}
+
 TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
     expectClearLines();
@@ -194,6 +238,27 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
+}
+
+TEST_F(ViewTest, checkDrawCellNoMarkerSkipAllDirs)
+{
+    expectClearLines();
+
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+
+    view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
+}
+
+TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
+{
+    expectClearLines();
+
+    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
+    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    EXPECT_CALL(ncursesMock, print(x, y, "."));
+
+    view.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
@@ -344,6 +409,14 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
+}
+
+TEST_F(ViewTest, checkDrawNames)
+{
+    EXPECT_CALL(ncursesMock, print(_, _, "TOP_NAME"));
+    EXPECT_CALL(ncursesMock, print(_, _, "BOTTOM_NAME"));
+
+    view.drawNames("TOP_NAME", "BOTTOM_NAME");
 }
 
 TEST_F(ViewTest, checkDrawPathMarkers)
