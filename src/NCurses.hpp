@@ -12,11 +12,11 @@ public:
     NCurses();
     ~NCurses() override;
 
-    void print(int x, int y, std::string str) override;
-    std::optional<Input> getInput() override;
+    void print(int x, int y, std::string str) const override;
+    std::optional<Input> getInput() const override;
 
-    void refreshView() override;
-    void clearView() override;
+    void refreshView() const override;
+    void clearView() const override;
 };
 
 } // namespace PaperSoccer

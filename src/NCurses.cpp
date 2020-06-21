@@ -38,14 +38,14 @@ NCurses::~NCurses()
     endwin();
 }
 
-void NCurses::print(int x, int y, std::string str)
+void NCurses::print(int x, int y, std::string str) const
 {
     int pair = 0;
     int ret = attr_set(A_NORMAL, (short)pair, (void*)&pair);
     mvprintw(y, x, str.c_str());
 }
 
-std::optional<Input> NCurses::getInput()
+std::optional<Input> NCurses::getInput() const
 {
     const int key = getch();
     MEVENT event;
@@ -63,12 +63,12 @@ std::optional<Input> NCurses::getInput()
     return KeyInput{.key = key};
 }
 
-void NCurses::refreshView()
+void NCurses::refreshView() const
 {
     refresh();
 }
 
-void NCurses::clearView()
+void NCurses::clearView() const
 {
     clear();
 }

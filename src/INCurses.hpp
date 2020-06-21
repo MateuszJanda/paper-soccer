@@ -25,10 +25,10 @@ class INCurses {
 public:
     virtual ~INCurses() = default;
 
-    virtual void print(int x, int y, std::string str) = 0;
-    virtual std::optional<Input> getInput() = 0;
-    virtual void refreshView() = 0;
-    virtual void clearView() = 0;
+    virtual void print(int x, int y, std::string str) const = 0;
+    virtual std::optional<Input> getInput() const = 0;
+    virtual void refreshView() const = 0;
+    virtual void clearView() const = 0;
 };
 
 } // namespace PaperSoccer
