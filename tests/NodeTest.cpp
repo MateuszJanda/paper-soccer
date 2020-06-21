@@ -125,6 +125,28 @@ TEST_F(NodeTest, checkIsLonely)
     ASSERT_FALSE(node.isLonely());
 }
 
+TEST_F(NodeTest, checkIsFull)
+{
+    node.addNeighbours({Direction::TopLeft,
+                        Direction::Right,
+                        Direction::BottomRight,
+                        Direction::Bottom,
+                        Direction::BottomLeft,
+                        Direction::Left,
+                        Direction::TopRight});
+    ASSERT_FALSE(node.isFull());
+
+    node.addNeighbours({Direction::Top,
+                        Direction::TopLeft,
+                        Direction::Right,
+                        Direction::BottomRight,
+                        Direction::Bottom,
+                        Direction::BottomLeft,
+                        Direction::Left,
+                        Direction::TopRight});
+    ASSERT_TRUE(node.isFull());
+}
+
 TEST_F(NodeTest, checkNeighboursPositionsIfNoNeighbours)
 {
     ASSERT_THAT(node.neighboursPositions(Position{1, 1}), ElementsAre());

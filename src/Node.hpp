@@ -17,6 +17,7 @@ public:
     unsigned degree() const;
     bool canEnter() const;
     bool isLonely() const;
+    bool isFull() const;
     std::vector<Position> neighboursPositions(Position currentPos) const;
 
 private:

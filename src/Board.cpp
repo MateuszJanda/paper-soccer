@@ -221,7 +221,7 @@ bool Board::hasAllNeighbours(Position pos) const
         return false;
     }
     const auto& node = m_graph[pos.y][pos.x];
-    return node.degree() == 8;
+    return node.isFull();
 }
 
 bool Board::hasAnyNeighbour(Position pos) const

@@ -51,6 +51,11 @@ bool Node::isLonely() const
     return degree() == 0;
 }
 
+bool Node::isFull() const
+{
+    return degree() == 8;
+}
+
 std::vector<Position> Node::neighboursPositions(Position currentPos) const
 {
     std::vector<Position> positions;

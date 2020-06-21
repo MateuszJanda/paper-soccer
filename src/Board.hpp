@@ -17,10 +17,10 @@ public:
     std::size_t getGoalpostLeft() const override;
     std::size_t getGoalpostRight() const override;
     void setBallPosition(Position pos) override;
-    Position getBallPosition() const;
+    Position getBallPosition() const override;
     bool hasNeighbour(Position pos, Direction dir) const override;
-    bool hasAllNeighbours(Position pos) const;
-    bool hasAnyNeighbour(Position pos) const;
+    bool hasAllNeighbours(Position pos) const override;
+    bool hasAnyNeighbour(Position pos) const override;
     MoveStatus moveBall(Direction dir) override;
     bool undoBallMove(Direction dir) override;
 
