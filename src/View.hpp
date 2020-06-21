@@ -22,6 +22,7 @@ using Skips = std::tuple<Skip, Skip>;
 class View : public IView {
 public:
     View(IBoard& board, INCurses& ncurses);
+    void clear() override;
     void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability);
 

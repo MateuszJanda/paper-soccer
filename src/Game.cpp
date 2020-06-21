@@ -77,6 +77,7 @@ void Game::resetSettings()
     m_userStatus = MoveStatus::Continue;
     m_enemyStatus = MoveStatus::Continue;
 
+    m_view.clear();
     m_board.reset();
 
     if (m_currentTurn == Turn::User) {

@@ -11,6 +11,7 @@ public:
     MOCK_METHOD3(print, void(int, int, std::string));
     MOCK_METHOD0(getInput, std::optional<Input>());
     MOCK_METHOD0(refreshView, void());
+    MOCK_METHOD0(clearView, void());
 };
 
 } // namespace PaperSoccer

@@ -13,6 +13,7 @@ class IView {
 public:
     virtual ~IView() = default;
 
+    virtual void clear() = 0;
     virtual void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) = 0;
     virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) = 0;
     virtual void drawScore(int userScore, int enemyScore) = 0;

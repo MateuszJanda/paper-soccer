@@ -13,6 +13,11 @@ View::View(IBoard& board, INCurses& ncurses)
 {
 }
 
+void View::clear()
+{
+    m_ncurses.clearView();
+}
+
 void View::drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath)
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {

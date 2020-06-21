@@ -1,5 +1,5 @@
 #include "Server.hpp"
-#include <memory>
+#include <iostream>
 
 namespace PaperSoccer {
 
@@ -16,6 +16,7 @@ void Server::run()
 
 void Server::accept()
 {
+    std::cout << "Waiting for connection ...\n";
     m_acceptor.async_accept(m_socket,
         [this](boost::system::error_code errorCode) {
             if (not errorCode) {

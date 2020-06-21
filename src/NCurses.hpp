@@ -16,6 +16,7 @@ public:
     std::optional<Input> getInput() override;
 
     void refreshView() override;
+    void clearView() override;
 };
 
 } // namespace PaperSoccer

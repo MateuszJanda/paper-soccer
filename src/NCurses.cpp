@@ -1,5 +1,4 @@
 #include "NCurses.hpp"
-#include <iostream>
 #include <clocale>
 #include <ncurses.h>
 
@@ -31,7 +30,6 @@ NCurses::NCurses()
     keypad(stdscr, TRUE);
     mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, NULL);
 
-    printw("Hello World !!!");
     refresh();
 }
 
@@ -59,7 +57,6 @@ std::optional<Input> NCurses::getInput()
     }
     // Detect left-click
     else if (key == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED)) {
-//        std::cout << "click";
         return MouseInput{.x = event.x, .y = event.y};
     }
 
@@ -69,6 +66,11 @@ std::optional<Input> NCurses::getInput()
 void NCurses::refreshView()
 {
     refresh();
+}
+
+void NCurses::clearView()
+{
+    clear();
 }
 
 } // namespace PaperSoccer

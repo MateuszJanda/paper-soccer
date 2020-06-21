@@ -112,6 +112,7 @@ TEST_F(GameTest, run)
 
 TEST_F(GameTest, initNewGameWhenFirstTurnIsUser)
 {
+    EXPECT_CALL(viewMock, clear());
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
@@ -129,6 +130,7 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsUser)
 
 TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
 {
+    EXPECT_CALL(viewMock, clear());
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
@@ -146,6 +148,7 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
 
 TEST_F(GameTest, onNewGameWhenUserTurn)
 {
+    EXPECT_CALL(viewMock, clear());
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
@@ -161,6 +164,7 @@ TEST_F(GameTest, onNewGameWhenUserTurn)
 
 TEST_F(GameTest, onNewGameWhenEnemyTurn)
 {
+    EXPECT_CALL(viewMock, clear());
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
@@ -500,6 +504,7 @@ TEST_F(GameTest, userRequestNewGameWhenGameEnd)
 
 TEST_F(GameTest, userRequesNewGmeWhenEnemyReadyForNewGame)
 {
+    EXPECT_CALL(viewMock, clear());
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(0, 0));
