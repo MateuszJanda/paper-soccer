@@ -66,7 +66,7 @@ TEST_F(BoardTest, checkReset)
     }
 }
 
-TEST_F(BoardTest, checkHasNeighbourOutOfRange)
+TEST_F(BoardTest, checkHasNeighbourWhenOutOfRange)
 {
     ASSERT_FALSE(board.hasNeighbour(Position{-1, 0}, Direction::Top));
 }
@@ -79,6 +79,36 @@ TEST_F(BoardTest, checkHasNeighbourWhenThereIsNo)
 TEST_F(BoardTest, checkHasNeighbourWhenThereIsOne)
 {
     ASSERT_TRUE(board.hasNeighbour(Position{3, 1}, Direction::Top));
+}
+
+TEST_F(BoardTest, checkHasAllNeighboursWhenOutOfRange)
+{
+    ASSERT_FALSE(board.hasAllNeighbours(Position{-1, 0}));
+}
+
+TEST_F(BoardTest, checkHasAllNeighboursWhenNotAll)
+{
+    ASSERT_FALSE(board.hasAllNeighbours(Position{1, 1}));
+}
+
+TEST_F(BoardTest, checkHasAllNeighboursWhenAll)
+{
+    ASSERT_TRUE(board.hasAllNeighbours(Position{0, 0}));
+}
+
+TEST_F(BoardTest, checkHasAnyNeighbourWhenOutOfRange)
+{
+    ASSERT_FALSE(board.hasAnyNeighbour(Position{-1, 0}));
+}
+
+TEST_F(BoardTest, checkHasAnyNeighbourWhenNoNeighbours)
+{
+    ASSERT_FALSE(board.hasAnyNeighbour(Position{1, 2}));
+}
+
+TEST_F(BoardTest, checkHasAnyNeighbourWhenSomeNeighbours)
+{
+    ASSERT_TRUE(board.hasAnyNeighbour(Position{1, 1}));
 }
 
 TEST_F(BoardTest, checkSettingBallPositionOutOfRange)
