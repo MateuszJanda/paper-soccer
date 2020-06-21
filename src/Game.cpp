@@ -280,7 +280,6 @@ void Game::onEnemyReadyForNewGame()
     if (m_match == MatchStatus::GameEnd) {
         m_match = MatchStatus::EnemyReadyForNew;
     }
-
 }
 
 } // namespace PaperSoccer

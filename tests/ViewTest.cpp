@@ -17,6 +17,7 @@ namespace {
     const Skip RIGHT{Direction::Right};
 
     constexpr MarkerVisability INVISIBLE{MarkerVisability::Invisible};
+    constexpr MarkerVisability OCCUPIED{MarkerVisability::Occupied};
 
     constexpr std::size_t WIDTH{9};
     constexpr std::size_t HEIGHT{13};
@@ -192,7 +193,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
@@ -205,7 +206,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopPath)
@@ -222,7 +223,7 @@ TEST_F(ViewTest, checkDrawCellTopPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
@@ -235,7 +236,7 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellRightPath)
@@ -252,7 +253,7 @@ TEST_F(ViewTest, checkDrawCellRightPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
@@ -265,7 +266,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopRightPath)
@@ -282,7 +283,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, INVISIBLE);
+    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
@@ -294,7 +295,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
     int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(nodePos, ALL, EMPTY, INVISIBLE);
+    view.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
@@ -307,7 +308,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, EMPTY, INVISIBLE);
+    view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellTopLeftPath)
@@ -324,7 +325,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, ALL, EMPTY, INVISIBLE);
+    view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawCellCrossPath)
@@ -342,7 +343,7 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
     EXPECT_CALL(ncursesMock, print(x, y, "+"));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, INVISIBLE);
+    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawPathMarkers)

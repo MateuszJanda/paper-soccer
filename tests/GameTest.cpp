@@ -10,8 +10,8 @@ namespace PaperSoccer {
 namespace {
     const std::vector<Direction> EMPTY_PATH{};
     const std::vector<Direction> DIR_PATH{Direction::Left};
-    const std::string USER_NAME="You";
-    const std::string ENEMY_NAME="Enemy";
+    const std::string USER_NAME{"You"};
+    const std::string ENEMY_NAME{"Enemy"};
 } // namespace anonymous
 
 using namespace testing;
@@ -149,7 +149,7 @@ TEST_F(GameTest, onNewGameWhenUserTurn)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
     EXPECT_CALL(viewMock, setContinueStatus());
 
     game.onNewGame(NewGameMsg{Turn::User, Goal::Bottom});
@@ -164,7 +164,7 @@ TEST_F(GameTest, onNewGameWhenEnemyTurn)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
 
     game.onNewGame(NewGameMsg{Turn::Enemy, Goal::Bottom});
@@ -421,7 +421,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -437,7 +437,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -649,7 +649,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -682,7 +682,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -743,24 +743,6 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenGameEnd)
     game.onEnemyReadyForNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::EnemyReadyForNew);
-}
-
-TEST_F(GameTest, onEnemyReadyForNewGameWhenUserReadyForNewGame)
-{
-    EXPECT_CALL(boardMock, reset());
-    EXPECT_CALL(viewMock, drawLegend(_, _, _));
-    EXPECT_CALL(viewMock, drawScore(0, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
-    EXPECT_CALL(viewMock, setEnemyTurnStatus());
-    EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
-
-    game.setFirstTurn(Turn::User);
-    game.setMatchStatus(MatchStatus::ReadyForNew);
-    game.onEnemyReadyForNewGame();
-
-    EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
-    EXPECT_EQ(game.getCurrentTurn(), Turn::Enemy);
-    EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }
 
 } // namespace PaperSoccer
