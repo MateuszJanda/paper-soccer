@@ -16,7 +16,7 @@ struct overloaded : Ts... {
 };
 
 template <class... Ts>
-overloaded(Ts...)->overloaded<Ts...>;
+overloaded(Ts...) -> overloaded<Ts...>;
 
 namespace {
 
@@ -62,8 +62,8 @@ void Game::initNewGame(Goal userGoal)
 
     resetSettings();
 
-    Turn turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
-    Goal enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
+    auto turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
+    auto enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
     m_network.sendNewGame(turnForEnemy, enemyGoal);
 }
 
@@ -96,7 +96,7 @@ void Game::resetSettings()
     drawBoard();
 }
 
-void Game::drawBoard()
+void Game::drawBoard() const
 {
     if (m_userGoal == Goal::Top) {
         m_view.drawBoard("You", "Enemy", m_dirPath);
@@ -108,15 +108,16 @@ void Game::drawBoard()
 void Game::onKeyboardMouseInput()
 {
     for (;;) {
-        auto input = m_ncurses.getInput();
+        const auto input = m_ncurses.getInput();
 
-        if (not input)
+        if (not input) {
             break;
+        }
 
         std::visit(overloaded{
                        [this](const KeyInput& data) { userKey(data.key); },
                        [this](const MouseInput& data) { userMouse(data.x, data.y); },
-                       [this](const EnterInput& data) { userEndTurn(); },
+                       [this](const EnterInput&) { userEndTurn(); },
                    },
             *input);
     }
@@ -125,7 +126,7 @@ void Game::onKeyboardMouseInput()
 void Game::userKey(int key)
 {
     if (DIR_KEYS.contains(key) and m_match == MatchStatus::InProgress) {
-        Direction dir = DIR_KEYS.at(key);
+        auto dir = DIR_KEYS.at(key);
         userMove(dir);
     } else if (key == UNDO_MOVE_KEY) {
         userUndoMove();

@@ -14,8 +14,24 @@
 #include <boost/asio.hpp>
 #include <iostream>
 
-using namespace std;
 using namespace PaperSoccer;
+
+boost::program_options::options_description usage()
+{
+    namespace po = boost::program_options;
+
+    po::options_description desc(
+                "\n"
+                "paper-soccer version 0.99 (C) 2020  Mateusz Janda <mateusz.janda at gmail.com>"
+                "\n\n"
+                "Options");
+    desc.add_options()
+        ("help,h", "display this help")
+        ("wait,w", "run as server, wait for connection")
+    ;
+
+    return desc;
+}
 
 void runServer()
 {
@@ -63,23 +79,6 @@ void runClient()
     t.join();
 }
 
-boost::program_options::options_description usage()
-{
-    namespace po = boost::program_options;
-
-    po::options_description desc(
-                "\n"
-                "paper-soccer version 0.99 (C) 2020  Mateusz Janda <mateusz.janda at gmail.com>"
-                "\n\n"
-                "Options");
-    desc.add_options()
-        ("help,h", "display this help")
-        ("wait,w", "run as server, wait for connection")
-    ;
-
-    return desc;
-}
-
 int main(int argc, char* argv[])
 {
     namespace po = boost::program_options;
@@ -91,7 +90,7 @@ int main(int argc, char* argv[])
         po::store(po::parse_command_line(argc, argv, desc), vm);
 
         if (vm.count("help")) {
-            cout << desc << "\n";
+            std::cout << desc << "\n";
             return 0;
         }
 
@@ -101,12 +100,12 @@ int main(int argc, char* argv[])
             runClient();
         }
     } catch (po::too_many_positional_options_error &e) {
-        cerr << e.what() << endl;
-        cout << desc << "\n";
+        std::cerr << e.what() << "\n";
+        std::cout << desc << "\n";
         exit(1);
     } catch (po::error_with_option_name &e) {
-        cerr << e.what() << endl;
-        cout << desc << "\n";
+        std::cerr << e.what() << "\n";
+        std::cout << desc << "\n";
         exit(1);
     }
 

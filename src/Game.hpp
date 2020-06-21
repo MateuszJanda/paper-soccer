@@ -61,7 +61,7 @@ public:
                                              {'.', Direction::BottomRight}};
 
 protected:
-    void drawBoard();
+    void drawBoard() const;
 
     INetwork& m_network;
     IBoard& m_board;
