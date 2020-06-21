@@ -4,13 +4,6 @@
 
 namespace PaperSoccer {
 
-void rawPrint(int x, int y, std::string str)
-{
-    int pair = 0;
-    int ret = attr_set(A_NORMAL, (short)pair, (void*)&pair);
-    mvprintw(y, x, str.c_str());
-}
-
 NCurses::NCurses()
 {
     // https://stackoverflow.com/questions/59341959/schedule-an-asynchronous-event-that-will-complete-when-stdin-has-waiting-data-in

@@ -300,11 +300,6 @@ void View::drawPathMarkers(std::vector<Direction> dirPath) const
     }
 }
 
-void View::printText(int x, int y, std::string str) const
-{
-    m_ncurses.print(x, y, str);
-}
-
 void View::setContinueStatus() const
 {
     drawStatusButton("  Your turn.  ", "  Make move   ");

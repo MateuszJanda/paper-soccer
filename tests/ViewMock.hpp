@@ -19,8 +19,6 @@ public:
     MOCK_CONST_METHOD2(setWinStatus, void(int, int));
     MOCK_CONST_METHOD2(isStatusButton, bool(int, int));
     MOCK_CONST_METHOD2(getMoveDirection, std::optional<Direction>(int, int));
-
-    MOCK_CONST_METHOD3(printText, void(int, int, std::string));
 };
 
 } // namespace PaperSoccer

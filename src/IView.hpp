@@ -24,8 +24,6 @@ public:
     virtual void setWinStatus(int won, int lost) const = 0;
     virtual bool isStatusButton(int x, int y) const = 0;
     virtual std::optional<Direction> getMoveDirection(int x, int y) const = 0;
-
-    virtual void printText(int x, int y, std::string s) const = 0;
 };
 
 } // namespace PaperSoccer

@@ -38,8 +38,6 @@ public:
 
     void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const override;
 
-    void printText(int x, int y, std::string str) const override;
-
     void drawScore(int won, int lost) const override;
     void setContinueStatus() const override;
     void setEnemyTurnStatus() const override;
