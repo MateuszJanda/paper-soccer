@@ -15,7 +15,7 @@ namespace PaperSoccer {
 namespace {
     const std::vector<Direction> EMPTY_PATH{};
     const std::vector<Direction> DIR_PATH{Direction::Left};
-    const std::string USER_NAME{"You"};
+    const std::string USER_NAME{"Me"};
     const std::string ENEMY_NAME{"Enemy"};
 } // namespace anonymous
 
@@ -121,7 +121,7 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsUser)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
     EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
 
@@ -139,7 +139,7 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(viewMock, setContinueStatus());
     EXPECT_CALL(networkMock, sendNewGame(Turn::Enemy, Goal::Bottom));
 
@@ -157,7 +157,7 @@ TEST_F(GameTest, onNewGameWhenUserTurn)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(viewMock, setContinueStatus());
 
     game.onNewGame(NewGameMsg{Turn::User, Goal::Bottom});
@@ -173,7 +173,7 @@ TEST_F(GameTest, onNewGameWhenEnemyTurn)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(_, _));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
 
     game.onNewGame(NewGameMsg{Turn::Enemy, Goal::Bottom});
@@ -280,7 +280,7 @@ TEST_F(GameTest, userKeyWhenUndoMoveInUserTurn)
     EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
     EXPECT_CALL(networkMock, sendUndoMove());
     EXPECT_CALL(viewMock, setContinueStatus());
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Stop);
@@ -318,7 +318,7 @@ TEST_F(GameTest, userMoveWhenUserTurnAndNextIllegalMove)
 TEST_F(GameTest, userMoveWhenUserTurnAndNextContinueMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Continue));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, DIR_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, DIR_PATH, _));
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
     game.setCurrentTurn(Turn::User);
@@ -331,7 +331,7 @@ TEST_F(GameTest, userMoveWhenUserTurnAndNextContinueMove)
 TEST_F(GameTest, userMoveWhenUserTurnAndNextStopMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Stop));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, DIR_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, DIR_PATH, _));
     EXPECT_CALL(viewMock, setReadyToEndTurnStatus());
     EXPECT_CALL(networkMock, sendMove(Direction::Left));
 
@@ -348,7 +348,7 @@ TEST_F(GameTest, userMouseWhenStatusButtonClickAndEndTurn)
     const int y = 2;
     EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(true));
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -399,7 +399,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndContinueMove)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -414,7 +414,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -430,7 +430,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -446,7 +446,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -462,7 +462,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -477,7 +477,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
 TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
 {
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendEndTurn());
 
     game.setCurrentTurn(Turn::User);
@@ -513,7 +513,7 @@ TEST_F(GameTest, userRequesNewGmeWhenEnemyReadyForNewGame)
     EXPECT_CALL(boardMock, reset());
     EXPECT_CALL(viewMock, drawLegend(_, _, _));
     EXPECT_CALL(viewMock, drawScore(0, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
     EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Bottom));
 
@@ -551,7 +551,7 @@ TEST_F(GameTest, userUndoMoveWhenUserTurnWithDirPath)
 {
     EXPECT_CALL(boardMock, undoBallMove(Direction::Bottom));
     EXPECT_CALL(viewMock, setContinueStatus());
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
     EXPECT_CALL(networkMock, sendUndoMove());
 
     game.setCurrentTurn(Turn::User);
@@ -582,7 +582,7 @@ TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndIllegalMove)
 TEST_F(GameTest, onEnemyMoveWhenEnemyTurnAndLegalMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Continue));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, DIR_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, DIR_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.onEnemyMove(Direction::Left);
@@ -615,7 +615,7 @@ TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithDirPath)
 {
     EXPECT_CALL(boardMock, undoBallMove(Direction::Right));
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setEnemyStatus(MoveStatus::Stop);
@@ -642,7 +642,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenUEnemyTurnAndEnemyShouldContinue)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -659,7 +659,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -676,7 +676,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyGoal)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -692,7 +692,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndDeadEndMove)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, USER_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -709,7 +709,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyOwnGoal)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});
@@ -726,7 +726,7 @@ TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndBottomEnemyOwnGoal)
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnStopMove)
 {
     EXPECT_CALL(viewMock, setContinueStatus());
-    EXPECT_CALL(viewMock, drawBoard(USER_NAME, ENEMY_NAME, EMPTY_PATH));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
 
     game.setCurrentTurn(Turn::Enemy);
     game.setDirectionPath({Direction::Top});

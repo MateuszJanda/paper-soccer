@@ -98,10 +98,12 @@ void Game::resetSettings()
 
 void Game::drawBoard() const
 {
+    const auto ballColor = (m_currentTurn == Turn::Enemy) ? ColorPair::ENEMY : ColorPair::USER;
+
     if (m_userGoal == Goal::Top) {
-        m_view.drawBoard("You", "Enemy", m_dirPath);
+        m_view.drawBoard("Me", ColorPair::USER, "Enemy", ColorPair::ENEMY, m_dirPath, ballColor);
     } else {
-        m_view.drawBoard("Enemy", "You", m_dirPath);
+        m_view.drawBoard("Enemy", ColorPair::ENEMY, "Me", ColorPair::USER, m_dirPath, ballColor);
     }
 }
 

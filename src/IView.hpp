@@ -2,6 +2,7 @@
 #define I_VIEW_HPP
 
 #include "Direction.hpp"
+#include "ColorPair.hpp"
 #include <string>
 #include <vector>
 #include <map>
@@ -14,9 +15,11 @@ public:
     virtual ~IView() = default;
 
     virtual void clear() const = 0;
-    virtual void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) const = 0;
+    virtual void drawBoard(std::string topName, ColorPair topColor,
+                           std::string bottomName, ColorPair bottomColor,
+                           std::vector<Direction> dirPath, ColorPair ballColor) const = 0;
     virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const = 0;
-    virtual void drawScore(int userScore, int enemyScore) const = 0;
+    virtual void drawScore(int won, int lost) const = 0;
     virtual void setContinueStatus() const = 0;
     virtual void setEnemyTurnStatus() const = 0;
     virtual void setReadyToEndTurnStatus() const = 0;

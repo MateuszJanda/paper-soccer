@@ -28,11 +28,13 @@ class View : public IView {
 public:
     View(const IBoard& board, const INCurses& ncurses);
     void clear() const override;
-    void drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) const override;
+    void drawBoard(std::string topName, ColorPair topColor,
+                   std::string bottomName, ColorPair bottomColor,
+                   std::vector<Direction> dirPath, ColorPair ballColor) const override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
 
-    void drawNames(std::string topName, std::string bottomName) const;
-    void drawPathMarkers(std::vector<Direction> dirPath) const;
+    void drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const;
+    void drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) const;
 
     Skips filterDirsForOutOfBorder(Position nodePos) const;
     Skips filterDirsForTopNetLine(Position nodePos) const;
@@ -69,7 +71,7 @@ private:
     void drawHypotenuseToTopLeft(Position nodePos) const;
     void drawMarker(Position nodePos, MarkerVisability visability) const;
 
-    void drawStatusButton(std::string line1, std::string line2, ColorPair colorPair) const;
+    void drawStatusButton(std::string line1, std::string line2, ColorPair color) const;
     int getStatusButtonXShift() const;
 
     const IBoard& m_board;

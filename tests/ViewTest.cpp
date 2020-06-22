@@ -421,7 +421,7 @@ TEST_F(ViewTest, checkDrawNames)
     EXPECT_CALL(ncursesMock, print(_, _, "TOP_NAME", _));
     EXPECT_CALL(ncursesMock, print(_, _, "BOTTOM_NAME", _));
 
-    view.drawNames("TOP_NAME", "BOTTOM_NAME");
+    view.drawNames("TOP_NAME", ColorPair::DEFAULT, "BOTTOM_NAME", ColorPair::DEFAULT);
 }
 
 TEST_F(ViewTest, checkDrawPathMarkers)
@@ -431,7 +431,7 @@ TEST_F(ViewTest, checkDrawPathMarkers)
     EXPECT_CALL(ncursesMock, print(_, _, "*", _)).Times(2);
 
     const std::vector<Direction> dirPath{Direction::Left};
-    view.drawPathMarkers(dirPath);
+    view.drawPathMarkers(dirPath, ColorPair::DEFAULT);
 }
 
 TEST_F(ViewTest, checkDrawLegend)

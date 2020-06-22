@@ -14,7 +14,7 @@ namespace PaperSoccer {
 class ViewMock : public IView {
 public:
     MOCK_CONST_METHOD0(clear, void());
-    MOCK_CONST_METHOD3(drawBoard, void(std::string, std::string, std::vector<Direction>));
+    MOCK_CONST_METHOD6(drawBoard, void(std::string, ColorPair, std::string, ColorPair, std::vector<Direction>, ColorPair));
     MOCK_CONST_METHOD3(drawLegend, void(char, char, std::map<char, Direction>));
     MOCK_CONST_METHOD2(drawScore, void(int, int));
     MOCK_CONST_METHOD0(setContinueStatus, void());

@@ -22,7 +22,8 @@ void View::clear() const
     m_ncurses.clearView();
 }
 
-void View::drawBoard(std::string topName, std::string bottomName, std::vector<Direction> dirPath) const
+void View::drawBoard(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor,
+                     std::vector<Direction> dirPath, ColorPair ballColor) const
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
         for (auto x = 0; x < m_board.getWidth(); x++) {
@@ -33,8 +34,8 @@ void View::drawBoard(std::string topName, std::string bottomName, std::vector<Di
         }
     }
 
-    drawNames(topName, bottomName);
-    drawPathMarkers(dirPath);
+    drawNames(topName, topColor, bottomName, bottomColor);
+    drawPathMarkers(dirPath, ballColor);
     m_ncurses.refreshView();
 }
 
@@ -280,27 +281,27 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
     }
 }
 
-void View::drawNames(std::string topName, std::string bottomName) const
+void View::drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const
 {
     auto x = m_board.getGoalpostRight() * X_FACTOR + 2 + X_OFFSET;
     auto y = 1 + Y_OFFSET;
-    m_ncurses.print(x, y, topName);
+    m_ncurses.print(x, y, topName, topColor);
 
     y = (m_board.getHeight() - 1) * Y_FACTOR - 1 + Y_OFFSET;
-    m_ncurses.print(x, y, bottomName);
+    m_ncurses.print(x, y, bottomName, bottomColor);
 }
 
-void View::drawPathMarkers(std::vector<Direction> dirPath) const
+void View::drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) const
 {
     Position nodePos = m_board.getBallPosition();
-    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
+    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*", ballColor);
 
     // TODO: Supported in gcc 10
     // for (auto v : std::ranges::views::reverse(dirPath))
     for (auto it = dirPath.rbegin(); it != dirPath.rend(); ++it) {
         auto reverseDir = reverseDirection(*it);
         nodePos = directionToPosition(nodePos, reverseDir);
-        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
+        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*", ballColor);
     }
 }
 
@@ -331,14 +332,14 @@ void View::setWinStatus(int won, int lost) const
     drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_GREEN);
 }
 
-void View::drawStatusButton(std::string line1, std::string line2, ColorPair colorPair) const
+void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const
 {
     const int x = getStatusButtonXShift();
     const int y = Y_OFFSET;
-    m_ncurses.print(x, y + 0, TOP_LINE, colorPair);
-    m_ncurses.print(x, y + 1, "|" + line1 + "|", colorPair);
-    m_ncurses.print(x, y + 2, "|" + line2 + "|", colorPair);
-    m_ncurses.print(x, y + 3, BOTTOM_LINE, colorPair);
+    m_ncurses.print(x, y + 0, TOP_LINE, color);
+    m_ncurses.print(x, y + 1, "|" + line1 + "|", color);
+    m_ncurses.print(x, y + 2, "|" + line2 + "|", color);
+    m_ncurses.print(x, y + 3, BOTTOM_LINE, color);
 
     m_ncurses.refreshView();
 }

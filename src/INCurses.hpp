@@ -6,6 +6,7 @@
 #ifndef I_N_CURSES_HPP
 #define I_N_CURSES_HPP
 
+#include "ColorPair.hpp"
 #include <optional>
 #include <string>
 #include <variant>
@@ -22,15 +23,6 @@ struct EnterInput {
 struct MouseInput {
     int x;
     int y;
-};
-
-enum class ColorPair : int {
-    DEFAULT = 0,
-    USER,
-    ENEMY,
-    BUTTON_GRAY,
-    BUTTON_YELLOW,
-    BUTTON_GREEN
 };
 
 using Input = std::variant<KeyInput, EnterInput, MouseInput>;
