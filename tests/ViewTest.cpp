@@ -266,7 +266,7 @@ TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
 
     auto x = vx(NODE_POS.x);
     auto y = vy(NODE_POS.y);
-    EXPECT_CALL(ncursesMock, print(x, y, ".", _));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", ColorPair::MARK_GRAY));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
 }

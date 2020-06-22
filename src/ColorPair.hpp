@@ -12,8 +12,10 @@ enum class ColorPair : int {
     DEFAULT = 0,
     USER,
     ENEMY,
+    MARK_GRAY,
     BUTTON_GRAY,
     BUTTON_YELLOW,
+    BUTTON_ORANGE,
     BUTTON_GREEN
 };
 

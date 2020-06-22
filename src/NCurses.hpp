@@ -27,8 +27,10 @@ private:
     static constexpr int RED{3};
     static constexpr int BLUE{4};
     static constexpr int GRAY{5};
-    static constexpr int YELLOW{6};
-    static constexpr int GREEN{7};
+    static constexpr int DARK_GRAY{6};
+    static constexpr int YELLOW{7};
+    static constexpr int ORANGE{8};
+    static constexpr int GREEN{9};
 
     void setupColors() const;
     void prepareColor(int colorId, int red, int green, int blue) const;

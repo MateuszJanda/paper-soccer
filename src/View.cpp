@@ -82,7 +82,7 @@ Skips View::filterDirsForOutOfBorder(Position nodePos) const
 
 Skips View::filterDirsForTopNetLine(Position nodePos) const
 {
-    const auto topNetLine{0};
+    constexpr auto topNetLine{0};
 
     if (nodePos.y == topNetLine) {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight()) {
@@ -98,7 +98,7 @@ Skips View::filterDirsForTopNetLine(Position nodePos) const
 
 Skips View::filterDirsForTopBorderLine(Position nodePos) const
 {
-    const auto topBorderLine{1};
+    constexpr auto topBorderLine{1};
 
     if (nodePos.y == topBorderLine) {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
@@ -204,7 +204,7 @@ void View::drawCrossToRight(Position nodePos) const
 
 void View::drawHypotenuseToTopRight(Position nodePos) const
 {
-    //  / - U+002F         https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+    //  / - U+002F        https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ⸝⸍ - U+2e1d U+2e0d https://en.wikipedia.org/wiki/Supplemental_Punctuation
     // ᐟ  - U+141f        https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     // ৴  - U+09f4        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
@@ -214,7 +214,7 @@ void View::drawHypotenuseToTopRight(Position nodePos) const
 
 void View::drawHypotenuseToTopLeft(Position nodePos) const
 {
-    //  \ - U+005C         https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
+    //  \ - U+005C        https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ⸌⸜ - U+2e0c U+2e1c https://en.wikipedia.org/wiki/Supplemental_Punctuation
     // ᐠ  - U+1420        https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     // ৲  - U+09f2        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
@@ -235,7 +235,7 @@ void View::drawMarker(Position nodePos, MarkerVisability visability) const
     if (visability == MarkerVisability::Occupied) {
         m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+");
     } else if (visability == MarkerVisability::NotOccupied) {
-        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), ".");
+        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+", ColorPair::MARK_GRAY);
     }
 }
 
@@ -330,7 +330,7 @@ void View::drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) 
 
 void View::setContinueStatus() const
 {
-    drawStatusButton("  Your turn.  ", "  Make move   ", ColorPair::BUTTON_YELLOW);
+    drawStatusButton("  Your turn.  ", "  Make move   ", ColorPair::BUTTON_GREEN);
 }
 
 void View::setEnemyTurnStatus() const
@@ -340,19 +340,19 @@ void View::setEnemyTurnStatus() const
 
 void View::setReadyToEndTurnStatus() const
 {
-    drawStatusButton("  End turn.   ", "   (Enter)    ", ColorPair::BUTTON_GREEN);
+    drawStatusButton("  End turn.   ", "   (Enter)    ", ColorPair::BUTTON_YELLOW);
 }
 
 void View::setLostStatus(int wins, int lost) const
 {
     drawScore(wins, lost);
-    drawStatusButton("   You Lost.  ", " New game (n) ", ColorPair::BUTTON_GREEN);
+    drawStatusButton("   You Lost.  ", " New game (n) ", ColorPair::BUTTON_ORANGE);
 }
 
 void View::setWinStatus(int won, int lost) const
 {
     drawScore(won, lost);
-    drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_GREEN);
+    drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_ORANGE);
 }
 
 void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const

@@ -55,7 +55,9 @@ void NCurses::setupColors() const
     prepareColor(RED, 0xce, 0x33, 0x81);
     prepareColor(BLUE, 0x25, 0x70, 0xa3);
     prepareColor(GRAY, 0x7d, 0x7d, 0x7d);
+    prepareColor(DARK_GRAY, 0x63, 0x63, 0x62);
     prepareColor(YELLOW, 0xe5, 0xe9, 0x19);
+    prepareColor(ORANGE, 0xfc, 0xbc, 0x03);
     prepareColor(GREEN, 0x00, 0xff, 0x00);
 
     auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND);
@@ -65,8 +67,10 @@ void NCurses::setupColors() const
 
     prepareColorPair(ColorPair::USER, BLUE, DEFAULT_BACKGROUND);
     prepareColorPair(ColorPair::ENEMY, RED, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::MARK_GRAY, DARK_GRAY, DEFAULT_BACKGROUND);
     prepareColorPair(ColorPair::BUTTON_GRAY, GRAY, DEFAULT_BACKGROUND);
     prepareColorPair(ColorPair::BUTTON_YELLOW, YELLOW, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::BUTTON_ORANGE, ORANGE, DEFAULT_BACKGROUND);
     prepareColorPair(ColorPair::BUTTON_GREEN, GREEN, DEFAULT_BACKGROUND);
 }
 
