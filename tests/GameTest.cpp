@@ -187,7 +187,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenKeyInput)
 {
     InSequence s;
 
-    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyInput{.key = 'j'})));
+    EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::make_optional(KeyInput{.key = 'a'})));
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
     EXPECT_CALL(ncursesMock, getInput()).WillOnce(Return(std::nullopt));
 
@@ -243,7 +243,7 @@ TEST_F(GameTest, userKeyWhenGameInProgress)
 
     game.setMatchStatus(MatchStatus::InProgress);
     game.setUserStatus(MoveStatus::Continue);
-    game.userKey('j');
+    game.userKey('a');
 
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
 }

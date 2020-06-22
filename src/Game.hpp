@@ -49,16 +49,15 @@ public:
     void onEnemyReadyForNewGame();
 
     static constexpr char NEW_GAME_KEY{'n'};
-    static constexpr char UNDO_MOVE_KEY{'z'};
+    static constexpr char UNDO_MOVE_KEY{'u'};
     const std::map<char, Direction> DIR_KEYS{{'q', Direction::TopLeft},
-                                             {'u', Direction::TopLeft},
-                                             {'i', Direction::Top},
-                                             {'o', Direction::TopRight},
-                                             {'j', Direction::Left},
-                                             {'l', Direction::Right},
-                                             {'m', Direction::BottomLeft},
-                                             {',', Direction::Bottom},
-                                             {'.', Direction::BottomRight}};
+                                             {'w', Direction::Top},
+                                             {'e', Direction::TopRight},
+                                             {'a', Direction::Left},
+                                             {'d', Direction::Right},
+                                             {'z', Direction::BottomLeft},
+                                             {'x', Direction::Bottom},
+                                             {'c', Direction::BottomRight}};
 
 protected:
     void drawBoard() const;
