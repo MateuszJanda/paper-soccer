@@ -49,13 +49,13 @@ NCurses::~NCurses()
 
 void NCurses::setupColors() const
 {
-    prepareColor(DEFAULT_BACKGROUND, 0x00, 0x00, 0x00);
-    prepareColor(DEFAULT_FOREGROUND, 0xff, 0xff, 0xff);
+    prepareColor(DEFAULT_BACKGROUND, 0x31, 0x3a, 0x44);
+    prepareColor(DEFAULT_FOREGROUND, 0xfe, 0xfe, 0xfe);
 
-    prepareColor(RED, 0xff, 0x00, 0x00);
-    prepareColor(BLUE, 0x00, 0x00, 0xff);
-    prepareColor(GRAY, 0x1f, 0x1f, 0x1f);
-    prepareColor(YELLOW, 0xff, 0x00, 0xff);
+    prepareColor(RED, 0xce, 0x33, 0x81);
+    prepareColor(BLUE, 0x25, 0x70, 0xa3);
+    prepareColor(GRAY, 0x7d, 0x7d, 0x7d);
+    prepareColor(YELLOW, 0xe5, 0xe9, 0x19);
     prepareColor(GREEN, 0x00, 0xff, 0x00);
 
     auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND);

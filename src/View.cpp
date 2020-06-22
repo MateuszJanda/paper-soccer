@@ -306,39 +306,39 @@ void View::drawPathMarkers(std::vector<Direction> dirPath) const
 
 void View::setContinueStatus() const
 {
-    drawStatusButton("  Your turn.  ", "  Make move   ");
+    drawStatusButton("  Your turn.  ", "  Make move   ", ColorPair::BUTTON_YELLOW);
 }
 
 void View::setEnemyTurnStatus() const
 {
-    drawStatusButton("  Enemy turn. ", "     Wait     ");
+    drawStatusButton("  Enemy turn. ", "     Wait     ", ColorPair::BUTTON_GRAY);
 }
 
 void View::setReadyToEndTurnStatus() const
 {
-    drawStatusButton("  End turn.   ", "   (Enter)    ");
+    drawStatusButton("  End turn.   ", "   (Enter)    ", ColorPair::BUTTON_GREEN);
 }
 
 void View::setLostStatus(int wins, int lost) const
 {
     drawScore(wins, lost);
-    drawStatusButton("   You Lost.  ", " New game (n) ");
+    drawStatusButton("   You Lost.  ", " New game (n) ", ColorPair::BUTTON_GREEN);
 }
 
 void View::setWinStatus(int won, int lost) const
 {
     drawScore(won, lost);
-    drawStatusButton("   You Win.   ", " New game (n) ");
+    drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_GREEN);
 }
 
-void View::drawStatusButton(std::string line1, std::string line2) const
+void View::drawStatusButton(std::string line1, std::string line2, ColorPair colorPair) const
 {
     const int x = getStatusButtonXShift();
     const int y = Y_OFFSET;
-    m_ncurses.print(x, y + 0, LINE);
-    m_ncurses.print(x, y + 1, "|" + line1 + "|");
-    m_ncurses.print(x, y + 2, "|" + line2 + "|");
-    m_ncurses.print(x, y + 3, LINE);
+    m_ncurses.print(x, y + 0, TOP_LINE, colorPair);
+    m_ncurses.print(x, y + 1, "|" + line1 + "|", colorPair);
+    m_ncurses.print(x, y + 2, "|" + line2 + "|", colorPair);
+    m_ncurses.print(x, y + 3, BOTTOM_LINE, colorPair);
 
     m_ncurses.refreshView();
 }
@@ -361,7 +361,7 @@ bool View::isStatusButton(int x, int y) const
 {
     const auto buttonX = getStatusButtonXShift();
     const auto buttonY = Y_OFFSET;
-    return x >= buttonX and x <= LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
+    return x >= buttonX and x <= TOP_LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
 }
 
 std::optional<Direction> View::getMoveDirection(int x, int y) const

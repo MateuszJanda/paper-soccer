@@ -21,6 +21,7 @@ public:
     void refreshView() const noexcept override;
     void clearView() const noexcept override;
 
+private:
     static constexpr int DEFAULT_FOREGROUND{1};
     static constexpr int DEFAULT_BACKGROUND{2};
     static constexpr int RED{3};
@@ -29,7 +30,6 @@ public:
     static constexpr int YELLOW{6};
     static constexpr int GREEN{7};
 
-private:
     void setupColors() const;
     void prepareColor(int colorId, int red, int green, int blue) const;
     void prepareColorPair(ColorPair colorPair, int fg, int bg) const;

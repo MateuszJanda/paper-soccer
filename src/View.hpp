@@ -57,7 +57,8 @@ public:
     static constexpr int Y_OFFSET{2};
     static constexpr int X_FACTOR{3};
     static constexpr int Y_FACTOR{2};
-    const std::string LINE{"+--------------+"};
+    const std::string TOP_LINE{".--------------."};
+    const std::string BOTTOM_LINE{"`--------------'"};
 
 private:
     void clearLines(Position nodePos) const;
@@ -68,7 +69,7 @@ private:
     void drawHypotenuseToTopLeft(Position nodePos) const;
     void drawMarker(Position nodePos, MarkerVisability visability) const;
 
-    void drawStatusButton(std::string line1, std::string line2) const;
+    void drawStatusButton(std::string line1, std::string line2, ColorPair colorPair) const;
     int getStatusButtonXShift() const;
 
     const IBoard& m_board;
