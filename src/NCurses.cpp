@@ -37,7 +37,7 @@ NCurses::NCurses()
     keypad(stdscr, TRUE);
     mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, nullptr);
 
-    initColors();
+    setupColors();
 
     refresh();
 }
@@ -47,15 +47,27 @@ NCurses::~NCurses()
     endwin();
 }
 
-void NCurses::initColors() const
+void NCurses::setupColors() const
 {
-    prepareColor(1, 0x00, 0x00, 0x00);
-    prepareColor(2, 0xff, 0x00, 0x00);
+    prepareColor(DEFAULT_BACKGROUND, 0x00, 0x00, 0x00);
+    prepareColor(DEFAULT_FOREGROUND, 0x1f, 0x1f, 0x00);
 
-    auto ret = assume_default_colors(2, 1);
+    prepareColor(RED, 0xff, 0x00, 0x00);
+    prepareColor(BLUE, 0xff, 0x00, 0x00);
+    prepareColor(GRAY, 0x1f, 0x1f, 0x1f);
+    prepareColor(YELLOW, 0xff, 0x00, 0xff);
+    prepareColor(GREEN, 0x00, 0xff, 0x00);
+
+    auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND);
     if (ret) {
         throw std::runtime_error{"ncurses assume_default_colors() error"};
     }
+
+    prepareColorPair(USER1, RED, DEFAULT_BACKGROUND);
+    prepareColorPair(USER2, BLUE, DEFAULT_BACKGROUND);
+    prepareColorPair(BUTTON_GRAY, GRAY, DEFAULT_BACKGROUND);
+    prepareColorPair(BUTTON_YELLOW, YELLOW, DEFAULT_BACKGROUND);
+    prepareColorPair(BUTTON_GREEN, GREEN, DEFAULT_BACKGROUND);
 }
 
 void NCurses::prepareColor(int colorId, int red, int green, int blue) const
@@ -65,6 +77,14 @@ void NCurses::prepareColor(int colorId, int red, int green, int blue) const
     auto ret = init_extended_color(colorId, r, g, b);
     if (ret) {
         throw std::runtime_error{"ncurses init_extended_color() - error for id: " + std::to_string(colorId)};
+    }
+}
+
+void NCurses::prepareColorPair(int colorPair, int fg, int bg) const
+{
+    const auto ret = init_extended_pair(colorPair, fg, bg);
+    if (ret) {
+        throw std::runtime_error{"ncurses init_extended_pair() - error for id: " + std::to_string(colorPair)};
     }
 }
 
@@ -84,7 +104,7 @@ void NCurses::print(int x, int y, std::string str, int colorId) const
 std::optional<Input> NCurses::getInput() const noexcept
 {
     const int key = getch();
-    MEVENT event;
+    MEVENT event{};
 
     if (key == ERR) {
         return std::nullopt;

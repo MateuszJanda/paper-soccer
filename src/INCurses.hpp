@@ -36,11 +36,11 @@ public:
     virtual void clearView() const = 0;
 
     static constexpr int DEFAULT{0};
-    static constexpr int RED{1};
-    static constexpr int BLUE{2};
-    static constexpr int GRAY{3};
-    static constexpr int YELLOW{4};
-    static constexpr int GREEM{5};
+    static constexpr int USER1{1};
+    static constexpr int USER2{2};
+    static constexpr int BUTTON_GRAY{3};
+    static constexpr int BUTTON_YELLOW{4};
+    static constexpr int BUTTON_GREEN{5};
 };
 
 } // namespace PaperSoccer
