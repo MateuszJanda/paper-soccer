@@ -12,7 +12,7 @@ namespace {
     constexpr std::size_t X_OFFSET{1};
     constexpr std::size_t Y_OFFSET{1 + 2};
     constexpr std::size_t GOAL_WIDTH{2};
-}
+} // namespace anonymous
 
 Board::Board(std::size_t width, std::size_t height)
     : m_width{width}

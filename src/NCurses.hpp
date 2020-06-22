@@ -20,6 +20,10 @@ public:
 
     void refreshView() const noexcept override;
     void clearView() const noexcept override;
+
+private:
+    void initColors() const;
+    void prepareColor(int colorId, int red, int green, int blue) const;
 };
 
 } // namespace PaperSoccer

@@ -5,9 +5,17 @@
 
 #include "NCurses.hpp"
 #include <clocale>
+#include <tuple>
 #include <ncurses.h>
 
 namespace PaperSoccer {
+
+namespace {
+    std::tuple<int, int, int> rgbToCursesColor(int red, int green, int blue)
+    {
+        return std::make_tuple<int, int, int>(1000 * red/255, 1000 * green/255, 1000 * blue/255);
+    }
+} // namespace anonymous
 
 NCurses::NCurses()
 {
@@ -15,6 +23,7 @@ NCurses::NCurses()
 
     std::setlocale(LC_ALL, "");
     initscr();
+    start_color();
     noecho();
     // Set the cursor mode as invisible
     curs_set(0);
@@ -28,12 +37,35 @@ NCurses::NCurses()
     keypad(stdscr, TRUE);
     mousemask(BUTTON1_PRESSED | BUTTON2_PRESSED, nullptr);
 
+    initColors();
+
     refresh();
 }
 
 NCurses::~NCurses()
 {
     endwin();
+}
+
+void NCurses::initColors() const
+{
+    prepareColor(1, 0x00, 0x00, 0x00);
+    prepareColor(2, 0xff, 0x00, 0x00);
+
+    auto ret = assume_default_colors(2, 1);
+    if (ret) {
+        throw std::runtime_error{"ncurses assume_default_colors() error"};
+    }
+}
+
+void NCurses::prepareColor(int colorId, int red, int green, int blue) const
+{
+    auto [r, g, b] = rgbToCursesColor(red, green, blue);
+
+    auto ret = init_extended_color(colorId, r, g, b);
+    if (ret) {
+        throw std::runtime_error{"ncurses init_extended_color() - error for id: " + std::to_string(colorId)};
+    }
 }
 
 void NCurses::print(int x, int y, std::string str) const
