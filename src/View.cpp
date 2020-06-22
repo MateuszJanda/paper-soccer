@@ -353,8 +353,8 @@ void View::drawScore(int won, int lost) const
     auto x = getStatusButtonXShift();
     auto y = Y_OFFSET + 3 + 2;
 
-    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(won));
-    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(lost));
+    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(won), INCurses::USER);
+    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(lost), INCurses::ENEMY);
 }
 
 bool View::isStatusButton(int x, int y) const

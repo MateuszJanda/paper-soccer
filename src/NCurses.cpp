@@ -50,10 +50,10 @@ NCurses::~NCurses()
 void NCurses::setupColors() const
 {
     prepareColor(DEFAULT_BACKGROUND, 0x00, 0x00, 0x00);
-    prepareColor(DEFAULT_FOREGROUND, 0x1f, 0x1f, 0x00);
+    prepareColor(DEFAULT_FOREGROUND, 0xff, 0xff, 0xff);
 
     prepareColor(RED, 0xff, 0x00, 0x00);
-    prepareColor(BLUE, 0xff, 0x00, 0x00);
+    prepareColor(BLUE, 0x00, 0x00, 0xff);
     prepareColor(GRAY, 0x1f, 0x1f, 0x1f);
     prepareColor(YELLOW, 0xff, 0x00, 0xff);
     prepareColor(GREEN, 0x00, 0xff, 0x00);
@@ -63,8 +63,8 @@ void NCurses::setupColors() const
         throw std::runtime_error{"ncurses assume_default_colors() error"};
     }
 
-    prepareColorPair(USER1, RED, DEFAULT_BACKGROUND);
-    prepareColorPair(USER2, BLUE, DEFAULT_BACKGROUND);
+    prepareColorPair(USER, BLUE, DEFAULT_BACKGROUND);
+    prepareColorPair(ENEMY, RED, DEFAULT_BACKGROUND);
     prepareColorPair(BUTTON_GRAY, GRAY, DEFAULT_BACKGROUND);
     prepareColorPair(BUTTON_YELLOW, YELLOW, DEFAULT_BACKGROUND);
     prepareColorPair(BUTTON_GREEN, GREEN, DEFAULT_BACKGROUND);

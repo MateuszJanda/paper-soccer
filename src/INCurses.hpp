@@ -36,8 +36,8 @@ public:
     virtual void clearView() const = 0;
 
     static constexpr int DEFAULT{0};
-    static constexpr int USER1{1};
-    static constexpr int USER2{2};
+    static constexpr int USER{1};
+    static constexpr int ENEMY{2};
     static constexpr int BUTTON_GRAY{3};
     static constexpr int BUTTON_YELLOW{4};
     static constexpr int BUTTON_GREEN{5};
