@@ -11,6 +11,20 @@
 
 namespace PaperSoccer {
 
+namespace {
+    int vx(int x)
+    {
+       return x * View::X_FACTOR + View::X_OFFSET;
+    }
+
+    int vy(int y)
+    {
+       return y * View::Y_FACTOR + View::Y_OFFSET;
+    }
+
+} // namespace anonymous
+
+
 View::View(const IBoard &board, const INCurses &ncurses)
     : m_board{board}
     , m_ncurses{ncurses}
@@ -68,7 +82,7 @@ Skips View::filterDirsForOutOfBorder(Position nodePos) const
 
 Skips View::filterDirsForTopNetLine(Position nodePos) const
 {
-    const std::size_t topNetLine = 0;
+    const auto topNetLine{0};
 
     if (nodePos.y == topNetLine) {
         if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight()) {
@@ -84,7 +98,7 @@ Skips View::filterDirsForTopNetLine(Position nodePos) const
 
 Skips View::filterDirsForTopBorderLine(Position nodePos) const
 {
-    const std::size_t topBorderLine = 1;
+    const auto topBorderLine{1};
 
     if (nodePos.y == topBorderLine) {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
@@ -99,7 +113,7 @@ Skips View::filterDirsForTopBorderLine(Position nodePos) const
 
 Skips View::filterDirsForBottomNetLine(Position nodePos) const
 {
-    const std::size_t bottomNetLine = m_board.getHeight() - 1;
+    const auto bottomNetLine{m_board.getHeight() - 1};
 
     if (nodePos.y == bottomNetLine) {
         if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
@@ -115,7 +129,7 @@ Skips View::filterDirsForBottomNetLine(Position nodePos) const
 
 Skips View::filterDirsForRightLine(Position nodePos) const
 {
-    const std::size_t rightLine = m_board.getWidth() - 1;
+    const auto rightLine{m_board.getWidth() - 1};
 
     if (nodePos.x == rightLine) {
         return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{}};
@@ -147,12 +161,12 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisab
         drawHorizontalToRightLine(nodePos);
     }
 
-    bool topRight = false;
+    auto topRight{false};
     if (not nodeSkip.contains(Direction::TopRight) and m_board.hasNeighbour(nodePos, Direction::TopRight)) {
         topRight = true;
     }
 
-    bool topLeft = false;
+    auto topLeft{false};
     const Position neighbourPos{nodePos.x + 1, nodePos.y};
     if (not neighSkip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
         and m_board.hasNeighbour(neighbourPos, Direction::TopLeft)) {
@@ -172,12 +186,12 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisab
 
 void View::drawVerticalToTopLine(Position nodePos) const
 {
-    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, "|");
+    m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, "|");
 }
 
 void View::drawHorizontalToRightLine(Position nodePos) const
 {
-    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "--");
+    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "--");
 }
 
 void View::drawCrossToRight(Position nodePos) const
@@ -185,7 +199,7 @@ void View::drawCrossToRight(Position nodePos) const
     // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     const std::string symbol = "ᐳᐸ";
-    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
 }
 
 void View::drawHypotenuseToTopRight(Position nodePos) const
@@ -195,7 +209,7 @@ void View::drawHypotenuseToTopRight(Position nodePos) const
     // ᐟ  - U+141f        https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     // ৴  - U+09f4        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     const std::string symbol = "⸝⸍";
-    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
 }
 
 void View::drawHypotenuseToTopLeft(Position nodePos) const
@@ -206,36 +220,42 @@ void View::drawHypotenuseToTopLeft(Position nodePos) const
     // ৲  - U+09f2        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     // ヽ  - U+30FD       https://en.wikipedia.org/wiki/Katakana_(Unicode_block)
     const std::string symbol = "⸌⸜";
-    m_ncurses.print(nodePos.x * X_FACTOR - 2 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, symbol);
+    m_ncurses.print(vx(nodePos.x) - 2, vy(nodePos.y) - 1, symbol);
 }
 
 void View::clearLines(Position nodePos) const
 {
-    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, " ");
-    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "  ");
-    m_ncurses.print(nodePos.x * X_FACTOR + 1 + X_OFFSET, nodePos.y * Y_FACTOR - 1 + Y_OFFSET, "  ");
+    m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, " ");
+    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "  ");
+    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, "  ");
 }
 
 void View::drawMarker(Position nodePos, MarkerVisability visability) const
 {
     if (visability == MarkerVisability::Occupied) {
-        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "+");
+        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+");
     } else if (visability == MarkerVisability::NotOccupied) {
-        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, ".");
+        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), ".");
     }
 }
 
 void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const
 {
-    auto x = getStatusButtonXShift();
-    auto y = Y_OFFSET + 3 + 5;
+    auto x = getMenuXOffset();
+    auto y = Y_LEGNENT_OFFSET;
 
-    m_ncurses.print(x, y, "Undo: " + std::string{undo});
-    m_ncurses.print(x, y + 1, "New game: " + std::string{newGame});
+    constexpr auto descShift{1};
+    m_ncurses.print(x + descShift, y + 0, "Keys:");
+    m_ncurses.print(x + descShift, y + 1, " Undo (" + std::string{undo} + ")");
+    m_ncurses.print(x + descShift, y + 2, " End turn (Enter)");
+    m_ncurses.print(x + descShift, y + 3, " New game (" + std::string{newGame} + ")");
+
+    m_ncurses.print(x + descShift, y + 5, "Directions keys:");
 
     // Set at center of arrows
-    x += 4;
-    y += 4;
+    constexpr auto arrowsShift{3};
+    x += 4 + arrowsShift;
+    y += 8;
 
     // https://en.wikipedia.org/wiki/Arrows_(Unicode_block)
     m_ncurses.print(x - 2, y - 1, "↖");
@@ -334,7 +354,7 @@ void View::setWinStatus(int won, int lost) const
 
 void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const
 {
-    const int x = getStatusButtonXShift();
+    const int x = getMenuXOffset();
     const int y = Y_OFFSET;
     m_ncurses.print(x, y + 0, TOP_LINE, color);
     m_ncurses.print(x, y + 1, "|" + line1 + "|", color);
@@ -344,23 +364,25 @@ void View::drawStatusButton(std::string line1, std::string line2, ColorPair colo
     m_ncurses.refreshView();
 }
 
-int View::getStatusButtonXShift() const
+int View::getMenuXOffset() const
 {
-    return X_OFFSET + m_board.getWidth() * X_FACTOR + 2;
+    constexpr auto space{2};
+    return vx(m_board.getWidth()) + space;
 }
 
 void View::drawScore(int won, int lost) const
 {
-    auto x = getStatusButtonXShift();
+    auto x = getMenuXOffset();
     auto y = Y_OFFSET + 3 + 2;
 
-    m_ncurses.print(x, y + 0, "   Won: " + std::to_string(won), ColorPair::USER);
-    m_ncurses.print(x, y + 1, "  Lost: " + std::to_string(lost), ColorPair::ENEMY);
+    m_ncurses.print(x, y + 0, " Score:");
+    m_ncurses.print(x, y + 1, "   Won: " + std::to_string(won), ColorPair::USER);
+    m_ncurses.print(x, y + 2, "  Lost: " + std::to_string(lost), ColorPair::ENEMY);
 }
 
 bool View::isStatusButton(int x, int y) const
 {
-    const auto buttonX = getStatusButtonXShift();
+    const auto buttonX = getMenuXOffset();
     const auto buttonY = Y_OFFSET;
     return x >= buttonX and x <= TOP_LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
 }

@@ -55,14 +55,17 @@ public:
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
 
-    static constexpr int X_OFFSET{2};
-    static constexpr int Y_OFFSET{2};
     static constexpr int X_FACTOR{3};
     static constexpr int Y_FACTOR{2};
+
+    static constexpr int X_OFFSET{2};
+    static constexpr int Y_OFFSET{1};
+    static constexpr int Y_LEGNENT_OFFSET{Y_OFFSET + 9};
+
+private:
     const std::string TOP_LINE{".--------------."};
     const std::string BOTTOM_LINE{"`--------------'"};
 
-private:
     void clearLines(Position nodePos) const;
     void drawVerticalToTopLine(Position nodePos) const;
     void drawHorizontalToRightLine(Position nodePos) const;
@@ -72,7 +75,7 @@ private:
     void drawMarker(Position nodePos, MarkerVisability visability) const;
 
     void drawStatusButton(std::string line1, std::string line2, ColorPair color) const;
-    int getStatusButtonXShift() const;
+    int getMenuXOffset() const;
 
     const IBoard& m_board;
     const INCurses& m_ncurses;
