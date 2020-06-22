@@ -30,10 +30,17 @@ class INCurses {
 public:
     virtual ~INCurses() = default;
 
-    virtual void print(int x, int y, std::string str) const = 0;
+    virtual void print(int x, int y, std::string str, int colorId = INCurses::DEFAULT) const = 0;
     virtual std::optional<Input> getInput() const = 0;
     virtual void refreshView() const = 0;
     virtual void clearView() const = 0;
+
+    static constexpr int DEFAULT{0};
+    static constexpr int RED{1};
+    static constexpr int BLUE{2};
+    static constexpr int GRAY{3};
+    static constexpr int YELLOW{4};
+    static constexpr int GREEM{5};
 };
 
 } // namespace PaperSoccer

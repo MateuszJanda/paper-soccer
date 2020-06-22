@@ -295,8 +295,8 @@ void View::drawPathMarkers(std::vector<Direction> dirPath) const
     Position nodePos = m_board.getBallPosition();
     m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*");
 
-// TODO: Supported in g++10
-//    for (auto v : std::ranges::views::reverse(dirPath))
+    // TODO: Supported in gcc 10
+    // for (auto v : std::ranges::views::reverse(dirPath))
     for (auto it = dirPath.rbegin(); it != dirPath.rend(); ++it) {
         auto reverseDir = reverseDirection(*it);
         nodePos = directionToPosition(nodePos, reverseDir);

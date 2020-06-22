@@ -15,7 +15,7 @@ public:
     NCurses();
     ~NCurses() override;
 
-    void print(int x, int y, std::string str) const override;
+    void print(int x, int y, std::string str, int colorId = INCurses::DEFAULT) const override;
     std::optional<Input> getInput() const noexcept override;
 
     void refreshView() const noexcept override;

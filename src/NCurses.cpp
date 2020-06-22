@@ -68,10 +68,9 @@ void NCurses::prepareColor(int colorId, int red, int green, int blue) const
     }
 }
 
-void NCurses::print(int x, int y, std::string str) const
+void NCurses::print(int x, int y, std::string str, int colorId) const
 {
-    const int pair{0};
-    auto ret = attr_set(A_NORMAL, (short)pair, (void*)&pair);
+    auto ret = attr_set(A_NORMAL, (short)colorId, (void*)&colorId);
     if (ret) {
         throw std::runtime_error{"ncurses attr_set() error"};
     }

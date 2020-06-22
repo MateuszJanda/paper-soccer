@@ -58,30 +58,30 @@ public:
     {
         int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
         int y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-        EXPECT_CALL(ncursesMock, print(x, y, " "));
+        EXPECT_CALL(ncursesMock, print(x, y, " ", _));
 
         x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
         y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
-        EXPECT_CALL(ncursesMock, print(x, y, "  "));
+        EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
 
         x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
         y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-        EXPECT_CALL(ncursesMock, print(x, y, "  "));
+        EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
     }
 
     void expectDrawScore()
     {
         const auto y = View::Y_OFFSET + 3 + 2;
-        EXPECT_CALL(ncursesMock, print(_, y + 0, _));
-        EXPECT_CALL(ncursesMock, print(_, y + 1, _));
+        EXPECT_CALL(ncursesMock, print(_, y + 0, _, _));
+        EXPECT_CALL(ncursesMock, print(_, y + 1, _, _));
     }
 
     void expectDrawStatus()
     {
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 1, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 2, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 3, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 1, _, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 2, _, _));
+        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 3, _, _));
         EXPECT_CALL(ncursesMock, refreshView());
     }
 
@@ -240,7 +240,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
 }
@@ -261,7 +261,7 @@ TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "."));
+    EXPECT_CALL(ncursesMock, print(x, y, ".", _));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
 }
@@ -274,7 +274,7 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
@@ -287,11 +287,11 @@ TEST_F(ViewTest, checkDrawCellTopPath)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "|"));
+    EXPECT_CALL(ncursesMock, print(x, y, "|", _));
 
     x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
@@ -304,7 +304,7 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
@@ -317,11 +317,11 @@ TEST_F(ViewTest, checkDrawCellRightPath)
 
     int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "--"));
+    EXPECT_CALL(ncursesMock, print(x, y, "--", _));
 
     x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
@@ -334,7 +334,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
@@ -347,11 +347,11 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
     int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍"));
+    EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍", _));
 
     x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
@@ -363,7 +363,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 
     int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
     int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
 }
@@ -376,7 +376,7 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 
     int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
@@ -389,11 +389,11 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 
     int x = NEIGHBOUR_POS.x * View::X_FACTOR - 2 + View::X_OFFSET;
     int y = NEIGHBOUR_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜"));
+    EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜", _));
 
     x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
@@ -407,19 +407,19 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
 
     int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
     int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ"));
+    EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ", _));
 
     x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
     y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
-    EXPECT_CALL(ncursesMock, print(x, y, "+"));
+    EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
 }
 
 TEST_F(ViewTest, checkDrawNames)
 {
-    EXPECT_CALL(ncursesMock, print(_, _, "TOP_NAME"));
-    EXPECT_CALL(ncursesMock, print(_, _, "BOTTOM_NAME"));
+    EXPECT_CALL(ncursesMock, print(_, _, "TOP_NAME", _));
+    EXPECT_CALL(ncursesMock, print(_, _, "BOTTOM_NAME", _));
 
     view.drawNames("TOP_NAME", "BOTTOM_NAME");
 }
@@ -428,7 +428,7 @@ TEST_F(ViewTest, checkDrawPathMarkers)
 {
     const Position ballPos{0, 0};
     EXPECT_CALL(boardMock, getBallPosition()).WillOnce(Return(ballPos));
-    EXPECT_CALL(ncursesMock, print(_, _, "*")).Times(2);
+    EXPECT_CALL(ncursesMock, print(_, _, "*", _)).Times(2);
 
     const std::vector<Direction> dirPath{Direction::Left};
     view.drawPathMarkers(dirPath);
@@ -436,7 +436,7 @@ TEST_F(ViewTest, checkDrawPathMarkers)
 
 TEST_F(ViewTest, checkDrawLegend)
 {
-    EXPECT_CALL(ncursesMock, print(_, _, _)).Times(AtLeast(1));
+    EXPECT_CALL(ncursesMock, print(_, _, _, _)).Times(AtLeast(1));
 
     const std::map<char, Direction> dirKeys{{'q', Direction::TopLeft}};
     view.drawLegend('z', 'n', dirKeys);
