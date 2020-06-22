@@ -11,6 +11,8 @@
 
 namespace PaperSoccer {
 
+using namespace testing;
+
 namespace {
     const Skip EMPTY;
     const Skip ALL{Direction::Top, Direction::TopRight, Direction::Right};
@@ -39,9 +41,11 @@ namespace {
 
     const Position NODE_POS{0, 0};
     const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
+
+    const std::string TOP_NAME{"TOP_NAME"};
+    const std::string BOTTOM_NAME{"BOTTOm_NAME"};
 } // namespace anonymous
 
-using namespace testing;
 
 class ViewTest : public testing::Test {
 public:
@@ -54,26 +58,37 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
 
+    int vx(int x)
+    {
+        return x * View::X_FACTOR + View::X_OFFSET;;
+    }
+
+    int vy(int y)
+    {
+        return y * View::Y_FACTOR + View::Y_OFFSET;
+    }
+
     void expectClearLines(Position nodePos = NODE_POS)
     {
-        int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
-        int y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+        auto x = vx(nodePos.x);
+        auto y = vy(nodePos.y) - 1;
         EXPECT_CALL(ncursesMock, print(x, y, " ", _));
 
-        x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
-        y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
+        x = vx(nodePos.x) + 1;
+        y = vy(nodePos.y);
         EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
 
-        x = nodePos.x * View::X_FACTOR + 1 + View::X_OFFSET;
-        y = nodePos.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+        x = vx(nodePos.x) + 1;
+        y = vy(nodePos.y) - 1;
         EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
     }
 
     void expectDrawScore()
     {
-        const auto y = View::Y_OFFSET + 3 + 2;
+        const auto y = View::Y_SCORE_OFFSET;
         EXPECT_CALL(ncursesMock, print(_, y + 0, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 1, _, _));
+        EXPECT_CALL(ncursesMock, print(_, y + 2, _, _));
     }
 
     void expectDrawStatus()
@@ -83,16 +98,6 @@ public:
         EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 2, _, _));
         EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 3, _, _));
         EXPECT_CALL(ncursesMock, refreshView());
-    }
-
-    int viewX(int x)
-    {
-        return x * View::X_FACTOR + View::X_OFFSET;;
-    }
-
-    int viewY(int y)
-    {
-        return y * View::Y_FACTOR + View::Y_OFFSET;
     }
 
     StrictMock<BoardMock> boardMock;
@@ -238,8 +243,8 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
@@ -249,8 +254,8 @@ TEST_F(ViewTest, checkDrawCellNoMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
 }
@@ -259,8 +264,8 @@ TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, ".", _));
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
@@ -272,8 +277,8 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
@@ -285,12 +290,12 @@ TEST_F(ViewTest, checkDrawCellTopPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "|", _));
 
-    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    x = vx(NODE_POS.x);
+    y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
@@ -302,8 +307,8 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
@@ -315,12 +320,12 @@ TEST_F(ViewTest, checkDrawCellRightPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x) + 1;
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "--", _));
 
-    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    x = vx(NODE_POS.x);
+    y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
@@ -332,8 +337,8 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
@@ -345,12 +350,12 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x) + 1;
+    auto y = vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍", _));
 
-    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    x = vx(NODE_POS.x);
+    y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
@@ -361,8 +366,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
     Position nodePos{WIDTH - 1, 0};
     expectClearLines(nodePos);
 
-    int x = nodePos.x * View::X_FACTOR + View::X_OFFSET;
-    int y = nodePos.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(nodePos.x);
+    auto y = vy(nodePos.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
@@ -374,8 +379,8 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(false));
 
-    int x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x);
+    auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
@@ -387,12 +392,12 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NEIGHBOUR_POS.x * View::X_FACTOR - 2 + View::X_OFFSET;
-    int y = NEIGHBOUR_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+    auto x = vx(NEIGHBOUR_POS.x) - 2;
+    auto y = vy(NEIGHBOUR_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜", _));
 
-    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
+    x = vx(NODE_POS.x);
+    y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
@@ -405,12 +410,12 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    int x = NODE_POS.x * View::X_FACTOR + 1 + View::X_OFFSET;
-    int y = NODE_POS.y * View::Y_FACTOR - 1 + View::Y_OFFSET;
+    auto x = vx(NODE_POS.x) + 1;
+    auto y = vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ", _));
 
-    x = NODE_POS.x * View::X_FACTOR + View::X_OFFSET;
-    y = NODE_POS.x * View::Y_FACTOR + View::Y_OFFSET;
+    x = vx(NODE_POS.x);
+    y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
@@ -418,10 +423,10 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
 
 TEST_F(ViewTest, checkDrawNames)
 {
-    EXPECT_CALL(ncursesMock, print(_, _, "TOP_NAME", _));
-    EXPECT_CALL(ncursesMock, print(_, _, "BOTTOM_NAME", _));
+    EXPECT_CALL(ncursesMock, print(_, _, TOP_NAME, _));
+    EXPECT_CALL(ncursesMock, print(_, _, BOTTOM_NAME, _));
 
-    view.drawNames("TOP_NAME", ColorPair::DEFAULT, "BOTTOM_NAME", ColorPair::DEFAULT);
+    view.drawNames(TOP_NAME, ColorPair::DEFAULT, BOTTOM_NAME, ColorPair::DEFAULT);
 }
 
 TEST_F(ViewTest, checkDrawPathMarkers)
@@ -481,7 +486,7 @@ TEST_F(ViewTest, checkIsStatusButtonNotClicked)
 
 TEST_F(ViewTest, checkIsStatusButtonClicked)
 {
-    const auto x = View::X_OFFSET + WIDTH * View::X_FACTOR + 2;
+    const auto x = vx(WIDTH) + 2;
     const auto y = View::Y_OFFSET;
     ASSERT_TRUE(view.isStatusButton(x, y));
 }
@@ -491,16 +496,16 @@ TEST_F(ViewTest, checkGetMouseDirection)
     const Position ballPos{0, 0};
     EXPECT_CALL(boardMock, getBallPosition()).WillRepeatedly(Return(ballPos));
 
-    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(0)), std::nullopt);
+    ASSERT_EQ(view.getMoveDirection(vx(0), vy(0)), std::nullopt);
 
-    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(-1)), Direction::TopLeft);
-    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(0)), Direction::Left);
-    ASSERT_EQ(view.getMoveDirection(viewX(-1), viewY(1)), Direction::BottomLeft);
-    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(-1)), Direction::Top);
-    ASSERT_EQ(view.getMoveDirection(viewX(0), viewY(1)), Direction::Bottom);
-    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(-1)), Direction::TopRight);
-    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(0)), Direction::Right);
-    ASSERT_EQ(view.getMoveDirection(viewX(1), viewY(1)), Direction::BottomRight);
+    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(-1)), Direction::TopLeft);
+    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(0)), Direction::Left);
+    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(1)), Direction::BottomLeft);
+    ASSERT_EQ(view.getMoveDirection(vx(0), vy(-1)), Direction::Top);
+    ASSERT_EQ(view.getMoveDirection(vx(0), vy(1)), Direction::Bottom);
+    ASSERT_EQ(view.getMoveDirection(vx(1), vy(-1)), Direction::TopRight);
+    ASSERT_EQ(view.getMoveDirection(vx(1), vy(0)), Direction::Right);
+    ASSERT_EQ(view.getMoveDirection(vx(1), vy(1)), Direction::BottomRight);
 }
 
 } // namespace PaperSoccer

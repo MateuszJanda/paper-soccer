@@ -60,11 +60,13 @@ public:
 
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{1};
+    static constexpr int Y_SCORE_OFFSET{Y_OFFSET + 5};
     static constexpr int Y_LEGNENT_OFFSET{Y_OFFSET + 9};
 
 private:
     const std::string TOP_LINE{".--------------."};
     const std::string BOTTOM_LINE{"`--------------'"};
+    const std::size_t BUTTON_HEIGHT{3};
 
     void clearLines(Position nodePos) const;
     void drawVerticalToTopLine(Position nodePos) const;

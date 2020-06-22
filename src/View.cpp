@@ -253,47 +253,50 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
     m_ncurses.print(x + descShift, y + 5, "Directions keys:");
 
     // Set at center of arrows
-    constexpr auto arrowsShift{3};
-    x += 4 + arrowsShift;
+    x += 7;
     y += 8;
 
     // https://en.wikipedia.org/wiki/Arrows_(Unicode_block)
-    m_ncurses.print(x - 2, y - 1, "↖");
-    m_ncurses.print(x, y - 1, "↑");
-    m_ncurses.print(x + 2, y - 1, "↗");
+    constexpr auto xArrOffset{2};
+    constexpr auto yArrOffset{1};
+    m_ncurses.print(x - xArrOffset, y - yArrOffset, "↖");
+    m_ncurses.print(x, y - yArrOffset, "↑");
+    m_ncurses.print(x + xArrOffset, y - yArrOffset, "↗");
 
-    m_ncurses.print(x - 2, y, "←");
-    m_ncurses.print(x + 2, y, "→");
+    m_ncurses.print(x - xArrOffset, y, "←");
+    m_ncurses.print(x + xArrOffset, y, "→");
 
-    m_ncurses.print(x - 2, y + 1, "↙");
-    m_ncurses.print(x, y + 1, "↓");
-    m_ncurses.print(x + 2, y + 1, "↘");
+    m_ncurses.print(x - xArrOffset, y + yArrOffset, "↙");
+    m_ncurses.print(x, y + yArrOffset, "↓");
+    m_ncurses.print(x + xArrOffset, y + yArrOffset, "↘");
 
+    constexpr auto xKeyOffset{4};
+    constexpr auto yKeyOffset{2};
     for (auto [key, dir] : dirKeys) {
         switch (dir) {
         case Direction::TopLeft:
-            m_ncurses.print(x - 4, y - 2, std::string{key});
+            m_ncurses.print(x - xKeyOffset, y - yKeyOffset, std::string{key});
             break;
         case Direction::Top:
-            m_ncurses.print(x, y - 2, std::string{key});
+            m_ncurses.print(x, y - yKeyOffset, std::string{key});
             break;
         case Direction::TopRight:
-            m_ncurses.print(x + 4, y - 2, std::string{key});
+            m_ncurses.print(x + xKeyOffset, y - yKeyOffset, std::string{key});
             break;
         case Direction::Left:
-            m_ncurses.print(x - 4, y, std::string{key});
+            m_ncurses.print(x - xKeyOffset, y, std::string{key});
             break;
         case Direction::Right:
-            m_ncurses.print(x + 4, y, std::string{key});
+            m_ncurses.print(x + xKeyOffset, y, std::string{key});
             break;
         case Direction::BottomLeft:
-            m_ncurses.print(x - 4, y + 2, std::string{key});
+            m_ncurses.print(x - xKeyOffset, y + yKeyOffset, std::string{key});
             break;
         case Direction::Bottom:
-            m_ncurses.print(x, y + 2, std::string{key});
+            m_ncurses.print(x, y + yKeyOffset, std::string{key});
             break;
         case Direction::BottomRight:
-            m_ncurses.print(x + 4, y + 2, std::string{key});
+            m_ncurses.print(x + xKeyOffset, y + yKeyOffset, std::string{key});
             break;
         default:
             break;
@@ -303,25 +306,25 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
 
 void View::drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const
 {
-    auto x = m_board.getGoalpostRight() * X_FACTOR + 2 + X_OFFSET;
-    auto y = 1 + Y_OFFSET;
+    auto x = vx(m_board.getGoalpostRight()) + 2;
+    auto y = Y_OFFSET + 1;
     m_ncurses.print(x, y, topName, topColor);
 
-    y = (m_board.getHeight() - 1) * Y_FACTOR - 1 + Y_OFFSET;
+    y = vy(m_board.getHeight() - 1) - 1;
     m_ncurses.print(x, y, bottomName, bottomColor);
 }
 
 void View::drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) const
 {
-    Position nodePos = m_board.getBallPosition();
-    m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*", ballColor);
+    auto nodePos = m_board.getBallPosition();
+    m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
 
     // TODO: Supported in gcc 10
     // for (auto v : std::ranges::views::reverse(dirPath))
     for (auto it = dirPath.rbegin(); it != dirPath.rend(); ++it) {
         auto reverseDir = reverseDirection(*it);
         nodePos = directionToPosition(nodePos, reverseDir);
-        m_ncurses.print(nodePos.x * X_FACTOR + X_OFFSET, nodePos.y * Y_FACTOR + Y_OFFSET, "*", ballColor);
+        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
     }
 }
 
@@ -372,8 +375,8 @@ int View::getMenuXOffset() const
 
 void View::drawScore(int won, int lost) const
 {
-    auto x = getMenuXOffset();
-    auto y = Y_OFFSET + 3 + 2;
+    const auto x = getMenuXOffset();
+    const auto y = Y_SCORE_OFFSET;
 
     m_ncurses.print(x, y + 0, " Score:");
     m_ncurses.print(x, y + 1, "   Won: " + std::to_string(won), ColorPair::USER);
@@ -384,14 +387,14 @@ bool View::isStatusButton(int x, int y) const
 {
     const auto buttonX = getMenuXOffset();
     const auto buttonY = Y_OFFSET;
-    return x >= buttonX and x <= TOP_LINE.size() + buttonX and y >= buttonY and y <= buttonY + 3;
+    return x >= buttonX and x <= TOP_LINE.size() + buttonX and y >= buttonY and y <= buttonY + BUTTON_HEIGHT;
 }
 
 std::optional<Direction> View::getMoveDirection(int x, int y) const
 {
     const auto ballPos = m_board.getBallPosition();
-    const auto viewX = ballPos.x * X_FACTOR + X_OFFSET;
-    const auto viewY = ballPos.y * Y_FACTOR + Y_OFFSET;
+    const auto viewX = vx(ballPos.x);
+    const auto viewY = vy(ballPos.y);
 
     if (x == viewX - X_FACTOR)
     {
