@@ -15,7 +15,7 @@ public:
     NCurses();
     ~NCurses() override;
 
-    void print(int x, int y, std::string str, int colorId = INCurses::DEFAULT) const override;
+    void print(int x, int y, std::string str, ColorPair colorPair = ColorPair::DEFAULT) const override;
     std::optional<Input> getInput() const noexcept override;
 
     void refreshView() const noexcept override;
@@ -32,7 +32,7 @@ public:
 private:
     void setupColors() const;
     void prepareColor(int colorId, int red, int green, int blue) const;
-    void prepareColorPair(int colorPair, int fg, int bg) const;
+    void prepareColorPair(ColorPair colorPair, int fg, int bg) const;
 };
 
 } // namespace PaperSoccer

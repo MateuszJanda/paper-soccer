@@ -60,14 +60,14 @@ void NCurses::setupColors() const
 
     auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND);
     if (ret) {
-        throw std::runtime_error{"ncurses assume_default_colors() error"};
+        throw std::runtime_error{"assume_default_colors() error"};
     }
 
-    prepareColorPair(USER, BLUE, DEFAULT_BACKGROUND);
-    prepareColorPair(ENEMY, RED, DEFAULT_BACKGROUND);
-    prepareColorPair(BUTTON_GRAY, GRAY, DEFAULT_BACKGROUND);
-    prepareColorPair(BUTTON_YELLOW, YELLOW, DEFAULT_BACKGROUND);
-    prepareColorPair(BUTTON_GREEN, GREEN, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::USER, BLUE, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::ENEMY, RED, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::BUTTON_GRAY, GRAY, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::BUTTON_YELLOW, YELLOW, DEFAULT_BACKGROUND);
+    prepareColorPair(ColorPair::BUTTON_GREEN, GREEN, DEFAULT_BACKGROUND);
 }
 
 void NCurses::prepareColor(int colorId, int red, int green, int blue) const
@@ -76,28 +76,29 @@ void NCurses::prepareColor(int colorId, int red, int green, int blue) const
 
     auto ret = init_extended_color(colorId, r, g, b);
     if (ret) {
-        throw std::runtime_error{"ncurses init_extended_color() - error for id: " + std::to_string(colorId)};
+        throw std::runtime_error{"init_extended_color() error for: " + std::to_string(colorId)};
     }
 }
 
-void NCurses::prepareColorPair(int colorPair, int fg, int bg) const
+void NCurses::prepareColorPair(ColorPair colorPair, int fg, int bg) const
 {
-    const auto ret = init_extended_pair(colorPair, fg, bg);
+    const auto ret = init_extended_pair(static_cast<int>(colorPair), fg, bg);
     if (ret) {
-        throw std::runtime_error{"ncurses init_extended_pair() - error for id: " + std::to_string(colorPair)};
+        throw std::runtime_error{"init_extended_pair() error for: " + std::to_string(static_cast<int>(colorPair))};
     }
 }
 
-void NCurses::print(int x, int y, std::string str, int colorId) const
+void NCurses::print(int x, int y, std::string str, ColorPair coloPair) const
 {
-    auto ret = attr_set(A_NORMAL, (short)colorId, (void*)&colorId);
+    const auto pariNum{static_cast<int>(coloPair)};
+    auto ret = attr_set(A_NORMAL, (short)pariNum, (void*)&pariNum);
     if (ret) {
-        throw std::runtime_error{"ncurses attr_set() error"};
+        throw std::runtime_error{"attr_set() error"};
     }
 
     ret = mvprintw(y, x, str.c_str());
     if (ret) {
-        throw std::runtime_error{"ncurses mvprintw() error"};
+        throw std::runtime_error{"mvprintw() error"};
     }
 }
 

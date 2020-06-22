@@ -24,23 +24,25 @@ struct MouseInput {
     int y;
 };
 
+enum class ColorPair : int {
+    DEFAULT = 0,
+    USER,
+    ENEMY,
+    BUTTON_GRAY,
+    BUTTON_YELLOW,
+    BUTTON_GREEN
+};
+
 using Input = std::variant<KeyInput, EnterInput, MouseInput>;
 
 class INCurses {
 public:
     virtual ~INCurses() = default;
 
-    virtual void print(int x, int y, std::string str, int colorId = INCurses::DEFAULT) const = 0;
+    virtual void print(int x, int y, std::string str, ColorPair colorPair = ColorPair::DEFAULT) const = 0;
     virtual std::optional<Input> getInput() const = 0;
     virtual void refreshView() const = 0;
     virtual void clearView() const = 0;
-
-    static constexpr int DEFAULT{0};
-    static constexpr int USER{1};
-    static constexpr int ENEMY{2};
-    static constexpr int BUTTON_GRAY{3};
-    static constexpr int BUTTON_YELLOW{4};
-    static constexpr int BUTTON_GREEN{5};
 };
 
 } // namespace PaperSoccer
