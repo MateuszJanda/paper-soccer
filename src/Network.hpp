@@ -72,7 +72,7 @@ private:
     static constexpr int MSG_ID_LENGTH{8};
     static constexpr int DATA_SIZE_LENGTH{8};
 
-    char m_inboundHeader[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
+    std::array<char, MSG_ID_LENGTH + DATA_SIZE_LENGTH> m_inboundHeader;
     std::vector<char> m_inboundData;
 
     std::deque<std::string> m_messageQueue;

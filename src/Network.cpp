@@ -168,8 +168,8 @@ void Network::onRead()
                 return;
             }
 
-            const auto msgId = decodeMsgId(std::string{m_inboundHeader, MSG_ID_LENGTH});
-            const auto dataSize = decodeDataSize(std::string{m_inboundHeader + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
+            const auto msgId = decodeMsgId(std::string{m_inboundHeader.data(), MSG_ID_LENGTH});
+            const auto dataSize = decodeDataSize(std::string{m_inboundHeader.data() + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
 
             switch (msgId) {
             case MsgId::NewGame:
