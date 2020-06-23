@@ -22,6 +22,9 @@ add_executable(${BINARY}
     PositionTest.cpp
     DirectionTest.cpp
     BoardMock.hpp
+    NCursesMock.hpp
+    NetworkMock.hpp
+    ViewMock.hpp
     ViewTest.cpp
     ${SOURCES}
 )
