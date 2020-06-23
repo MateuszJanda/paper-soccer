@@ -13,7 +13,7 @@ namespace PaperSoccer {
 
 class INetwork {
 public:
-    virtual ~INetwork() = default;
+    virtual ~INetwork() noexcept = default;
 
     virtual void registerHandlers(std::function<void()> handleKeyboardMouseInput,
         std::function<void()> handleInitNewGame,

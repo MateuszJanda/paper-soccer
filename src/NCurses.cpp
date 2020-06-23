@@ -42,7 +42,7 @@ NCurses::NCurses()
     refresh();
 }
 
-NCurses::~NCurses()
+NCurses::~NCurses() noexcept
 {
     endwin();
 }

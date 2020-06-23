@@ -22,7 +22,7 @@ enum MoveStatus {
 
 class IBoard {
 public:
-    virtual ~IBoard() = default;
+    virtual ~IBoard() noexcept = default;
 
     virtual void reset() = 0;
     virtual std::size_t getWidth() const = 0;

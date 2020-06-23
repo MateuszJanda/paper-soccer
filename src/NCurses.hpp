@@ -13,7 +13,7 @@ namespace PaperSoccer {
 class NCurses : public INCurses {
 public:
     NCurses();
-    ~NCurses() override;
+    ~NCurses() noexcept override;
 
     void print(int x, int y, std::string str, ColorPair colorPair = ColorPair::DEFAULT) const override;
     std::optional<Input> getInput() const noexcept override;

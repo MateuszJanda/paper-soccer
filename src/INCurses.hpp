@@ -29,7 +29,7 @@ using Input = std::variant<KeyInput, EnterInput, MouseInput>;
 
 class INCurses {
 public:
-    virtual ~INCurses() = default;
+    virtual ~INCurses() noexcept = default;
 
     virtual void print(int x, int y, std::string str, ColorPair colorPair = ColorPair::DEFAULT) const = 0;
     virtual std::optional<Input> getInput() const = 0;

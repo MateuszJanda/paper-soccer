@@ -12,7 +12,7 @@ namespace PaperSoccer {
 
 class IView {
 public:
-    virtual ~IView() = default;
+    virtual ~IView() noexcept = default;
 
     virtual void clear() const = 0;
     virtual void drawBoard(std::string topName, ColorPair topColor,
