@@ -90,17 +90,18 @@ void Network::sendReadyForNewGame()
 template<typename Msg>
 void Network::sendMsg(const Msg& msg)
 {
-    m_outboundMsgId = encodeMsgId(msg.msgId);
-    m_outboundData = encodeData(msg);
-    m_outboundDataSize = encodeDataSize(m_outboundData);
+    auto msgId = encodeMsgId(msg.msgId);
+    auto data = encodeData(msg);
+    auto dataSize = encodeDataSize(data);
 
     boost::asio::post(m_ioContext,
-        [this]() {
-            bool writeInProgress = not m_messageQueue.empty();
-            m_messageQueue.push_back(m_outboundMsgId);
-            m_messageQueue.push_back(m_outboundDataSize);
-            m_messageQueue.push_back(m_outboundData);
-            if (not writeInProgress) {
+        [this, msgId, data, dataSize]() {
+            const bool nothingInProgress = m_messageQueue.empty();
+            m_messageQueue.push_back(msgId);
+            m_messageQueue.push_back(dataSize);
+            m_messageQueue.push_back(data);
+
+            if (nothingInProgress) {
                 onWrite();
             }
         });
