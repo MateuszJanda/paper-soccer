@@ -79,7 +79,7 @@ private:
     char m_inboundHeader[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
     std::vector<char> m_inboundData;
 
-    std::deque<boost::asio::const_buffer> m_messageQueue;
+    std::deque<std::string> m_messageQueue;
 };
 
 } // namespace PaperSoccer

@@ -97,9 +97,9 @@ void Network::sendMsg(const Msg& msg)
     boost::asio::post(m_ioContext,
         [this]() {
             bool writeInProgress = not m_messageQueue.empty();
-            m_messageQueue.push_back(boost::asio::buffer(m_outboundMsgId));
-            m_messageQueue.push_back(boost::asio::buffer(m_outboundDataSize));
-            m_messageQueue.push_back(boost::asio::buffer(m_outboundData));
+            m_messageQueue.push_back(m_outboundMsgId);
+            m_messageQueue.push_back(m_outboundDataSize);
+            m_messageQueue.push_back(m_outboundData);
             if (not writeInProgress) {
                 onWrite();
             }
@@ -143,7 +143,7 @@ std::string Network::encodeDataSize(const std::string& data)
 void Network::onWrite()
 {
     boost::asio::async_write(m_socket,
-        m_messageQueue.front(),
+        boost::asio::buffer(m_messageQueue.front()),
         [this](boost::system::error_code errorCode, std::size_t length) {
             if (errorCode) {
                 m_socket.close();
