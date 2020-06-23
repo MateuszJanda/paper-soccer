@@ -72,16 +72,13 @@ private:
     static constexpr int MSG_ID_LENGTH{8};
     static constexpr int DATA_SIZE_LENGTH{8};
 
-    std::string outbound_msgId;
-    std::string outbound_header_;
-    std::string outbound_data_;
+    std::string m_outboundMsgId;
+    std::string m_outboundDataSize;
+    std::string m_outboundData;
 
-    char inbound_hhh[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
-    std::vector<char> inbound_data_;
+    char m_inboundHeader[MSG_ID_LENGTH + DATA_SIZE_LENGTH];
+    std::vector<char> m_inboundData;
 
-    //    MoveMsg msg;
-    //    NewGameMsg newGameMsg;
-    //    std::deque<MoveMsg> m_messageQueue;
     std::deque<boost::asio::const_buffer> m_messageQueue;
 };
 

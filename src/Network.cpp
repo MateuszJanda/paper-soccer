@@ -90,16 +90,16 @@ void Network::sendReadyForNewGame()
 template<typename Msg>
 void Network::sendMsg(const Msg& msg)
 {
-    outbound_msgId = encodeMsgId(msg.msgId);
-    outbound_data_ = encodeData(msg);
-    outbound_header_ = encodeDataSize(outbound_data_);
+    m_outboundMsgId = encodeMsgId(msg.msgId);
+    m_outboundData = encodeData(msg);
+    m_outboundDataSize = encodeDataSize(m_outboundData);
 
     boost::asio::post(m_ioContext,
         [this]() {
             bool writeInProgress = not m_messageQueue.empty();
-            m_messageQueue.push_back(boost::asio::buffer(outbound_msgId));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_header_));
-            m_messageQueue.push_back(boost::asio::buffer(outbound_data_));
+            m_messageQueue.push_back(boost::asio::buffer(m_outboundMsgId));
+            m_messageQueue.push_back(boost::asio::buffer(m_outboundDataSize));
+            m_messageQueue.push_back(boost::asio::buffer(m_outboundData));
             if (not writeInProgress) {
                 onWrite();
             }
@@ -160,15 +160,15 @@ void Network::onWrite()
 void Network::onRead()
 {
     boost::asio::async_read(m_socket,
-        boost::asio::buffer(boost::asio::buffer(inbound_hhh)),
+        boost::asio::buffer(boost::asio::buffer(m_inboundHeader)),
         [this](boost::system::error_code errorCode, std::size_t length) {
             if (errorCode) {
                 m_socket.close();
                 return;
             }
 
-            const auto msgId = decodeMsgId(std::string{inbound_hhh, MSG_ID_LENGTH});
-            const auto dataSize = decodeDataSize(std::string{inbound_hhh + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
+            const auto msgId = decodeMsgId(std::string{m_inboundHeader, MSG_ID_LENGTH});
+            const auto dataSize = decodeDataSize(std::string{m_inboundHeader + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
 
             switch (msgId) {
             case MsgId::NewGame:
@@ -196,17 +196,17 @@ void Network::onRead()
 template<typename Msg>
 void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc)
 {
-    inbound_data_.resize(dataSize);
+    m_inboundData.resize(dataSize);
 
     boost::asio::async_read(m_socket,
-        boost::asio::buffer(boost::asio::buffer(inbound_data_)),
+        boost::asio::buffer(boost::asio::buffer(m_inboundData)),
         [this, handlerFunc](boost::system::error_code errorCode, std::size_t length) {
             if (errorCode) {
                 m_socket.close();
                 return;
             }
 
-            Msg msg = decodeData<Msg>(inbound_data_);
+            Msg msg = decodeData<Msg>(m_inboundData);
             if (handlerFunc) {
                 handlerFunc(msg);
             }
