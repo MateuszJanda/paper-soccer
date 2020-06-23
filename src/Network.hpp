@@ -36,19 +36,11 @@ public:
 
     template<typename Msg>
     void sendMsg(const Msg& msg);
-    std::string encodeMsgId(MsgId msgId);
-    template<typename Msg>
-    std::string encodeData(const Msg& msg);
-    std::string encodeDataSize(const std::string& data);
     void onWrite();
 
     void onRead();
-    MsgId decodeMsgId(const std::string& inboundData);
-    std::size_t decodeDataSize(const std::string& inboundData);
     template<typename Msg>
     void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
-    template<typename Msg>
-    Msg decodeData(const std::vector<char>& inboundData);
 
 protected:
     void setupHandlers();
@@ -57,6 +49,16 @@ protected:
     std::function<void()> m_handleInitNewGame;
 
 private:
+    std::string encodeMsgId(MsgId msgId);
+    std::string encodeDataSize(const std::string& data);
+    template<typename Msg>
+    std::string encodeData(const Msg& msg);
+
+    MsgId decodeMsgId(const std::string& inboundData);
+    std::size_t decodeDataSize(const std::string& inboundData);
+    template<typename Msg>
+    Msg decodeData(const std::vector<char>& inboundData);
+
     boost::asio::io_context& m_ioContext;
     boost::asio::posix::stream_descriptor m_desc;
 

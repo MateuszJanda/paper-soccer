@@ -193,28 +193,6 @@ void Network::onRead()
         });
 }
 
-MsgId Network::decodeMsgId(const std::string& inboundData)
-{
-    std::istringstream is{inboundData};
-    std::uint8_t msgId{0};
-    if (not (is >> std::hex >> msgId)) {
-        throw std::invalid_argument{"Can't decode msgId."};
-    }
-
-    return  static_cast<MsgId>(msgId);
-}
-
-std::size_t Network::decodeDataSize(const std::string& inboundData)
-{
-    std::istringstream is{inboundData};
-    std::size_t dataSize{0};
-    if (!(is >> std::hex >> dataSize)) {
-        throw std::invalid_argument{"Can't decode dataSize."};
-    }
-
-    return dataSize;
-}
-
 template<typename Msg>
 void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc)
 {
@@ -235,6 +213,28 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
 
             onRead();
         });
+}
+
+MsgId Network::decodeMsgId(const std::string& inboundData)
+{
+    std::istringstream is{inboundData};
+    std::uint8_t msgId{0};
+    if (not (is >> std::hex >> msgId)) {
+        throw std::invalid_argument{"Can't decode msgId."};
+    }
+
+    return  static_cast<MsgId>(msgId);
+}
+
+std::size_t Network::decodeDataSize(const std::string& inboundData)
+{
+    std::istringstream is{inboundData};
+    std::size_t dataSize{0};
+    if (!(is >> std::hex >> dataSize)) {
+        throw std::invalid_argument{"Can't decode dataSize."};
+    }
+
+    return dataSize;
 }
 
 template<typename Msg>
