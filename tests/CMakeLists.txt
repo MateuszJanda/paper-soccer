@@ -9,8 +9,6 @@ set(SOURCES
     ${SOURCES_DIR}/View.cpp
 )
 
-add_dependencies(${BINARY_NAME} ${GTEST_PROJECT})
-
 # Set include dirs for googletest/googlemock
 set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include)
 set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include)
