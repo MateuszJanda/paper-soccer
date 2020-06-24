@@ -10,16 +10,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 # Download and install GoogleTest
-set(GTEST_PROJECT googletest)
-set(GTEST_PREFIX "${CMAKE_SOURCE_DIR}/lib")
-
-include(ExternalProject)
-ExternalProject_Add(${GTEST_PROJECT}
-    GIT_REPOSITORY https://github.com/google/googletest.git
-    PREFIX ${GTEST_PREFIX}
-    CMAKE_ARGS ""
-)
-ExternalProject_Get_Property(${GTEST_PROJECT} source_dir binary_dir)
+#set(GTEST_PROJECT googletest)
+#set(GTEST_PREFIX "${CMAKE_SOURCE_DIR}/lib")
+#
+#include(ExternalProject)
+#ExternalProject_Add(${GTEST_PROJECT}
+#    GIT_REPOSITORY https://github.com/google/googletest.git
+#    PREFIX ${GTEST_PREFIX}
+#    CMAKE_ARGS ""
+#)
+#xternalProject_Get_Property(${GTEST_PROJECT} source_dir binary_dir)
 
 include_directories(src)
 

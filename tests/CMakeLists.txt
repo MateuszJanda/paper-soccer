@@ -38,7 +38,7 @@ add_executable(${BINARY_NAME}
     ${SOURCES}
 )
 
-add_dependencies(${BINARY_NAME} ${GTEST_PROJECT})
+#add_dependencies(${BINARY_NAME} ${GTEST_PROJECT})
 
 link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 message("[+] Lib path: " ${CMAKE_SOURCE_DIR}/lib/googletest/lib)
