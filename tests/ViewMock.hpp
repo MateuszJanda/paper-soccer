@@ -13,17 +13,19 @@ namespace PaperSoccer {
 
 class ViewMock : public IView {
 public:
-    MOCK_CONST_METHOD0(clear, void());
-    MOCK_CONST_METHOD6(drawBoard, void(std::string, ColorPair, std::string, ColorPair, std::vector<Direction>, ColorPair));
-    MOCK_CONST_METHOD3(drawLegend, void(char, char, std::map<char, Direction>));
-    MOCK_CONST_METHOD2(drawScore, void(int, int));
-    MOCK_CONST_METHOD0(setContinueStatus, void());
-    MOCK_CONST_METHOD0(setEnemyTurnStatus, void());
-    MOCK_CONST_METHOD0(setReadyToEndTurnStatus, void());
-    MOCK_CONST_METHOD2(setLostStatus, void(int, int));
-    MOCK_CONST_METHOD2(setWinStatus, void(int, int));
-    MOCK_CONST_METHOD2(isStatusButton, bool(int, int));
-    MOCK_CONST_METHOD2(getMoveDirection, std::optional<Direction>(int, int));
+    using DirKeysMap = std::map<char, Direction>;
+
+    MOCK_METHOD(void, clear, (), (const));
+    MOCK_METHOD(void, drawBoard, (std::string, ColorPair, std::string, ColorPair, std::vector<Direction>, ColorPair), (const));
+    MOCK_METHOD(void, drawLegend, (char, char, DirKeysMap), (const));
+    MOCK_METHOD(void, drawScore, (int, int), (const));
+    MOCK_METHOD(void, setContinueStatus, (), (const));
+    MOCK_METHOD(void, setEnemyTurnStatus, (), (const));
+    MOCK_METHOD(void, setReadyToEndTurnStatus, (), (const));
+    MOCK_METHOD(void, setLostStatus, (int, int), (const));
+    MOCK_METHOD(void, setWinStatus, (int, int), (const));
+    MOCK_METHOD(bool, isStatusButton, (int, int), (const));
+    MOCK_METHOD(std::optional<Direction>, getMoveDirection, (int, int), (const));
 };
 
 } // namespace PaperSoccer
