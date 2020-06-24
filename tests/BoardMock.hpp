@@ -13,18 +13,18 @@ namespace PaperSoccer {
 
 class BoardMock : public IBoard {
 public:
-    MOCK_METHOD0(reset, void());
-    MOCK_CONST_METHOD0(getWidth, std::size_t());
-    MOCK_CONST_METHOD0(getHeight, std::size_t());
-    MOCK_CONST_METHOD0(getGoalpostLeft, std::size_t());
-    MOCK_CONST_METHOD0(getGoalpostRight, std::size_t());
-    MOCK_METHOD1(setBallPosition, void(Position));
-    MOCK_CONST_METHOD0(getBallPosition, Position());
-    MOCK_CONST_METHOD2(hasNeighbour, bool(Position, Direction));
-    MOCK_CONST_METHOD1(hasAllNeighbours, bool(Position));
-    MOCK_CONST_METHOD1(hasAnyNeighbour, bool(Position));
-    MOCK_METHOD1(moveBall, MoveStatus(Direction));
-    MOCK_METHOD1(undoBallMove, bool(Direction));
+    MOCK_METHOD(void, reset, ());
+    MOCK_METHOD(std::size_t, getWidth, (), (const));
+    MOCK_METHOD(std::size_t, getHeight, (), (const));
+    MOCK_METHOD(std::size_t, getGoalpostLeft, (), (const));
+    MOCK_METHOD(std::size_t, getGoalpostRight, (), (const));
+    MOCK_METHOD(void, setBallPosition, (Position));
+    MOCK_METHOD(Position, getBallPosition, (), (const));
+    MOCK_METHOD(bool, hasNeighbour, (Position, Direction), (const));
+    MOCK_METHOD(bool, hasAllNeighbours, (Position), (const));
+    MOCK_METHOD(bool, hasAnyNeighbour, (Position), (const));
+    MOCK_METHOD(MoveStatus, moveBall, (Direction));
+    MOCK_METHOD(bool, undoBallMove, (Direction));
 };
 
 } // namespace PaperSoccer
