@@ -4,10 +4,6 @@
 // Ad maiorem Dei gloriam
 
 #include "View.hpp"
-#include "Board.hpp"
-#include "Direction.hpp"
-#include "Position.hpp"
-#include <set>
 
 namespace PaperSoccer {
 

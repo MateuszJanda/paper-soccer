@@ -8,7 +8,6 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <sstream>
-#include <type_traits>
 
 namespace PaperSoccer {
 

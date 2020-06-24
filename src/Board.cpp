@@ -4,7 +4,6 @@
 // Ad maiorem Dei gloriam
 
 #include "Board.hpp"
-#include <iostream>
 
 namespace PaperSoccer {
 

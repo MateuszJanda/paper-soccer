@@ -7,7 +7,6 @@
 #define I_BOARD_HPP
 
 #include "Node.hpp"
-#include <cstddef>
 
 namespace PaperSoccer {
 
