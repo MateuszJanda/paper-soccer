@@ -17,7 +17,7 @@ ExternalProject_Add(gtest
     PREFIX ${GTEST_PREFIX}
     CMAKE_ARGS ""
 )
-#ExternalProject_Get_Property(gtest source_dir binary_dir)
+ExternalProject_Get_Property(gtest source_dir binary_dir)
 
 include_directories(src)
 
