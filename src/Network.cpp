@@ -208,7 +208,7 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
 
             Msg msg = decodeData<Msg>(m_inboundData);
             if (handlerFunc) {
-                handlerFunc(msg);
+                handlerFunc(std::move(msg));
             }
 
             onRead();

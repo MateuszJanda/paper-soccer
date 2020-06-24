@@ -43,8 +43,8 @@ void Game::run()
 
     m_network.registerHandlers(std::bind(&Game::onKeyboardMouseInput, this),
         [this]() { initNewGame(); },
-        [this](NewGameMsg msg) { onNewGame(msg); },
-        [this](MoveMsg msg) { onEnemyMove(msg); },
+        [this](NewGameMsg msg) { onNewGame(std::move(msg)); },
+        [this](MoveMsg msg) { onEnemyMove(std::move(msg)); },
         [this](UndoMoveMsg) { onEnemyUndoMove(); },
         [this](EndTurnMsg) { onEnemyEndTurn(); },
         [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); });
