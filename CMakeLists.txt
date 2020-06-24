@@ -26,5 +26,5 @@ include_directories(src)
 
 add_subdirectory(src)
 # Add googletest sources
-add_subdirectory(lib/googletest))
+add_subdirectory(lib/googletesta)
 add_subdirectory(tests)
