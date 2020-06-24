@@ -11,5 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(src)
 
 add_subdirectory(src)
-add_subdirectory(tests)
+
+# Add googletest sources
 add_subdirectory(lib/googletest)
+
+add_subdirectory(tests)
