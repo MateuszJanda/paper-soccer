@@ -22,18 +22,24 @@ boost::program_options::options_description usage()
 
     po::options_description desc(
                 "\n"
-                "paper-soccer version 0.99 (C) 2020  Mateusz Janda <mateusz.janda at gmail.com>"
-                "\n\n"
+                "Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>\n"
+                "paper-soccer 0.99 - a free terminal version of paper soccer game\n"
+                "Homepage: github.com/MateuszJanda/paper-soccer\n"
+                "\n"
                 "Options");
+
     desc.add_options()
         ("help,h", "display this help")
-        ("wait,w", "run as server, wait for connection")
+        ("version,v", "version")
+        ("wait,w", "run as server and wait for connection")
+        ("connect,c", po::value<std::string>()->default_value("localhost"), "run as client and connect to specific address")
+        ("port,p", po::value<short unsigned int>()->default_value(8787), "port number")
     ;
 
     return desc;
 }
 
-void runServer()
+void runServer(short unsigned int port)
 {
     using boost::asio::io_context;
     using boost::asio::ip::tcp;
@@ -41,7 +47,7 @@ void runServer()
     io_context ioContext;
     boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
-    tcp::endpoint endpoint{tcp::v4(), 8787};
+    tcp::endpoint endpoint{tcp::v4(), port};
     Server server{ioContext, endpoint};
 
     Board board{8, 10};
@@ -56,7 +62,7 @@ void runServer()
     t.join();
 }
 
-void runClient()
+void runClient(std::string address, short unsigned int port)
 {
     using boost::asio::io_context;
     using boost::asio::ip::tcp;
@@ -65,7 +71,7 @@ void runClient()
     boost::asio::executor_work_guard<io_context::executor_type> guard{ioContext.get_executor()};
 
     tcp::resolver res{ioContext};
-    auto endpoints = res.resolve("localhost", "8787");
+    auto endpoints = res.resolve(address, std::to_string(port));
 
     Client client{ioContext, endpoints};
 
@@ -88,16 +94,24 @@ int main(int argc, char* argv[])
     try {
         po::variables_map vm;
         po::store(po::parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
 
         if (vm.count("help")) {
             std::cout << desc << "\n";
             return 0;
         }
+        if (vm.count("version")) {
+            std::cout << "0.99" << "\n";
+            return 0;
+        }
 
-        if (vm.count("wait")) {
-            runServer();
+        if (vm.count("wait") and not vm["wait"].defaulted() and vm.count("connect") and not vm["connect"].defaulted()) {
+            std::cout << desc << "\n";
+            return 0;
+        } else if (vm.count("wait")) {
+            runServer(vm["port"].as<short unsigned int>());
         } else {
-            runClient();
+            runClient(vm["connect"].as<std::string>(), vm["port"].as<short unsigned int>());
         }
     } catch (po::too_many_positional_options_error &e) {
         std::cerr << e.what() << "\n";
