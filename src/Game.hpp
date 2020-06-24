@@ -27,7 +27,7 @@ enum class MatchStatus : std::uint8_t {
 
 class Game {
 public:
-    Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view);
+    Game(INetwork& network, IBoard& board, const INCurses& ncurses, const IView& view);
 
     void run();
 
@@ -64,8 +64,8 @@ protected:
 
     INetwork& m_network;
     IBoard& m_board;
-    INCurses& m_ncurses;
-    IView& m_view;
+    const INCurses& m_ncurses;
+    const IView& m_view;
 
     MatchStatus m_match{MatchStatus::Connecting};
     int m_userScore{0};

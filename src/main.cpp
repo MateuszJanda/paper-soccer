@@ -3,13 +3,12 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#include "Board.hpp"
-#include "Client.hpp"
-#include "Game.hpp"
 #include "NCurses.hpp"
-#include "Node.hpp"
-#include "Server.hpp"
+#include "Board.hpp"
 #include "View.hpp"
+#include "Game.hpp"
+#include "Server.hpp"
+#include "Client.hpp"
 #include <boost/program_options.hpp>
 #include <boost/asio.hpp>
 #include <iostream>

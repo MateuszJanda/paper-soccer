@@ -4,9 +4,6 @@
 // Ad maiorem Dei gloriam
 
 #include "Game.hpp"
-#include "NCurses.hpp"
-#include <iostream>
-#include <sstream>
 
 namespace PaperSoccer {
 
@@ -32,7 +29,7 @@ namespace {
 
 } // namespace anonymous
 
-Game::Game(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
+Game::Game(INetwork& network, IBoard& board, const INCurses& ncurses, const IView& view)
     : m_network{network}
     , m_board{board}
     , m_ncurses{ncurses}
