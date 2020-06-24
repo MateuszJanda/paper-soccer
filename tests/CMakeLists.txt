@@ -1,4 +1,4 @@
-set(BINARY runTests)
+set(BINARY_NAME runTests)
 
 set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
 
@@ -9,10 +9,11 @@ set(SOURCES
     ${SOURCES_DIR}/View.cpp
 )
 
+add_dependencies(${BINARY_NAME} ${GTEST_PROJECT})
+
 # Set include dirs for googletest/googlemock
 set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include)
 set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include)
-
 # Just for debug. Show full path
 message("[+] googletest include path: " ${GTEST_INCLUDE_DIR})
 message("[+] googlemock include path: " ${GTEST_INCLUDE_DIR})
@@ -22,9 +23,9 @@ include_directories(${GMOCK_INCLUDE_DIR})
 
 # QtCreator can use this
 # Adds a test called <name>, <command> specifies an executable target
-add_test(NAME ${BINARY} COMMAND ${BINARY})
+add_test(NAME ${BINARY_NAME} COMMAND ${BINARY_NAME})
 
-add_executable(${BINARY}
+add_executable(${BINARY_NAME}
     runTests.cpp
     GameTest.cpp
     BoardTest.cpp
@@ -42,7 +43,7 @@ add_executable(${BINARY}
 link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 message("[+] Lib path: " ${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 
-target_link_libraries(${BINARY}
+target_link_libraries(${BINARY_NAME}
     gtest_main
     gtest
     gmock_main
