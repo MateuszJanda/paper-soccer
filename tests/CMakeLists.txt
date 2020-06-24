@@ -9,6 +9,16 @@ set(SOURCES
     ${SOURCES_DIR}/View.cpp
 )
 
+# Set include dirs for googletest/googlemock
+set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include/)
+set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include/)
+
+# Just for debug. Show full path
+message("[+] googletest include path: " ${GTEST_INCLUDE_DIR})
+message("[+] googlemock include path: " ${GTEST_INCLUDE_DIR})
+
+include_directories(${GTEST_INCLUDE_DIR})
+include_directories(${GMOCK_INCLUDE_DIR})
 
 # QtCreator can use this
 # Adds a test called <name>, <command> specifies an executable target

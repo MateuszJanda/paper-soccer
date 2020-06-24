@@ -16,6 +16,7 @@ public:
     MOCK_CONST_METHOD4(print, void(int, int, std::string, ColorPair));
     MOCK_CONST_METHOD0(getInput, std::optional<Input>());
     MOCK_CONST_METHOD0(refreshView, void());
+//    MOCK_METHOD(void, refreshView, (), (const));
     MOCK_CONST_METHOD0(clearView, void());
 };
 
