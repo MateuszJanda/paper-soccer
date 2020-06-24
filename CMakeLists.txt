@@ -20,10 +20,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    CMAKE_ARGS ""
 #)
 #xternalProject_Get_Property(${GTEST_PROJECT} source_dir binary_dir)
+#add_subdirectory(${source_dir})
 
 include_directories(src)
 
 add_subdirectory(src)
 # Add googletest sources
-add_subdirectory(${source_dir})
+add_subdirectory(lib/googletest))
 add_subdirectory(tests)
