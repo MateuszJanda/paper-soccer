@@ -20,7 +20,6 @@ ExternalProject_Add(${GTEST_PROJECT}
     CMAKE_ARGS ""
 )
 # ExternalProject_Get_Property(gtest source_dir binary_dir)
-add_dependencies(${CMAKE_PROJECT_NAME} ${GTEST_PROJECT})
 
 include_directories(src)
 
