@@ -6,6 +6,13 @@ CMakeFiles/
 CMakeCache.txt
 Makefile
 cmake_install.cmake
+*.cflags
+*.config
+*.creator
+*.creator.user
+*.cxxflags
+*.files
+*.includes
 lib/
 lib/googletest
 src/libpaper-soccer_lib.a
