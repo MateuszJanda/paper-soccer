@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 # Download and install GoogleTest
-set(GTEST_PROJECT gtest)
+set(GTEST_PROJECT googletest)
 set(GTEST_PREFIX "${CMAKE_SOURCE_DIR}/lib")
 
 include(ExternalProject)
