@@ -22,7 +22,7 @@ boost::program_options::options_description usage()
     po::options_description desc(
                 "\n"
                 "Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>\n"
-                "paper-soccer 0.99 - a free terminal version of paper soccer game\n"
+                "paper-soccer " GAME_VERSION " - a free terminal version of paper soccer game\n"
                 "Homepage: github.com/MateuszJanda/paper-soccer\n"
                 "\n"
                 "Options");
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
             return 0;
         }
         if (vm.count("version")) {
-            std::cout << "0.99" << "\n";
+            std::cout << GAME_VERSION << "\n";
             return 0;
         }
 
