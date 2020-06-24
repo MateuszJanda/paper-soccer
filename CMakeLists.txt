@@ -19,11 +19,11 @@ ExternalProject_Add(${GTEST_PROJECT}
     PREFIX ${GTEST_PREFIX}
     CMAKE_ARGS ""
 )
-# ExternalProject_Get_Property(gtest source_dir binary_dir)
+ExternalProject_Get_Property(gtest source_dir binary_dir)
 
 include_directories(src)
 
 add_subdirectory(src)
 # Add googletest sources
-add_subdirectory(lib/googletest)
+add_subdirectory(${source_dir})
 add_subdirectory(tests)
