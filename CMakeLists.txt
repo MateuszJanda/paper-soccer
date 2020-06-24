@@ -8,11 +8,19 @@ project(paper-soccer LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
+# Download and install GoogleTest
+include(ExternalProject)
+ExternalProject_Add(gtest
+    GIT_REPOSITORY https://github.com/google/googletest.git
+    PREFIX lib
+    INSTALL_COMMAND ""
+)
+#ExternalProject_Get_Property(gtest source_dir binary_dir)
+
 include_directories(src)
 
 add_subdirectory(src)
-
 # Add googletest sources
 add_subdirectory(lib/googletest)
-
 add_subdirectory(tests)
