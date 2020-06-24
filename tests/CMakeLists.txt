@@ -10,8 +10,8 @@ set(SOURCES
 )
 
 # Set include dirs for googletest/googlemock
-set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include/)
-set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include/)
+set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include)
+set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include)
 
 # Just for debug. Show full path
 message("[+] googletest include path: " ${GTEST_INCLUDE_DIR})
@@ -39,10 +39,11 @@ add_executable(${BINARY}
     ${SOURCES}
 )
 
+link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)
+message("[+] Lib path: " ${CMAKE_SOURCE_DIR}/lib/googletest/lib)
+
 target_link_libraries(${BINARY}
-    libgtest.a
-    libgtest_main.a
-    libgmock.a
-    libgmock_main.a
+    gmock
+    gtest
     pthread
 )
