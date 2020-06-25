@@ -6,10 +6,13 @@ add_executable(${CMAKE_PROJECT_NAME}
     INCurses.hpp
     IView.hpp
     INetwork.hpp
+    ITimer.hpp
     Messages.hpp
     Turn.hpp
     NCurses.cpp
     NCurses.hpp
+    Timer.cpp
+    Timer.hpp
     Network.cpp
     Network.hpp
     Server.cpp

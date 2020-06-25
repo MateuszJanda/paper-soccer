@@ -33,6 +33,7 @@ add_executable(${BINARY_NAME}
     BoardMock.hpp
     NCursesMock.hpp
     NetworkMock.hpp
+    TimerMock.hpp
     ViewMock.hpp
     ViewTest.cpp
     ${SOURCES}
