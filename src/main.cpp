@@ -50,7 +50,7 @@ void runServer(short unsigned int port)
     tcp::endpoint endpoint{tcp::v4(), port};
     Server server{ioContext, endpoint};
 
-    Timer timer;
+    Timer timer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};
@@ -76,7 +76,7 @@ void runClient(std::string address, short unsigned int port)
 
     Client client{ioContext, endpoints};
 
-    Timer timer;
+    Timer timer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};

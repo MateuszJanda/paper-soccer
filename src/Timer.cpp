@@ -7,5 +7,29 @@
 
 namespace PaperSoccer {
 
+Timer::Timer(boost::asio::io_context& ioContext)
+    : m_ioContext{ioContext}
+{
+
+}
+
+void Timer::start()
+{
+}
+
+void Timer::onTimer(boost::system::error_code errorCode)
+{
+    if (errorCode) {
+        return;
+    }
+
+
+    boost::asio::high_resolution_timer tim{m_ioContext};
+
+    //            program.on_clock();
+    tim.expires_after(std::chrono::seconds{1});
+    tim.async_wait([this](boost::system::error_code errorCode) { onTimer(errorCode); });
+}
+
 } // namespace PaperSoccer
 
