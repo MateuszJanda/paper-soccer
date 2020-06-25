@@ -7,6 +7,7 @@
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
 #include "NetworkMock.hpp"
+#include "TimerMock.hpp"
 #include "ViewMock.hpp"
 #include "gtest/gtest.h"
 
@@ -23,8 +24,8 @@ using namespace testing;
 
 class TestableGame : public Game {
 public:
-    TestableGame(INetwork& network, IBoard& board, INCurses& ncurses, IView& view)
-        : Game(network, board, ncurses, view)
+    TestableGame(INetwork& network, ITimer& timer, IBoard& board, const INCurses& ncurses, const IView& view)
+        : Game(network, timer, board, ncurses, view)
     {
     }
 
@@ -92,11 +93,12 @@ public:
 class GameTest : public testing::Test {
 public:
     GameTest()
-        : game{networkMock, boardMock, ncursesMock, viewMock}
+        : game{networkMock, timerMock, boardMock, ncursesMock, viewMock}
     {
     }
 
     StrictMock<NetworkMock> networkMock;
+    StrictMock<TimerMock> timerMock;
     StrictMock<BoardMock> boardMock;
     StrictMock<ViewMock> viewMock;
     StrictMock<NCursesMock> ncursesMock;

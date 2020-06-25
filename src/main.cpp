@@ -7,6 +7,7 @@
 #include "Board.hpp"
 #include "View.hpp"
 #include "Game.hpp"
+#include "Timer.hpp"
 #include "Server.hpp"
 #include "Client.hpp"
 #include <boost/program_options.hpp>
@@ -49,10 +50,11 @@ void runServer(short unsigned int port)
     tcp::endpoint endpoint{tcp::v4(), port};
     Server server{ioContext, endpoint};
 
+    Timer timer;
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};
-    Game game{server, board, ncurses, view};
+    Game game{server, timer, board, ncurses, view};
     game.run();
 
     // https://www.boost.org/doc/libs/1_73_0/doc/html/boost_asio/overview/core/threads.html
@@ -74,10 +76,11 @@ void runClient(std::string address, short unsigned int port)
 
     Client client{ioContext, endpoints};
 
+    Timer timer;
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};
-    Game game{client, board, ncurses, view};
+    Game game{client, timer, board, ncurses, view};
     game.run();
 
     std::thread t([&ioContext]() { ioContext.run(); });

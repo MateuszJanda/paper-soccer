@@ -29,8 +29,9 @@ namespace {
 
 } // namespace anonymous
 
-Game::Game(INetwork& network, IBoard& board, const INCurses& ncurses, const IView& view)
+Game::Game(INetwork& network, ITimer& timer, IBoard& board, const INCurses& ncurses, const IView& view)
     : m_network{network}
+    , m_timer{timer}
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}

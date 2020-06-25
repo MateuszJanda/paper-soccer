@@ -10,7 +10,7 @@
 
 namespace PaperSoccer {
 
-class Timer {
+class Timer : public ITimer {
 public:
 };
 
