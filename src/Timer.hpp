@@ -8,6 +8,7 @@
 
 #include "ITimer.hpp"
 #include <boost/asio.hpp>
+#include <functional>
 
 namespace PaperSoccer {
 
@@ -18,7 +19,11 @@ public:
     void onTimer(boost::system::error_code errorCode);
 
 private:
-    boost::asio::io_context& m_ioContext;
+    std::function<void()> m_handleTimer;
+
+//    boost::asio::io_context& m_ioContext;
+    boost::asio::high_resolution_timer m_tim;
+
 };
 
 } // namespace PaperSoccer

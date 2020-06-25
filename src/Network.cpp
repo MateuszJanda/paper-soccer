@@ -53,7 +53,7 @@ void Network::onKeyboardMouseInput(boost::system::error_code errorCode)
 
     using namespace std::placeholders;
     m_desc.async_wait(boost::asio::posix::descriptor::wait_type::wait_read,
-        std::bind(&Network::onKeyboardMouseInput, this, _1));
+        [this](boost::system::error_code errorCode) { onKeyboardMouseInput(errorCode); });
 }
 
 void Network::sendNewGame(Turn turn, Goal goal)
