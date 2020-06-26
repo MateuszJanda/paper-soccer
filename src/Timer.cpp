@@ -13,14 +13,14 @@ Timer::Timer(boost::asio::io_context& ioContext)
 
 }
 
-void Timer::registerHandler(std::function<void(int)> handleTimerTick)
+void Timer::registerHandler(std::function<void(std::chrono::seconds)> handleTimerTick)
 {
     m_handleTimerTick = handleTimerTick;
 }
 
-int Timer::timeLeft() const
+std::chrono::seconds Timer::timeLeft() const
 {
-    return m_timeLeft.count();
+    return m_timeLeft;
 }
 
 void Timer::start()
@@ -54,7 +54,7 @@ void Timer::onTimer(boost::system::error_code errorCode)
     m_timeLeft--;
 
     if (m_handleTimerTick) {
-        m_handleTimerTick(m_timeLeft.count());
+        m_handleTimerTick(m_timeLeft);
     }
 
     if (m_timeLeft.count() <= 0) {

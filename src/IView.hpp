@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include <optional>
+#include <chrono>
 
 namespace PaperSoccer {
 
@@ -27,9 +28,9 @@ public:
     virtual void setWinStatus(int won, int lost) const = 0;
     virtual void drawScore(int won, int lost) const = 0;
 
-    virtual void drawTimeLeft(int userTimeLeft, int enemyTimeLeft) const = 0;
-    virtual void drawUserTimeLeft(int timeLeft) const = 0;
-    virtual void drawEnemyTimeLeft(int timeLeft) const = 0;
+    virtual void drawTimeLeft(std::chrono::seconds userTimeLeft, std::chrono::seconds enemyTimeLeft) const = 0;
+    virtual void drawUserTimeLeft(std::chrono::seconds timeLeft) const = 0;
+    virtual void drawEnemyTimeLeft(std::chrono::seconds timeLeft) const = 0;
 
     virtual bool isStatusButton(int x, int y) const = 0;
     virtual std::optional<Direction> getMoveDirection(int x, int y) const = 0;

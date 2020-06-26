@@ -7,6 +7,7 @@
 #define I_TIMER_HPP
 
 #include <functional>
+#include <chrono>
 
 namespace PaperSoccer {
 
@@ -14,8 +15,8 @@ class ITimer {
 public:
     virtual ~ITimer() noexcept = default;
 
-    virtual void registerHandler(std::function<void(int)> handleTimerTick) = 0;
-    virtual int timeLeft() const = 0;
+    virtual void registerHandler(std::function<void(std::chrono::seconds)> handleTimerTick) = 0;
+    virtual std::chrono::seconds timeLeft() const = 0;
     virtual void start() = 0;
     virtual void resume() = 0;
     virtual void stop() = 0;

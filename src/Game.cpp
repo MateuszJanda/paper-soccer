@@ -54,8 +54,8 @@ void Game::run()
         [this](TimeoutMsg) { onEnemyTimeout(); });
     m_network.run();
 
-    m_userTimer.registerHandler([this](int timeLeft) { onUserTimerTick(timeLeft); });
-    m_enemyTimer.registerHandler([this](int timeLeft) { onEnemyTimerTick(timeLeft); });
+    m_userTimer.registerHandler([this](std::chrono::seconds timeLeft) { onUserTimerTick(timeLeft); });
+    m_enemyTimer.registerHandler([this](std::chrono::seconds timeLeft) { onEnemyTimerTick(timeLeft); });
 }
 
 void Game::initNewGame(Goal userGoal)
@@ -302,10 +302,10 @@ void Game::onEnemyReadyForNewGame()
     }
 }
 
-void Game::onUserTimerTick(int timeLeft)
+void Game::onUserTimerTick(std::chrono::seconds timeLeft)
 {
     m_view.drawUserTimeLeft(timeLeft);
-    if (timeLeft == 0) {
+    if (timeLeft.count() == 0) {
         m_match = MatchStatus::GameEnd;
         m_enemyScore += 1;
         m_view.setLostStatus(m_userScore, m_enemyScore);
@@ -316,7 +316,7 @@ void Game::onUserTimerTick(int timeLeft)
     }
 }
 
-void Game::onEnemyTimerTick(int timeLeft)
+void Game::onEnemyTimerTick(std::chrono::seconds timeLeft)
 {
     m_view.drawEnemyTimeLeft(timeLeft);
 }

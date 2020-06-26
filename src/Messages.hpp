@@ -9,6 +9,7 @@
 #include "Direction.hpp"
 #include "Goal.hpp"
 #include "Turn.hpp"
+#include <chrono>
 
 namespace PaperSoccer {
 
@@ -71,8 +72,8 @@ struct UndoMoveMsg {
 
 
 struct EndTurnMsg {
-    EndTurnMsg(int timeLeft = 0)
-        : timeLeft{timeLeft}
+    EndTurnMsg(std::chrono::seconds timeLeft = std::chrono::seconds{0})
+        : timeLeft{static_cast<int>(timeLeft.count())}
     {
     }
 

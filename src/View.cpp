@@ -379,30 +379,30 @@ void View::drawScore(int won, int lost) const
     m_ncurses.print(x, y + 2, "  Lost: " + std::to_string(lost), ColorPair::ENEMY);
 }
 
-void View::drawTimeLeft(int userTimeLeft, int enemyTimeLeft) const
+void View::drawTimeLeft(std::chrono::seconds userTimeLeft, std::chrono::seconds enemyTimeLeft) const
 {
     drawUserTimeLeft(userTimeLeft);
     drawEnemyTimeLeft(enemyTimeLeft);
 }
 
-void View::drawUserTimeLeft(int timeLeft) const
+void View::drawUserTimeLeft(std::chrono::seconds timeLeft) const
 {
     const auto x = getMenuXOffset();
     const auto y = Y_TIME_OFFSET;
 
     m_ncurses.print(x, y + 0, " Time left:");
-    m_ncurses.print(x, y + 1, "     Me: " + std::to_string(timeLeft), ColorPair::USER);
+    m_ncurses.print(x, y + 1, "     Me: " + std::to_string(timeLeft.count()), ColorPair::USER);
 
     m_ncurses.refreshView();
 }
 
-void View::drawEnemyTimeLeft(int timeLeft) const
+void View::drawEnemyTimeLeft(std::chrono::seconds timeLeft) const
 {
     const auto x = getMenuXOffset();
     const auto y = Y_TIME_OFFSET;
 
     m_ncurses.print(x, y + 0, " Time left:");
-    m_ncurses.print(x, y + 2, "  Enemy: " + std::to_string(timeLeft), ColorPair::ENEMY);
+    m_ncurses.print(x, y + 2, "  Enemy: " + std::to_string(timeLeft.count()), ColorPair::ENEMY);
 
     m_ncurses.refreshView();
 }

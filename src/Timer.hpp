@@ -16,8 +16,8 @@ class Timer : public ITimer {
 public:
     Timer(boost::asio::io_context& ioContext);
 
-    void registerHandler(std::function<void(int)> handleTimerTick) override;
-    int timeLeft() const override;
+    void registerHandler(std::function<void(std::chrono::seconds)> handleTimerTick) override;
+    std::chrono::seconds timeLeft() const override;
     void start() override;
     void resume() override;
     void stop() override;
@@ -29,7 +29,7 @@ private:
     const std::chrono::seconds DEFAULT_TIME{150};
 
     boost::asio::high_resolution_timer m_timer;
-    std::function<void(int)> m_handleTimerTick;
+    std::function<void(std::chrono::seconds)> m_handleTimerTick;
     std::chrono::seconds m_timeLeft{DEFAULT_TIME};
 
 };

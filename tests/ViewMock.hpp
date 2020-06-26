@@ -26,9 +26,9 @@ public:
     MOCK_METHOD(void, setWinStatus, (int, int), (const));
     MOCK_METHOD(void, drawScore, (int, int), (const));
 
-    MOCK_METHOD(void, drawTimeLeft, (int, int), (const));
-    MOCK_METHOD(void, drawUserTimeLeft, (int), (const));
-    MOCK_METHOD(void, drawEnemyTimeLeft, (int), (const));
+    MOCK_METHOD(void, drawTimeLeft, (std::chrono::seconds, std::chrono::seconds), (const));
+    MOCK_METHOD(void, drawUserTimeLeft, (std::chrono::seconds), (const));
+    MOCK_METHOD(void, drawEnemyTimeLeft, (std::chrono::seconds), (const));
 
     MOCK_METHOD(bool, isStatusButton, (int, int), (const));
     MOCK_METHOD(std::optional<Direction>, getMoveDirection, (int, int), (const));
