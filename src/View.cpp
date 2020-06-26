@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "View.hpp"
+#include <iomanip>
 
 namespace PaperSoccer {
 
@@ -381,6 +382,11 @@ void View::drawScore(int won, int lost) const
 
 void View::drawTimeLeft(std::chrono::seconds userTimeLeft, std::chrono::seconds enemyTimeLeft) const
 {
+    const auto x = getMenuXOffset();
+    const auto y = Y_TIME_OFFSET;
+
+    m_ncurses.print(x, y, " Time left:");
+
     drawUserTimeLeft(userTimeLeft);
     drawEnemyTimeLeft(enemyTimeLeft);
 }
@@ -390,10 +396,7 @@ void View::drawUserTimeLeft(std::chrono::seconds timeLeft) const
     const auto x = getMenuXOffset();
     const auto y = Y_TIME_OFFSET;
 
-    m_ncurses.print(x, y + 0, " Time left:");
-    m_ncurses.print(x, y + 1, "     Me: " + std::to_string(timeLeft.count()), ColorPair::USER);
-
-    m_ncurses.refreshView();
+    drawTime(x, y + 1, timeLeft, "     Me: ", ColorPair::USER);
 }
 
 void View::drawEnemyTimeLeft(std::chrono::seconds timeLeft) const
@@ -401,9 +404,17 @@ void View::drawEnemyTimeLeft(std::chrono::seconds timeLeft) const
     const auto x = getMenuXOffset();
     const auto y = Y_TIME_OFFSET;
 
-    m_ncurses.print(x, y + 0, " Time left:");
-    m_ncurses.print(x, y + 2, "  Enemy: " + std::to_string(timeLeft.count()), ColorPair::ENEMY);
+    drawTime(x, y + 2, timeLeft, "  Enemy: ", ColorPair::ENEMY);
+}
 
+void View::drawTime(int x, int y, std::chrono::seconds timeLeft, std::string name, ColorPair color) const
+{
+    auto minutes = duration_cast<std::chrono::minutes>(timeLeft);
+    std::ostringstream ss;
+    ss << std::setw(2) << std::setfill('0') << minutes.count();
+    ss << ":" << std::setw(2) << std::setfill('0') << (timeLeft - minutes).count();
+
+    m_ncurses.print(x, y, name + ss.str(), color);
     m_ncurses.refreshView();
 }
 
