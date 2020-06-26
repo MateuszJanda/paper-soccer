@@ -25,6 +25,7 @@ public:
     virtual void setReadyToEndTurnStatus() const = 0;
     virtual void setLostStatus(int won, int lost) const = 0;
     virtual void setWinStatus(int won, int lost) const = 0;
+    virtual void setUserTime(int timeLeft) const = 0;
     virtual bool isStatusButton(int x, int y) const = 0;
     virtual std::optional<Direction> getMoveDirection(int x, int y) const = 0;
 };

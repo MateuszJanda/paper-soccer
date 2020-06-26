@@ -23,6 +23,7 @@ public:
     MOCK_METHOD(void, setEnemyTurnStatus, (), (const));
     MOCK_METHOD(void, setReadyToEndTurnStatus, (), (const));
     MOCK_METHOD(void, setLostStatus, (int, int), (const));
+    MOCK_METHOD(void, setUserTime, (int), (const));
     MOCK_METHOD(void, setWinStatus, (int, int), (const));
     MOCK_METHOD(bool, isStatusButton, (int, int), (const));
     MOCK_METHOD(std::optional<Direction>, getMoveDirection, (int, int), (const));

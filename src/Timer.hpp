@@ -15,14 +15,20 @@ namespace PaperSoccer {
 class Timer : public ITimer {
 public:
     Timer(boost::asio::io_context& ioContext);
-    void start();
+
+    void registerHandlers(std::function<void(int)> handleTimerTick) override;
+    void start() override;
+    void resume() override;
+    void stop() override;
+
     void onTimer(boost::system::error_code errorCode);
 
 private:
-    std::function<void()> m_handleTimer;
+    const int DEFAULT_TIME{150};
 
-//    boost::asio::io_context& m_ioContext;
-    boost::asio::high_resolution_timer m_tim;
+    boost::asio::high_resolution_timer m_timer;
+    std::function<void(int)> m_handleTimerTick;
+    int m_timeLeft{DEFAULT_TIME};
 
 };
 

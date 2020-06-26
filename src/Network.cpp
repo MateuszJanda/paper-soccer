@@ -56,6 +56,11 @@ void Network::onKeyboardMouseInput(boost::system::error_code errorCode)
         [this](boost::system::error_code errorCode) { onKeyboardMouseInput(errorCode); });
 }
 
+void Network::sendTimeout()
+{
+
+}
+
 void Network::sendNewGame(Turn turn, Goal goal)
 {
     NewGameMsg msg{turn, goal};

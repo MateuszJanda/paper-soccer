@@ -49,6 +49,8 @@ public:
     void onEnemyEndTurn();
     void onEnemyReadyForNewGame();
 
+    void onTimer(int timeLeft);
+
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'u'};
     const std::map<char, Direction> DIR_KEYS{{'q', Direction::TopLeft},

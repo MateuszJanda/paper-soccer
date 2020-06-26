@@ -351,6 +351,11 @@ void View::setWinStatus(int won, int lost) const
     drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_ORANGE);
 }
 
+void View::setUserTime(int timeLeft) const
+{
+
+}
+
 void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const
 {
     const int x = getMenuXOffset();

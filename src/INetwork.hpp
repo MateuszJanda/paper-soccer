@@ -29,6 +29,8 @@ public:
     virtual void sendUndoMove() = 0;
     virtual void sendEndTurn() = 0;
     virtual void sendReadyForNewGame() = 0;
+
+    virtual void sendTimeout() = 0;
 };
 
 } // namespace PaperSoccer

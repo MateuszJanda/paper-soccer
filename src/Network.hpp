@@ -28,6 +28,8 @@ public:
 
     void onKeyboardMouseInput(boost::system::error_code errorCode);
 
+    void sendTimeout() override;
+
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
     void sendUndoMove() override;

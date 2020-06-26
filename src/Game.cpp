@@ -289,4 +289,18 @@ void Game::onEnemyReadyForNewGame()
     }
 }
 
+void Game::onTimer(int timeLeft)
+{
+    m_view.setUserTime(timeLeft);
+    if (timeLeft == 0) {
+        m_match = MatchStatus::GameEnd;
+        m_enemyScore += 1;
+        m_view.setLostStatus(m_userScore, m_enemyScore);
+        m_network.sendTimeout();
+
+        m_dirPath.clear();
+        drawBoard();
+    }
+}
+
 } // namespace PaperSoccer

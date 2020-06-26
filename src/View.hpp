@@ -52,6 +52,8 @@ public:
     void setLostStatus(int won, int lost) const override;
     void setWinStatus(int won, int lost) const override;
 
+    void setUserTime(int timeLeft) const override;
+
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
 

@@ -8,13 +8,30 @@
 namespace PaperSoccer {
 
 Timer::Timer(boost::asio::io_context& ioContext)
-    : m_tim{ioContext}
+    : m_timer{ioContext}
 {
 
 }
 
+void Timer::registerHandlers(std::function<void(int)> handleTimerTick)
+{
+    m_handleTimerTick = handleTimerTick;
+}
+
 void Timer::start()
 {
+    m_timeLeft = DEFAULT_TIME;
+    onTimer(boost::system::error_code{});
+}
+
+void Timer::resume()
+{
+    onTimer(boost::system::error_code{});
+}
+
+void Timer::stop()
+{
+    m_timer.cancel();
 }
 
 void Timer::onTimer(boost::system::error_code errorCode)
@@ -23,12 +40,18 @@ void Timer::onTimer(boost::system::error_code errorCode)
         return;
     }
 
-    if (m_handleTimer) {
-        m_handleTimer();
+    m_timeLeft--;
+
+    if (m_handleTimerTick) {
+        m_handleTimerTick(m_timeLeft);
     }
 
-    m_tim.expires_after(std::chrono::seconds{1});
-    m_tim.async_wait([this](boost::system::error_code errorCode) { onTimer(errorCode); });
+    if (m_timeLeft <= 0) {
+        return;
+    }
+
+    m_timer.expires_after(std::chrono::seconds{1});
+    m_timer.async_wait([this](boost::system::error_code errorCode) { onTimer(errorCode); });
 }
 
 } // namespace PaperSoccer
