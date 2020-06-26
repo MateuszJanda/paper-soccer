@@ -26,11 +26,11 @@ public:
     void onTimer(boost::system::error_code errorCode);
 
 private:
-    const int DEFAULT_TIME{150};
+    const std::chrono::seconds DEFAULT_TIME{150};
 
     boost::asio::high_resolution_timer m_timer;
     std::function<void(int)> m_handleTimerTick;
-    int m_timeLeft{DEFAULT_TIME};
+    std::chrono::seconds m_timeLeft{DEFAULT_TIME};
 
 };
 

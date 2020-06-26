@@ -20,7 +20,7 @@ void Timer::registerHandler(std::function<void(int)> handleTimerTick)
 
 int Timer::timeLeft() const
 {
-    return m_timeLeft;
+    return m_timeLeft.count();
 }
 
 void Timer::start()
@@ -41,7 +41,7 @@ void Timer::stop()
 
 void Timer::stopAndSync(int timeLeft)
 {
-    m_timeLeft = timeLeft;
+    m_timeLeft = std::chrono::seconds{timeLeft};
     m_timer.cancel();
 }
 
@@ -54,10 +54,10 @@ void Timer::onTimer(boost::system::error_code errorCode)
     m_timeLeft--;
 
     if (m_handleTimerTick) {
-        m_handleTimerTick(m_timeLeft);
+        m_handleTimerTick(m_timeLeft.count());
     }
 
-    if (m_timeLeft <= 0) {
+    if (m_timeLeft.count() <= 0) {
         return;
     }
 
