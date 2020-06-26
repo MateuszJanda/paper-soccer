@@ -39,9 +39,14 @@ void Timer::stop()
     m_timer.cancel();
 }
 
-void Timer::stopAndSync(int timeLeft)
+void Timer::reset()
 {
-    m_timeLeft = std::chrono::seconds{timeLeft};
+    m_timeLeft = DEFAULT_TIME;
+}
+
+void Timer::stopAndSync(std::chrono::seconds timeLeft)
+{
+    m_timeLeft = timeLeft;
     m_timer.cancel();
 }
 

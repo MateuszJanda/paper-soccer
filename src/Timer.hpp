@@ -21,7 +21,8 @@ public:
     void start() override;
     void resume() override;
     void stop() override;
-    void stopAndSync(int timeLeft) override;
+    void reset() override;
+    void stopAndSync(std::chrono::seconds timeLeft) override;
 
     void onTimer(boost::system::error_code errorCode);
 

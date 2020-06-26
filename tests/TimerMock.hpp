@@ -18,7 +18,8 @@ public:
     MOCK_METHOD(void, start, ());
     MOCK_METHOD(void, resume, ());
     MOCK_METHOD(void, stop, ());
-    MOCK_METHOD(void, stopAndSync, (int));
+    MOCK_METHOD(void, reset, ());
+    MOCK_METHOD(void, stopAndSync, (std::chrono::seconds));
 };
 
 } // namespace PaperSoccer

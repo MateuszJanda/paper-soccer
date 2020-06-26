@@ -91,9 +91,11 @@ void Game::resetSettings()
 
     if (m_currentTurn == Turn::User) {
         m_userTimer.start();
+        m_enemyTimer.reset();
         m_view.setContinueStatus();
     } else {
         m_enemyTimer.start();
+        m_userTimer.reset();
         m_view.setEnemyTurnStatus();
     }
 
@@ -221,6 +223,7 @@ void Game::userEndTurn()
         m_view.setWinStatus(m_userScore, m_enemyScore);
     } else {
         m_currentTurn = Turn::Enemy;
+        m_enemyTimer.resume();
         m_view.setEnemyTurnStatus();
     }
 
@@ -229,7 +232,6 @@ void Game::userEndTurn()
 
     m_userTimer.stop();
     m_network.sendEndTurn(m_userTimer.timeLeft());
-    m_enemyTimer.resume();
 }
 
 void Game::onEnemyMove(MoveMsg msg)
@@ -287,10 +289,10 @@ void Game::onEnemyEndTurn(EndTurnMsg msg)
         m_currentTurn = Turn::User;
         m_userStatus = MoveStatus::Continue;
         m_userTimer.resume();
-        m_enemyTimer.stopAndSync(msg.timeLeft);
         m_view.setContinueStatus();
     }
 
+    m_enemyTimer.stopAndSync(std::chrono::seconds{msg.timeLeft});
     m_dirPath.clear();
     drawBoard();
 }
