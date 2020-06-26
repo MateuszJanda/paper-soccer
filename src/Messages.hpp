@@ -17,7 +17,8 @@ enum class MsgId : std::uint8_t {
     Move = 1,
     UndoMove = 2,
     EndTurn = 3,
-    ReadyForNewGame = 4
+    ReadyForNewGame = 4,
+    Timeout = 5,
 };
 
 struct NewGameMsg {
@@ -91,6 +92,19 @@ struct ReadyForNewGameMsg {
     }
 
     static constexpr MsgId msgId{MsgId::ReadyForNewGame};
+
+    template <typename Archive>
+    void serialize(Archive& ar, const unsigned int version)
+    {
+    }
+};
+
+struct TimeoutMsg {
+    TimeoutMsg()
+    {
+    }
+
+    static constexpr MsgId msgId{MsgId::Timeout};
 
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)

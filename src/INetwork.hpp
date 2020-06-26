@@ -21,7 +21,8 @@ public:
         std::function<void(MoveMsg)> handleEnemyMove,
         std::function<void(UndoMoveMsg)> handleEnemyUndoMove,
         std::function<void(EndTurnMsg)> handleEnemyEndTurn,
-        std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg)
+        std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg,
+        std::function<void(TimeoutMsg)> handleEnemyTimeout)
         = 0;
     virtual void run() = 0;
     virtual void sendNewGame(Turn turn, Goal goal) = 0;

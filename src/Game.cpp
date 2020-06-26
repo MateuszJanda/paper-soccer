@@ -50,7 +50,8 @@ void Game::run()
         [this](MoveMsg msg) { onEnemyMove(std::move(msg)); },
         [this](UndoMoveMsg) { onEnemyUndoMove(); },
         [this](EndTurnMsg msg) { onEnemyEndTurn(std::move(msg)); },
-        [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); });
+        [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); },
+        [this](TimeoutMsg) { onEnemyTimeout(); });
     m_network.run();
 
     m_userTimer.registerHandler([this](int timeLeft) { onUserTimerTick(timeLeft); });
@@ -318,6 +319,20 @@ void Game::onUserTimerTick(int timeLeft)
 void Game::onEnemyTimerTick(int timeLeft)
 {
     m_view.drawEnemyTimeLeft(timeLeft);
+}
+
+void Game::onEnemyTimeout()
+{
+    if (m_currentTurn == Turn::User) {
+        throw std::invalid_argument{"Enemy timeout in user turn."};
+    }
+
+    m_match = MatchStatus::GameEnd;
+    m_userScore += 1;
+    m_view.setWinStatus(m_userScore, m_enemyScore);
+
+    m_dirPath.clear();
+    drawBoard();
 }
 
 } // namespace PaperSoccer

@@ -24,7 +24,8 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     std::function<void(MoveMsg)> handleEnemyMove,
     std::function<void(UndoMoveMsg)> handleEnemyUndoMove,
     std::function<void(EndTurnMsg)> handleEnemyEndTurn,
-    std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg)
+    std::function<void(ReadyForNewGameMsg)> handleReadyForNewGameMsg,
+    std::function<void(TimeoutMsg)> handleEnemyTimeoutMsg)
 {
     m_handleKeyboardMouseInput = handleKeyboardMouseInput;
     m_handleInitNewGame = handleInitNewGame;
@@ -33,6 +34,7 @@ void Network::registerHandlers(std::function<void()> handleKeyboardMouseInput,
     m_handleEnemyUndoMove = handleEnemyUndoMove;
     m_handleEnemyEndTurn = handleEnemyEndTurn;
     m_handleReadyForNewGameMsg = handleReadyForNewGameMsg;
+    m_handleEnemyTimeoutMsg = handleEnemyTimeoutMsg;
 }
 
 void Network::setupHandlers()
@@ -190,6 +192,9 @@ void Network::onRead()
                 break;
             case MsgId::ReadyForNewGame:
                 onReadMsg<ReadyForNewGameMsg>(dataSize, m_handleReadyForNewGameMsg);
+                break;
+            case MsgId::Timeout:
+                onReadMsg<TimeoutMsg>(dataSize, m_handleEnemyTimeoutMsg);
                 break;
             default:
                 throw std::invalid_argument{"Can't recognize msgId."};

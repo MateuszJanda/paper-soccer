@@ -20,7 +20,8 @@ public:
                                          std::function<void(MoveMsg)>,
                                          std::function<void(UndoMoveMsg)>,
                                          std::function<void(EndTurnMsg)>,
-                                         std::function<void(ReadyForNewGameMsg)>));
+                                         std::function<void(ReadyForNewGameMsg)>,
+                                         std::function<void(TimeoutMsg)>));
     MOCK_METHOD(void, sendTimeout, ());
     MOCK_METHOD(void, sendNewGame, (Turn, Goal));
     MOCK_METHOD(void, sendMove, (const Direction&));

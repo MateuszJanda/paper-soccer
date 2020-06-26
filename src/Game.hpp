@@ -52,6 +52,7 @@ public:
 
     void onUserTimerTick(int timeLeft);
     void onEnemyTimerTick(int timeLeft);
+    void onEnemyTimeout();
 
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'u'};
