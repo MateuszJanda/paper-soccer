@@ -29,9 +29,11 @@ namespace {
 
 } // namespace anonymous
 
-Game::Game(INetwork& network, ITimer& timer, IBoard& board, const INCurses& ncurses, const IView& view)
+Game::Game(INetwork& network, ITimer& userTimer, ITimer &enemyTimer, IBoard& board,
+           const INCurses& ncurses, const IView& view)
     : m_network{network}
-    , m_timer{timer}
+    , m_userTimer{userTimer}
+    , m_enemyTimer{enemyTimer}
     , m_board{board}
     , m_ncurses{ncurses}
     , m_view{view}
@@ -47,9 +49,12 @@ void Game::run()
         [this](NewGameMsg msg) { onNewGame(std::move(msg)); },
         [this](MoveMsg msg) { onEnemyMove(std::move(msg)); },
         [this](UndoMoveMsg) { onEnemyUndoMove(); },
-        [this](EndTurnMsg) { onEnemyEndTurn(); },
+        [this](EndTurnMsg msg) { onEnemyEndTurn(std::move(msg)); },
         [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); });
     m_network.run();
+
+    m_userTimer.registerHandler([this](int timeLeft) { onUserTimerTick(timeLeft); });
+    m_enemyTimer.registerHandler([this](int timeLeft) { onEnemyTimerTick(timeLeft); });
 }
 
 void Game::initNewGame(Goal userGoal)
@@ -84,13 +89,16 @@ void Game::resetSettings()
     m_board.reset();
 
     if (m_currentTurn == Turn::User) {
+        m_userTimer.start();
         m_view.setContinueStatus();
     } else {
+        m_enemyTimer.start();
         m_view.setEnemyTurnStatus();
     }
 
-    m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
+    m_view.drawTimeLeft(m_userTimer.timeLeft(), m_enemyTimer.timeLeft());
     m_view.drawScore(m_userScore, m_enemyScore);
+    m_view.drawLegend(UNDO_MOVE_KEY, NEW_GAME_KEY, DIR_KEYS);
     drawBoard();
 }
 
@@ -218,7 +226,9 @@ void Game::userEndTurn()
     m_dirPath.clear();
     drawBoard();
 
-    m_network.sendEndTurn();
+    m_userTimer.stop();
+    m_network.sendEndTurn(m_userTimer.timeLeft());
+    m_enemyTimer.resume();
 }
 
 void Game::onEnemyMove(MoveMsg msg)
@@ -254,7 +264,7 @@ void Game::onEnemyUndoMove()
     drawBoard();
 }
 
-void Game::onEnemyEndTurn()
+void Game::onEnemyEndTurn(EndTurnMsg msg)
 {
     if (m_currentTurn == Turn::User) {
         throw std::invalid_argument{"Enemy end turn in user turn."};
@@ -275,6 +285,8 @@ void Game::onEnemyEndTurn()
     } else {
         m_currentTurn = Turn::User;
         m_userStatus = MoveStatus::Continue;
+        m_userTimer.resume();
+        m_enemyTimer.stopAndSync(msg.timeLeft);
         m_view.setContinueStatus();
     }
 
@@ -289,9 +301,9 @@ void Game::onEnemyReadyForNewGame()
     }
 }
 
-void Game::onTimer(int timeLeft)
+void Game::onUserTimerTick(int timeLeft)
 {
-    m_view.setUserTime(timeLeft);
+    m_view.drawUserTimeLeft(timeLeft);
     if (timeLeft == 0) {
         m_match = MatchStatus::GameEnd;
         m_enemyScore += 1;
@@ -301,6 +313,11 @@ void Game::onTimer(int timeLeft)
         m_dirPath.clear();
         drawBoard();
     }
+}
+
+void Game::onEnemyTimerTick(int timeLeft)
+{
+    m_view.drawEnemyTimeLeft(timeLeft);
 }
 
 } // namespace PaperSoccer

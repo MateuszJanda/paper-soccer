@@ -18,13 +18,18 @@ public:
     MOCK_METHOD(void, clear, (), (const));
     MOCK_METHOD(void, drawBoard, (std::string, ColorPair, std::string, ColorPair, std::vector<Direction>, ColorPair), (const));
     MOCK_METHOD(void, drawLegend, (char, char, DirKeysMap), (const));
-    MOCK_METHOD(void, drawScore, (int, int), (const));
+
     MOCK_METHOD(void, setContinueStatus, (), (const));
     MOCK_METHOD(void, setEnemyTurnStatus, (), (const));
     MOCK_METHOD(void, setReadyToEndTurnStatus, (), (const));
     MOCK_METHOD(void, setLostStatus, (int, int), (const));
-    MOCK_METHOD(void, setUserTime, (int), (const));
     MOCK_METHOD(void, setWinStatus, (int, int), (const));
+    MOCK_METHOD(void, drawScore, (int, int), (const));
+
+    MOCK_METHOD(void, drawTimeLeft, (int, int), (const));
+    MOCK_METHOD(void, drawUserTimeLeft, (int), (const));
+    MOCK_METHOD(void, drawEnemyTimeLeft, (int), (const));
+
     MOCK_METHOD(bool, isStatusButton, (int, int), (const));
     MOCK_METHOD(std::optional<Direction>, getMoveDirection, (int, int), (const));
 };

@@ -25,7 +25,7 @@ public:
     MOCK_METHOD(void, sendNewGame, (Turn, Goal));
     MOCK_METHOD(void, sendMove, (const Direction&));
     MOCK_METHOD(void, sendUndoMove, ());
-    MOCK_METHOD(void, sendEndTurn, ());
+    MOCK_METHOD(void, sendEndTurn, (int));
     MOCK_METHOD(void, sendReadyForNewGame, ());
 };
 

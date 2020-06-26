@@ -28,7 +28,8 @@ enum class MatchStatus : std::uint8_t {
 
 class Game {
 public:
-    Game(INetwork& network, ITimer& timer, IBoard& board, const INCurses& ncurses, const IView& view);
+    Game(INetwork& network, ITimer& userTimer, ITimer& enemyTimer, IBoard& board,
+         const INCurses& ncurses, const IView& view);
 
     void run();
 
@@ -46,10 +47,11 @@ public:
 
     void onEnemyMove(MoveMsg msg);
     void onEnemyUndoMove();
-    void onEnemyEndTurn();
+    void onEnemyEndTurn(EndTurnMsg msg);
     void onEnemyReadyForNewGame();
 
-    void onTimer(int timeLeft);
+    void onUserTimerTick(int timeLeft);
+    void onEnemyTimerTick(int timeLeft);
 
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'u'};
@@ -66,7 +68,8 @@ protected:
     void drawBoard() const;
 
     INetwork& m_network;
-    ITimer& m_timer;
+    ITimer& m_userTimer;
+    ITimer& m_enemyTimer;
     IBoard& m_board;
     const INCurses& m_ncurses;
     const IView& m_view;

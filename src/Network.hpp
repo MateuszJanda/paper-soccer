@@ -33,7 +33,7 @@ public:
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
     void sendUndoMove() override;
-    void sendEndTurn() override;
+    void sendEndTurn(int timeLeft) override;
     void sendReadyForNewGame() override;
 
     template<typename Msg>

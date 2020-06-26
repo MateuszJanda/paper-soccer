@@ -27,7 +27,7 @@ public:
     virtual void sendNewGame(Turn turn, Goal goal) = 0;
     virtual void sendMove(const Direction& dir) = 0;
     virtual void sendUndoMove() = 0;
-    virtual void sendEndTurn() = 0;
+    virtual void sendEndTurn(int timeLeft) = 0;
     virtual void sendReadyForNewGame() = 0;
 
     virtual void sendTimeout() = 0;

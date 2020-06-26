@@ -13,9 +13,14 @@ Timer::Timer(boost::asio::io_context& ioContext)
 
 }
 
-void Timer::registerHandlers(std::function<void(int)> handleTimerTick)
+void Timer::registerHandler(std::function<void(int)> handleTimerTick)
 {
     m_handleTimerTick = handleTimerTick;
+}
+
+int Timer::timeLeft() const
+{
+    return m_timeLeft;
 }
 
 void Timer::start()
@@ -31,6 +36,12 @@ void Timer::resume()
 
 void Timer::stop()
 {
+    m_timer.cancel();
+}
+
+void Timer::stopAndSync(int timeLeft)
+{
+    m_timeLeft = timeLeft;
     m_timer.cancel();
 }
 

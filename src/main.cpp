@@ -50,11 +50,12 @@ void runServer(short unsigned int port)
     tcp::endpoint endpoint{tcp::v4(), port};
     Server server{ioContext, endpoint};
 
-    Timer timer{ioContext};
+    Timer userTimer{ioContext};
+    Timer enemyTimer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};
-    Game game{server, timer, board, ncurses, view};
+    Game game{server, userTimer, enemyTimer, board, ncurses, view};
     game.run();
 
     // https://www.boost.org/doc/libs/1_73_0/doc/html/boost_asio/overview/core/threads.html
@@ -76,11 +77,12 @@ void runClient(std::string address, short unsigned int port)
 
     Client client{ioContext, endpoints};
 
-    Timer timer{ioContext};
+    Timer userTimer{ioContext};
+    Timer enemyTimer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
     View view{board, ncurses};
-    Game game{client, timer, board, ncurses, view};
+    Game game{client, userTimer, enemyTimer, board, ncurses, view};
     game.run();
 
     std::thread t([&ioContext]() { ioContext.run(); });

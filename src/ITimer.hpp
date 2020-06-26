@@ -14,10 +14,12 @@ class ITimer {
 public:
     virtual ~ITimer() noexcept = default;
 
-    virtual void registerHandlers(std::function<void(int)> handleTimerTick) = 0;
+    virtual void registerHandler(std::function<void(int)> handleTimerTick) = 0;
+    virtual int timeLeft() const = 0;
     virtual void start() = 0;
     virtual void resume() = 0;
     virtual void stop() = 0;
+    virtual void stopAndSync(int timeLeft) = 0;
 };
 
 } // namespace PaperSoccer

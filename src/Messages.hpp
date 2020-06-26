@@ -70,15 +70,18 @@ struct UndoMoveMsg {
 
 
 struct EndTurnMsg {
-    EndTurnMsg()
+    EndTurnMsg(int timeLeft = 0)
+        : timeLeft{timeLeft}
     {
     }
 
     static constexpr MsgId msgId{MsgId::EndTurn};
+    int timeLeft;
 
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
+        ar & timeLeft;
     }
 };
 

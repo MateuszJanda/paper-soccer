@@ -13,10 +13,12 @@ namespace PaperSoccer {
 
 class TimerMock : public ITimer {
 public:
-    MOCK_METHOD(void, registerHandlers, (std::function<void(int)>));
+    MOCK_METHOD(void, registerHandler, (std::function<void(int)>));
+    MOCK_METHOD(int, timeLeft, (), (const));
     MOCK_METHOD(void, start, ());
     MOCK_METHOD(void, resume, ());
     MOCK_METHOD(void, stop, ());
+    MOCK_METHOD(void, stopAndSync, (int));
 };
 
 } // namespace PaperSoccer

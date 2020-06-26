@@ -79,9 +79,9 @@ void Network::sendUndoMove()
     sendMsg(msg);
 }
 
-void Network::sendEndTurn()
+void Network::sendEndTurn(int timeLeft)
 {
-    EndTurnMsg msg{};
+    EndTurnMsg msg{timeLeft};
     sendMsg(msg);
 }
 

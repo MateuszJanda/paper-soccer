@@ -45,14 +45,16 @@ public:
 
     void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const override;
 
-    void drawScore(int won, int lost) const override;
     void setContinueStatus() const override;
     void setEnemyTurnStatus() const override;
     void setReadyToEndTurnStatus() const override;
     void setLostStatus(int won, int lost) const override;
     void setWinStatus(int won, int lost) const override;
+    void drawScore(int won, int lost) const override;
 
-    void setUserTime(int timeLeft) const override;
+    void drawTimeLeft(int userTimeLeft, int enemyTimeLeft) const override;
+    void drawUserTimeLeft(int timeLeft) const override;
+    void drawEnemyTimeLeft(int timeLeft) const override;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
@@ -62,8 +64,9 @@ public:
 
     static constexpr int X_OFFSET{2};
     static constexpr int Y_OFFSET{1};
-    static constexpr int Y_SCORE_OFFSET{Y_OFFSET + 5};
-    static constexpr int Y_LEGNENT_OFFSET{Y_OFFSET + 9};
+    static constexpr int Y_TIME_OFFSET{Y_OFFSET + 5};
+    static constexpr int Y_SCORE_OFFSET{Y_OFFSET + 9};
+    static constexpr int Y_LEGNENT_OFFSET{Y_OFFSET + 13};
 
 private:
     const std::string TOP_LINE{".--------------."};

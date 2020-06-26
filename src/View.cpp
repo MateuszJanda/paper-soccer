@@ -351,11 +351,6 @@ void View::setWinStatus(int won, int lost) const
     drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_ORANGE);
 }
 
-void View::setUserTime(int timeLeft) const
-{
-
-}
-
 void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const
 {
     const int x = getMenuXOffset();
@@ -382,6 +377,34 @@ void View::drawScore(int won, int lost) const
     m_ncurses.print(x, y + 0, " Score:");
     m_ncurses.print(x, y + 1, "   Won: " + std::to_string(won), ColorPair::USER);
     m_ncurses.print(x, y + 2, "  Lost: " + std::to_string(lost), ColorPair::ENEMY);
+}
+
+void View::drawTimeLeft(int userTimeLeft, int enemyTimeLeft) const
+{
+    drawUserTimeLeft(userTimeLeft);
+    drawEnemyTimeLeft(enemyTimeLeft);
+}
+
+void View::drawUserTimeLeft(int timeLeft) const
+{
+    const auto x = getMenuXOffset();
+    const auto y = Y_TIME_OFFSET;
+
+    m_ncurses.print(x, y + 0, " Time left:");
+    m_ncurses.print(x, y + 1, "     Me: " + std::to_string(timeLeft), ColorPair::USER);
+
+    m_ncurses.refreshView();
+}
+
+void View::drawEnemyTimeLeft(int timeLeft) const
+{
+    const auto x = getMenuXOffset();
+    const auto y = Y_TIME_OFFSET;
+
+    m_ncurses.print(x, y + 0, " Time left:");
+    m_ncurses.print(x, y + 2, "  Enemy: " + std::to_string(timeLeft), ColorPair::ENEMY);
+
+    m_ncurses.refreshView();
 }
 
 bool View::isStatusButton(int x, int y) const

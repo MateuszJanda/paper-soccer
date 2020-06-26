@@ -16,10 +16,12 @@ class Timer : public ITimer {
 public:
     Timer(boost::asio::io_context& ioContext);
 
-    void registerHandlers(std::function<void(int)> handleTimerTick) override;
+    void registerHandler(std::function<void(int)> handleTimerTick) override;
+    int timeLeft() const override;
     void start() override;
     void resume() override;
     void stop() override;
+    void stopAndSync(int timeLeft) override;
 
     void onTimer(boost::system::error_code errorCode);
 
