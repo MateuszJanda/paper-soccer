@@ -344,7 +344,6 @@ TEST_F(GameTest, userMoveWhenMatchNotInProgress)
     game.userMove(Direction::Left);
 }
 
-
 TEST_F(GameTest, userMoveWhenUserTurnAndNextIllegalMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));

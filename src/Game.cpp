@@ -307,15 +307,17 @@ void Game::onEnemyReadyForNewGame()
 void Game::onUserTimerTick(std::chrono::milliseconds timeLeft)
 {
     m_view.drawUserTimeLeft(timeLeft);
-    if (timeLeft.count() == 0) {
-        m_match = MatchStatus::GameEnd;
-        m_enemyScore += 1;
-        m_view.setLostStatus(m_userScore, m_enemyScore);
-        m_network.sendTimeout();
-
-        m_dirPath.clear();
-        drawBoard();
+    if (timeLeft.count() > 0) {
+        return;
     }
+
+    m_match = MatchStatus::GameEnd;
+    m_enemyScore += 1;
+    m_view.setLostStatus(m_userScore, m_enemyScore);
+    m_network.sendTimeout();
+
+    m_dirPath.clear();
+    drawBoard();
 }
 
 void Game::onEnemyTimerTick(std::chrono::milliseconds timeLeft)
