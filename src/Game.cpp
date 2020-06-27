@@ -29,8 +29,8 @@ namespace {
 
 } // namespace anonymous
 
-Game::Game(INetwork& network, ITimer& userTimer, ITimer &enemyTimer, IBoard& board,
-           const INCurses& ncurses, const IView& view)
+Game::Game(INetwork& network, ITimer& userTimer, ITimer& enemyTimer, IBoard& board,
+    const INCurses& ncurses, const IView& view)
     : m_network{network}
     , m_userTimer{userTimer}
     , m_enemyTimer{enemyTimer}
@@ -201,8 +201,7 @@ void Game::userMouse(int x, int y)
 {
     if (m_view.isStatusButton(x, y)) {
         userEndTurn();
-    }
-    else if (const auto dir = m_view.getMoveDirection(x, y); dir) {
+    } else if (const auto dir = m_view.getMoveDirection(x, y); dir) {
         userMove(*dir);
     }
 }

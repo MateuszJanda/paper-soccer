@@ -1,13 +1,13 @@
 #ifndef I_VIEW_HPP
 #define I_VIEW_HPP
 
-#include "Direction.hpp"
 #include "ColorPair.hpp"
-#include <string>
-#include <vector>
+#include "Direction.hpp"
+#include <chrono>
 #include <map>
 #include <optional>
-#include <chrono>
+#include <string>
+#include <vector>
 
 namespace PaperSoccer {
 
@@ -17,8 +17,8 @@ public:
 
     virtual void clear() const = 0;
     virtual void drawBoard(std::string topName, ColorPair topColor,
-                           std::string bottomName, ColorPair bottomColor,
-                           std::vector<Direction> dirPath, ColorPair ballColor) const = 0;
+        std::string bottomName, ColorPair bottomColor,
+        std::vector<Direction> dirPath, ColorPair ballColor) const = 0;
     virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const = 0;
 
     virtual void setContinueStatus() const = 0;

@@ -29,8 +29,8 @@ public:
     View(const IBoard& board, const INCurses& ncurses);
     void clear() const override;
     void drawBoard(std::string topName, ColorPair topColor,
-                   std::string bottomName, ColorPair bottomColor,
-                   std::vector<Direction> dirPath, ColorPair ballColor) const override;
+        std::string bottomName, ColorPair bottomColor,
+        std::vector<Direction> dirPath, ColorPair ballColor) const override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
 
     void drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const;

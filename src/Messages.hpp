@@ -70,7 +70,6 @@ struct UndoMoveMsg {
     }
 };
 
-
 struct EndTurnMsg {
     EndTurnMsg(std::chrono::milliseconds timeLeft = std::chrono::milliseconds{0})
         : timeLeft{static_cast<int>(timeLeft.count())}
@@ -83,7 +82,7 @@ struct EndTurnMsg {
     template <typename Archive>
     void serialize(Archive& ar, const unsigned int version)
     {
-        ar & timeLeft;
+        ar& timeLeft;
     }
 };
 

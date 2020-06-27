@@ -25,11 +25,10 @@ enum class MatchStatus : std::uint8_t {
     EnemyReadyForNew,
 };
 
-
 class Game {
 public:
     Game(INetwork& network, ITimer& userTimer, ITimer& enemyTimer, IBoard& board,
-         const INCurses& ncurses, const IView& view);
+        const INCurses& ncurses, const IView& view);
 
     void run();
 
@@ -57,13 +56,13 @@ public:
     static constexpr char NEW_GAME_KEY{'n'};
     static constexpr char UNDO_MOVE_KEY{'u'};
     const std::map<char, Direction> DIR_KEYS{{'q', Direction::TopLeft},
-                                             {'w', Direction::Top},
-                                             {'e', Direction::TopRight},
-                                             {'a', Direction::Left},
-                                             {'d', Direction::Right},
-                                             {'z', Direction::BottomLeft},
-                                             {'x', Direction::Bottom},
-                                             {'c', Direction::BottomRight}};
+        {'w', Direction::Top},
+        {'e', Direction::TopRight},
+        {'a', Direction::Left},
+        {'d', Direction::Right},
+        {'z', Direction::BottomLeft},
+        {'x', Direction::Bottom},
+        {'c', Direction::BottomRight}};
 
 protected:
     void drawBoard() const;

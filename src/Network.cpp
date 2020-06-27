@@ -94,7 +94,7 @@ void Network::sendReadyForNewGame()
     sendMsg(msg);
 }
 
-template<typename Msg>
+template <typename Msg>
 void Network::sendMsg(const Msg& msg)
 {
     auto msgId = encodeMsgId(msg.msgId);
@@ -126,7 +126,7 @@ std::string Network::encodeMsgId(MsgId msgId)
     return msgIdStream.str();
 }
 
-template<typename Msg>
+template <typename Msg>
 std::string Network::encodeData(const Msg& msg)
 {
     std::ostringstream archiveStream;
@@ -204,7 +204,7 @@ void Network::onRead()
         });
 }
 
-template<typename Msg>
+template <typename Msg>
 void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc)
 {
     m_inboundData.resize(dataSize);
@@ -230,11 +230,11 @@ MsgId Network::decodeMsgId(const std::string& inboundData)
 {
     std::istringstream is{inboundData};
     std::uint8_t msgId{0};
-    if (not (is >> std::hex >> msgId)) {
+    if (not(is >> std::hex >> msgId)) {
         throw std::invalid_argument{"Can't decode msgId."};
     }
 
-    return  static_cast<MsgId>(msgId);
+    return static_cast<MsgId>(msgId);
 }
 
 std::size_t Network::decodeDataSize(const std::string& inboundData)
@@ -248,7 +248,7 @@ std::size_t Network::decodeDataSize(const std::string& inboundData)
     return dataSize;
 }
 
-template<typename Msg>
+template <typename Msg>
 Msg Network::decodeData(const std::vector<char>& inboundData)
 {
     std::string archiveData{&inboundData[0], inboundData.size()};

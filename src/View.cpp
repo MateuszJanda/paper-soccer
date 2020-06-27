@@ -11,18 +11,17 @@ namespace PaperSoccer {
 namespace {
     int vx(int x)
     {
-       return x * View::X_FACTOR + View::X_OFFSET;
+        return x * View::X_FACTOR + View::X_OFFSET;
     }
 
     int vy(int y)
     {
-       return y * View::Y_FACTOR + View::Y_OFFSET;
+        return y * View::Y_FACTOR + View::Y_OFFSET;
     }
 
 } // namespace anonymous
 
-
-View::View(const IBoard &board, const INCurses &ncurses)
+View::View(const IBoard& board, const INCurses& ncurses)
     : m_board{board}
     , m_ncurses{ncurses}
 {
@@ -34,7 +33,7 @@ void View::clear() const
 }
 
 void View::drawBoard(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor,
-                     std::vector<Direction> dirPath, ColorPair ballColor) const
+    std::vector<Direction> dirPath, ColorPair ballColor) const
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
         for (auto x = 0; x < m_board.getWidth(); x++) {
@@ -432,8 +431,7 @@ std::optional<Direction> View::getMoveDirection(int x, int y) const
     const auto viewX = vx(ballPos.x);
     const auto viewY = vy(ballPos.y);
 
-    if (x == viewX - X_FACTOR)
-    {
+    if (x == viewX - X_FACTOR) {
         if (y == viewY - Y_FACTOR) {
             return Direction::TopLeft;
         } else if (y == viewY) {

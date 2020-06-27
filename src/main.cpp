@@ -3,15 +3,15 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#include "NCurses.hpp"
 #include "Board.hpp"
-#include "View.hpp"
-#include "Game.hpp"
-#include "Timer.hpp"
-#include "Server.hpp"
 #include "Client.hpp"
-#include <boost/program_options.hpp>
+#include "Game.hpp"
+#include "NCurses.hpp"
+#include "Server.hpp"
+#include "Timer.hpp"
+#include "View.hpp"
 #include <boost/asio.hpp>
+#include <boost/program_options.hpp>
 #include <iostream>
 
 using namespace PaperSoccer;
@@ -21,20 +21,19 @@ boost::program_options::options_description usage()
     namespace po = boost::program_options;
 
     po::options_description desc(
-                "\n"
-                "Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>\n"
-                "paper-soccer " GAME_VERSION " - a free terminal version of paper soccer game\n"
-                "Homepage: github.com/MateuszJanda/paper-soccer\n"
-                "\n"
-                "Options");
+        "\n"
+        "Copyright (C) 2020 Mateusz Janda <mateusz janda at gmail com>\n"
+        "paper-soccer " GAME_VERSION " - a free terminal version of paper soccer game\n"
+        "Homepage: github.com/MateuszJanda/paper-soccer\n"
+        "\n"
+        "Options");
 
     desc.add_options()
         ("help,h", "display this help")
         ("version,v", "version")
         ("wait,w", "run as server and wait for connection")
         ("connect,c", po::value<std::string>()->default_value("localhost"), "run as client and connect to specific address")
-        ("port,p", po::value<short unsigned int>()->default_value(8787), "port number")
-    ;
+        ("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
 
     return desc;
 }
@@ -117,11 +116,11 @@ int main(int argc, char* argv[])
         } else {
             runClient(vm["connect"].as<std::string>(), vm["port"].as<short unsigned int>());
         }
-    } catch (po::too_many_positional_options_error &e) {
+    } catch (po::too_many_positional_options_error& e) {
         std::cerr << e.what() << "\n";
         std::cout << desc << "\n";
         exit(1);
-    } catch (po::error_with_option_name &e) {
+    } catch (po::error_with_option_name& e) {
         std::cerr << e.what() << "\n";
         std::cout << desc << "\n";
         exit(1);

@@ -37,12 +37,12 @@ public:
     void sendEndTurn(std::chrono::milliseconds timeLeft) override;
     void sendReadyForNewGame() override;
 
-    template<typename Msg>
+    template <typename Msg>
     void sendMsg(const Msg& msg);
     void onWrite();
 
     void onRead();
-    template<typename Msg>
+    template <typename Msg>
     void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
 
 protected:
@@ -54,12 +54,12 @@ protected:
 private:
     std::string encodeMsgId(MsgId msgId);
     std::string encodeDataSize(const std::string& data);
-    template<typename Msg>
+    template <typename Msg>
     std::string encodeData(const Msg& msg);
 
     MsgId decodeMsgId(const std::string& inboundData);
     std::size_t decodeDataSize(const std::string& inboundData);
-    template<typename Msg>
+    template <typename Msg>
     Msg decodeData(const std::vector<char>& inboundData);
 
     boost::asio::io_context& m_ioContext;

@@ -6,8 +6,8 @@
 #ifndef I_TIMER_HPP
 #define I_TIMER_HPP
 
-#include <functional>
 #include <chrono>
+#include <functional>
 
 namespace PaperSoccer {
 

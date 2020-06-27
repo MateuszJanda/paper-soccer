@@ -10,7 +10,6 @@ namespace PaperSoccer {
 Timer::Timer(boost::asio::io_context& ioContext)
     : m_timer{ioContext}
 {
-
 }
 
 void Timer::registerHandler(std::function<void(std::chrono::milliseconds)> handleTimerTick)
@@ -84,4 +83,3 @@ void Timer::onTimer(boost::system::error_code errorCode)
 }
 
 } // namespace PaperSoccer
-

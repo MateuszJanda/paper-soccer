@@ -5,15 +5,15 @@
 
 #include "NCurses.hpp"
 #include <clocale>
-#include <tuple>
 #include <ncurses.h>
+#include <tuple>
 
 namespace PaperSoccer {
 
 namespace {
     std::tuple<int, int, int> rgbToCursesColor(int red, int green, int blue)
     {
-        return std::make_tuple<int, int, int>(1000 * red/255, 1000 * green/255, 1000 * blue/255);
+        return std::make_tuple<int, int, int>(1000 * red / 255, 1000 * green / 255, 1000 * blue / 255);
     }
 } // namespace anonymous
 
@@ -49,8 +49,8 @@ NCurses::~NCurses() noexcept
 
 void NCurses::setupColors() const
 {
-    prepareColor(DEFAULT_BACKGROUND, 0x31, 0x3a, 0x44);
-    prepareColor(DEFAULT_FOREGROUND, 0xfe, 0xfe, 0xfe);
+    prepareColor(DEFAULT_BACKGROUND, 0x31, 0x3a, 0x43);
+    prepareColor(DEFAULT_FOREGROUND, 0xfe, 0xfe, 0xff);
 
     prepareColor(RED, 0xed, 0x37, 0x92);
     prepareColor(BLUE, 0x00, 0x96, 0xdb);

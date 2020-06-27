@@ -38,5 +38,4 @@ private:
 
 } // namespace PaperSoccer
 
-
 #endif // TIMER_HPP
