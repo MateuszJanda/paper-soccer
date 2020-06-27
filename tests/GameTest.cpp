@@ -19,6 +19,7 @@ namespace {
     const std::string USER_NAME{"Me"};
     const std::string ENEMY_NAME{"Enemy"};
 
+    const std::chrono::milliseconds NO_TIME_LEFT{0};
     const std::chrono::milliseconds USER_TIME_LEFT{111};
     const std::chrono::milliseconds ENEMY_TIME_LEFT{222};
 
@@ -678,14 +679,14 @@ TEST_F(GameTest, onEnemyUndoMoveWhenEnemyTurnWithDirPath)
 TEST_F(GameTest, onEnemyEndTurnWhenUserTurn)
 {
     game.setCurrentTurn(Turn::User);
-    ASSERT_ANY_THROW(game.onEnemyEndTurn(EndTurnMsg{}));
+    ASSERT_ANY_THROW(game.onEnemyEndTurn(END_TURN_MSG));
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenUEnemyTurnAndEnemyShouldContinue)
 {
     game.setCurrentTurn(Turn::Enemy);
     game.setEnemyStatus(MoveStatus::Continue);
-    ASSERT_ANY_THROW(game.onEnemyEndTurn(EndTurnMsg{}));
+    ASSERT_ANY_THROW(game.onEnemyEndTurn(END_TURN_MSG));
 }
 
 TEST_F(GameTest, onEnemyEndTurnWhenEnemyTurnAndTopEnemyGoal)
@@ -815,6 +816,49 @@ TEST_F(GameTest, onEnemyReadyForNewGameWhenGameEnd)
     game.onEnemyReadyForNewGame();
 
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::EnemyReadyForNew);
+}
+
+TEST_F(GameTest, onUserTimerTickWhenThereIsTime)
+{
+    EXPECT_CALL(viewMock, drawUserTimeLeft(USER_TIME_LEFT));
+    game.onUserTimerTick(USER_TIME_LEFT);
+}
+
+TEST_F(GameTest, onUserTimerTickWhenThereIsNoTime)
+{
+    EXPECT_CALL(viewMock, drawUserTimeLeft(NO_TIME_LEFT));
+    EXPECT_CALL(viewMock, setLostStatus(0, 1));
+    EXPECT_CALL(networkMock, sendTimeout());
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
+
+    game.onUserTimerTick(NO_TIME_LEFT);
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
+}
+
+TEST_F(GameTest, onEnemyTimerTick)
+{
+    EXPECT_CALL(viewMock, drawEnemyTimeLeft(ENEMY_TIME_LEFT));
+    game.onEnemyTimerTick(ENEMY_TIME_LEFT);
+}
+
+TEST_F(GameTest, onEnemyTimeoutWhenUserTurn)
+{
+    game.setCurrentTurn(Turn::User);
+    ASSERT_ANY_THROW(game.onEnemyTimeout());
+}
+
+TEST_F(GameTest, onEnemyTimeoutWhenEnemyTurn)
+{
+    EXPECT_CALL(viewMock, setWinStatus(1, 0));
+    EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
+
+    game.setCurrentTurn(Turn::Enemy);
+    game.onEnemyTimeout();
+
+    EXPECT_EQ(game.getMatchStatus(), MatchStatus::GameEnd);
+    EXPECT_THAT(game.getDirectionPath(), ElementsAre());
 }
 
 } // namespace PaperSoccer
