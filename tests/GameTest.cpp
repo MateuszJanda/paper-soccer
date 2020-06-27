@@ -353,7 +353,7 @@ TEST_F(GameTest, userMouseWhenStatusButtonClickAndEndTurn)
     EXPECT_CALL(viewMock, isStatusButton(x, y)).WillOnce(Return(true));
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
     EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});
@@ -404,7 +404,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndDeadEndMove)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
     EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});
@@ -419,7 +419,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopOwnGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
     EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});
@@ -435,7 +435,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomOwnGoal)
 {
     EXPECT_CALL(viewMock, setLostStatus(0, 1));
     EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});
@@ -451,7 +451,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndTopGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
     EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});
@@ -467,7 +467,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndBottomGoal)
 {
     EXPECT_CALL(viewMock, setWinStatus(1, 0));
     EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::BottomGoal);
@@ -482,7 +482,7 @@ TEST_F(GameTest, userEndTurnWhenUserTurnAndStopMove)
 {
     EXPECT_CALL(viewMock, setEnemyTurnStatus());
     EXPECT_CALL(viewMock, drawBoard(USER_NAME, _, ENEMY_NAME, _, EMPTY_PATH, _));
-    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::seconds{444}));
+    EXPECT_CALL(networkMock, sendEndTurn(std::chrono::milliseconds{444}));
 
     game.setCurrentTurn(Turn::User);
     game.setDirectionPath({Direction::Top});

@@ -34,7 +34,7 @@ public:
     void sendNewGame(Turn turn, Goal goal) override;
     void sendMove(const Direction& dir) override;
     void sendUndoMove() override;
-    void sendEndTurn(std::chrono::seconds timeLeft) override;
+    void sendEndTurn(std::chrono::milliseconds timeLeft) override;
     void sendReadyForNewGame() override;
 
     template<typename Msg>

@@ -54,8 +54,8 @@ void Game::run()
         [this](TimeoutMsg) { onEnemyTimeout(); });
     m_network.run();
 
-    m_userTimer.registerHandler([this](std::chrono::seconds timeLeft) { onUserTimerTick(timeLeft); });
-    m_enemyTimer.registerHandler([this](std::chrono::seconds timeLeft) { onEnemyTimerTick(timeLeft); });
+    m_userTimer.registerHandler([this](std::chrono::milliseconds timeLeft) { onUserTimerTick(timeLeft); });
+    m_enemyTimer.registerHandler([this](std::chrono::milliseconds timeLeft) { onEnemyTimerTick(timeLeft); });
 }
 
 void Game::initNewGame(Goal userGoal)
@@ -292,7 +292,7 @@ void Game::onEnemyEndTurn(EndTurnMsg msg)
         m_view.setContinueStatus();
     }
 
-    m_enemyTimer.pauseAndSync(std::chrono::seconds{msg.timeLeft});
+    m_enemyTimer.pauseAndSync(std::chrono::milliseconds{msg.timeLeft});
     m_dirPath.clear();
     drawBoard();
 }
@@ -304,7 +304,7 @@ void Game::onEnemyReadyForNewGame()
     }
 }
 
-void Game::onUserTimerTick(std::chrono::seconds timeLeft)
+void Game::onUserTimerTick(std::chrono::milliseconds timeLeft)
 {
     m_view.drawUserTimeLeft(timeLeft);
     if (timeLeft.count() == 0) {
@@ -318,7 +318,7 @@ void Game::onUserTimerTick(std::chrono::seconds timeLeft)
     }
 }
 
-void Game::onEnemyTimerTick(std::chrono::seconds timeLeft)
+void Game::onEnemyTimerTick(std::chrono::milliseconds timeLeft)
 {
     m_view.drawEnemyTimeLeft(timeLeft);
 }

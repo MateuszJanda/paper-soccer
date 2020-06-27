@@ -15,13 +15,13 @@ class ITimer {
 public:
     virtual ~ITimer() noexcept = default;
 
-    virtual void registerHandler(std::function<void(std::chrono::seconds)> handleTimerTick) = 0;
-    virtual std::chrono::seconds timeLeft() const = 0;
+    virtual void registerHandler(std::function<void(std::chrono::milliseconds)> handleTimerTick) = 0;
+    virtual std::chrono::milliseconds timeLeft() const = 0;
     virtual void start() = 0;
     virtual void resume() = 0;
     virtual void reset() = 0;
     virtual void pause() = 0;
-    virtual void pauseAndSync(std::chrono::seconds timeLeft) = 0;
+    virtual void pauseAndSync(std::chrono::milliseconds timeLeft) = 0;
 };
 
 } // namespace PaperSoccer

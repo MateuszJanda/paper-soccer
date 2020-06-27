@@ -16,23 +16,24 @@ class Timer : public ITimer {
 public:
     Timer(boost::asio::io_context& ioContext);
 
-    void registerHandler(std::function<void(std::chrono::seconds)> handleTimerTick) override;
-    std::chrono::seconds timeLeft() const override;
+    void registerHandler(std::function<void(std::chrono::milliseconds)> handleTimerTick) override;
+    std::chrono::milliseconds timeLeft() const override;
     void start() override;
     void resume() override;
     void reset() override;
     void pause() override;
-    void pauseAndSync(std::chrono::seconds timeLeft) override;
+    void pauseAndSync(std::chrono::milliseconds timeLeft) override;
 
     void onTimer(boost::system::error_code errorCode);
 
 private:
-    const std::chrono::seconds DEFAULT_TIME{150};
+    const std::chrono::seconds DEFAULT_DURATION{150};
 
     boost::asio::high_resolution_timer m_timer;
-    std::function<void(std::chrono::seconds)> m_handleTimerTick;
-    std::chrono::seconds m_timeLeft{DEFAULT_TIME};
-
+    std::function<void(std::chrono::milliseconds)> m_handleTimerTick;
+    std::chrono::milliseconds m_timeLeft{DEFAULT_DURATION};
+    std::chrono::milliseconds m_duration{DEFAULT_DURATION};
+    std::chrono::steady_clock::time_point m_start;
 };
 
 } // namespace PaperSoccer

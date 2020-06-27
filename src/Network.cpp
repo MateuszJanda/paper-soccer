@@ -81,7 +81,7 @@ void Network::sendUndoMove()
     sendMsg(msg);
 }
 
-void Network::sendEndTurn(std::chrono::seconds timeLeft)
+void Network::sendEndTurn(std::chrono::milliseconds timeLeft)
 {
     EndTurnMsg msg{timeLeft};
     sendMsg(msg);

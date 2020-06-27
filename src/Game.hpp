@@ -50,8 +50,8 @@ public:
     void onEnemyEndTurn(EndTurnMsg msg);
     void onEnemyReadyForNewGame();
 
-    void onUserTimerTick(std::chrono::seconds timeLeft);
-    void onEnemyTimerTick(std::chrono::seconds timeLeft);
+    void onUserTimerTick(std::chrono::milliseconds timeLeft);
+    void onEnemyTimerTick(std::chrono::milliseconds timeLeft);
     void onEnemyTimeout();
 
     static constexpr char NEW_GAME_KEY{'n'};

@@ -52,10 +52,10 @@ public:
     void setWinStatus(int won, int lost) const override;
     void drawScore(int won, int lost) const override;
 
-    void drawTimeLeft(std::chrono::seconds userTimeLeft, std::chrono::seconds enemyTimeLeft) const override;
-    void drawUserTimeLeft(std::chrono::seconds timeLeft) const override;
-    void drawEnemyTimeLeft(std::chrono::seconds timeLeft) const override;
-    void drawTime(int x, int y, std::chrono::seconds timeLeft, std::string name, ColorPair color) const;
+    void drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono::milliseconds enemyTimeLeft) const override;
+    void drawUserTimeLeft(std::chrono::milliseconds timeLeft) const override;
+    void drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const override;
+    void drawTime(int x, int y, std::chrono::milliseconds timeLeft, std::string name, ColorPair color) const;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;

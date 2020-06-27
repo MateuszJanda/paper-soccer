@@ -72,7 +72,7 @@ struct UndoMoveMsg {
 
 
 struct EndTurnMsg {
-    EndTurnMsg(std::chrono::seconds timeLeft = std::chrono::seconds{0})
+    EndTurnMsg(std::chrono::milliseconds timeLeft = std::chrono::milliseconds{0})
         : timeLeft{static_cast<int>(timeLeft.count())}
     {
     }
