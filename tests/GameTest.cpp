@@ -336,12 +336,22 @@ TEST_F(GameTest, userMoveWhenCurrentUserStatusIsNotContinue)
     game.userMove(Direction::Left);
 }
 
+TEST_F(GameTest, userMoveWhenMatchNotInProgress)
+{
+    game.setCurrentTurn(Turn::User);
+    game.setUserStatus(MoveStatus::Continue);
+    game.setMatchStatus(MatchStatus::GameEnd);
+    game.userMove(Direction::Left);
+}
+
+
 TEST_F(GameTest, userMoveWhenUserTurnAndNextIllegalMove)
 {
     EXPECT_CALL(boardMock, moveBall(Direction::Left)).WillOnce(Return(MoveStatus::Illegal));
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Continue);
+    game.setMatchStatus(MatchStatus::InProgress);
     game.userMove(Direction::Left);
 
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
@@ -355,6 +365,7 @@ TEST_F(GameTest, userMoveWhenUserTurnAndNextContinueMove)
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Continue);
+    game.setMatchStatus(MatchStatus::InProgress);
     game.userMove(Direction::Left);
 
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
@@ -369,6 +380,7 @@ TEST_F(GameTest, userMoveWhenUserTurnAndNextStopMove)
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Continue);
+    game.setMatchStatus(MatchStatus::InProgress);
     game.userMove(Direction::Left);
 
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Stop);
@@ -405,6 +417,7 @@ TEST_F(GameTest, userMouseWhenCorrectMoveClick)
 
     game.setCurrentTurn(Turn::User);
     game.setUserStatus(MoveStatus::Continue);
+    game.setMatchStatus(MatchStatus::InProgress);
     game.userMouse(x, y);
 
     EXPECT_THAT(game.getDirectionPath(), ElementsAre());

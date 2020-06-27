@@ -136,7 +136,7 @@ void Game::onKeyboardMouseInput()
 
 void Game::userKey(int key)
 {
-    if (DIR_KEYS.contains(key) and m_match == MatchStatus::InProgress) {
+    if (DIR_KEYS.contains(key)) {
         auto dir = DIR_KEYS.at(key);
         userMove(dir);
     } else if (key == UNDO_MOVE_KEY) {
@@ -148,7 +148,7 @@ void Game::userKey(int key)
 
 void Game::userMove(Direction dir)
 {
-    if (m_currentTurn == Turn::Enemy or m_userStatus != MoveStatus::Continue) {
+    if (m_currentTurn == Turn::Enemy or m_userStatus != MoveStatus::Continue or m_match != MatchStatus::InProgress) {
         return;
     }
 
