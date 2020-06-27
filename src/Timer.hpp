@@ -20,9 +20,9 @@ public:
     std::chrono::seconds timeLeft() const override;
     void start() override;
     void resume() override;
-    void stop() override;
     void reset() override;
-    void stopAndSync(std::chrono::seconds timeLeft) override;
+    void pause() override;
+    void pauseAndSync(std::chrono::seconds timeLeft) override;
 
     void onTimer(boost::system::error_code errorCode);
 

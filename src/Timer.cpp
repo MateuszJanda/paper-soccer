@@ -34,17 +34,17 @@ void Timer::resume()
     onTimer(boost::system::error_code{});
 }
 
-void Timer::stop()
-{
-    m_timer.cancel();
-}
-
 void Timer::reset()
 {
     m_timeLeft = DEFAULT_TIME;
 }
 
-void Timer::stopAndSync(std::chrono::seconds timeLeft)
+void Timer::pause()
+{
+    m_timer.cancel();
+}
+
+void Timer::pauseAndSync(std::chrono::seconds timeLeft)
 {
     m_timeLeft = timeLeft;
     m_timer.cancel();

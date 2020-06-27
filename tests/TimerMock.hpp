@@ -17,9 +17,9 @@ public:
     MOCK_METHOD(std::chrono::seconds, timeLeft, (), (const));
     MOCK_METHOD(void, start, ());
     MOCK_METHOD(void, resume, ());
-    MOCK_METHOD(void, stop, ());
     MOCK_METHOD(void, reset, ());
-    MOCK_METHOD(void, stopAndSync, (std::chrono::seconds));
+    MOCK_METHOD(void, pause, ());
+    MOCK_METHOD(void, pauseAndSync, (std::chrono::seconds));
 };
 
 } // namespace PaperSoccer

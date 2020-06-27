@@ -230,7 +230,7 @@ void Game::userEndTurn()
     m_dirPath.clear();
     drawBoard();
 
-    m_userTimer.stop();
+    m_userTimer.pause();
     m_network.sendEndTurn(m_userTimer.timeLeft());
 }
 
@@ -292,7 +292,7 @@ void Game::onEnemyEndTurn(EndTurnMsg msg)
         m_view.setContinueStatus();
     }
 
-    m_enemyTimer.stopAndSync(std::chrono::seconds{msg.timeLeft});
+    m_enemyTimer.pauseAndSync(std::chrono::seconds{msg.timeLeft});
     m_dirPath.clear();
     drawBoard();
 }

@@ -19,9 +19,9 @@ public:
     virtual std::chrono::seconds timeLeft() const = 0;
     virtual void start() = 0;
     virtual void resume() = 0;
-    virtual void stop() = 0;
     virtual void reset() = 0;
-    virtual void stopAndSync(std::chrono::seconds timeLeft) = 0;
+    virtual void pause() = 0;
+    virtual void pauseAndSync(std::chrono::seconds timeLeft) = 0;
 };
 
 } // namespace PaperSoccer
