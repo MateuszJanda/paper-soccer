@@ -24,5 +24,4 @@ public:
 
 } // namespace PaperSoccer
 
-
 #endif // TIMER_MOCK_HPP

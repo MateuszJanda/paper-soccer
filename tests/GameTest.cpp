@@ -32,7 +32,7 @@ using namespace testing;
 class TestableGame : public Game {
 public:
     TestableGame(INetwork& network, ITimer& userTimer, ITimer& enemyTimer, IBoard& board,
-                 const INCurses& ncurses, const IView& view)
+        const INCurses& ncurses, const IView& view)
         : Game(network, userTimer, enemyTimer, board, ncurses, view)
     {
     }

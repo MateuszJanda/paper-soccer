@@ -60,13 +60,13 @@ TEST_F(BoardTest, checkReset)
     ASSERT_EQ(board.getBallPosition(), CENTER);
 
     for (const auto dir : {Direction::Top,
-                           Direction::TopRight,
-                           Direction::Right,
-                           Direction::BottomRight ,
-                           Direction::Bottom ,
-                           Direction::BottomLeft,
-                           Direction::Left ,
-                           Direction::TopLeft}) {
+             Direction::TopRight,
+             Direction::Right,
+             Direction::BottomRight,
+             Direction::Bottom,
+             Direction::BottomLeft,
+             Direction::Left,
+             Direction::TopLeft}) {
         ASSERT_FALSE(board.hasNeighbour(CENTER, dir));
     }
 }

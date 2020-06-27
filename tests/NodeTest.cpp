@@ -133,22 +133,22 @@ TEST_F(NodeTest, checkIsLonely)
 TEST_F(NodeTest, checkIsFull)
 {
     node.addNeighbours({Direction::TopLeft,
-                        Direction::Right,
-                        Direction::BottomRight,
-                        Direction::Bottom,
-                        Direction::BottomLeft,
-                        Direction::Left,
-                        Direction::TopRight});
+        Direction::Right,
+        Direction::BottomRight,
+        Direction::Bottom,
+        Direction::BottomLeft,
+        Direction::Left,
+        Direction::TopRight});
     ASSERT_FALSE(node.isFull());
 
     node.addNeighbours({Direction::Top,
-                        Direction::TopLeft,
-                        Direction::Right,
-                        Direction::BottomRight,
-                        Direction::Bottom,
-                        Direction::BottomLeft,
-                        Direction::Left,
-                        Direction::TopRight});
+        Direction::TopLeft,
+        Direction::Right,
+        Direction::BottomRight,
+        Direction::Bottom,
+        Direction::BottomLeft,
+        Direction::Left,
+        Direction::TopRight});
     ASSERT_TRUE(node.isFull());
 }
 

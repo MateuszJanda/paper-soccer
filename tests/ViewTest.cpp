@@ -49,7 +49,6 @@ namespace {
     const std::chrono::seconds ENEMY_TIME_LEFT{122};
 } // namespace anonymous
 
-
 class ViewTest : public testing::Test {
 public:
     ViewTest()
@@ -63,7 +62,7 @@ public:
 
     int vx(int x)
     {
-        return x * View::X_FACTOR + View::X_OFFSET;;
+        return x * View::X_FACTOR + View::X_OFFSET;
     }
 
     int vy(int y)
