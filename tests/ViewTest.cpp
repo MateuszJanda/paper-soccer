@@ -44,6 +44,9 @@ namespace {
 
     const std::string TOP_NAME{"TOP_NAME"};
     const std::string BOTTOM_NAME{"BOTTOm_NAME"};
+
+    const std::chrono::seconds USER_TIME_LEFT{61};
+    const std::chrono::seconds ENEMY_TIME_LEFT{122};
 } // namespace anonymous
 
 
@@ -477,6 +480,32 @@ TEST_F(ViewTest, checkSetWinStatus)
     expectDrawStatus();
     expectDrawScore();
     view.setWinStatus(1, 0);
+}
+
+TEST_F(ViewTest, checkDrawTimeLeft)
+{
+    EXPECT_CALL(ncursesMock, print(_, _, " Time left:", _));
+    EXPECT_CALL(ncursesMock, print(_, _, "     Me: 01:01", _));
+    EXPECT_CALL(ncursesMock, print(_, _, "  Enemy: 02:02", _));
+    EXPECT_CALL(ncursesMock, refreshView()).Times(2);
+
+    view.drawTimeLeft(USER_TIME_LEFT, ENEMY_TIME_LEFT);
+}
+
+TEST_F(ViewTest, checkDrawUserTimeLeft)
+{
+    EXPECT_CALL(ncursesMock, print(_, _, "     Me: 01:01", _));
+    EXPECT_CALL(ncursesMock, refreshView());
+
+    view.drawUserTimeLeft(USER_TIME_LEFT);
+}
+
+TEST_F(ViewTest, checkDrawEnemyTimeLeft)
+{
+    EXPECT_CALL(ncursesMock, print(_, _, "  Enemy: 02:02", _));
+    EXPECT_CALL(ncursesMock, refreshView());
+
+    view.drawEnemyTimeLeft(ENEMY_TIME_LEFT);
 }
 
 TEST_F(ViewTest, checkIsStatusButtonNotClicked)
