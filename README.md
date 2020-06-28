@@ -5,9 +5,6 @@ git clone https://github.com/google/googletest.git
 cd googletest/
 cmake CMakeLists.txt
 make
-
-cd ..
-ln -s googletest/lib/\*.a .
 ```
 
 ## Building
