@@ -1,6 +1,6 @@
-## Building googletest instruction
+## Building googletest
 ```
-cd lib/
+cd paper-soccer/lib/
 git clone https://github.com/google/googletest.git
 cd googletest/
 cmake CMakeLists.txt
