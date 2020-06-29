@@ -61,7 +61,7 @@ bool Node::isFull() const
     return degree() == 8;
 }
 
-std::vector<Position> Node::neighboursPositions(const Position &currentPos) const
+std::vector<Position> Node::neighboursPositions(const Position& currentPos) const
 {
     std::vector<Position> positions;
     for (auto const& dir : m_neighbours) {

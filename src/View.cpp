@@ -32,7 +32,7 @@ void View::clear() const
     m_ncurses.clearView();
 }
 
-void View::drawBoard(const std::string &topName, ColorPair topColor, const std::string &bottomName, ColorPair bottomColor,
+void View::drawBoard(const std::string& topName, ColorPair topColor, const std::string& bottomName, ColorPair bottomColor,
     const std::vector<Direction>& dirPath, ColorPair ballColor) const
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
@@ -185,12 +185,12 @@ void View::drawVerticalToTopLine(const Position& nodePos) const
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, "|");
 }
 
-void View::drawHorizontalToRightLine(const Position &nodePos) const
+void View::drawHorizontalToRightLine(const Position& nodePos) const
 {
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "--");
 }
 
-void View::drawCrossToRight(const Position &nodePos) const
+void View::drawCrossToRight(const Position& nodePos) const
 {
     // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
@@ -208,7 +208,7 @@ void View::drawHypotenuseToTopRight(const Position& nodePos) const
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
 }
 
-void View::drawHypotenuseToTopLeft(const Position &nodePos) const
+void View::drawHypotenuseToTopLeft(const Position& nodePos) const
 {
     //  \ - U+005C        https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ⸌⸜ - U+2e0c U+2e1c https://en.wikipedia.org/wiki/Supplemental_Punctuation
@@ -235,7 +235,7 @@ void View::drawMarker(const Position& nodePos, MarkerVisability visability) cons
     }
 }
 
-void View::drawLegend(char undo, char newGame, const std::map<char, Direction> &dirKeys) const
+void View::drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const
 {
     auto x = getMenuXOffset();
     auto y = Y_LEGNENT_OFFSET;
@@ -300,8 +300,8 @@ void View::drawLegend(char undo, char newGame, const std::map<char, Direction> &
     }
 }
 
-void View::drawNames(const std::string &topName, ColorPair topColor,
-    const std::string &bottomName, ColorPair bottomColor) const
+void View::drawNames(const std::string& topName, ColorPair topColor,
+    const std::string& bottomName, ColorPair bottomColor) const
 {
     auto x = vx(m_board.getGoalpostRight()) + 2;
     auto y = Y_OFFSET + 1;
@@ -311,7 +311,7 @@ void View::drawNames(const std::string &topName, ColorPair topColor,
     m_ncurses.print(x, y, bottomName, bottomColor);
 }
 
-void View::drawPathMarkers(const std::vector<Direction> &dirPath, ColorPair ballColor) const
+void View::drawPathMarkers(const std::vector<Direction>& dirPath, ColorPair ballColor) const
 {
     auto nodePos = m_board.getBallPosition();
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);

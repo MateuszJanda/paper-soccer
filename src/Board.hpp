@@ -40,7 +40,7 @@ private:
     void updateBallAndGraph(Direction dir);
     bool canReachGoal(Direction dir, int goalLine) const;
     bool isDeadEnd() const;
-    bool isPositionInGraph(const Position &pos) const;
+    bool isPositionInGraph(const Position& pos) const;
 
     static constexpr std::array<Direction, 8> ALL_DIRS{Direction::Top,
         Direction::TopLeft,
