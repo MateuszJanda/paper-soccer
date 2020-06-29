@@ -32,7 +32,7 @@ public:
     void sendTimeout() override;
 
     void sendNewGame(Turn turn, Goal goal) override;
-    void sendMove(const Direction& dir) override;
+    void sendMove(Direction dir) override;
     void sendUndoMove() override;
     void sendEndTurn(std::chrono::milliseconds timeLeft) override;
     void sendReadyForNewGame() override;

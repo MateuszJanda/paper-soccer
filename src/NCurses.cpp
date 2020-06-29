@@ -92,7 +92,7 @@ void NCurses::prepareColorPair(ColorPair colorPair, int fg, int bg) const
     }
 }
 
-void NCurses::print(int x, int y, std::string str, ColorPair coloPair) const
+void NCurses::print(int x, int y, const std::string& str, ColorPair coloPair) const
 {
     const auto pariNum{static_cast<int>(coloPair)};
     auto ret = attr_set(A_NORMAL, (short)pariNum, (void*)&pariNum);

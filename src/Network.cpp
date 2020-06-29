@@ -70,7 +70,7 @@ void Network::sendNewGame(Turn turn, Goal goal)
     sendMsg(msg);
 }
 
-void Network::sendMove(const Direction& dir)
+void Network::sendMove(Direction dir)
 {
     MoveMsg msg{dir};
     sendMsg(msg);

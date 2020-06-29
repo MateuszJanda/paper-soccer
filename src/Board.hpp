@@ -23,9 +23,9 @@ public:
     std::size_t getGoalpostRight() const override;
     void setBallPosition(Position pos) override;
     Position getBallPosition() const override;
-    bool hasNeighbour(Position pos, Direction dir) const override;
-    bool hasAllNeighbours(Position pos) const override;
-    bool hasAnyNeighbour(Position pos) const override;
+    bool hasNeighbour(const Position& pos, Direction dir) const override;
+    bool hasAllNeighbours(const Position& pos) const override;
+    bool hasAnyNeighbour(const Position& pos) const override;
     MoveStatus moveBall(Direction dir) override;
     bool undoBallMove(Direction dir) override;
 
@@ -40,7 +40,7 @@ private:
     void updateBallAndGraph(Direction dir);
     bool canReachGoal(Direction dir, int goalLine) const;
     bool isDeadEnd() const;
-    bool isPositionInGraph(Position pos) const;
+    bool isPositionInGraph(const Position &pos) const;
 
     static constexpr std::array<Direction, 8> ALL_DIRS{Direction::Top,
         Direction::TopLeft,

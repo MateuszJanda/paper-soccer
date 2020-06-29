@@ -30,9 +30,9 @@ public:
     virtual std::size_t getGoalpostRight() const = 0;
     virtual void setBallPosition(Position pos) = 0;
     virtual Position getBallPosition() const = 0;
-    virtual bool hasNeighbour(Position pos, Direction dir) const = 0;
-    virtual bool hasAllNeighbours(Position pos) const = 0;
-    virtual bool hasAnyNeighbour(Position pos) const = 0;
+    virtual bool hasNeighbour(const Position& pos, Direction dir) const = 0;
+    virtual bool hasAllNeighbours(const Position& pos) const = 0;
+    virtual bool hasAnyNeighbour(const Position& pos) const = 0;
     virtual MoveStatus moveBall(Direction dir) = 0;
     virtual bool undoBallMove(Direction dir) = 0;
 };

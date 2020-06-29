@@ -31,7 +31,7 @@ class INCurses {
 public:
     virtual ~INCurses() noexcept = default;
 
-    virtual void print(int x, int y, std::string str, ColorPair colorPair = ColorPair::DEFAULT) const = 0;
+    virtual void print(int x, int y, const std::string& str, ColorPair colorPair = ColorPair::DEFAULT) const = 0;
     virtual std::optional<Input> getInput() const noexcept = 0;
     virtual void refreshView() const noexcept = 0;
     virtual void clearView() const noexcept = 0;

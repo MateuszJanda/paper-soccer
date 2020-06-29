@@ -209,7 +209,7 @@ Position Board::getBallPosition() const
     return m_ballPos;
 }
 
-bool Board::hasNeighbour(Position pos, Direction dir) const
+bool Board::hasNeighbour(const Position &pos, Direction dir) const
 {
     if (not isPositionInGraph(pos)) {
         return false;
@@ -219,7 +219,7 @@ bool Board::hasNeighbour(Position pos, Direction dir) const
     return node.hasNeighbour(dir);
 }
 
-bool Board::hasAllNeighbours(Position pos) const
+bool Board::hasAllNeighbours(const Position& pos) const
 {
     if (not isPositionInGraph(pos)) {
         return false;
@@ -228,7 +228,7 @@ bool Board::hasAllNeighbours(Position pos) const
     return node.isFull();
 }
 
-bool Board::hasAnyNeighbour(Position pos) const
+bool Board::hasAnyNeighbour(const Position &pos) const
 {
     if (not isPositionInGraph(pos)) {
         return false;
@@ -340,7 +340,7 @@ bool Board::isDeadEnd() const
     return true;
 }
 
-bool Board::isPositionInGraph(Position pos) const
+bool Board::isPositionInGraph(const Position& pos) const
 {
     return pos.y >= 0 and pos.y < getHeight() and pos.x >= 0 and pos.x < getWidth();
 }

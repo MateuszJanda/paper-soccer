@@ -16,8 +16,9 @@ public:
     using DirKeysMap = std::map<char, Direction>;
 
     MOCK_METHOD(void, clear, (), (const));
-    MOCK_METHOD(void, drawBoard, (std::string, ColorPair, std::string, ColorPair, std::vector<Direction>, ColorPair), (const));
-    MOCK_METHOD(void, drawLegend, (char, char, DirKeysMap), (const));
+    MOCK_METHOD(void, drawBoard, (const std::string&, ColorPair, const std::string&, ColorPair,
+        const std::vector<Direction>&, ColorPair), (const));
+    MOCK_METHOD(void, drawLegend, (char, char, const DirKeysMap&), (const));
 
     MOCK_METHOD(void, setContinueStatus, (), (const));
     MOCK_METHOD(void, setEnemyTurnStatus, (), (const));

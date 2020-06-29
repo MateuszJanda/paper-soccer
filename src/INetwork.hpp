@@ -26,7 +26,7 @@ public:
         = 0;
     virtual void run() = 0;
     virtual void sendNewGame(Turn turn, Goal goal) = 0;
-    virtual void sendMove(const Direction& dir) = 0;
+    virtual void sendMove(Direction dir) = 0;
     virtual void sendUndoMove() = 0;
     virtual void sendEndTurn(std::chrono::milliseconds timeLeft) = 0;
     virtual void sendReadyForNewGame() = 0;

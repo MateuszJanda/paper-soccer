@@ -23,7 +23,7 @@ public:
     bool canEnter() const;
     bool isLonely() const;
     bool isFull() const;
-    std::vector<Position> neighboursPositions(Position currentPos) const;
+    std::vector<Position> neighboursPositions(const Position& currentPos) const;
 
 private:
     std::set<Direction> m_neighbours;

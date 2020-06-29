@@ -28,13 +28,14 @@ class View : public IView {
 public:
     View(const IBoard& board, const INCurses& ncurses);
     void clear() const override;
-    void drawBoard(std::string topName, ColorPair topColor,
-        std::string bottomName, ColorPair bottomColor,
-        std::vector<Direction> dirPath, ColorPair ballColor) const override;
+    void drawBoard(const std::string& topName, ColorPair topColor,
+        const std::string& bottomName, ColorPair bottomColor,
+        const std::vector<Direction>& dirPath, ColorPair ballColor) const override;
     void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
 
-    void drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const;
-    void drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) const;
+    void drawNames(const std::string& topName, ColorPair topColor,
+        const std::string& bottomName, ColorPair bottomColor) const;
+    void drawPathMarkers(const std::vector<Direction>& dirPath, ColorPair ballColor) const;
 
     Skips filterDirsForOutOfBorder(Position nodePos) const;
     Skips filterDirsForTopNetLine(Position nodePos) const;
@@ -43,7 +44,7 @@ public:
     Skips filterDirsForRightLine(Position nodePos) const;
     MarkerVisability markerVisability(Position nodePos) const;
 
-    void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const override;
+    void drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const override;
 
     void setContinueStatus() const override;
     void setEnemyTurnStatus() const override;
@@ -55,7 +56,7 @@ public:
     void drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono::milliseconds enemyTimeLeft) const override;
     void drawUserTimeLeft(std::chrono::milliseconds timeLeft) const override;
     void drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const override;
-    void drawTime(int x, int y, std::chrono::milliseconds timeLeft, std::string name, ColorPair color) const;
+    void drawTime(int x, int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const;
 
     bool isStatusButton(int x, int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
@@ -74,15 +75,15 @@ private:
     const std::string BOTTOM_LINE{"`--------------'"};
     const std::size_t BUTTON_HEIGHT{3};
 
-    void clearLines(Position nodePos) const;
-    void drawVerticalToTopLine(Position nodePos) const;
-    void drawHorizontalToRightLine(Position nodePos) const;
-    void drawCrossToRight(Position nodePos) const;
-    void drawHypotenuseToTopRight(Position nodePos) const;
-    void drawHypotenuseToTopLeft(Position nodePos) const;
-    void drawMarker(Position nodePos, MarkerVisability visability) const;
+    void clearLines(const Position& nodePos) const;
+    void drawVerticalToTopLine(const Position& nodePos) const;
+    void drawHorizontalToRightLine(const Position& nodePos) const;
+    void drawCrossToRight(const Position& nodePos) const;
+    void drawHypotenuseToTopRight(const Position& nodePos) const;
+    void drawHypotenuseToTopLeft(const Position& nodePos) const;
+    void drawMarker(const Position& nodePos, MarkerVisability visability) const;
 
-    void drawStatusButton(std::string line1, std::string line2, ColorPair color) const;
+    void drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const;
     int getMenuXOffset() const;
 
     const IBoard& m_board;

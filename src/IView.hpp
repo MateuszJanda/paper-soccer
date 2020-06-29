@@ -16,10 +16,10 @@ public:
     virtual ~IView() noexcept = default;
 
     virtual void clear() const = 0;
-    virtual void drawBoard(std::string topName, ColorPair topColor,
-        std::string bottomName, ColorPair bottomColor,
-        std::vector<Direction> dirPath, ColorPair ballColor) const = 0;
-    virtual void drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const = 0;
+    virtual void drawBoard(const std::string& topName, ColorPair topColor,
+        const std::string& bottomName, ColorPair bottomColor,
+        const std::vector<Direction>& dirPath, ColorPair ballColor) const = 0;
+    virtual void drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const = 0;
 
     virtual void setContinueStatus() const = 0;
     virtual void setEnemyTurnStatus() const = 0;

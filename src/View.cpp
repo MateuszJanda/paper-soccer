@@ -32,8 +32,8 @@ void View::clear() const
     m_ncurses.clearView();
 }
 
-void View::drawBoard(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor,
-    std::vector<Direction> dirPath, ColorPair ballColor) const
+void View::drawBoard(const std::string &topName, ColorPair topColor, const std::string &bottomName, ColorPair bottomColor,
+    const std::vector<Direction>& dirPath, ColorPair ballColor) const
 {
     for (auto y = 0; y < m_board.getHeight(); y++) {
         for (auto x = 0; x < m_board.getWidth(); x++) {
@@ -180,17 +180,17 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisab
     drawMarker(nodePos, visability);
 }
 
-void View::drawVerticalToTopLine(Position nodePos) const
+void View::drawVerticalToTopLine(const Position& nodePos) const
 {
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, "|");
 }
 
-void View::drawHorizontalToRightLine(Position nodePos) const
+void View::drawHorizontalToRightLine(const Position &nodePos) const
 {
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "--");
 }
 
-void View::drawCrossToRight(Position nodePos) const
+void View::drawCrossToRight(const Position &nodePos) const
 {
     // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
@@ -198,7 +198,7 @@ void View::drawCrossToRight(Position nodePos) const
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
 }
 
-void View::drawHypotenuseToTopRight(Position nodePos) const
+void View::drawHypotenuseToTopRight(const Position& nodePos) const
 {
     //  / - U+002F        https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ⸝⸍ - U+2e1d U+2e0d https://en.wikipedia.org/wiki/Supplemental_Punctuation
@@ -208,7 +208,7 @@ void View::drawHypotenuseToTopRight(Position nodePos) const
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
 }
 
-void View::drawHypotenuseToTopLeft(Position nodePos) const
+void View::drawHypotenuseToTopLeft(const Position &nodePos) const
 {
     //  \ - U+005C        https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ⸌⸜ - U+2e0c U+2e1c https://en.wikipedia.org/wiki/Supplemental_Punctuation
@@ -219,14 +219,14 @@ void View::drawHypotenuseToTopLeft(Position nodePos) const
     m_ncurses.print(vx(nodePos.x) - 2, vy(nodePos.y) - 1, symbol);
 }
 
-void View::clearLines(Position nodePos) const
+void View::clearLines(const Position& nodePos) const
 {
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, " ");
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "  ");
     m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, "  ");
 }
 
-void View::drawMarker(Position nodePos, MarkerVisability visability) const
+void View::drawMarker(const Position& nodePos, MarkerVisability visability) const
 {
     if (visability == MarkerVisability::Occupied) {
         m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+");
@@ -235,7 +235,7 @@ void View::drawMarker(Position nodePos, MarkerVisability visability) const
     }
 }
 
-void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys) const
+void View::drawLegend(char undo, char newGame, const std::map<char, Direction> &dirKeys) const
 {
     auto x = getMenuXOffset();
     auto y = Y_LEGNENT_OFFSET;
@@ -300,7 +300,8 @@ void View::drawLegend(char undo, char newGame, std::map<char, Direction> dirKeys
     }
 }
 
-void View::drawNames(std::string topName, ColorPair topColor, std::string bottomName, ColorPair bottomColor) const
+void View::drawNames(const std::string &topName, ColorPair topColor,
+    const std::string &bottomName, ColorPair bottomColor) const
 {
     auto x = vx(m_board.getGoalpostRight()) + 2;
     auto y = Y_OFFSET + 1;
@@ -310,7 +311,7 @@ void View::drawNames(std::string topName, ColorPair topColor, std::string bottom
     m_ncurses.print(x, y, bottomName, bottomColor);
 }
 
-void View::drawPathMarkers(std::vector<Direction> dirPath, ColorPair ballColor) const
+void View::drawPathMarkers(const std::vector<Direction> &dirPath, ColorPair ballColor) const
 {
     auto nodePos = m_board.getBallPosition();
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
@@ -351,7 +352,7 @@ void View::setWinStatus(int won, int lost) const
     drawStatusButton("   You Win.   ", " New game (n) ", ColorPair::BUTTON_ORANGE);
 }
 
-void View::drawStatusButton(std::string line1, std::string line2, ColorPair color) const
+void View::drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const
 {
     const int x = getMenuXOffset();
     const int y = Y_OFFSET;
@@ -406,7 +407,7 @@ void View::drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const
     drawTime(x, y + 2, timeLeft, "  Enemy: ", ColorPair::ENEMY);
 }
 
-void View::drawTime(int x, int y, std::chrono::milliseconds timeLeft, std::string name, ColorPair color) const
+void View::drawTime(int x, int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const
 {
     auto minutes = duration_cast<std::chrono::minutes>(timeLeft);
     auto seconds = duration_cast<std::chrono::seconds>(timeLeft - minutes);

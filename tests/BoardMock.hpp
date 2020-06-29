@@ -20,9 +20,9 @@ public:
     MOCK_METHOD(std::size_t, getGoalpostRight, (), (const));
     MOCK_METHOD(void, setBallPosition, (Position));
     MOCK_METHOD(Position, getBallPosition, (), (const));
-    MOCK_METHOD(bool, hasNeighbour, (Position, Direction), (const));
-    MOCK_METHOD(bool, hasAllNeighbours, (Position), (const));
-    MOCK_METHOD(bool, hasAnyNeighbour, (Position), (const));
+    MOCK_METHOD(bool, hasNeighbour, (const Position&, Direction), (const));
+    MOCK_METHOD(bool, hasAllNeighbours, (const Position&), (const));
+    MOCK_METHOD(bool, hasAnyNeighbour, (const Position&), (const));
     MOCK_METHOD(MoveStatus, moveBall, (Direction));
     MOCK_METHOD(bool, undoBallMove, (Direction));
 };
