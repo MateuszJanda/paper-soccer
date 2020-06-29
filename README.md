@@ -13,7 +13,7 @@ A free networked version of paper soccer game in modern console.
     - `boost.serialization`
     - `boost.program_options`
 - `ncurses` (6.1)
-- also terminal supporting font fallback (wired Unicode characters are used)
+- also terminal supporting font fallback (weird Unicode characters are used)
 
 ## Installation Google Test
 ```
