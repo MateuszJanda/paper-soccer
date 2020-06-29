@@ -31,7 +31,7 @@ make
 ```
 
 ## Example
-Run as server and wait for connection (default port `--port 8787`)
+Run as server and wait for connection (default port `8787`)
 ```
 ./src/paper-soccer -w
 
@@ -39,7 +39,7 @@ Run as server and wait for connection (default port `--port 8787`)
 ./src/paper-soccer -w -p 8787
 ```
 
-Connect to `localhost` server
+Connect to localhost server
 ```
 ./src/paper-soccer
 
