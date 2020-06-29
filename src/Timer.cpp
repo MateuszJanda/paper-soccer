@@ -63,12 +63,12 @@ void Timer::onTimer(boost::system::error_code errorCode)
         return;
     }
 
-    const auto tickBeforeCall = steady_clock::now();
-    const auto timePassed = duration_cast<seconds>(tickBeforeCall - m_start);
+    const auto tickBeforeCall{steady_clock::now()};
+    const auto timePassed{duration_cast<seconds>(tickBeforeCall - m_start)};
     m_timeLeft = m_duration - timePassed;
 
     if (m_handleTimerTick) {
-        const auto left = m_timeLeft.count() <= 0 ? seconds{0} : m_timeLeft;
+        const auto left{m_timeLeft.count() <= 0 ? seconds{0} : m_timeLeft};
         m_handleTimerTick(left);
     }
 
@@ -76,8 +76,8 @@ void Timer::onTimer(boost::system::error_code errorCode)
         return;
     }
 
-    const auto tickAfterCall = steady_clock::now();
-    const auto duration = seconds{1} - duration_cast<milliseconds>(tickAfterCall - tickBeforeCall);
+    const auto tickAfterCall{steady_clock::now()};
+    const auto duration{seconds{1} - duration_cast<milliseconds>(tickAfterCall - tickBeforeCall)};
     m_timer.expires_after(duration);
     m_timer.async_wait([this](boost::system::error_code errorCode) { onTimer(errorCode); });
 }
