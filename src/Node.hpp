@@ -26,6 +26,7 @@ public:
     std::vector<Position> neighboursPositions(const Position& currentPos) const;
 
 private:
+    static constexpr std::size_t MAX_NEIGHBOURS{8};
     std::set<Direction> m_neighbours;
 };
 

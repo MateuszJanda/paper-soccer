@@ -44,7 +44,7 @@ unsigned Node::degree() const
 
 bool Node::canEnter() const
 {
-    if (degree() < 7) {
+    if (degree() < MAX_NEIGHBOURS - 1) {
         return true;
     }
 
@@ -58,7 +58,7 @@ bool Node::isLonely() const
 
 bool Node::isFull() const
 {
-    return degree() == 8;
+    return degree() == MAX_NEIGHBOURS;
 }
 
 std::vector<Position> Node::neighboursPositions(const Position& currentPos) const
