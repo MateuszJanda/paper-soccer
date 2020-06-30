@@ -102,11 +102,11 @@ void Network::sendMsg(const Msg& msg)
     auto dataSize = encodeDataSize(data);
 
     boost::asio::post(m_ioContext,
-        [this, msgId, data, dataSize]() {
+        [this, id = std::move(msgId), d = std::move(data), s = std::move(dataSize)]() {
             const bool nothingInProgress = m_messageQueue.empty();
-            m_messageQueue.push_back(msgId);
-            m_messageQueue.push_back(dataSize);
-            m_messageQueue.push_back(data);
+            m_messageQueue.push_back(std::move(id));
+            m_messageQueue.push_back(std::move(s));
+            m_messageQueue.push_back(std::move(d));
 
             if (nothingInProgress) {
                 onWrite();
