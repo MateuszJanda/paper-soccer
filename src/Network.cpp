@@ -229,7 +229,7 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
 MsgId Network::decodeMsgId(const std::string& inboundData)
 {
     std::istringstream is{inboundData};
-    std::uint8_t msgId{0};
+    std::uint32_t msgId{0};
     if (not(is >> std::hex >> msgId)) {
         throw std::invalid_argument{"Can't decode msgId."};
     }

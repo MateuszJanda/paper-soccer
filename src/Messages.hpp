@@ -13,7 +13,7 @@
 
 namespace PaperSoccer {
 
-enum class MsgId : std::uint8_t {
+enum class MsgId : std::uint32_t {
     NewGame = 0,
     Move = 1,
     UndoMove = 2,

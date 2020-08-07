@@ -10,7 +10,7 @@
 
 namespace PaperSoccer {
 
-enum class Goal : std::uint8_t {
+enum class Goal : std::uint32_t {
     Top,
     Bottom
 };

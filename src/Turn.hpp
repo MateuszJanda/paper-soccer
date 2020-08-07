@@ -10,7 +10,7 @@
 
 namespace PaperSoccer {
 
-enum class Turn : std::uint8_t {
+enum class Turn : std::uint32_t {
     User,
     Enemy,
 };

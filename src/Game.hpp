@@ -17,7 +17,7 @@
 
 namespace PaperSoccer {
 
-enum class MatchStatus : std::uint8_t {
+enum class MatchStatus : std::uint32_t {
     Connecting,
     InProgress,
     GameEnd,
