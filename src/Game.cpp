@@ -3,6 +3,7 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
+#include <stdexcept>
 #include "Game.hpp"
 
 namespace PaperSoccer {

@@ -5,6 +5,7 @@
 
 #include "View.hpp"
 #include <iomanip>
+#include <sstream>
 
 namespace PaperSoccer {
 

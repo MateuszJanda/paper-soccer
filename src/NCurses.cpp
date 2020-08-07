@@ -5,6 +5,7 @@
 
 #include "NCurses.hpp"
 #include <clocale>
+#include <stdexcept>
 #include <ncurses.h>
 #include <tuple>
 
