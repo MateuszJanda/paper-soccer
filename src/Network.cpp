@@ -116,8 +116,10 @@ void Network::sendMsg(const Msg& msg)
 
 std::string Network::encodeMsgId(MsgId msgId)
 {
+    const std::string delimiter{" "};
     std::ostringstream msgIdStream;
-    msgIdStream << std::setw(MSG_ID_LENGTH) << std::hex << static_cast<std::underlying_type_t<MsgId>>(msgId);
+    msgIdStream << "0x" << std::setw(MSG_ID_HEX_LENGTH) << std::setfill('0') <<
+                   std::hex << static_cast<std::underlying_type_t<MsgId>>(msgId) << delimiter;
 
     if (not msgIdStream || msgIdStream.str().size() != MSG_ID_LENGTH) {
         throw std::length_error{"Can't encode msgId."};
@@ -138,8 +140,9 @@ std::string Network::encodeData(const Msg& msg)
 
 std::string Network::encodeDataSize(const std::string& data)
 {
+    const std::string delimiter{" "};
     std::ostringstream dataSizeStream;
-    dataSizeStream << std::setw(DATA_SIZE_LENGTH) << std::hex << data.size();
+    dataSizeStream << "0x" << std::setw(DATA_SIZE_HEX_LENGTH) << std::setfill('0') << std::hex << data.size() << delimiter;
 
     if (not dataSizeStream || dataSizeStream.str().size() != DATA_SIZE_LENGTH) {
         throw std::length_error{"Can't encode dataSize."};
@@ -176,7 +179,7 @@ void Network::onRead()
             }
 
             const auto msgId = decodeMsgId(std::string{m_inboundHeader.data(), MSG_ID_LENGTH});
-            const auto dataSize = decodeDataSize(std::string{m_inboundHeader.data() + DATA_SIZE_LENGTH, DATA_SIZE_LENGTH});
+            const auto dataSize = decodeDataSize(std::string{m_inboundHeader.data() + MSG_ID_LENGTH, DATA_SIZE_LENGTH});
 
             switch (msgId) {
             case MsgId::NewGame:
@@ -229,7 +232,7 @@ void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFu
 MsgId Network::decodeMsgId(const std::string& inboundData)
 {
     std::istringstream is{inboundData};
-    std::uint32_t msgId{0};
+    std::underlying_type_t<MsgId> msgId{0};
     if (not(is >> std::hex >> msgId)) {
         throw std::invalid_argument{"Can't decode msgId."};
     }

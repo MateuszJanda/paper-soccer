@@ -73,8 +73,13 @@ private:
     std::function<void(ReadyForNewGameMsg)> m_handleReadyForNewGameMsg;
     std::function<void(TimeoutMsg)> m_handleEnemyTimeoutMsg;
 
-    static constexpr int MSG_ID_LENGTH{8};
-    static constexpr int DATA_SIZE_LENGTH{8};
+//    constexpr std::string DELIMITER{" "};  TODO C++20
+    static constexpr int HEX_PREFIX_LEGNTH{2};
+    static constexpr int DELIMITER_LENGTH{1};
+    static constexpr int MSG_ID_HEX_LENGTH{8};
+    static constexpr int MSG_ID_LENGTH{HEX_PREFIX_LEGNTH + MSG_ID_HEX_LENGTH + DELIMITER_LENGTH};
+    static constexpr int DATA_SIZE_HEX_LENGTH{8};
+    static constexpr int DATA_SIZE_LENGTH{HEX_PREFIX_LEGNTH + DATA_SIZE_HEX_LENGTH + DELIMITER_LENGTH};
 
     std::array<char, MSG_ID_LENGTH + DATA_SIZE_LENGTH> m_inboundHeader;
     std::vector<char> m_inboundData;
