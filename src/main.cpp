@@ -32,7 +32,7 @@ boost::program_options::options_description usage()
         ("help,h", "display this help")
         ("version,v", "version")
         ("wait,w", "run as server and wait for connection")
-        ("connect,c", po::value<std::string>()->default_value("localhost"), "run as client and connect to specific address")
+        ("connect,c", po::value<std::string>(), "run as client and connect to specific address")
         ("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
 
     return desc;
@@ -108,13 +108,16 @@ int main(int argc, char* argv[])
             return 0;
         }
 
-        if (vm.count("wait") and not vm["wait"].defaulted() and vm.count("connect") and not vm["connect"].defaulted()) {
+        if (vm.count("wait") and vm.count("connect")) {
             std::cout << desc << "\n";
             return 0;
         } else if (vm.count("wait")) {
             runServer(vm["port"].as<short unsigned int>());
-        } else {
+        } else if (vm.count("connect")) {
             runClient(vm["connect"].as<std::string>(), vm["port"].as<short unsigned int>());
+        } else {
+           std::cout << desc << "\n";
+           return 0;
         }
     } catch (po::too_many_positional_options_error& e) {
         std::cerr << e.what() << "\n";
