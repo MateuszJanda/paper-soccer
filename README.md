@@ -41,7 +41,7 @@ Run as server and wait for connection (default port `8787`)
 
 Connect to localhost server
 ```
-./src/paper-soccer
+./src/paper-soccer -c localhost
 
 # Equivalent
 ./src/paper-soccer -c localhost -p 8787
