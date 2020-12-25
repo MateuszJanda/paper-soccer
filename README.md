@@ -47,6 +47,29 @@ Connect to localhost server
 ./src/paper-soccer -c localhost -p 8787
 ```
 
+### Game control
+
+Key | Direction
+--- | ---
+<kbd>n</kbd> | New game
+<kbd>Enter</kbd> | End trun
+<kbd>u</kbd> | Undo player move
+
+### Ball movements
+
+Ball placement can be changed by mouse or keyboard.
+
+Key | Direction
+--- | ---
+<kbd>w</kbd> | Top
+<kbd>x</kbd> | Bottom
+<kbd>a</kbd> | Left
+<kbd>d</kbd> | Right
+<kbd>q</kbd> | Top-Left
+<kbd>e</kbd> | Top-Right
+<kbd>z</kbd> | Bottom-Left
+<kbd>c</kbd> | Bottom-Right
+
 ## Code style settings
 ```
 clang-format -style='{BasedOnStyle: WebKit, Cpp11BracedListStyle: true, SpaceBeforeCpp11BracedList: false}' -i *.cpp
