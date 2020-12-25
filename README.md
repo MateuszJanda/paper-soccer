@@ -12,7 +12,7 @@ A free networked version of paper soccer game in modern console.
     - `boost.asio`
     - `boost.serialization`
     - `boost.program_options`
-- `ncurses` (6.1)
+- `ncurses` (6.2)
 - also terminal supporting font fallback (weird Unicode characters are used)
 
 ## Installation Google Test
