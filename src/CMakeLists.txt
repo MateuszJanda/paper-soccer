@@ -3,19 +3,11 @@ find_package(Protobuf REQUIRED)
 
 include_directories(${Protobuf_INCLUDE_DIRS})
 
-
 # Add Protobuf message definition
 add_subdirectory(proto)
 
-
 # Just for debug. Show full path
-message(STATUS "[+]: ${Protobuf_INCLUDE_DIRS}")
-message(STATUS "[+]: ${Protobuf_LIBRARIES}")
-message(STATUS "[+]: ${PROTO_MSG_SOURCE}")
-message(STATUS "[+]: ${PROTO_MSG_HEADER}")
-message(STATUS "[+]: ${HDRS}")
-message(STATUS "[+]: ${SRCS}")
-
+# message(STATUS "[+]: ${Protobuf_INCLUDE_DIRS}")
 
 # Boost asio is header only
 include_directories(${Boost_INCLUDE_DIR})

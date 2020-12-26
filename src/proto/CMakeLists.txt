@@ -1,11 +1,5 @@
 # https://cmake.org/cmake/help/latest/module/FindProtobuf.html
 
-## List generated sources files
-FILE(GLOB HDRS "*.h")
-FILE(GLOB SRCS "*.cc")
-
-# set(PROTO_NAME proto_messages)
-
 find_package(Protobuf REQUIRED)
 include_directories(${Protobuf_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
