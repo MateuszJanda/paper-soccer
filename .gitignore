@@ -19,3 +19,5 @@ lib/googletest
 src/libpaper-soccer_lib.a
 *~
 *.swp
+*.pb.cc
+*.pb.h

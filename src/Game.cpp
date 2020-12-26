@@ -4,7 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "Game.hpp"
-#include "Message.pb.h"
+#include "proto/Message.pb.h"
 #include <stdexcept>
 
 namespace PaperSoccer {

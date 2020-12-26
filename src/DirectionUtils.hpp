@@ -7,7 +7,7 @@
 #define DIRECTION_HPP
 
 #include "Position.hpp"
-#include "Direction.pb.h"
+#include "proto/Direction.pb.h"
 #include <cstdint>
 
 namespace PaperSoccer {

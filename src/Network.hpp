@@ -7,7 +7,7 @@
 #define NETWORK_HPP
 
 #include "INetwork.hpp"
-#include "Message.pb.h"
+#include "proto/Message.pb.h"
 #include <boost/asio.hpp>
 #include <deque>
 #include <functional>

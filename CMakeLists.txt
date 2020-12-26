@@ -1,7 +1,7 @@
 # Useful link:
 # https://raymii.org/s/tutorials/Cpp_project_setup_with_cmake_and_unit_tests.html
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.6)
 
 project(paper-soccer LANGUAGES CXX)
 
@@ -25,6 +25,7 @@ add_compile_definitions(GAME_VERSION="0.9.0")
 include_directories(src)
 
 add_subdirectory(src)
+
 # Add googletest sources
-add_subdirectory(lib/googletest)
-add_subdirectory(tests)
+#add_subdirectory(lib/googletest)
+#add_subdirectory(tests)
