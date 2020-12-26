@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package PaperSoccer;
+
+
+import "MsgId.proto";
+import "Goal.proto";
+import "Turn.proto";
+import "Direction.proto";
+import "google/protobuf/any.proto";
+
+
+message NewGameMsg {
+  Turn turn = 1;
+  Goal goal = 2;
+}
+
+message MoveMsg {
+  Direction dir = 1;
+}
+
+
+message UndoMoveMsg {
+}
+
+message EndTurnMsg {
+  int64 timeLeft = 1;
+}
+
+
+message ReadyForNewGameMsg {
+}
+
+message TimeoutMsg {
+}
+
+message Message {
+  MsgId msgId = 1;
+  google.protobuf.Any message = 2;
+}
+
