@@ -3,6 +3,8 @@ add_executable(${CMAKE_PROJECT_NAME}
     ColorPair.hpp
     Goal.pb.cc
     Goal.pb.h
+    MsgId.pb.h
+    MsgId.pb.cc
     IBoard.hpp
     INCurses.hpp
     IView.hpp

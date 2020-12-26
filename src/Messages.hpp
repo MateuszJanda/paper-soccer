@@ -9,18 +9,10 @@
 #include "DirectionUtils.hpp"
 #include "Goal.pb.h"
 #include "Turn.pb.h"
+#include "MsgId.pb.h"
 #include <chrono>
 
 namespace PaperSoccer {
-
-enum class MsgId : std::uint32_t {
-    NewGame = 0,
-    Move = 1,
-    UndoMove = 2,
-    EndTurn = 3,
-    ReadyForNewGame = 4,
-    Timeout = 5,
-};
 
 struct NewGameMsg {
     NewGameMsg(Turn turn = Turn::User, Goal goal = Goal::Up)

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package PaperSoccer;
+
+enum MsgId {
+    NewGame = 0;
+    Move = 1;
+    UndoMove = 2;
+    EndTurn = 3;
+    ReadyForNewGame = 4;
+    Timeout = 5;
+};
