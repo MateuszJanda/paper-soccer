@@ -7,7 +7,7 @@
 #define NETWORK_HPP
 
 #include "INetwork.hpp"
-#include "Messages.hpp"
+#include "Message.pb.h"
 #include <boost/asio.hpp>
 #include <deque>
 #include <functional>
@@ -37,13 +37,11 @@ public:
     void sendEndTurn(std::chrono::milliseconds timeLeft) override;
     void sendReadyForNewGame() override;
 
-    template <typename Msg>
-    void sendMsg(const Msg& msg);
+    void sendMsg(const Message& msg);
     void onWrite();
 
     void onRead();
-    template <typename Msg>
-    void onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc);
+    void onReadMsg(std::size_t dataSize);
 
 protected:
     void setupHandlers();
@@ -52,15 +50,13 @@ protected:
     std::function<void()> m_handleInitNewGame;
 
 private:
-    std::string encodeMsgId(MsgId msgId);
     std::string encodeDataSize(const std::string& data);
     template <typename Msg>
     std::string encodeData(const Msg& msg);
 
     MsgId decodeMsgId(const std::string& inboundData);
     std::size_t decodeDataSize(const std::string& inboundData);
-    template <typename Msg>
-    Msg decodeData(const std::vector<char>& inboundData);
+    Message decodeData(const std::vector<char>& inboundData);
 
     boost::asio::io_context& m_ioContext;
     boost::asio::posix::stream_descriptor m_desc;
@@ -76,12 +72,10 @@ private:
 //    constexpr std::string DELIMITER{" "};  TODO C++20
     static constexpr int HEX_PREFIX_LEGNTH{2};
     static constexpr int DELIMITER_LENGTH{1};
-    static constexpr int MSG_ID_HEX_LENGTH{8};
-    static constexpr int MSG_ID_LENGTH{HEX_PREFIX_LEGNTH + MSG_ID_HEX_LENGTH + DELIMITER_LENGTH};
     static constexpr int DATA_SIZE_HEX_LENGTH{8};
     static constexpr int DATA_SIZE_LENGTH{HEX_PREFIX_LEGNTH + DATA_SIZE_HEX_LENGTH + DELIMITER_LENGTH};
 
-    std::array<char, MSG_ID_LENGTH + DATA_SIZE_LENGTH> m_inboundHeader;
+    std::array<char, DATA_SIZE_LENGTH> m_inboundHeader;
     std::vector<char> m_inboundData;
 
     std::deque<std::string> m_messageQueue;

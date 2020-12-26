@@ -6,7 +6,7 @@
 #ifndef I_NETWORK_HPP
 #define I_NETWORK_HPP
 
-#include "Messages.hpp"
+#include "Message.pb.h"
 #include <functional>
 
 namespace PaperSoccer {

@@ -692,7 +692,8 @@ class TimeoutMsg : public ::google::protobuf::Message /* @@protoc_insertion_poin
 };
 // -------------------------------------------------------------------
 
-class Message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PaperSoccer.Message) */ {
+class
+        Message : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:PaperSoccer.Message) */ {
  public:
   Message();
   virtual ~Message();

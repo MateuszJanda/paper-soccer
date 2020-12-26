@@ -60,51 +60,72 @@ void Network::onKeyboardMouseInput(boost::system::error_code errorCode)
 
 void Network::sendTimeout()
 {
-    TimeoutMsg msg;
+    Message msg;
+    msg.mutable_message()->PackFrom(TimeoutMsg{});
+    msg.set_msgid(MsgId::Timeout);
     sendMsg(msg);
 }
 
 void Network::sendNewGame(Turn turn, Goal goal)
 {
-    NewGameMsg msg{turn, goal};
+    NewGameMsg newGameMsg;
+    newGameMsg.set_turn(turn);
+    newGameMsg.set_goal(goal);
+
+    Message msg;
+    msg.set_msgid(MsgId::NewGame);
+    msg.mutable_message()->PackFrom(newGameMsg);
+
     sendMsg(msg);
 }
 
 void Network::sendMove(Direction dir)
 {
-    MoveMsg msg{dir};
+    MoveMsg moveMsg;
+    moveMsg.set_dir(dir);
+
+    Message msg;
+    msg.mutable_message()->PackFrom(moveMsg);
+    msg.set_msgid(MsgId::Move);
+
     sendMsg(msg);
 }
 
 void Network::sendUndoMove()
 {
-    UndoMoveMsg msg{};
+    Message msg;
+    msg.mutable_message()->PackFrom(UndoMoveMsg{});
+    msg.set_msgid(MsgId::UndoMove);
+
     sendMsg(msg);
 }
 
 void Network::sendEndTurn(std::chrono::milliseconds timeLeft)
 {
-    EndTurnMsg msg{timeLeft};
+    Message msg;
+    msg.mutable_message()->PackFrom(EndTurnMsg{});
+    msg.set_msgid(MsgId::EndTurn);
+
     sendMsg(msg);
 }
 
 void Network::sendReadyForNewGame()
 {
-    ReadyForNewGameMsg msg{};
+    Message msg;
+    msg.mutable_message()->PackFrom(ReadyForNewGameMsg{});
+    msg.set_msgid(MsgId::ReadyForNewGame);
+
     sendMsg(msg);
 }
 
-template <typename Msg>
-void Network::sendMsg(const Msg& msg)
+void Network::sendMsg(const Message& msg)
 {
-    auto msgId = encodeMsgId(msg.msgId);
     auto data = encodeData(msg);
     auto dataSize = encodeDataSize(data);
 
     boost::asio::post(m_ioContext,
-        [this, id = std::move(msgId), ds = std::move(dataSize), d = std::move(data)]() {
+        [this, ds = std::move(dataSize), d = std::move(data)]() {
             const bool nothingInProgress = m_messageQueue.empty();
-            m_messageQueue.push_back(std::move(id));
             m_messageQueue.push_back(std::move(ds));
             m_messageQueue.push_back(std::move(d));
 
@@ -114,28 +135,13 @@ void Network::sendMsg(const Msg& msg)
         });
 }
 
-std::string Network::encodeMsgId(MsgId msgId)
-{
-    const std::string delimiter{" "};
-    std::ostringstream msgIdStream;
-    msgIdStream << "0x" << std::setw(MSG_ID_HEX_LENGTH) << std::setfill('0') <<
-                   std::hex << static_cast<std::underlying_type_t<MsgId>>(msgId) << delimiter;
-
-    if (not msgIdStream || msgIdStream.str().size() != MSG_ID_LENGTH) {
-        throw std::length_error{"Can't encode msgId."};
-    }
-
-    return msgIdStream.str();
-}
-
 template <typename Msg>
 std::string Network::encodeData(const Msg& msg)
 {
-    std::ostringstream archiveStream;
-    boost::archive::text_oarchive archive(archiveStream);
-    archive << msg;
+    std::string out;
+    msg.SerializeToString(&out);
 
-    return archiveStream.str();
+    return out;
 }
 
 std::string Network::encodeDataSize(const std::string& data)
@@ -178,66 +184,69 @@ void Network::onRead()
                 return;
             }
 
-            const auto msgId = decodeMsgId(std::string{m_inboundHeader.data(), MSG_ID_LENGTH});
-            const auto dataSize = decodeDataSize(std::string{m_inboundHeader.data() + MSG_ID_LENGTH, DATA_SIZE_LENGTH});
-
-            switch (msgId) {
-            case MsgId::NewGame:
-                onReadMsg<NewGameMsg>(dataSize, m_handleNewGame);
-                break;
-            case MsgId::Move:
-                onReadMsg<MoveMsg>(dataSize, m_handleEnemyMove);
-                break;
-            case MsgId::UndoMove:
-                onReadMsg<UndoMoveMsg>(dataSize, m_handleEnemyUndoMove);
-                break;
-            case MsgId::EndTurn:
-                onReadMsg<EndTurnMsg>(dataSize, m_handleEnemyEndTurn);
-                break;
-            case MsgId::ReadyForNewGame:
-                onReadMsg<ReadyForNewGameMsg>(dataSize, m_handleReadyForNewGameMsg);
-                break;
-            case MsgId::Timeout:
-                onReadMsg<TimeoutMsg>(dataSize, m_handleEnemyTimeoutMsg);
-                break;
-            default:
-                throw std::invalid_argument{"Can't recognize msgId."};
-                break;
-            }
+            const auto dataSize = decodeDataSize(std::string{m_inboundHeader.data(), DATA_SIZE_LENGTH});
+            onReadMsg(dataSize);
         });
 }
 
-template <typename Msg>
-void Network::onReadMsg(std::size_t dataSize, std::function<void(Msg)> handlerFunc)
+void Network::onReadMsg(std::size_t dataSize)
 {
     m_inboundData.resize(dataSize);
 
     boost::asio::async_read(m_socket,
         boost::asio::buffer(boost::asio::buffer(m_inboundData)),
-        [this, handlerFunc](boost::system::error_code errorCode, std::size_t length) {
+        [this](boost::system::error_code errorCode, std::size_t length) {
             if (errorCode) {
                 m_socket.close();
                 return;
             }
 
-            Msg msg = decodeData<Msg>(m_inboundData);
-            if (handlerFunc) {
-                handlerFunc(std::move(msg));
-            }
+            Message msg = decodeData(m_inboundData);
 
+            switch (msg.msgid()) {
+            case MsgId::NewGame: {
+
+                NewGameMsg newGameMsg;
+                msg.message().UnpackTo(&newGameMsg);
+                m_handleNewGame(std::move(newGameMsg));
+                break;
+            }
+            case MsgId::Move: {
+                MoveMsg moveMsg;
+                msg.message().UnpackTo(&moveMsg);
+                m_handleEnemyMove(std::move(moveMsg));
+                break;
+            }
+            case MsgId::UndoMove: {
+                UndoMoveMsg undoMoveMsg;
+                msg.message().UnpackTo(&undoMoveMsg);
+                m_handleEnemyUndoMove(std::move(undoMoveMsg));
+                break;
+            }
+            case MsgId::EndTurn: {
+                EndTurnMsg endTurnMsg;
+                msg.message().UnpackTo(&endTurnMsg);
+                m_handleEnemyEndTurn(std::move(endTurnMsg));
+                break;
+            }
+            case MsgId::ReadyForNewGame: {
+                ReadyForNewGameMsg readyForNewGameMsg;
+                msg.message().UnpackTo(&readyForNewGameMsg);
+                m_handleReadyForNewGameMsg(std::move(readyForNewGameMsg));
+                break;
+            }
+            case MsgId::Timeout: {
+                TimeoutMsg timeoutMsg;
+                msg.message().UnpackTo(&timeoutMsg);
+                m_handleEnemyTimeoutMsg(std::move(timeoutMsg));
+                break;
+            }
+            default:
+                throw std::invalid_argument{"Can't recognize msgId."};
+                break;
+            }
             onRead();
         });
-}
-
-MsgId Network::decodeMsgId(const std::string& inboundData)
-{
-    std::istringstream is{inboundData};
-    std::underlying_type_t<MsgId> msgId{0};
-    if (not(is >> std::hex >> msgId)) {
-        throw std::invalid_argument{"Can't decode msgId."};
-    }
-
-    return static_cast<MsgId>(msgId);
 }
 
 std::size_t Network::decodeDataSize(const std::string& inboundData)
@@ -251,14 +260,11 @@ std::size_t Network::decodeDataSize(const std::string& inboundData)
     return dataSize;
 }
 
-template <typename Msg>
-Msg Network::decodeData(const std::vector<char>& inboundData)
+Message Network::decodeData(const std::vector<char>& inboundData)
 {
     std::string archiveData{&inboundData[0], inboundData.size()};
-    std::istringstream archiveStream{archiveData};
-    boost::archive::text_iarchive archive{archiveStream};
-    Msg msg;
-    archive >> msg;
+    Message msg;
+    msg.ParseFromString(archiveData);
 
     return msg;
 }

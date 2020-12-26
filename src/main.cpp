@@ -12,9 +12,8 @@
 #include "View.hpp"
 #include <boost/asio.hpp>
 #include <boost/program_options.hpp>
-#include <iostream>
 #include <google/protobuf/stubs/common.h>
-
+#include <iostream>
 
 using namespace PaperSoccer;
 
@@ -30,12 +29,7 @@ boost::program_options::options_description usage()
         "\n"
         "Options");
 
-    desc.add_options()
-        ("help,h", "display this help")
-        ("version,v", "version")
-        ("wait,w", "run as server and wait for connection")
-        ("connect,c", po::value<std::string>(), "run as client and connect to specific address")
-        ("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
+    desc.add_options()("help,h", "display this help")("version,v", "version")("wait,w", "run as server and wait for connection")("connect,c", po::value<std::string>(), "run as client and connect to specific address")("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
 
     return desc;
 }
@@ -119,8 +113,8 @@ int main(int argc, char* argv[])
         } else if (vm.count("connect")) {
             runClient(vm["connect"].as<std::string>(), vm["port"].as<short unsigned int>());
         } else {
-           std::cout << desc << "\n";
-           return 0;
+            std::cout << desc << "\n";
+            return 0;
         }
     } catch (po::too_many_positional_options_error& e) {
         std::cerr << e.what() << "\n";

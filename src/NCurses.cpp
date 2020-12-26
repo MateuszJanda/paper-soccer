@@ -5,8 +5,8 @@
 
 #include "NCurses.hpp"
 #include <clocale>
-#include <stdexcept>
 #include <ncurses.h>
+#include <stdexcept>
 #include <tuple>
 
 namespace PaperSoccer {

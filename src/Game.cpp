@@ -3,8 +3,9 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#include <stdexcept>
 #include "Game.hpp"
+#include "Message.pb.h"
+#include <stdexcept>
 
 namespace PaperSoccer {
 
@@ -45,14 +46,16 @@ void Game::run()
 {
     using namespace std::placeholders;
 
-    m_network.registerHandlers([this]() { onKeyboardMouseInput(); },
-        [this]() { initNewGame(); },
-        [this](NewGameMsg msg) { onNewGame(std::move(msg)); },
-        [this](MoveMsg msg) { onEnemyMove(std::move(msg)); },
-        [this](UndoMoveMsg) { onEnemyUndoMove(); },
-        [this](EndTurnMsg msg) { onEnemyEndTurn(std::move(msg)); },
-        [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); },
-        [this](TimeoutMsg) { onEnemyTimeout(); });
+    NewGameMsg nnn;
+
+//        m_network.registerHandlers([this]() { onKeyboardMouseInput(); },
+//            [this]() { initNewGame(); },
+//            [this](NewGameMsg msg) { /*onNewGame(std::move(msg));*/ },
+//            [this](MoveMsg msg) { /*onEnemyMove(std::move(msg));*/ },
+//            [this](UndoMoveMsg) { onEnemyUndoMove(); },
+//            [this](EndTurnMsg msg) { /*onEnemyEndTurn(std::move(msg));*/ },
+//            [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); },
+//            [this](TimeoutMsg) { onEnemyTimeout(); });
     m_network.run();
 
     m_userTimer.registerHandler([this](std::chrono::milliseconds timeLeft) { onUserTimerTick(timeLeft); });
@@ -74,9 +77,9 @@ void Game::initNewGame(Goal userGoal)
 
 void Game::onNewGame(NewGameMsg msg)
 {
-    m_firstTurn = msg.turn;
+    m_firstTurn = msg.turn();
     m_currentTurn = m_firstTurn;
-    m_userGoal = msg.goal;
+    m_userGoal = msg.goal();
 
     resetSettings();
 }
@@ -240,14 +243,14 @@ void Game::onEnemyMove(MoveMsg msg)
         throw std::invalid_argument{"Enemy move in user turn."};
     }
 
-    const auto status = m_board.moveBall(msg.dir);
+    const auto status = m_board.moveBall(msg.dir());
 
     if (status == MoveStatus::Illegal) {
         throw std::invalid_argument{"Illegal move."};
     }
 
     m_enemyStatus = status;
-    m_dirPath.push_back(msg.dir);
+    m_dirPath.push_back(msg.dir());
     drawBoard();
 }
 
@@ -292,7 +295,7 @@ void Game::onEnemyEndTurn(EndTurnMsg msg)
         m_view.setContinueStatus();
     }
 
-    m_enemyTimer.pauseAndSync(std::chrono::milliseconds{msg.timeLeft});
+    m_enemyTimer.pauseAndSync(std::chrono::milliseconds{msg.timeleft()});
     m_dirPath.clear();
     drawBoard();
 }
