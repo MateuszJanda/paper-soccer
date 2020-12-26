@@ -12,7 +12,7 @@
 #include "INetwork.hpp"
 #include "ITimer.hpp"
 #include "IView.hpp"
-#include "Turn.hpp"
+#include "Turn.pb.h"
 #include <map>
 
 namespace PaperSoccer {

@@ -13,6 +13,8 @@
 #include <boost/asio.hpp>
 #include <boost/program_options.hpp>
 #include <iostream>
+#include <google/protobuf/stubs/common.h>
+
 
 using namespace PaperSoccer;
 
@@ -90,6 +92,7 @@ void runClient(std::string address, short unsigned int port)
 
 int main(int argc, char* argv[])
 {
+    GOOGLE_PROTOBUF_VERIFY_VERSION;
     namespace po = boost::program_options;
 
     auto desc = usage();
@@ -128,6 +131,8 @@ int main(int argc, char* argv[])
         std::cout << desc << "\n";
         exit(1);
     }
+
+    google::protobuf::ShutdownProtobufLibrary();
 
     return 0;
 }

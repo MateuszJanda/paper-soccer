@@ -8,7 +8,7 @@
 
 #include "Direction.hpp"
 #include "Goal.hpp"
-#include "Turn.hpp"
+#include "Turn.pb.h"
 #include <chrono>
 
 namespace PaperSoccer {

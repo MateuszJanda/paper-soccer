@@ -8,7 +8,8 @@ add_executable(${CMAKE_PROJECT_NAME}
     INetwork.hpp
     ITimer.hpp
     Messages.hpp
-    Turn.hpp
+    Turn.pb.cc
+    Turn.pb.h
     NCurses.cpp
     NCurses.hpp
     Timer.cpp
