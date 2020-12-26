@@ -44,6 +44,7 @@ find_package(Boost REQUIRED COMPONENTS serialization)
 target_link_libraries(${CMAKE_PROJECT_NAME}
     pthread
     ncursesw
+    protobuf
     ${Boost_LIBRARIES}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_SERIALIZATION_LIBRARY}
