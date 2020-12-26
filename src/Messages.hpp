@@ -7,7 +7,7 @@
 #define MESSAGES_HPP
 
 #include "DirectionUtils.hpp"
-#include "Goal.hpp"
+#include "Goal.pb.h"
 #include "Turn.pb.h"
 #include <chrono>
 
@@ -23,7 +23,7 @@ enum class MsgId : std::uint32_t {
 };
 
 struct NewGameMsg {
-    NewGameMsg(Turn turn = Turn::User, Goal goal = Goal::Top)
+    NewGameMsg(Turn turn = Turn::User, Goal goal = Goal::Up)
         : turn{turn}
         , goal{goal}
     {

@@ -1,35 +1,38 @@
 # Create paper-soccer exe
 add_executable(${CMAKE_PROJECT_NAME}
     ColorPair.hpp
-    Goal.hpp
+    Goal.pb.cc
+    Goal.pb.h
     IBoard.hpp
     INCurses.hpp
     IView.hpp
     INetwork.hpp
     ITimer.hpp
     Messages.hpp
-    Turn.pb.cc
     Turn.pb.h
+    Turn.pb.cc
     NCurses.cpp
     NCurses.hpp
-    Timer.cpp
     Timer.hpp
-    Network.cpp
+    Timer.cpp
     Network.hpp
-    Server.cpp
+    Network.cpp
     Server.hpp
-    Client.cpp
+    Server.cpp
     Client.hpp
-    Game.cpp
+    Client.cpp
     Game.hpp
-    Board.cpp
+    Game.cpp
     Board.hpp
-    Node.cpp
+    Board.cpp
     Node.hpp
+    Node.cpp
     Position.hpp
     DirectionUtils.hpp
-    View.cpp
+    Direction.pb.h
+    Direction.pb.cc
     View.hpp
+    View.cpp
     main.cpp
 )
 

@@ -6,7 +6,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "Goal.hpp"
+#include "Goal.pb.h"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "INetwork.hpp"
@@ -32,7 +32,7 @@ public:
 
     void run();
 
-    void initNewGame(Goal userGoal = Goal::Top);
+    void initNewGame(Goal userGoal = Goal::Up);
     void onNewGame(NewGameMsg msg);
     void resetSettings();
 
@@ -79,7 +79,7 @@ protected:
     int m_enemyScore{0};
     Turn m_firstTurn{Turn::User};
     Turn m_currentTurn{Turn::User};
-    Goal m_userGoal{Goal::Top};
+    Goal m_userGoal{Goal::Up};
     MoveStatus m_userStatus{MoveStatus::Continue};
     MoveStatus m_enemyStatus{MoveStatus::Continue};
     std::vector<Direction> m_dirPath;

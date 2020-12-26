@@ -7,20 +7,10 @@
 #define DIRECTION_HPP
 
 #include "Position.hpp"
+#include "Direction.pb.h"
 #include <cstdint>
 
 namespace PaperSoccer {
-
-enum class Direction : std::uint32_t {
-    Top = 0,
-    TopRight = 1,
-    Right = 2,
-    BottomRight = 3,
-    Bottom = 4,
-    BottomLeft = 5,
-    Left = 6,
-    TopLeft = 7,
-};
 
 constexpr Position directionToPosition(Position pos, Direction dir)
 {

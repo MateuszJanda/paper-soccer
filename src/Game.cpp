@@ -20,12 +20,12 @@ namespace {
 
     bool isGoalToOwn(MoveStatus status, Goal goal)
     {
-        return (status == MoveStatus::TopGoal and goal == Goal::Top) or (status == MoveStatus::BottomGoal and goal == Goal::Bottom);
+        return (status == MoveStatus::TopGoal and goal == Goal::Up) or (status == MoveStatus::BottomGoal and goal == Goal::Down);
     }
 
     bool isGoalToEnemy(MoveStatus status, Goal goal)
     {
-        return (status == MoveStatus::TopGoal and goal == Goal::Bottom) or (status == MoveStatus::BottomGoal and goal == Goal::Top);
+        return (status == MoveStatus::TopGoal and goal == Goal::Down) or (status == MoveStatus::BottomGoal and goal == Goal::Up);
     }
 
 } // namespace anonymous
@@ -68,7 +68,7 @@ void Game::initNewGame(Goal userGoal)
     resetSettings();
 
     auto turnForEnemy = (m_firstTurn == Turn::Enemy) ? Turn::User : Turn::Enemy;
-    auto enemyGoal = (m_userGoal == Goal::Top) ? Goal::Bottom : Goal::Top;
+    auto enemyGoal = (m_userGoal == Goal::Up) ? Goal::Down : Goal::Up;
     m_network.sendNewGame(turnForEnemy, enemyGoal);
 }
 
@@ -110,7 +110,7 @@ void Game::drawBoard() const
 {
     const auto ballColor = (m_currentTurn == Turn::Enemy) ? ColorPair::ENEMY : ColorPair::USER;
 
-    if (m_userGoal == Goal::Top) {
+    if (m_userGoal == Goal::Up) {
         m_view.drawBoard("Me", ColorPair::USER, "Enemy", ColorPair::ENEMY, m_dirPath, ballColor);
     } else {
         m_view.drawBoard("Enemy", ColorPair::ENEMY, "Me", ColorPair::USER, m_dirPath, ballColor);
