@@ -20,7 +20,7 @@ message(STATUS "[+]: ${SRCS}")
 # Boost asio is header only
 include_directories(${Boost_INCLUDE_DIR})
 
-include_directories(proto)
+include_directories("proto")
 
 # Boost system is required by Boost asio
 find_package(Boost REQUIRED COMPONENTS system)
