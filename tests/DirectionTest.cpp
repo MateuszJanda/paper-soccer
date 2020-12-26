@@ -3,7 +3,7 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#include "Direction.hpp"
+#include "DirectionUtils.hpp"
 #include "gtest/gtest.h"
 
 namespace PaperSoccer {

@@ -6,7 +6,7 @@
 #ifndef VIEW_HPP
 #define VIEW_HPP
 
-#include "Direction.hpp"
+#include "DirectionUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"

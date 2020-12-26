@@ -27,7 +27,7 @@ add_executable(${CMAKE_PROJECT_NAME}
     Node.cpp
     Node.hpp
     Position.hpp
-    Direction.hpp
+    DirectionUtils.hpp
     View.cpp
     View.hpp
     main.cpp

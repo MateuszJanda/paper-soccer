@@ -6,7 +6,7 @@
 #ifndef MESSAGES_HPP
 #define MESSAGES_HPP
 
-#include "Direction.hpp"
+#include "DirectionUtils.hpp"
 #include "Goal.hpp"
 #include "Turn.pb.h"
 #include <chrono>

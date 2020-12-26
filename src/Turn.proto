@@ -3,6 +3,6 @@ syntax = "proto3";
 package PaperSoccer;
 
 enum Turn {
-    User = 0;
-    Enemy = 1;
+  User = 0;
+  Enemy = 1;
 };

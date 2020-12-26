@@ -6,7 +6,7 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "Direction.hpp"
+#include "DirectionUtils.hpp"
 #include "Position.hpp"
 #include <set>
 #include <vector>
