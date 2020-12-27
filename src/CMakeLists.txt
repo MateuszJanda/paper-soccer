@@ -21,31 +21,14 @@ include_directories(${Boost_INCLUDE_DIR})
 
 # Create paper-soccer exe
 add_executable(${CMAKE_PROJECT_NAME}
-    ColorPair.hpp
-    IBoard.hpp
-    INCurses.hpp
-    IView.hpp
-    INetwork.hpp
-    ITimer.hpp
     NCurses.cpp
-    NCurses.hpp
-    Timer.hpp
     Timer.cpp
-    Network.hpp
     Network.cpp
-    Server.hpp
     Server.cpp
-    Client.hpp
     Client.cpp
-    Game.hpp
     Game.cpp
-    Board.hpp
     Board.cpp
-    Node.hpp
     Node.cpp
-    Position.hpp
-    DirectionUtils.hpp
-    View.hpp
     View.cpp
     main.cpp
 )
