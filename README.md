@@ -8,9 +8,9 @@ A free networked version of paper soccer game in modern console.
 ## Requirements
 - `gcc` with `C++20` support
 - `googletest` (1.10.0)
-- `boost` (1.67)
+- `protobuf` (3.6.1)
+- `boost` (1.71)
     - `boost.asio`
-    - `boost.serialization`
     - `boost.program_options`
 - `ncurses` (6.2)
 - also terminal supporting font fallback (weird Unicode characters are used)
@@ -48,7 +48,6 @@ Connect to localhost server
 ```
 
 ### Game control
-
 Key | Direction
 --- | ---
 <kbd>Enter</kbd> | End trun
@@ -56,7 +55,6 @@ Key | Direction
 <kbd>n</kbd> | Start new game, when this game end.
 
 ### Ball movements
-
 Ball placement can be changed by mouse or keyboard.
 
 Key | Direction
