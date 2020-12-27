@@ -51,9 +51,9 @@ Connect to localhost server
 
 Key | Direction
 --- | ---
-<kbd>n</kbd> | New game
 <kbd>Enter</kbd> | End trun
 <kbd>u</kbd> | Undo player move
+<kbd>n</kbd> | Start new game, when this game end.
 
 ### Ball movements
 
