@@ -1,14 +1,5 @@
 set(BINARY_NAME runTests)
 
-set(SOURCES_DIR ${CMAKE_SOURCE_DIR}/src)
-
-set(SOURCES
-    ${SOURCES_DIR}/Game.cpp
-    ${SOURCES_DIR}/Board.cpp
-    ${SOURCES_DIR}/Node.cpp
-    ${SOURCES_DIR}/View.cpp
-)
-
 # Set include dirs for googletest/googlemock
 set(GTEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googletest/include)
 set(GMOCK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/googletest/googlemock/include)
@@ -37,13 +28,13 @@ add_executable(${BINARY_NAME}
     TimerMock.hpp
     ViewMock.hpp
     ViewTest.cpp
-    ${SOURCES}
 )
 
 link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 message("[+] Lib path: " ${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 
 target_link_libraries(${BINARY_NAME}
+    paper_soccer_lib
     paper_soccer_proto
     gtest_main
     gtest
