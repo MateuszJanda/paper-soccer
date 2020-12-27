@@ -48,14 +48,14 @@ void Game::run()
 
     NewGameMsg nnn;
 
-//        m_network.registerHandlers([this]() { onKeyboardMouseInput(); },
-//            [this]() { initNewGame(); },
-//            [this](NewGameMsg msg) { /*onNewGame(std::move(msg));*/ },
-//            [this](MoveMsg msg) { /*onEnemyMove(std::move(msg));*/ },
-//            [this](UndoMoveMsg) { onEnemyUndoMove(); },
-//            [this](EndTurnMsg msg) { /*onEnemyEndTurn(std::move(msg));*/ },
-//            [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); },
-//            [this](TimeoutMsg) { onEnemyTimeout(); });
+    m_network.registerHandlers([this]() { onKeyboardMouseInput(); },
+        [this]() { initNewGame(); },
+        [this](NewGameMsg msg) { onNewGame(std::move(msg)); },
+        [this](MoveMsg msg) { onEnemyMove(std::move(msg)); },
+        [this](UndoMoveMsg) { onEnemyUndoMove(); },
+        [this](EndTurnMsg msg) { onEnemyEndTurn(std::move(msg)); },
+        [this](ReadyForNewGameMsg) { onEnemyReadyForNewGame(); },
+        [this](TimeoutMsg) { onEnemyTimeout(); });
     m_network.run();
 
     m_userTimer.registerHandler([this](std::chrono::milliseconds timeLeft) { onUserTimerTick(timeLeft); });
