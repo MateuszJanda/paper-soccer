@@ -69,7 +69,7 @@ private:
     std::function<void(ReadyForNewGameMsg)> m_handleReadyForNewGameMsg;
     std::function<void(TimeoutMsg)> m_handleEnemyTimeoutMsg;
 
-//    constexpr std::string DELIMITER{" "};  TODO C++20
+    //    constexpr std::string DELIMITER{" "};  TODO do when C++20 available
     static constexpr int HEX_PREFIX_LEGNTH{2};
     static constexpr int DELIMITER_LENGTH{1};
     static constexpr int DATA_SIZE_HEX_LENGTH{8};

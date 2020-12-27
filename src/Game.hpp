@@ -6,12 +6,12 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "proto/Goal.pb.h"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "INetwork.hpp"
 #include "ITimer.hpp"
 #include "IView.hpp"
+#include "proto/Goal.pb.h"
 #include "proto/Turn.pb.h"
 #include <map>
 
