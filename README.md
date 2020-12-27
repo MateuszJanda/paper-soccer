@@ -33,18 +33,18 @@ make
 ## Example
 Run as server and wait for connection (default port `8787`)
 ```
-./src/paper-soccer -w
+./src/paper-soccer --wait
 
 # Equivalent
-./src/paper-soccer -w -p 8787
+./src/paper-soccer --wait --port 8787
 ```
 
 Connect to localhost server
 ```
-./src/paper-soccer -c localhost
+./src/paper-soccer --connect localhost
 
 # Equivalent
-./src/paper-soccer -c localhost -p 8787
+./src/paper-soccer --connect localhost --port 8787
 ```
 
 ### Game control

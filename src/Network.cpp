@@ -135,6 +135,10 @@ void Network::sendMsg(const Message& msg)
 
 std::string Network::encodeData(const Message& msg)
 {
+    if (not msg.IsInitialized()) {
+        throw std::runtime_error{"Can't serialize message"};
+    }
+
     std::string out;
     msg.SerializeToString(&out);
 
