@@ -51,8 +51,7 @@ protected:
 
 private:
     std::string encodeDataSize(const std::string& data);
-    template <typename Msg>
-    std::string encodeData(const Msg& msg);
+    std::string encodeData(const Message& msg);
 
     MsgId decodeMsgId(const std::string& inboundData);
     std::size_t decodeDataSize(const std::string& inboundData);

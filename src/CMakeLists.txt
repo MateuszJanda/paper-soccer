@@ -4,8 +4,6 @@ find_package(Protobuf REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 # Boost program_options (parse command line parameters)
 find_package(Boost REQUIRED COMPONENTS program_options)
-# Boost serialization
-find_package(Boost REQUIRED COMPONENTS serialization)
 
 # Include directories for Google Protocol Buffers
 include_directories(${Protobuf_INCLUDE_DIRS})
@@ -59,6 +57,5 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     ${Protobuf_LIBRARIES}
     ${Boost_LIBRARIES}
     ${Boost_SYSTEM_LIBRARY}
-    ${Boost_SERIALIZATION_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
 )

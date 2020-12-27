@@ -4,9 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "Network.hpp"
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/serialization/vector.hpp>
+#include <iomanip>
 #include <sstream>
 
 namespace PaperSoccer {
@@ -135,8 +133,7 @@ void Network::sendMsg(const Message& msg)
         });
 }
 
-template <typename Msg>
-std::string Network::encodeData(const Msg& msg)
+std::string Network::encodeData(const Message& msg)
 {
     std::string out;
     msg.SerializeToString(&out);
