@@ -14,8 +14,13 @@ cmake_install.cmake
 *.cxxflags
 *.files
 *.includes
+lib/googletest
 src/libpaper-soccer_lib.a
 src/proto/libpaper_soccer_proto.a
+lib/libgmock.a
+lib/libgmock_main.a
+lib/libgtest.a
+lib/libgtest_main.a
 *~
 *.cbp
 *.swp
