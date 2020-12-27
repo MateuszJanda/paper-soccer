@@ -45,7 +45,7 @@ link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 message("[+] Lib path: " ${CMAKE_SOURCE_DIR}/lib/googletest/lib)
 
 target_link_libraries(${BINARY_NAME}
-    proto_messages
+    paper_soccer_proto
     gtest_main
     gtest
     gmock_main

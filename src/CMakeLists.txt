@@ -55,7 +55,7 @@ add_executable(${CMAKE_PROJECT_NAME}
 target_link_libraries(${CMAKE_PROJECT_NAME}
     pthread
     ncursesw
-    proto_messages
+    paper_soccer_proto
     ${Protobuf_LIBRARIES}
     ${Boost_LIBRARIES}
     ${Boost_SYSTEM_LIBRARY}

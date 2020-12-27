@@ -17,7 +17,9 @@ cmake_install.cmake
 lib/
 lib/googletest
 src/libpaper-soccer_lib.a
+src/proto/libpaper_soccer_proto.a
 *~
+*.cbp
 *.swp
 *.pb.cc
 *.pb.h
