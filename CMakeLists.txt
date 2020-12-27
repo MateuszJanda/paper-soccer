@@ -16,8 +16,9 @@ add_compile_definitions(GAME_VERSION="0.9.0")
 # Add directory to those the compiler uses to search for include files
 include_directories(src)
 
+# Compile source
 add_subdirectory(src)
 
-# Add googletest sources
-add_subdirectory(lib/googletest)
-add_subdirectory(tests)
+# Compile tests and googletest (excluded from ALL, so 'make runTests' must be called)
+add_subdirectory(lib/googletest EXCLUDE_FROM_ALL)
+add_subdirectory(tests EXCLUDE_FROM_ALL)
