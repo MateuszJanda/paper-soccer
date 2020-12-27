@@ -15,17 +15,11 @@ A free networked version of paper soccer game in modern console.
 - `ncurses` (6.2)
 - also terminal supporting font fallback (weird Unicode characters are used)
 
-## Installation Google Test
-```
-cd paper-soccer/lib/
-git clone https://github.com/google/googletest.git
-cd googletest/
-cmake CMakeLists.txt
-make
-```
-
 ## Installation
 ```
+git clone https://github.com/MateuszJanda/paper-soccer --recursive
+
+cd paper-soccer
 cmake CMakeLists.txt
 make
 ```

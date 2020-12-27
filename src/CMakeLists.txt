@@ -13,7 +13,7 @@ message(STATUS "[+] Just for debug Protobuf_INCLUDE_DIRS: ${Protobuf_INCLUDE_DIR
 
 # Generate protobuf messages from definitions
 add_subdirectory(proto)
-# Add directory with protobuf messages (header)to those the compiler uses to search for include files
+# Add directory with protobuf messages (headers) to those the compiler uses to search for include files
 include_directories("proto")
 
 # Boost asio is header only
