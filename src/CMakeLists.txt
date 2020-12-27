@@ -19,8 +19,9 @@ include_directories("proto")
 # Boost asio is header only
 include_directories(${Boost_INCLUDE_DIR})
 
-# Create paper-soccer exe
-add_executable(${CMAKE_PROJECT_NAME}
+# Create paper-soccer lib (used also by runTests)
+set(PROJECT_LIB paper_soccer_lib)
+add_library(${PROJECT_LIB}
     NCurses.cpp
     Timer.cpp
     Network.cpp
@@ -30,10 +31,15 @@ add_executable(${CMAKE_PROJECT_NAME}
     Board.cpp
     Node.cpp
     View.cpp
+)
+
+# Create paper-soccer exe
+add_executable(${CMAKE_PROJECT_NAME}
     main.cpp
 )
 
 target_link_libraries(${CMAKE_PROJECT_NAME}
+    ${PROJECT_LIB}
     pthread
     ncursesw
     paper_soccer_proto
