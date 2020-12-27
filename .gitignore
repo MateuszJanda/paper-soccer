@@ -14,8 +14,6 @@ cmake_install.cmake
 *.cxxflags
 *.files
 *.includes
-lib/
-lib/googletest
 src/libpaper-soccer_lib.a
 src/proto/libpaper_soccer_proto.a
 *~
