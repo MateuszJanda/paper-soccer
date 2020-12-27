@@ -29,7 +29,12 @@ boost::program_options::options_description usage()
         "\n"
         "Options");
 
-    desc.add_options()("help,h", "display this help")("version,v", "version")("wait,w", "run as server and wait for connection")("connect,c", po::value<std::string>(), "run as client and connect to specific address")("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
+    desc.add_options()
+        ("help,h", "display this help")
+        ("version,v", "version")
+        ("wait,w", "run as server and wait for connection")
+        ("connect,c", po::value<std::string>(), "run as client and connect to specific address")
+        ("port,p", po::value<short unsigned int>()->default_value(8787), "port number");
 
     return desc;
 }
