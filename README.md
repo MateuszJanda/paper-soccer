@@ -22,6 +22,10 @@ git clone https://github.com/MateuszJanda/paper-soccer --recursive
 cd paper-soccer
 cmake CMakeLists.txt
 make
+
+# To run tests
+make runTests
+./runTests
 ```
 
 ## Example
