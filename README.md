@@ -50,7 +50,8 @@ Key | Direction
 --- | ---
 <kbd>Enter</kbd> | End trun
 <kbd>u</kbd> | Undo player move
-<kbd>n</kbd> | Start new game, when this game end.
+<kbd>n</kbd> | Start new game, when this game end
+<kbd>Ctrl+c</kbd> | Exit
 
 ### Ball movements
 Ball placement can be changed by mouse or keyboard.
