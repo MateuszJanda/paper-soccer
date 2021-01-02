@@ -1,5 +1,5 @@
 ## paper-soccer
-A free networked version of paper soccer game in modern console.
+A networked version of paper soccer game in modern console.
 
 <p align="center">
 <img src="./gallery/screenshot.png" alt="paper-soccer"/>
@@ -13,7 +13,7 @@ A free networked version of paper soccer game in modern console.
     - `boost.asio`
     - `boost.program_options`
 - `ncurses` (6.2)
-- also terminal supporting font fallback (weird Unicode characters are used)
+- also terminal supporting font fallback ("weird" Unicode characters are used)
 
 ## Installation
 ```
@@ -39,10 +39,10 @@ Run as server and wait for connection (default port `8787`)
 
 Connect to localhost server
 ```
-./src/paper-soccer --connect localhost
+./paper-soccer --connect localhost
 
 # Equivalent
-./src/paper-soccer --connect localhost --port 8787
+./paper-soccer --connect localhost --port 8787
 ```
 
 ### Game control
