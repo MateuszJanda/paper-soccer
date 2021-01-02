@@ -16,7 +16,7 @@ A networked version of paper soccer game in modern console.
 - also terminal supporting font fallback ("weird" Unicode characters are used)
 
 ## Installation
-```
+```bash
 git clone https://github.com/MateuszJanda/paper-soccer --recursive
 
 cd paper-soccer
@@ -30,7 +30,7 @@ make runTests
 
 ## Example
 Run as server and wait for connection (default port `8787`)
-```
+```bash
 ./paper-soccer --wait
 
 # Equivalent
@@ -38,7 +38,7 @@ Run as server and wait for connection (default port `8787`)
 ```
 
 Connect to localhost server
-```
+```bash
 ./paper-soccer --connect localhost
 
 # Equivalent
