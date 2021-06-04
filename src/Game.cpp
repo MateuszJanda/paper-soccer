@@ -77,7 +77,7 @@ void Game::onNewGame(NewGameMsg msg)
 {
     const std::string gameVersion{GAME_VERSION};
     const std::string delimiter{"."};
-    const auto major = std::stoi(gameVersion.substr(0, gameVersion.find(delimiter)));
+    const auto major = std::stoul(gameVersion.substr(0, gameVersion.find(delimiter)));
 
     if (major != msg.version_major()) {
         throw std::runtime_error{"Inocrrect major version in NewGameMsg"};

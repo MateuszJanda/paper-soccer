@@ -113,7 +113,7 @@ void Board::setTopGaol()
         Direction::TopRight, Direction::Right, Direction::BottomRight, Direction::Bottom});
 
     // Goal net
-    for (int i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
+    for (std::size_t i = m_goalpostLeft + 1; i < m_goalpostRight; i++) {
         auto& node = netLine[i];
         node.addNeighbours({Direction::Left, Direction::TopLeft, Direction::Top,
             Direction::TopRight, Direction::Right});
@@ -310,7 +310,7 @@ bool Board::undoBallMove(Direction dir)
     return true;
 }
 
-bool Board::canReachGoal(Direction dir, int netLine) const
+bool Board::canReachGoal(Direction dir, std::size_t netLine) const
 {
     const auto newPos = directionToPosition(m_ballPos, dir);
     for (std::size_t x = m_goalpostLeft; x <= m_goalpostRight; x++) {

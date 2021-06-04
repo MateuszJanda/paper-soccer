@@ -38,7 +38,7 @@ private:
     void setBottomGaol();
 
     void updateBallAndGraph(Direction dir);
-    bool canReachGoal(Direction dir, int goalLine) const;
+    bool canReachGoal(Direction dir, std::size_t goalLine) const;
     bool isDeadEnd() const;
     bool isPositionInGraph(const Position& pos) const;
 
