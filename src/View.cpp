@@ -317,10 +317,8 @@ void View::drawPathMarkers(const std::vector<Direction>& dirPath, ColorPair ball
     auto nodePos = m_board.getBallPosition();
     m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
 
-    // TODO: Supported in gcc 10
-    // for (auto v : std::ranges::views::reverse(dirPath))
-    for (auto it = dirPath.rbegin(); it != dirPath.rend(); ++it) {
-        auto reverseDir = reverseDirection(*it);
+    for (auto dir : std::ranges::views::reverse(dirPath)) {
+        auto reverseDir = reverseDirection(dir);
         nodePos = directionToPosition(nodePos, reverseDir);
         m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
     }
