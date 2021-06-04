@@ -194,8 +194,10 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
 
 TEST_F(GameTest, onNewGameWhenIncorrectVersion)
 {
+    const int INCORRECT_MAJOR_VERSION = 777;
+
     NewGameMsg msg;
-    msg.set_version_major(777);
+    msg.set_version_major(INCORRECT_MAJOR_VERSION);
     EXPECT_THROW(game.onNewGame(msg), std::runtime_error);
 }
 
