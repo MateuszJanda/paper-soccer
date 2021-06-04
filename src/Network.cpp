@@ -67,6 +67,12 @@ void Network::sendTimeout()
 void Network::sendNewGame(Turn turn, Goal goal)
 {
     NewGameMsg newGameMsg;
+
+    auto [major, minor, patch] = getVersion();
+    newGameMsg.set_version_major(major);
+    newGameMsg.set_version_minor(minor);
+    newGameMsg.set_version_patch(patch);
+
     newGameMsg.set_turn(turn);
     newGameMsg.set_goal(goal);
 
@@ -131,6 +137,22 @@ void Network::sendMsg(const Message& msg)
                 onWrite();
             }
         });
+}
+
+std::tuple<int, int, int> Network::getVersion() const
+{
+    std::istringstream gameVersion{GAME_VERSION};
+    std::string part;
+    std::vector<int> version;
+    while (std::getline(gameVersion, part, '.')) {
+        version.push_back(std::stoi(part));
+    }
+
+    if (version.size() != 3) {
+        throw std::runtime_error{"Incorrect GAME_VERSION format"};
+    }
+
+    return {version[0], version[1], version[2]};
 }
 
 std::string Network::encodeData(const Message& msg)

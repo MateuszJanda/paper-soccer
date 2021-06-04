@@ -50,6 +50,7 @@ protected:
     std::function<void()> m_handleInitNewGame;
 
 private:
+    std::tuple<int, int, int> getVersion() const;
     std::string encodeDataSize(const std::string& data);
     std::string encodeData(const Message& msg);
 
