@@ -75,6 +75,14 @@ void Game::initNewGame(Goal userGoal)
 
 void Game::onNewGame(NewGameMsg msg)
 {
+    const std::string gameVersion{GAME_VERSION};
+    const std::string delimiter{"."};
+    const auto major = std::stoi(gameVersion.substr(0, gameVersion.find(delimiter)));
+
+    if (major != msg.version_major()) {
+        throw std::runtime_error{"Inocrrect major version in NewGameMsg"};
+    }
+
     m_firstTurn = msg.turn();
     m_currentTurn = m_firstTurn;
     m_userGoal = msg.goal();

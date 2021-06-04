@@ -35,7 +35,7 @@ public:
         const INCurses& ncurses, const IView& view)
         : Game(network, userTimer, enemyTimer, board, ncurses, view)
     {
-        END_TURN_MSG.set_timeleft(static_cast<int64_t>(TIME_LEFT_FROM_MSG.count()));
+        END_TURN_MSG.set_time_left(static_cast<int64_t>(TIME_LEFT_FROM_MSG.count()));
     }
 
     void setCurrentTurn(Turn turn)
@@ -190,6 +190,13 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::InProgress);
     EXPECT_EQ(game.getCurrentTurn(), Turn::User);
     EXPECT_EQ(game.getUserStatus(), MoveStatus::Continue);
+}
+
+TEST_F(GameTest, onNewGameWhenIncorrectVersion)
+{
+    NewGameMsg msg;
+    msg.set_version_major(777);
+    EXPECT_THROW(game.onNewGame(msg), std::runtime_error);
 }
 
 TEST_F(GameTest, onNewGameWhenUserTurn)
