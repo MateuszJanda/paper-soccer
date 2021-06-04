@@ -8,8 +8,8 @@ A networked version of paper soccer game in modern console.
 ## Requirements
 - `gcc` with `C++20` support
 - `googletest` (1.10.0)
-- `protobuf` (3.6.1)
-- `boost` (1.71)
+- `protobuf (libprotobuf-dev)` (3.6.1)
+- `boost (libboost-all-dev)` (1.71)
     - `boost.asio`
     - `boost.program_options`
 - `ncurses` (6.2)
