@@ -60,7 +60,7 @@ void Network::sendTimeout()
 {
     Message msg;
     msg.mutable_message()->PackFrom(TimeoutMsg{});
-    msg.set_msgid(MsgId::Timeout);
+    msg.set_msg_id(MsgId::Timeout);
     sendMsg(msg);
 }
 
@@ -71,7 +71,7 @@ void Network::sendNewGame(Turn turn, Goal goal)
     newGameMsg.set_goal(goal);
 
     Message msg;
-    msg.set_msgid(MsgId::NewGame);
+    msg.set_msg_id(MsgId::NewGame);
     msg.mutable_message()->PackFrom(newGameMsg);
 
     sendMsg(msg);
@@ -84,7 +84,7 @@ void Network::sendMove(Direction dir)
 
     Message msg;
     msg.mutable_message()->PackFrom(moveMsg);
-    msg.set_msgid(MsgId::Move);
+    msg.set_msg_id(MsgId::Move);
 
     sendMsg(msg);
 }
@@ -93,7 +93,7 @@ void Network::sendUndoMove()
 {
     Message msg;
     msg.mutable_message()->PackFrom(UndoMoveMsg{});
-    msg.set_msgid(MsgId::UndoMove);
+    msg.set_msg_id(MsgId::UndoMove);
 
     sendMsg(msg);
 }
@@ -102,7 +102,7 @@ void Network::sendEndTurn(std::chrono::milliseconds timeLeft)
 {
     Message msg;
     msg.mutable_message()->PackFrom(EndTurnMsg{});
-    msg.set_msgid(MsgId::EndTurn);
+    msg.set_msg_id(MsgId::EndTurn);
 
     sendMsg(msg);
 }
@@ -111,7 +111,7 @@ void Network::sendReadyForNewGame()
 {
     Message msg;
     msg.mutable_message()->PackFrom(ReadyForNewGameMsg{});
-    msg.set_msgid(MsgId::ReadyForNewGame);
+    msg.set_msg_id(MsgId::ReadyForNewGame);
 
     sendMsg(msg);
 }
@@ -204,9 +204,8 @@ void Network::onReadMsg(std::size_t dataSize)
 
             Message msg = decodeData(m_inboundData);
 
-            switch (msg.msgid()) {
+            switch (msg.msg_id()) {
             case MsgId::NewGame: {
-
                 NewGameMsg newGameMsg;
                 msg.message().UnpackTo(&newGameMsg);
                 m_handleNewGame(std::move(newGameMsg));

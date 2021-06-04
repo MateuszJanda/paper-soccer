@@ -11,22 +11,23 @@ import "google/protobuf/any.proto";
 
 
 message NewGameMsg {
-  Turn turn = 1;
-  Goal goal = 2;
+  uint32 version_major = 1;
+  uint32 version_minor = 2;
+  uint32 version_patch = 3;
+  Turn turn = 4;
+  Goal goal = 5;
 }
 
 message MoveMsg {
   Direction dir = 1;
 }
 
-
 message UndoMoveMsg {
 }
 
 message EndTurnMsg {
-  int64 timeLeft = 1;
+  int64 time_left = 1;
 }
-
 
 message ReadyForNewGameMsg {
 }
@@ -35,7 +36,7 @@ message TimeoutMsg {
 }
 
 message Message {
-  MsgId msgId = 1;
+  MsgId msg_id = 1;
   google.protobuf.Any message = 2;
 }
 

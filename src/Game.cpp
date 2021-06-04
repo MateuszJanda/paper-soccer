@@ -295,7 +295,7 @@ void Game::onEnemyEndTurn(EndTurnMsg msg)
         m_view.setContinueStatus();
     }
 
-    m_enemyTimer.pauseAndSync(std::chrono::milliseconds{msg.timeleft()});
+    m_enemyTimer.pauseAndSync(std::chrono::milliseconds{msg.time_left()});
     m_dirPath.clear();
     drawBoard();
 }
