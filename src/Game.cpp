@@ -46,8 +46,6 @@ void Game::run()
 {
     using namespace std::placeholders;
 
-    NewGameMsg nnn;
-
     m_network.registerHandlers([this]() { onKeyboardMouseInput(); },
         [this]() { initNewGame(); },
         [this](NewGameMsg msg) { onNewGame(std::move(msg)); },
