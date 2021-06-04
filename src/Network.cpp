@@ -10,8 +10,8 @@
 namespace PaperSoccer {
 
 Network::Network(boost::asio::io_context& ioContext)
-    : m_ioContext{ioContext}
-    , m_socket{ioContext}
+    : m_socket{ioContext}
+    , m_ioContext{ioContext}
     , m_desc{ioContext, 0}
 {
 }
@@ -139,11 +139,11 @@ void Network::sendMsg(const Message& msg)
         });
 }
 
-std::tuple<int, int, int> Network::getVersion() const
+std::tuple<uint32_t, uint32_t, uint32_t> Network::getVersion() const
 {
     std::istringstream gameVersion{GAME_VERSION};
     std::string part;
-    std::vector<int> version;
+    std::vector<uint32_t> version;
     while (std::getline(gameVersion, part, '.')) {
         version.push_back(std::stoi(part));
     }
