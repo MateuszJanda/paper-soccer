@@ -14,6 +14,9 @@
 namespace PaperSoccer {
 
 namespace {
+    constexpr int MAJOR_VERSION = 1;
+    constexpr int INCORRECT_MAJOR_VERSION = 777;
+
     const std::vector<Direction> EMPTY_PATH{};
     const std::vector<Direction> DIR_PATH{Direction::Left};
     const std::string USER_NAME{"Me"};
@@ -194,8 +197,6 @@ TEST_F(GameTest, initNewGameWhenFirstTurnIsEnemy)
 
 TEST_F(GameTest, onNewGameWhenIncorrectVersion)
 {
-    const int INCORRECT_MAJOR_VERSION = 777;
-
     NewGameMsg msg;
     msg.set_version_major(INCORRECT_MAJOR_VERSION);
     EXPECT_THROW(game.onNewGame(msg), std::runtime_error);
@@ -207,6 +208,7 @@ TEST_F(GameTest, onNewGameWhenUserTurn)
     EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
 
     NewGameMsg msg;
+    msg.set_version_major(MAJOR_VERSION);
     msg.set_turn(Turn::User);
     msg.set_goal(Goal::Down);
     game.onNewGame(msg);
@@ -222,6 +224,7 @@ TEST_F(GameTest, onNewGameWhenEnemyTurn)
     EXPECT_CALL(viewMock, drawBoard(ENEMY_NAME, _, USER_NAME, _, EMPTY_PATH, _));
 
     NewGameMsg msg;
+    msg.set_version_major(MAJOR_VERSION);
     msg.set_turn(Turn::Enemy);
     msg.set_goal(Goal::Down);
     game.onNewGame(msg);
