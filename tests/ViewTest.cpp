@@ -42,7 +42,7 @@ namespace {
     const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
 
     const std::string TOP_NAME{"TOP_NAME"};
-    const std::string BOTTOM_NAME{"BOTTOm_NAME"};
+    const std::string BOTTOM_NAME{"BOTTOM_NAME"};
 
     const std::chrono::seconds USER_TIME_LEFT{61};
     const std::chrono::seconds ENEMY_TIME_LEFT{122};
