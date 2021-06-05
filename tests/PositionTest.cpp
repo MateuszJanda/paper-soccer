@@ -35,4 +35,22 @@ TEST(PositionTest, checkAdd)
     ASSERT_EQ(p1, p2);
 }
 
+TEST(PositionTest, checkIsPositive)
+{
+    Position p1{1, 1};
+    ASSERT_TRUE(p1.isPositive());
+
+    Position p2{0, 0};
+    ASSERT_TRUE(p2.isPositive());
+}
+
+TEST(PositionTest, checkIsNotPositive)
+{
+    Position p1{1, -1};
+    ASSERT_FALSE(p1.isPositive());
+
+    Position p2{-1, 0};
+    ASSERT_FALSE(p2.isPositive());
+}
+
 } // namespace PaperSoccer

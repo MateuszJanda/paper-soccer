@@ -30,14 +30,13 @@ namespace {
     constexpr std::size_t WIDTH{9};
     constexpr std::size_t HEIGHT{13};
 
-    constexpr std::size_t TOP_NET_LINE{0};
-    constexpr std::size_t BOTTOM_NET_LINE{HEIGHT - 1};
-    constexpr std::size_t TOP_BORDER_LINE{TOP_NET_LINE + 1};
-    constexpr std::size_t BOTTOM_BORDER_LINE{BOTTOM_NET_LINE - 1};
-    constexpr std::size_t CENTER_LINE{6};
-    constexpr std::size_t RIGHT_LINE{WIDTH - 1};
-    constexpr std::size_t GOALPOST_LEFT{3};
-    constexpr std::size_t GOALPOST_RIGHT{5};
+    constexpr int TOP_NET_LINE{0};
+    constexpr int BOTTOM_NET_LINE{HEIGHT - 1};
+    constexpr int TOP_BORDER_LINE{TOP_NET_LINE + 1};
+    constexpr int CENTER_LINE{6};
+    constexpr int RIGHT_LINE{WIDTH - 1};
+    constexpr int GOALPOST_LEFT{3};
+    constexpr int GOALPOST_RIGHT{5};
 
     const Position NODE_POS{0, 0};
     const Position NEIGHBOUR_POS{NODE_POS.x + 1, NODE_POS.y};
@@ -209,7 +208,7 @@ TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
 
 TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
 {
-    Position nodePos{HEIGHT - 1, 0};
+    Position nodePos{static_cast<int>(HEIGHT - 1), 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
@@ -226,7 +225,7 @@ TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
 
 TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
 {
-    Position nodePos{HEIGHT - 1, 0};
+    Position nodePos{static_cast<int>(HEIGHT - 1), 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
     ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
@@ -255,9 +254,6 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
 TEST_F(ViewTest, checkDrawCellNoMarkerSkipAllDirs)
 {
     expectClearLines();
-
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
 
     view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
 }
@@ -365,7 +361,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
-    Position nodePos{WIDTH - 1, 0};
+    Position nodePos{static_cast<int>(WIDTH - 1), 0};
     expectClearLines(nodePos);
 
     auto x = vx(nodePos.x);

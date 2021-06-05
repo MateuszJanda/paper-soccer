@@ -18,6 +18,17 @@ public:
     {
     }
 
+    constexpr Position(std::size_t x, std::size_t y)
+        : x(x)
+        , y(y)
+    {
+    }
+
+    constexpr bool isPositive() const
+    {
+        return x >= 0 and y >= 0;
+    }
+
     constexpr Position& operator+=(const std::pair<int, int>& offset)
     {
         x += offset.first;

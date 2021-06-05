@@ -19,7 +19,7 @@ Board::Board(std::size_t width, std::size_t height)
     , m_height{height}
     , m_goalpostLeft{((width + X_OFFSET) / 2) - (GOAL_WIDTH / 2)}
     , m_goalpostRight{((width + X_OFFSET) / 2) + (GOAL_WIDTH / 2)}
-    , m_ballPos{static_cast<int>((width + X_OFFSET) / 2), static_cast<int>((height + Y_OFFSET) / 2)}
+    , m_ballPos{(width + X_OFFSET) / 2, (height + Y_OFFSET) / 2}
 {
     reset();
 }
@@ -37,7 +37,7 @@ void Board::reset()
     }
 
     setBorders();
-    setBallPosition(Position{static_cast<int>((m_width + X_OFFSET) / 2), static_cast<int>((m_height + Y_OFFSET) / 2)});
+    setBallPosition(Position{(m_width + X_OFFSET) / 2, (m_height + Y_OFFSET) / 2});
 }
 
 void Board::setBorders()
@@ -313,8 +313,8 @@ bool Board::undoBallMove(Direction dir)
 bool Board::canReachGoal(Direction dir, std::size_t netLine) const
 {
     const auto newPos = directionToPosition(m_ballPos, dir);
-    for (std::size_t x = m_goalpostLeft; x <= m_goalpostRight; x++) {
-        if (newPos.y == netLine and newPos.x == x) {
+    for (auto x = m_goalpostLeft; x <= m_goalpostRight; x++) {
+        if (newPos.isPositive() and newPos == Position(x, netLine)) {
             return true;
         }
     }
@@ -343,7 +343,7 @@ bool Board::isDeadEnd() const
 
 bool Board::isPositionInGraph(const Position& pos) const
 {
-    return pos.y >= 0 and pos.y < getHeight() and pos.x >= 0 and pos.x < getWidth();
+    return pos.isPositive() and static_cast<std::size_t>(pos.y) < getHeight() and static_cast<std::size_t>(pos.x) < getWidth();
 }
 
 } // namespace PaperSoccer
