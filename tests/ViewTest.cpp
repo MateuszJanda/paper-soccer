@@ -208,7 +208,7 @@ TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
 
 TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
 {
-    Position nodePos{static_cast<int>(HEIGHT - 1), 0};
+    Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
@@ -225,7 +225,7 @@ TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
 
 TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
 {
-    Position nodePos{static_cast<int>(HEIGHT - 1), 0};
+    Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
     ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
@@ -361,7 +361,7 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
 
 TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
-    Position nodePos{static_cast<int>(WIDTH - 1), 0};
+    Position nodePos{WIDTH - 1, 0u};
     expectClearLines(nodePos);
 
     auto x = vx(nodePos.x);

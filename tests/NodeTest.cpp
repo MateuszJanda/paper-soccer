@@ -76,7 +76,7 @@ TEST_F(NodeTest, checkDegree)
 {
     ASSERT_EQ(node.degree(), 0);
 
-    for (int counter = 0; counter < allDirs.size(); counter++) {
+    for (std::size_t counter = 0; counter < allDirs.size(); counter++) {
         ASSERT_TRUE(node.addNeighbour(allDirs[counter]));
         ASSERT_EQ(node.degree(), counter + 1);
     }

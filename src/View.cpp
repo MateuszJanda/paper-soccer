@@ -36,8 +36,8 @@ void View::clear() const
 void View::drawBoard(const std::string& topName, ColorPair topColor, const std::string& bottomName, ColorPair bottomColor,
     const std::vector<Direction>& dirPath, ColorPair ballColor) const
 {
-    for (auto y = 0; y < m_board.getHeight(); y++) {
-        for (auto x = 0; x < m_board.getWidth(); x++) {
+    for (std::size_t y = 0; y < m_board.getHeight(); y++) {
+        for (std::size_t x = 0; x < m_board.getWidth(); x++) {
             Position nodePos{x, y};
             auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
             auto visability = markerVisability(nodePos);
