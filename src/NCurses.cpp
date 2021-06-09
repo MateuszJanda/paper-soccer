@@ -119,7 +119,11 @@ std::optional<Input> NCurses::getInput() const noexcept
     }
     // Detect left-click
     else if (key == KEY_MOUSE and getmouse(&event) == OK and (event.bstate & BUTTON1_PRESSED)) {
-        return MouseInput{.x = event.x, .y = event.y};
+        if (event.x < 0 or event.y < 0) {
+            return std::nullopt;
+        }
+
+        return MouseInput{.x = static_cast<unsigned int>(event.x), .y = static_cast<unsigned int>(event.y)};
     }
 
     return KeyInput{.key = key};

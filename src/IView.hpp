@@ -32,7 +32,7 @@ public:
     virtual void drawUserTimeLeft(std::chrono::milliseconds timeLeft) const = 0;
     virtual void drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const = 0;
 
-    virtual bool isStatusButton(int x, int y) const = 0;
+    virtual bool isStatusButton(unsigned int x, unsigned int y) const = 0;
     virtual std::optional<Direction> getMoveDirection(int x, int y) const = 0;
 };
 

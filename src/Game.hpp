@@ -40,7 +40,7 @@ public:
     void userKey(int key);
     void userMove(Direction dir);
     void userUndoMove();
-    void userMouse(int x, int y);
+    void userMouse(unsigned int x, unsigned int y);
     void userRequestNewGame();
     void userEndTurn();
 

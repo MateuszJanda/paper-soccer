@@ -21,8 +21,8 @@ struct EnterInput {
 };
 
 struct MouseInput {
-    int x;
-    int y;
+    unsigned int x;
+    unsigned int y;
 };
 
 using Input = std::variant<KeyInput, EnterInput, MouseInput>;

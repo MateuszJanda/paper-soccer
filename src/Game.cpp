@@ -207,7 +207,7 @@ void Game::userRequestNewGame()
     }
 }
 
-void Game::userMouse(int x, int y)
+void Game::userMouse(unsigned int x, unsigned int y)
 {
     if (m_view.isStatusButton(x, y)) {
         userEndTurn();

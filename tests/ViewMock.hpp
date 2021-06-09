@@ -31,7 +31,7 @@ public:
     MOCK_METHOD(void, drawUserTimeLeft, (std::chrono::milliseconds), (const));
     MOCK_METHOD(void, drawEnemyTimeLeft, (std::chrono::milliseconds), (const));
 
-    MOCK_METHOD(bool, isStatusButton, (int, int), (const));
+    MOCK_METHOD(bool, isStatusButton, (unsigned int, unsigned int), (const));
     MOCK_METHOD(std::optional<Direction>, getMoveDirection, (int, int), (const));
 };
 

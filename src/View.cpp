@@ -81,8 +81,9 @@ Skips View::filterDirsForTopNetLine(Position nodePos) const
 {
     constexpr auto topNetLine{0};
 
-    if (nodePos.y == topNetLine) {
-        if (nodePos.x >= m_board.getGoalpostLeft() and nodePos.x < m_board.getGoalpostRight()) {
+    if (nodePos.isPositive() and nodePos.y == topNetLine) {
+        const std::size_t x = nodePos.x;
+        if (x >= m_board.getGoalpostLeft() and x < m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
         } else {
             return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
@@ -97,10 +98,11 @@ Skips View::filterDirsForTopBorderLine(Position nodePos) const
 {
     constexpr auto topBorderLine{1};
 
-    if (nodePos.y == topBorderLine) {
-        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
+    if (nodePos.isPositive() and nodePos.y == topBorderLine) {
+        const std::size_t x = nodePos.x;
+        if (x < m_board.getGoalpostLeft() or x > m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight}, Skip{Direction::TopLeft}};
-        } else if (nodePos.x == m_board.getGoalpostRight()) {
+        } else if (x == m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::TopRight}, Skip{Direction::TopLeft}};
         }
     }
@@ -110,13 +112,14 @@ Skips View::filterDirsForTopBorderLine(Position nodePos) const
 
 Skips View::filterDirsForBottomNetLine(Position nodePos) const
 {
-    const auto bottomNetLine{m_board.getHeight() - 1};
+    const int bottomNetLine = m_board.getHeight() - 1;
 
-    if (nodePos.y == bottomNetLine) {
-        if (nodePos.x < m_board.getGoalpostLeft() or nodePos.x > m_board.getGoalpostRight()) {
+    if (nodePos.isPositive() and nodePos.y == bottomNetLine) {
+        const std::size_t x = nodePos.x;
+        if (x < m_board.getGoalpostLeft() or x > m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::Top, Direction::TopRight, Direction::Right},
                 Skip{Direction::TopLeft}};
-        } else if (nodePos.x == m_board.getGoalpostRight()) {
+        } else if (x == m_board.getGoalpostRight()) {
             return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{Direction::TopLeft}};
         }
     }
@@ -126,7 +129,7 @@ Skips View::filterDirsForBottomNetLine(Position nodePos) const
 
 Skips View::filterDirsForRightLine(Position nodePos) const
 {
-    const auto rightLine{m_board.getWidth() - 1};
+    const int rightLine = m_board.getWidth() - 1;
 
     if (nodePos.x == rightLine) {
         return Skips{Skip{Direction::TopRight, Direction::Right}, Skip{}};
@@ -137,7 +140,9 @@ Skips View::filterDirsForRightLine(Position nodePos) const
 
 MarkerVisability View::markerVisability(Position nodePos) const
 {
-    if ((nodePos.y == 0 or nodePos.y == m_board.getHeight() - 1) and m_board.hasAllNeighbours(nodePos)) {
+    const int bottomLine = m_board.getHeight() - 1;
+
+    if ((nodePos.y == 0 or nodePos.y == bottomLine) and m_board.hasAllNeighbours(nodePos)) {
         return MarkerVisability::Invisible;
     } else if (m_board.hasAnyNeighbour(nodePos)) {
         return MarkerVisability::Occupied;
@@ -165,7 +170,7 @@ void View::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisab
 
     auto topLeft{false};
     const Position neighbourPos{nodePos.x + 1, nodePos.y};
-    if (not neighSkip.contains(Direction::TopLeft) and neighbourPos.x < m_board.getWidth()
+    if (not neighSkip.contains(Direction::TopLeft) and neighbourPos.x < static_cast<int>(m_board.getWidth())
         and m_board.hasNeighbour(neighbourPos, Direction::TopLeft)) {
         topLeft = true;
     }
@@ -363,7 +368,7 @@ void View::drawStatusButton(const std::string& line1, const std::string& line2, 
     m_ncurses.refreshView();
 }
 
-int View::getMenuXOffset() const
+unsigned int View::getMenuXOffset() const
 {
     constexpr auto space{2};
     return vx(m_board.getWidth()) + space;
@@ -418,7 +423,7 @@ void View::drawTime(int x, int y, std::chrono::milliseconds timeLeft, const std:
     m_ncurses.refreshView();
 }
 
-bool View::isStatusButton(int x, int y) const
+bool View::isStatusButton(unsigned int x, unsigned int y) const
 {
     const auto buttonX = getMenuXOffset();
     const auto buttonY = Y_OFFSET;
