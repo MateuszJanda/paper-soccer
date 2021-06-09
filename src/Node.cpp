@@ -37,7 +37,7 @@ bool Node::hasNeighbour(Direction dir) const
     return m_neighbours.contains(dir);
 }
 
-unsigned Node::degree() const
+unsigned int Node::degree() const
 {
     return m_neighbours.size();
 }

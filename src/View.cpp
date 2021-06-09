@@ -244,7 +244,7 @@ void View::drawMarker(const Position& nodePos, MarkerVisability visability) cons
 void View::drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const
 {
     auto x = getMenuXOffset();
-    auto y = Y_LEGNENT_OFFSET;
+    auto y = Y_LEGEND_OFFSET;
 
     constexpr auto descShift{1};
     m_ncurses.print(x + descShift, y + 0, "Keys:");

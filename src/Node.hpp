@@ -19,7 +19,7 @@ public:
     void addNeighbours(std::initializer_list<Direction> dirList);
     bool delNeighbour(Direction dir);
     bool hasNeighbour(Direction dir) const;
-    unsigned degree() const;
+    unsigned int degree() const;
     bool canEnter() const;
     bool isLonely() const;
     bool isFull() const;
