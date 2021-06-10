@@ -358,8 +358,8 @@ void View::setWinStatus(int won, int lost) const
 
 void View::drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const
 {
-    const int x = getMenuXOffset();
-    const int y = Y_OFFSET;
+    const auto x = getMenuXOffset();
+    const auto y = Y_OFFSET;
     m_ncurses.print(x, y + 0, TOP_LINE, color);
     m_ncurses.print(x, y + 1, "|" + line1 + "|", color);
     m_ncurses.print(x, y + 2, "|" + line2 + "|", color);
