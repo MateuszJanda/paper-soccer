@@ -145,7 +145,7 @@ std::tuple<uint32_t, uint32_t, uint32_t> Network::getVersion() const
     std::string part;
     std::vector<uint32_t> version;
     while (std::getline(gameVersion, part, '.')) {
-        version.push_back(std::stoi(part));
+        version.push_back(std::stoul(part));
     }
 
     if (version.size() != 3) {
