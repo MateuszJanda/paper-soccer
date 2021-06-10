@@ -56,7 +56,7 @@ public:
     void drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono::milliseconds enemyTimeLeft) const override;
     void drawUserTimeLeft(std::chrono::milliseconds timeLeft) const override;
     void drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const override;
-    void drawTime(int x, int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const;
+    void drawTime(unsigned int x, unsigned int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const;
 
     bool isStatusButton(unsigned int x, unsigned int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;

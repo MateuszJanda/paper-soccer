@@ -13,7 +13,7 @@ namespace PaperSoccer {
 
 class NCursesMock : public INCurses {
 public:
-    MOCK_METHOD(void, print, (int, int, const std::string&, ColorPair), (const));
+    MOCK_METHOD(void, print, (unsigned int, unsigned int, const std::string&, ColorPair), (const));
     MOCK_METHOD(std::optional<Input>, getInput, (), (const, noexcept));
     MOCK_METHOD(void, refreshView, (), (const, noexcept));
     MOCK_METHOD(void, clearView, (), (const, noexcept));

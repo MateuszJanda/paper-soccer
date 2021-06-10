@@ -411,7 +411,7 @@ void View::drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const
     drawTime(x, y + 2, timeLeft, "  Enemy: ", ColorPair::ENEMY);
 }
 
-void View::drawTime(int x, int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const
+void View::drawTime(unsigned int x, unsigned int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const
 {
     auto minutes = duration_cast<std::chrono::minutes>(timeLeft);
     auto seconds = duration_cast<std::chrono::seconds>(timeLeft - minutes);

@@ -93,7 +93,7 @@ void NCurses::prepareColorPair(ColorPair colorPair, int fg, int bg) const
     }
 }
 
-void NCurses::print(int x, int y, const std::string& str, ColorPair coloPair) const
+void NCurses::print(unsigned int x, unsigned int y, const std::string& str, ColorPair coloPair) const
 {
     const auto pariNum{static_cast<int>(coloPair)};
     auto ret = attr_set(A_NORMAL, (short)pariNum, (void*)&pariNum);
@@ -101,7 +101,7 @@ void NCurses::print(int x, int y, const std::string& str, ColorPair coloPair) co
         throw std::runtime_error{"attr_set() error"};
     }
 
-    ret = mvprintw(y, x, str.c_str());
+    ret = mvprintw(static_cast<int>(y), static_cast<int>(x), str.c_str());
     if (ret) {
         throw std::runtime_error{"mvprintw() error"};
     }
