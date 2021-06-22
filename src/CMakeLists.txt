@@ -32,6 +32,7 @@ add_library(${PROJECT_LIB}
     Node.cpp
     View.cpp
     ViewBoard.cpp
+    ViewMenu.cpp
 )
 
 # Create paper-soccer exe

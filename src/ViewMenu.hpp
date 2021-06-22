@@ -3,27 +3,22 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#ifndef VIEW_HPP
-#define VIEW_HPP
+#ifndef VIEW_MENU_HPP
+#define VIEW_MENU_HPP
 
 #include "DirectionUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"
-#include "IViewBoard.hpp"
 #include "IViewMenu.hpp"
 #include <set>
 #include <tuple>
 
 namespace PaperSoccer {
 
-class View : public IView {
+class ViewMenu : public IViewMenu {
 public:
-    View(const IBoard& board, const INCurses& ncurses, const IViewBoard &viewBoard, const IViewMenu &viewMenu);
-    void clear() const override;
-    void drawBoard(const std::string& topName, ColorPair topColor,
-        const std::string& bottomName, ColorPair bottomColor,
-        const std::vector<Direction>& dirPath, ColorPair ballColor) const override;
+    ViewMenu(const IBoard& board, const INCurses& ncurses);
 
     void drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const override;
 
@@ -37,9 +32,9 @@ public:
     void drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono::milliseconds enemyTimeLeft) const override;
     void drawUserTimeLeft(std::chrono::milliseconds timeLeft) const override;
     void drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const override;
+    void drawTime(unsigned int x, unsigned int y, std::chrono::milliseconds timeLeft, const std::string& name, ColorPair color) const;
 
     bool isStatusButton(unsigned int x, unsigned int y) const override;
-    std::optional<Direction> getMoveDirection(int x, int y) const override;
 
     static constexpr int X_FACTOR{3};
     static constexpr int Y_FACTOR{2};
@@ -55,12 +50,13 @@ private:
     const std::string BOTTOM_LINE{"`--------------'"};
     const std::size_t BUTTON_HEIGHT{3};
 
+    void drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const;
+    unsigned int getMenuXOffset() const;
+
     const IBoard& m_board;
     const INCurses& m_ncurses;
-    const IViewBoard& m_viewBoard;
-    const IViewMenu& m_viewMenu;
 };
 
 } // namespace PaperSoccer
 
-#endif // VIEW_HPP
+#endif // VIEW_MENU_HPP
