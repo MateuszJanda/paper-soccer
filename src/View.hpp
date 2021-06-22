@@ -10,39 +10,19 @@
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"
+#include "IViewBoard.hpp"
 #include <set>
 #include <tuple>
 
 namespace PaperSoccer {
 
-enum MarkerVisability {
-    Invisible,
-    NotOccupied,
-    Occupied
-};
-
-using Skip = std::set<Direction>;
-using Skips = std::tuple<Skip, Skip>;
-
 class View : public IView {
 public:
-    View(const IBoard& board, const INCurses& ncurses);
+    View(const IBoard& board, const INCurses& ncurses, const IViewBoard &viewBoard);
     void clear() const override;
     void drawBoard(const std::string& topName, ColorPair topColor,
         const std::string& bottomName, ColorPair bottomColor,
         const std::vector<Direction>& dirPath, ColorPair ballColor) const override;
-    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
-
-    void drawNames(const std::string& topName, ColorPair topColor,
-        const std::string& bottomName, ColorPair bottomColor) const;
-    void drawPathMarkers(const std::vector<Direction>& dirPath, ColorPair ballColor) const;
-
-    Skips filterDirsForOutOfBorder(Position nodePos) const;
-    Skips filterDirsForTopNetLine(Position nodePos) const;
-    Skips filterDirsForBottomNetLine(Position nodePos) const;
-    Skips filterDirsForTopBorderLine(Position nodePos) const;
-    Skips filterDirsForRightLine(Position nodePos) const;
-    MarkerVisability markerVisability(Position nodePos) const;
 
     void drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const override;
 
@@ -75,19 +55,12 @@ private:
     const std::string BOTTOM_LINE{"`--------------'"};
     const std::size_t BUTTON_HEIGHT{3};
 
-    void clearLines(const Position& nodePos) const;
-    void drawVerticalToTopLine(const Position& nodePos) const;
-    void drawHorizontalToRightLine(const Position& nodePos) const;
-    void drawCrossToRight(const Position& nodePos) const;
-    void drawHypotenuseToTopRight(const Position& nodePos) const;
-    void drawHypotenuseToTopLeft(const Position& nodePos) const;
-    void drawMarker(const Position& nodePos, MarkerVisability visability) const;
-
     void drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const;
     unsigned int getMenuXOffset() const;
 
     const IBoard& m_board;
     const INCurses& m_ncurses;
+    const IViewBoard& m_viewBoard;
 };
 
 } // namespace PaperSoccer

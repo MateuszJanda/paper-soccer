@@ -10,6 +10,7 @@
 #include "Server.hpp"
 #include "Timer.hpp"
 #include "View.hpp"
+#include "ViewBoard.hpp"
 #include <boost/asio.hpp>
 #include <boost/program_options.hpp>
 #include <google/protobuf/stubs/common.h>
@@ -54,7 +55,8 @@ void runServer(short unsigned int port)
     Timer enemyTimer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
-    View view{board, ncurses};
+    ViewBoard viewBoard{board, ncurses};
+    View view{board, ncurses, viewBoard};
     Game game{server, userTimer, enemyTimer, board, ncurses, view};
     game.run();
 
@@ -81,7 +83,8 @@ void runClient(std::string address, short unsigned int port)
     Timer enemyTimer{ioContext};
     Board board{8, 10};
     NCurses ncurses;
-    View view{board, ncurses};
+    ViewBoard viewBoard{board, ncurses};
+    View view{board, ncurses, viewBoard};
     Game game{client, userTimer, enemyTimer, board, ncurses, view};
     game.run();
 
