@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "ViewBoard.hpp"
+#include <ranges>
 #include <iomanip>
 #include <sstream>
 
