@@ -7,10 +7,10 @@
 #define VIEW_BOARD_HPP
 
 #include "DirectionUtils.hpp"
-#include "ViewUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IViewBoard.hpp"
+#include "ViewUtils.hpp"
 #include <set>
 #include <tuple>
 

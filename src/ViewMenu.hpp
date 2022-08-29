@@ -7,11 +7,11 @@
 #define VIEW_MENU_HPP
 
 #include "DirectionUtils.hpp"
-#include "ViewUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"
 #include "IViewMenu.hpp"
+#include "ViewUtils.hpp"
 #include <set>
 #include <tuple>
 

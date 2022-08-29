@@ -7,12 +7,12 @@
 #define VIEW_HPP
 
 #include "DirectionUtils.hpp"
-#include "ViewUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"
 #include "IViewBoard.hpp"
 #include "IViewMenu.hpp"
+#include "ViewUtils.hpp"
 #include <set>
 #include <tuple>
 
@@ -20,7 +20,7 @@ namespace PaperSoccer {
 
 class View : public IView {
 public:
-    View(const IBoard& board, const INCurses& ncurses, const IViewBoard &viewBoard, const IViewMenu &viewMenu);
+    View(const IBoard& board, const INCurses& ncurses, const IViewBoard& viewBoard, const IViewMenu& viewMenu);
     void clear() const override;
     void drawBoard(const std::string& topName, ColorPair topColor,
         const std::string& bottomName, ColorPair bottomColor,

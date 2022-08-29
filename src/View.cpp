@@ -9,7 +9,7 @@
 
 namespace PaperSoccer {
 
-View::View(const IBoard& board, const INCurses& ncurses, const IViewBoard &viewBoard, const IViewMenu &viewMenu)
+View::View(const IBoard& board, const INCurses& ncurses, const IViewBoard& viewBoard, const IViewMenu& viewMenu)
     : m_board{board}
     , m_ncurses{ncurses}
     , m_viewBoard{viewBoard}

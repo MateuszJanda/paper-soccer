@@ -4,9 +4,9 @@
 // Ad maiorem Dei gloriam
 
 #include "ViewMenu.hpp"
-#include "ViewUtils.hpp"
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
+#include "ViewUtils.hpp"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 

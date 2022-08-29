@@ -4,8 +4,8 @@
 // Ad maiorem Dei gloriam
 
 #include "ViewBoard.hpp"
-#include <ranges>
 #include <iomanip>
+#include <ranges>
 #include <sstream>
 
 namespace PaperSoccer {
