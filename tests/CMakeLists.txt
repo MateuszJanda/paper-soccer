@@ -31,7 +31,7 @@ add_executable(${BINARY_NAME}
     TimerMock.hpp
     ViewMock.hpp
     ViewTest.cpp
-    # ViewBoardTest.cpp
+    ViewBoardTest.cpp
     ViewMenuTest.cpp
 )
 

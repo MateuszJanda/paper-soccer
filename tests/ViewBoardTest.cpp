@@ -3,7 +3,7 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#include "View.hpp"
+#include "ViewBoard.hpp"
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
 #include "gmock/gmock.h"
@@ -43,15 +43,12 @@ namespace {
 
     const std::string TOP_NAME{"TOP_NAME"};
     const std::string BOTTOM_NAME{"BOTTOM_NAME"};
-
-    const std::chrono::seconds USER_TIME_LEFT{61};
-    const std::chrono::seconds ENEMY_TIME_LEFT{122};
 } // namespace anonymous
 
-class ViewTest : public testing::Test {
+class ViewBoardTest : public testing::Test {
 public:
-    ViewTest()
-        : view(boardMock, ncursesMock)
+    ViewBoardTest()
+        : viewBoard(boardMock, ncursesMock)
     {
         EXPECT_CALL(boardMock, getGoalpostLeft()).WillRepeatedly(Return(GOALPOST_LEFT));
         EXPECT_CALL(boardMock, getGoalpostRight()).WillRepeatedly(Return(GOALPOST_RIGHT));
@@ -61,12 +58,12 @@ public:
 
     int vx(int x)
     {
-        return x * View::X_FACTOR + View::X_OFFSET;
+        return x * ViewBoard::X_FACTOR + ViewBoard::X_OFFSET;
     }
 
     int vy(int y)
     {
-        return y * View::Y_FACTOR + View::Y_OFFSET;
+        return y * ViewBoard::Y_FACTOR + ViewBoard::Y_OFFSET;
     }
 
     void expectClearLines(Position nodePos = NODE_POS)
@@ -86,7 +83,7 @@ public:
 
     void expectDrawScore()
     {
-        const auto y = View::Y_SCORE_OFFSET;
+        const auto y = ViewBoard::Y_SCORE_OFFSET;
         EXPECT_CALL(ncursesMock, print(_, y + 0, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 1, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 2, _, _));
@@ -94,153 +91,153 @@ public:
 
     void expectDrawStatus()
     {
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 0, _, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 1, _, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 2, _, _));
-        EXPECT_CALL(ncursesMock, print(_, View::Y_OFFSET + 3, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 0, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 1, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 2, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 3, _, _));
         EXPECT_CALL(ncursesMock, refreshView());
     }
 
     StrictMock<BoardMock> boardMock;
     StrictMock<NCursesMock> ncursesMock;
-    View view;
+    ViewBoard viewBoard;
 };
 
-TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenNotThisLine)
+TEST_F(ViewBoardTest, checkFilterDirsForTopNetLineWhenNotThisLine)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{0, TOP_BORDER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopNetLine(Position{0, TOP_BORDER_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenCorner)
+TEST_F(ViewBoardTest, checkFilterDirsForTopNetLineWhenCorner)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{0, TOP_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopNetLine(Position{0, TOP_NET_LINE});
     ASSERT_EQ(nodeSkip, ALL);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopNetLineWhenGoalpostLeft)
+TEST_F(ViewBoardTest, checkFilterDirsForTopNetLineWhenGoalpostLeft)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopNetLine(Position{GOALPOST_LEFT, TOP_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopNetLine(Position{GOALPOST_LEFT, TOP_NET_LINE});
     ASSERT_EQ(nodeSkip, TOP_TOPRIGHT);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotThisLine)
+TEST_F(ViewBoardTest, checkFilterDirsForBottomBorderLineWhenNotThisLine)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{0, TOP_BORDER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForBottomNetLine(Position{0, TOP_BORDER_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenNotAGoal)
+TEST_F(ViewBoardTest, checkFilterDirsForBottomBorderLineWhenNotAGoal)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{0, BOTTOM_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForBottomNetLine(Position{0, BOTTOM_NET_LINE});
     ASSERT_EQ(nodeSkip, ALL);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
+TEST_F(ViewBoardTest, checkFilterDirsForBottomBorderLineWhenInTheMiddleOfGoal)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_LEFT + 1, BOTTOM_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForBottomNetLine(Position{GOALPOST_LEFT + 1, BOTTOM_NET_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForBottomBorderLineWhenGoalpostRight)
+TEST_F(ViewBoardTest, checkFilterDirsForBottomBorderLineWhenGoalpostRight)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForBottomNetLine(Position{GOALPOST_RIGHT, BOTTOM_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForBottomNetLine(Position{GOALPOST_RIGHT, BOTTOM_NET_LINE});
     ASSERT_EQ(nodeSkip, TOPRIGHT_RIGHT);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenNotThisLine)
+TEST_F(ViewBoardTest, checkFilterDirsForTopBorderLineWhenNotThisLine)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{0, TOP_NET_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopBorderLine(Position{0, TOP_NET_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenCorner)
+TEST_F(ViewBoardTest, checkFilterDirsForTopBorderLineWhenCorner)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{0, TOP_BORDER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopBorderLine(Position{0, TOP_BORDER_LINE});
     ASSERT_EQ(nodeSkip, TOP_TOPRIGHT);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostLeft)
+TEST_F(ViewBoardTest, checkFilterDirsForTopBorderLineWhenGoalpostLeft)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{GOALPOST_LEFT, TOP_BORDER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopBorderLine(Position{GOALPOST_LEFT, TOP_BORDER_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForTopBorderLineWhenGoalpostRight)
+TEST_F(ViewBoardTest, checkFilterDirsForTopBorderLineWhenGoalpostRight)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForTopBorderLine(Position{GOALPOST_RIGHT, TOP_BORDER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForTopBorderLine(Position{GOALPOST_RIGHT, TOP_BORDER_LINE});
     ASSERT_EQ(nodeSkip, TOPRIGHT);
     ASSERT_EQ(neighSkip, TOPLEFT);
 }
 
-TEST_F(ViewTest, checkFilterDirsForRightLineWhenNotThisLine)
+TEST_F(ViewBoardTest, checkFilterDirsForRightLineWhenNotThisLine)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForRightLine(Position{0, CENTER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForRightLine(Position{0, CENTER_LINE});
     ASSERT_EQ(nodeSkip, EMPTY);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkFilterDirsForRightLineWhenThisLine)
+TEST_F(ViewBoardTest, checkFilterDirsForRightLineWhenThisLine)
 {
-    const auto [nodeSkip, neighSkip] = view.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE});
+    const auto [nodeSkip, neighSkip] = viewBoard.filterDirsForRightLine(Position{RIGHT_LINE, CENTER_LINE});
     ASSERT_EQ(nodeSkip, TOPRIGHT_RIGHT);
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
-    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::NotOccupied);
+    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::NotOccupied);
 }
 
-TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
 {
     Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
-    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::NotOccupied);
+    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::NotOccupied);
 }
 
-TEST_F(ViewTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
+    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Invisible);
 }
 
-TEST_F(ViewTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
 {
     Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Invisible);
+    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Invisible);
 }
 
-TEST_F(ViewTest, checkMarkerVisabilityWhenHasAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisabilityWhenHasAnyNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(view.markerVisability(nodePos), MarkerVisability::Occupied);
+    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Occupied);
 }
 
-TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
+TEST_F(ViewBoardTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
     expectClearLines();
 
@@ -248,17 +245,17 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerSkipAllDirs)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellNoMarkerSkipAllDirs)
+TEST_F(ViewBoardTest, checkDrawCellNoMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    view.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
+    viewBoard.drawCell(NODE_POS, ALL, TOPLEFT, INVISIBLE);
 }
 
-TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
+TEST_F(ViewBoardTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
 {
     expectClearLines();
 
@@ -266,10 +263,10 @@ TEST_F(ViewTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", ColorPair::MARK_GRAY));
 
-    view.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
+    viewBoard.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
+TEST_F(ViewBoardTest, checkDrawCellPlusMarkerNoNeighbour)
 {
     expectClearLines();
 
@@ -279,10 +276,10 @@ TEST_F(ViewTest, checkDrawCellPlusMarkerNoNeighbour)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopPath)
+TEST_F(ViewBoardTest, checkDrawCellTopPath)
 {
     expectClearLines();
 
@@ -296,10 +293,10 @@ TEST_F(ViewTest, checkDrawCellTopPath)
     y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
+TEST_F(ViewBoardTest, checkDrawCellRightPathNoNeighbour)
 {
     expectClearLines();
 
@@ -309,10 +306,10 @@ TEST_F(ViewTest, checkDrawCellRightPathNoNeighbour)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellRightPath)
+TEST_F(ViewBoardTest, checkDrawCellRightPath)
 {
     expectClearLines();
 
@@ -326,10 +323,10 @@ TEST_F(ViewTest, checkDrawCellRightPath)
     y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
+TEST_F(ViewBoardTest, checkDrawCellTopRightPathNoNeighbour)
 {
     expectClearLines();
 
@@ -339,10 +336,10 @@ TEST_F(ViewTest, checkDrawCellTopRightPathNoNeighbour)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopRightPath)
+TEST_F(ViewBoardTest, checkDrawCellTopRightPath)
 {
     expectClearLines();
 
@@ -356,10 +353,10 @@ TEST_F(ViewTest, checkDrawCellTopRightPath)
     y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
+TEST_F(ViewBoardTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
 {
     Position nodePos{WIDTH - 1, 0u};
     expectClearLines(nodePos);
@@ -368,10 +365,10 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
     auto y = vy(nodePos.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
+    viewBoard.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
+TEST_F(ViewBoardTest, checkDrawCellTopLeftPathNoNeighbour)
 {
     expectClearLines();
 
@@ -381,10 +378,10 @@ TEST_F(ViewTest, checkDrawCellTopLeftPathNoNeighbour)
     auto y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellTopLeftPath)
+TEST_F(ViewBoardTest, checkDrawCellTopLeftPath)
 {
     expectClearLines();
 
@@ -398,10 +395,10 @@ TEST_F(ViewTest, checkDrawCellTopLeftPath)
     y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawCellCrossPath)
+TEST_F(ViewBoardTest, checkDrawCellCrossPath)
 {
     expectClearLines();
 
@@ -416,120 +413,25 @@ TEST_F(ViewTest, checkDrawCellCrossPath)
     y = vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
-    view.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
+    viewBoard.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
 }
 
-TEST_F(ViewTest, checkDrawNames)
+TEST_F(ViewBoardTest, checkDrawNames)
 {
     EXPECT_CALL(ncursesMock, print(_, _, TOP_NAME, _));
     EXPECT_CALL(ncursesMock, print(_, _, BOTTOM_NAME, _));
 
-    view.drawNames(TOP_NAME, ColorPair::DEFAULT, BOTTOM_NAME, ColorPair::DEFAULT);
+    viewBoard.drawNames(TOP_NAME, ColorPair::DEFAULT, BOTTOM_NAME, ColorPair::DEFAULT);
 }
 
-TEST_F(ViewTest, checkDrawPathMarkers)
+TEST_F(ViewBoardTest, checkDrawPathMarkers)
 {
     const Position ballPos{0, 0};
     EXPECT_CALL(boardMock, getBallPosition()).WillOnce(Return(ballPos));
     EXPECT_CALL(ncursesMock, print(_, _, "*", _)).Times(2);
 
     const std::vector<Direction> dirPath{Direction::Left};
-    view.drawPathMarkers(dirPath, ColorPair::DEFAULT);
-}
-
-TEST_F(ViewTest, checkDrawLegend)
-{
-    EXPECT_CALL(ncursesMock, print(_, _, _, _)).Times(AtLeast(1));
-
-    const std::map<char, Direction> dirKeys{{'q', Direction::TopLeft}};
-    view.drawLegend('z', 'n', dirKeys);
-}
-
-TEST_F(ViewTest, checkSetContinueStatus)
-{
-    expectDrawStatus();
-    view.setContinueStatus();
-}
-
-TEST_F(ViewTest, checkSetEnemyTurnStatus)
-{
-    expectDrawStatus();
-    view.setEnemyTurnStatus();
-}
-
-TEST_F(ViewTest, checkSetReadyToEndTurnStatus)
-{
-    expectDrawStatus();
-    view.setReadyToEndTurnStatus();
-}
-
-TEST_F(ViewTest, checkSetLostStatus)
-{
-    expectDrawStatus();
-    expectDrawScore();
-    view.setLostStatus(0, 1);
-}
-
-TEST_F(ViewTest, checkSetWinStatus)
-{
-    expectDrawStatus();
-    expectDrawScore();
-    view.setWinStatus(1, 0);
-}
-
-TEST_F(ViewTest, checkDrawTimeLeft)
-{
-    EXPECT_CALL(ncursesMock, print(_, _, " Time left:", _));
-    EXPECT_CALL(ncursesMock, print(_, _, "     Me: 01:01", _));
-    EXPECT_CALL(ncursesMock, print(_, _, "  Enemy: 02:02", _));
-    EXPECT_CALL(ncursesMock, refreshView()).Times(2);
-
-    view.drawTimeLeft(USER_TIME_LEFT, ENEMY_TIME_LEFT);
-}
-
-TEST_F(ViewTest, checkDrawUserTimeLeft)
-{
-    EXPECT_CALL(ncursesMock, print(_, _, "     Me: 01:01", _));
-    EXPECT_CALL(ncursesMock, refreshView());
-
-    view.drawUserTimeLeft(USER_TIME_LEFT);
-}
-
-TEST_F(ViewTest, checkDrawEnemyTimeLeft)
-{
-    EXPECT_CALL(ncursesMock, print(_, _, "  Enemy: 02:02", _));
-    EXPECT_CALL(ncursesMock, refreshView());
-
-    view.drawEnemyTimeLeft(ENEMY_TIME_LEFT);
-}
-
-TEST_F(ViewTest, checkIsStatusButtonNotClicked)
-{
-    ASSERT_FALSE(view.isStatusButton(0, 0));
-}
-
-TEST_F(ViewTest, checkIsStatusButtonClicked)
-{
-    const auto x = vx(WIDTH) + 2;
-    const auto y = View::Y_OFFSET;
-    ASSERT_TRUE(view.isStatusButton(x, y));
-}
-
-TEST_F(ViewTest, checkGetMouseDirection)
-{
-    const Position ballPos{0, 0};
-    EXPECT_CALL(boardMock, getBallPosition()).WillRepeatedly(Return(ballPos));
-
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(0)), std::nullopt);
-
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(-1)), Direction::TopLeft);
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(0)), Direction::Left);
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(1)), Direction::BottomLeft);
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(-1)), Direction::Top);
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(1)), Direction::Bottom);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(-1)), Direction::TopRight);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(0)), Direction::Right);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(1)), Direction::BottomRight);
+    viewBoard.drawPathMarkers(dirPath, ColorPair::DEFAULT);
 }
 
 } // namespace PaperSoccer
