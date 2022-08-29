@@ -32,7 +32,7 @@ add_executable(${BINARY_NAME}
     ViewMock.hpp
     ViewTest.cpp
     # ViewBoardTest.cpp
-    # ViewMenuTest.cpp
+    ViewMenuTest.cpp
 )
 
 link_directories(${CMAKE_SOURCE_DIR}/lib/googletest/lib)

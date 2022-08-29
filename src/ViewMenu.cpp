@@ -14,12 +14,6 @@ namespace {
     {
         return x * ViewMenu::X_FACTOR + ViewMenu::X_OFFSET;
     }
-
-    int vy(int y)
-    {
-        return y * ViewMenu::Y_FACTOR + ViewMenu::Y_OFFSET;
-    }
-
 } // namespace anonymous
 
 ViewMenu::ViewMenu(const IBoard& board, const INCurses& ncurses)
