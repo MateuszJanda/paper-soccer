@@ -101,9 +101,9 @@ void NCurses::print(unsigned int x, unsigned int y, const std::string& str, Colo
         throw std::runtime_error{"attr_set() error"};
     }
 
-    ret = mvprintw(static_cast<int>(y), static_cast<int>(x), str.c_str());
+    ret = mvaddstr(static_cast<int>(y), static_cast<int>(x), str.c_str());
     if (ret) {
-        throw std::runtime_error{"mvprintw() error"};
+        throw std::runtime_error{"mvaddstr() error"};
     }
 }
 
