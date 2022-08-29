@@ -41,11 +41,8 @@ public:
 
     bool isStatusButton(unsigned int x, unsigned int y) const override;
     std::optional<Direction> getMoveDirection(int x, int y) const override;
-private:
-    const std::string TOP_LINE{".--------------."};
-    const std::string BOTTOM_LINE{"`--------------'"};
-    const std::size_t BUTTON_HEIGHT{3};
 
+private:
     const IBoard& m_board;
     const INCurses& m_ncurses;
     const IViewBoard& m_viewBoard;

@@ -45,10 +45,6 @@ public:
     MarkerVisability markerVisability(Position nodePos) const;
 
 private:
-    const std::string TOP_LINE{".--------------."};
-    const std::string BOTTOM_LINE{"`--------------'"};
-    const std::size_t BUTTON_HEIGHT{3};
-
     void clearLines(const Position& nodePos) const;
     void drawVerticalToTopLine(const Position& nodePos) const;
     void drawHorizontalToRightLine(const Position& nodePos) const;
