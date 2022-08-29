@@ -61,8 +61,7 @@ void NCurses::setupColors() const
     prepareColor(ORANGE, 0xff, 0xad, 0x1f);
     prepareColor(GREEN, 0x2e, 0xe6, 0x25);
 
-    auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND);
-    if (ret) {
+    if (auto ret = assume_default_colors(DEFAULT_FOREGROUND, DEFAULT_BACKGROUND); ret == ERR) {
         throw std::runtime_error{"assume_default_colors() error"};
     }
 
@@ -79,30 +78,27 @@ void NCurses::prepareColor(int colorId, int red, int green, int blue) const
 {
     auto [r, g, b] = rgbToCursesColor(red, green, blue);
 
-    auto ret = init_extended_color(colorId, r, g, b);
-    if (ret) {
+    if (auto ret = init_extended_color(colorId, r, g, b); ret == ERR) {
         throw std::runtime_error{"init_extended_color() error for: " + std::to_string(colorId)};
     }
 }
 
 void NCurses::prepareColorPair(ColorPair colorPair, int fg, int bg) const
 {
-    const auto ret = init_extended_pair(static_cast<int>(colorPair), fg, bg);
-    if (ret) {
+    if (auto ret = init_extended_pair(static_cast<int>(colorPair), fg, bg); ret == ERR) {
         throw std::runtime_error{"init_extended_pair() error for: " + std::to_string(static_cast<int>(colorPair))};
     }
 }
 
 void NCurses::print(unsigned int x, unsigned int y, const std::string& str, ColorPair coloPair) const
 {
-    const auto pairNum{static_cast<int>(coloPair)};
-    auto ret = attr_set(A_NORMAL, (short)pairNum, (void*)&pairNum);
-    if (ret) {
+    auto pairNum{static_cast<int>(coloPair)};
+
+    if (auto ret = attr_set(A_NORMAL, static_cast<short>(pairNum), static_cast<void*>(&pairNum)); ret == ERR) {
         throw std::runtime_error{"attr_set() error"};
     }
 
-    ret = mvaddstr(static_cast<int>(y), static_cast<int>(x), str.c_str());
-    if (ret) {
+    if (auto ret = mvaddstr(static_cast<int>(y), static_cast<int>(x), str.c_str()); ret == ERR) {
         throw std::runtime_error{"mvaddstr() error"};
     }
 }
