@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "ViewMenu.hpp"
+#include "ViewUtils.hpp"
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
 #include "gmock/gmock.h"
@@ -28,14 +29,9 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
 
-    int vx(int x)
-    {
-        return x * ViewMenu::X_FACTOR + ViewMenu::X_OFFSET;
-    }
-
     void expectDrawScore()
     {
-        const auto y = ViewMenu::Y_SCORE_OFFSET;
+        const auto y = ViewUtils::Y_SCORE_OFFSET;
         EXPECT_CALL(ncursesMock, print(_, y + 0, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 1, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 2, _, _));
@@ -43,10 +39,10 @@ public:
 
     void expectDrawStatus()
     {
-        EXPECT_CALL(ncursesMock, print(_, ViewMenu::Y_OFFSET + 0, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewMenu::Y_OFFSET + 1, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewMenu::Y_OFFSET + 2, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewMenu::Y_OFFSET + 3, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 0, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 1, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 2, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 3, _, _));
         EXPECT_CALL(ncursesMock, refreshView());
     }
 
@@ -128,8 +124,8 @@ TEST_F(ViewMenuTest, checkIsStatusButtonNotClicked)
 
 TEST_F(ViewMenuTest, checkIsStatusButtonClicked)
 {
-    const auto x = vx(WIDTH) + 2;
-    const auto y = ViewMenu::Y_OFFSET;
+    const auto x = ViewUtils::vx(WIDTH) + 2;
+    const auto y = ViewUtils::Y_OFFSET;
     ASSERT_TRUE(viewMenu.isStatusButton(x, y));
 }
 

@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "View.hpp"
+#include "ViewUtils.hpp"
 #include "BoardMock.hpp"
 #include "NCursesMock.hpp"
 #include "ViewMenuMock.hpp"
@@ -28,16 +29,6 @@ public:
     ViewTest()
         : view(boardMock, ncursesMock, viewBoardMock, viewMenuMock)
     {
-    }
-
-    int vx(int x)
-    {
-        return x * View::X_FACTOR + View::X_OFFSET;
-    }
-
-    int vy(int y)
-    {
-        return y * View::Y_FACTOR + View::Y_OFFSET;
     }
 
     StrictMock<BoardMock> boardMock;
@@ -134,16 +125,16 @@ TEST_F(ViewTest, checkGetMouseDirection)
     const Position ballPos{0, 0};
     EXPECT_CALL(boardMock, getBallPosition()).WillRepeatedly(Return(ballPos));
 
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(0)), std::nullopt);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(0), ViewUtils::vy(0)), std::nullopt);
 
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(-1)), Direction::TopLeft);
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(0)), Direction::Left);
-    ASSERT_EQ(view.getMoveDirection(vx(-1), vy(1)), Direction::BottomLeft);
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(-1)), Direction::Top);
-    ASSERT_EQ(view.getMoveDirection(vx(0), vy(1)), Direction::Bottom);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(-1)), Direction::TopRight);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(0)), Direction::Right);
-    ASSERT_EQ(view.getMoveDirection(vx(1), vy(1)), Direction::BottomRight);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(-1), ViewUtils::vy(-1)), Direction::TopLeft);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(-1), ViewUtils::vy(0)), Direction::Left);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(-1), ViewUtils::vy(1)), Direction::BottomLeft);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(0), ViewUtils::vy(-1)), Direction::Top);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(0), ViewUtils::vy(1)), Direction::Bottom);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(1), ViewUtils::vy(-1)), Direction::TopRight);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(1), ViewUtils::vy(0)), Direction::Right);
+    ASSERT_EQ(view.getMoveDirection(ViewUtils::vx(1), ViewUtils::vy(1)), Direction::BottomRight);
 }
 
 } // namespace PaperSoccer

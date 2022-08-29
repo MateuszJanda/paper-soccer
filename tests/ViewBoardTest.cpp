@@ -56,34 +56,24 @@ public:
         EXPECT_CALL(boardMock, getWidth()).WillRepeatedly(Return(WIDTH));
     }
 
-    int vx(int x)
-    {
-        return x * ViewBoard::X_FACTOR + ViewBoard::X_OFFSET;
-    }
-
-    int vy(int y)
-    {
-        return y * ViewBoard::Y_FACTOR + ViewBoard::Y_OFFSET;
-    }
-
     void expectClearLines(Position nodePos = NODE_POS)
     {
-        auto x = vx(nodePos.x);
-        auto y = vy(nodePos.y) - 1;
+        auto x = ViewUtils::vx(nodePos.x);
+        auto y = ViewUtils::vy(nodePos.y) - 1;
         EXPECT_CALL(ncursesMock, print(x, y, " ", _));
 
-        x = vx(nodePos.x) + 1;
-        y = vy(nodePos.y);
+        x = ViewUtils::vx(nodePos.x) + 1;
+        y = ViewUtils::vy(nodePos.y);
         EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
 
-        x = vx(nodePos.x) + 1;
-        y = vy(nodePos.y) - 1;
+        x = ViewUtils::vx(nodePos.x) + 1;
+        y = ViewUtils::vy(nodePos.y) - 1;
         EXPECT_CALL(ncursesMock, print(x, y, "  ", _));
     }
 
     void expectDrawScore()
     {
-        const auto y = ViewBoard::Y_SCORE_OFFSET;
+        const auto y = ViewUtils::Y_SCORE_OFFSET;
         EXPECT_CALL(ncursesMock, print(_, y + 0, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 1, _, _));
         EXPECT_CALL(ncursesMock, print(_, y + 2, _, _));
@@ -91,10 +81,10 @@ public:
 
     void expectDrawStatus()
     {
-        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 0, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 1, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 2, _, _));
-        EXPECT_CALL(ncursesMock, print(_, ViewBoard::Y_OFFSET + 3, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 0, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 1, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 2, _, _));
+        EXPECT_CALL(ncursesMock, print(_, ViewUtils::Y_OFFSET + 3, _, _));
         EXPECT_CALL(ncursesMock, refreshView());
     }
 
@@ -241,8 +231,8 @@ TEST_F(ViewBoardTest, checkDrawCellPlusMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, ALL, TOPLEFT, OCCUPIED);
@@ -259,8 +249,8 @@ TEST_F(ViewBoardTest, checkDrawCellNotOccupiedMarkerSkipAllDirs)
 {
     expectClearLines();
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", ColorPair::MARK_GRAY));
 
     viewBoard.drawCell(NODE_POS, ALL, TOPLEFT, NOT_OCCUPIED);
@@ -272,8 +262,8 @@ TEST_F(ViewBoardTest, checkDrawCellPlusMarkerNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(false));
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
@@ -285,12 +275,12 @@ TEST_F(ViewBoardTest, checkDrawCellTopPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Top)).WillOnce(Return(true));
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y) - 1;
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "|", _));
 
-    x = vx(NODE_POS.x);
-    y = vy(NODE_POS.y);
+    x = ViewUtils::vx(NODE_POS.x);
+    y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOPRIGHT_RIGHT, TOPLEFT, OCCUPIED);
@@ -302,8 +292,8 @@ TEST_F(ViewBoardTest, checkDrawCellRightPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(false));
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
@@ -315,12 +305,12 @@ TEST_F(ViewBoardTest, checkDrawCellRightPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::Right)).WillOnce(Return(true));
 
-    auto x = vx(NODE_POS.x) + 1;
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x) + 1;
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "--", _));
 
-    x = vx(NODE_POS.x);
-    y = vy(NODE_POS.y);
+    x = ViewUtils::vx(NODE_POS.x);
+    y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOP_TOPRIGHT, TOPLEFT, OCCUPIED);
@@ -332,8 +322,8 @@ TEST_F(ViewBoardTest, checkDrawCellTopRightPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(false));
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
@@ -345,12 +335,12 @@ TEST_F(ViewBoardTest, checkDrawCellTopRightPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
 
-    auto x = vx(NODE_POS.x) + 1;
-    auto y = vy(NODE_POS.y) - 1;
+    auto x = ViewUtils::vx(NODE_POS.x) + 1;
+    auto y = ViewUtils::vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "⸝⸍", _));
 
-    x = vx(NODE_POS.x);
-    y = vy(NODE_POS.y);
+    x = ViewUtils::vx(NODE_POS.x);
+    y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOP_RIGHT, TOPLEFT, OCCUPIED);
@@ -361,8 +351,8 @@ TEST_F(ViewBoardTest, checkDrawCellTopLeftPathNeighbourOutOfRange)
     Position nodePos{WIDTH - 1, 0u};
     expectClearLines(nodePos);
 
-    auto x = vx(nodePos.x);
-    auto y = vy(nodePos.y);
+    auto x = ViewUtils::vx(nodePos.x);
+    auto y = ViewUtils::vy(nodePos.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(nodePos, ALL, EMPTY, OCCUPIED);
@@ -374,8 +364,8 @@ TEST_F(ViewBoardTest, checkDrawCellTopLeftPathNoNeighbour)
 
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(false));
 
-    auto x = vx(NODE_POS.x);
-    auto y = vy(NODE_POS.y);
+    auto x = ViewUtils::vx(NODE_POS.x);
+    auto y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
@@ -387,12 +377,12 @@ TEST_F(ViewBoardTest, checkDrawCellTopLeftPath)
 
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    auto x = vx(NEIGHBOUR_POS.x) - 2;
-    auto y = vy(NEIGHBOUR_POS.y) - 1;
+    auto x = ViewUtils::vx(NEIGHBOUR_POS.x) - 2;
+    auto y = ViewUtils::vy(NEIGHBOUR_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "⸌⸜", _));
 
-    x = vx(NODE_POS.x);
-    y = vy(NODE_POS.y);
+    x = ViewUtils::vx(NODE_POS.x);
+    y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, ALL, EMPTY, OCCUPIED);
@@ -405,12 +395,12 @@ TEST_F(ViewBoardTest, checkDrawCellCrossPath)
     EXPECT_CALL(boardMock, hasNeighbour(NODE_POS, Direction::TopRight)).WillOnce(Return(true));
     EXPECT_CALL(boardMock, hasNeighbour(NEIGHBOUR_POS, Direction::TopLeft)).WillOnce(Return(true));
 
-    auto x = vx(NODE_POS.x) + 1;
-    auto y = vy(NODE_POS.y) - 1;
+    auto x = ViewUtils::vx(NODE_POS.x) + 1;
+    auto y = ViewUtils::vy(NODE_POS.y) - 1;
     EXPECT_CALL(ncursesMock, print(x, y, "ᐳᐸ", _));
 
-    x = vx(NODE_POS.x);
-    y = vy(NODE_POS.y);
+    x = ViewUtils::vx(NODE_POS.x);
+    y = ViewUtils::vy(NODE_POS.y);
     EXPECT_CALL(ncursesMock, print(x, y, "+", _));
 
     viewBoard.drawCell(NODE_POS, TOP_RIGHT, EMPTY, OCCUPIED);
