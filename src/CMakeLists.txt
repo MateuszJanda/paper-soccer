@@ -6,9 +6,9 @@ find_package(Boost REQUIRED COMPONENTS system)
 find_package(Boost REQUIRED COMPONENTS program_options)
 
 # Just for debug
-message(STATUS "[+] Just for debug: Protobuf_INCLUDE_DIRS: ${Protobuf_INCLUDE_DIRS}")
-message(STATUS "[+] Just for debug: Protobuf_LIBRARIES: ${Protobuf_LIBRARIES}")
-message(STATUS "[+] Just for debug: Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+message(STATUS "[+] Protobuf_INCLUDE_DIRS: ${Protobuf_INCLUDE_DIRS}")
+message(STATUS "[+] Protobuf_LIBRARIES: ${Protobuf_LIBRARIES}")
+message(STATUS "[+] Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
 
 
 # Include directories for Google Protocol Buffers
@@ -19,7 +19,10 @@ include_directories(${Boost_INCLUDE_DIR})
 include_directories(proto)
 
 # Generate protobuf messages from definitions
-message(STATUS "[+] Just for debug: execute_process() in ${CMAKE_SOURCE_DIR}/src/proto")
+message(STATUS "[!] .----------------------------------------------------------.")
+message(STATUS "[!] | Make sure you have installed protoc (protobuf-compiler)! |")
+message(STATUS "[!] `----------------------------------------------------------`")
+message(STATUS "[+] execute protc in ${CMAKE_SOURCE_DIR}/src/proto")
 set(PAPER_SOCCER_PROTO_FILES
     Direction.proto
     Goal.proto
