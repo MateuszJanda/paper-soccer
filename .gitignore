@@ -1,6 +1,7 @@
 paper-soccer
 runTests
 
+.cache/
 .cmake/
 CMakeLists.txt.user
 CMakeLists.txt.autosave
@@ -20,8 +21,8 @@ build/
 *.files
 *.includes
 
-src/libpaper_soccer_lib.a
-src/proto/libpaper_soccer_proto.a
+libpaper_soccer_lib.a
+libpaper_soccer_proto_lib.a
 lib/libgmock.a
 lib/libgmock_main.a
 lib/libgtest.a
