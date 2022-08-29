@@ -6,13 +6,15 @@ A networked version of paper soccer game in modern console.
 </p>
 
 ## Requirements
+Tested on:
 - `gcc` with `C++20` support
-- `googletest` (1.10.0)
-- `protobuf (libprotobuf-dev, protobuf-compiler)` (3.6.1)
-- `boost (libboost-all-dev)` (1.71)
+- `googletest` (1.12.1)
+- `protobuf (libprotobuf-dev)` (3.12.4)
+- `protoc` (protobuf-compiler) (3.13.4) - command line tool
+- `boost (libboost-all-dev)` (1.74)
     - `boost.asio`
     - `boost.program_options`
-- `ncurses` (6.2)
+- `ncurses` (6.3)
 - also terminal supporting font fallback ("weird" Unicode characters are used)
 
 ## Installation
