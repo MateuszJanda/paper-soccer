@@ -10,19 +10,6 @@
 
 namespace PaperSoccer {
 
-namespace {
-    int vx(int x)
-    {
-        return x * ViewBoard::X_FACTOR + ViewBoard::X_OFFSET;
-    }
-
-    int vy(int y)
-    {
-        return y * ViewBoard::Y_FACTOR + ViewBoard::Y_OFFSET;
-    }
-
-} // namespace anonymous
-
 ViewBoard::ViewBoard(const IBoard& board, const INCurses& ncurses)
     : m_board{board}
     , m_ncurses{ncurses}
@@ -184,12 +171,12 @@ void ViewBoard::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, Marker
 
 void ViewBoard::drawVerticalToTopLine(const Position& nodePos) const
 {
-    m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, "|");
+    m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y) - 1, "|");
 }
 
 void ViewBoard::drawHorizontalToRightLine(const Position& nodePos) const
 {
-    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "--");
+    m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y), "--");
 }
 
 void ViewBoard::drawCrossToRight(const Position& nodePos) const
@@ -197,7 +184,7 @@ void ViewBoard::drawCrossToRight(const Position& nodePos) const
     // >< - U+003e U+003f https://en.wikipedia.org/wiki/Basic_Latin_(Unicode_block)
     // ᐳᐸ - U+1433 U+1438 https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     const std::string symbol = "ᐳᐸ";
-    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
+    m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y) - 1, symbol);
 }
 
 void ViewBoard::drawHypotenuseToTopRight(const Position& nodePos) const
@@ -207,7 +194,7 @@ void ViewBoard::drawHypotenuseToTopRight(const Position& nodePos) const
     // ᐟ  - U+141f        https://en.wikipedia.org/wiki/Unified_Canadian_Aboriginal_Syllabics_(Unicode_block)
     // ৴  - U+09f4        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     const std::string symbol = "⸝⸍";
-    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, symbol);
+    m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y) - 1, symbol);
 }
 
 void ViewBoard::drawHypotenuseToTopLeft(const Position& nodePos) const
@@ -218,45 +205,45 @@ void ViewBoard::drawHypotenuseToTopLeft(const Position& nodePos) const
     // ৲  - U+09f2        https://en.wikipedia.org/wiki/Bengali_(Unicode_block)
     // ヽ  - U+30FD       https://en.wikipedia.org/wiki/Katakana_(Unicode_block)
     const std::string symbol = "⸌⸜";
-    m_ncurses.print(vx(nodePos.x) - 2, vy(nodePos.y) - 1, symbol);
+    m_ncurses.print(ViewUtils::vx(nodePos.x) - 2, ViewUtils::vy(nodePos.y) - 1, symbol);
 }
 
 void ViewBoard::clearLines(const Position& nodePos) const
 {
-    m_ncurses.print(vx(nodePos.x), vy(nodePos.y) - 1, " ");
-    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y), "  ");
-    m_ncurses.print(vx(nodePos.x) + 1, vy(nodePos.y) - 1, "  ");
+    m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y) - 1, " ");
+    m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y), "  ");
+    m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y) - 1, "  ");
 }
 
 void ViewBoard::drawMarker(const Position& nodePos, MarkerVisability visability) const
 {
     if (visability == MarkerVisability::Occupied) {
-        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+");
+        m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "+");
     } else if (visability == MarkerVisability::NotOccupied) {
-        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "+", ColorPair::MARK_GRAY);
+        m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "+", ColorPair::MARK_GRAY);
     }
 }
 
 void ViewBoard::drawNames(const std::string& topName, ColorPair topColor,
     const std::string& bottomName, ColorPair bottomColor) const
 {
-    auto x = vx(m_board.getGoalpostRight()) + 2;
-    auto y = Y_OFFSET + 1;
+    auto x = ViewUtils::vx(m_board.getGoalpostRight()) + 2;
+    auto y = ViewUtils::Y_OFFSET + 1;
     m_ncurses.print(x, y, topName, topColor);
 
-    y = vy(m_board.getHeight() - 1) - 1;
+    y = ViewUtils::vy(m_board.getHeight() - 1) - 1;
     m_ncurses.print(x, y, bottomName, bottomColor);
 }
 
 void ViewBoard::drawPathMarkers(const std::vector<Direction>& dirPath, ColorPair ballColor) const
 {
     auto nodePos = m_board.getBallPosition();
-    m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
+    m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "*", ballColor);
 
     for (auto dir : std::ranges::views::reverse(dirPath)) {
         auto reverseDir = reverseDirection(dir);
         nodePos = directionToPosition(nodePos, reverseDir);
-        m_ncurses.print(vx(nodePos.x), vy(nodePos.y), "*", ballColor);
+        m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "*", ballColor);
     }
 }
 

@@ -3,8 +3,8 @@
 // Homepage: github.com/MateuszJanda/paper-soccer
 // Ad maiorem Dei gloriam
 
-#ifndef DIRECTION_HPP
-#define DIRECTION_HPP
+#ifndef DIRECTION_UTILS_HPP
+#define DIRECTION_UTILS_HPP
 
 #include "Position.hpp"
 #include "proto/Direction.pb.h"
@@ -74,4 +74,4 @@ constexpr Direction reverseDirection(Direction dir)
 
 } // namespace PaperSoccer
 
-#endif // DIRECTION_HPP
+#endif // DIRECTION_UTILS_HPP

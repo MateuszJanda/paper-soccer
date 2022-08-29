@@ -9,13 +9,6 @@
 
 namespace PaperSoccer {
 
-namespace {
-    int vx(int x)
-    {
-        return x * ViewMenu::X_FACTOR + ViewMenu::X_OFFSET;
-    }
-} // namespace anonymous
-
 ViewMenu::ViewMenu(const IBoard& board, const INCurses& ncurses)
     : m_board{board}
     , m_ncurses{ncurses}
@@ -25,7 +18,7 @@ ViewMenu::ViewMenu(const IBoard& board, const INCurses& ncurses)
 void ViewMenu::drawLegend(char undo, char newGame, const std::map<char, Direction>& dirKeys) const
 {
     auto x = getMenuXOffset();
-    auto y = Y_LEGEND_OFFSET;
+    auto y = ViewUtils::Y_LEGEND_OFFSET;
 
     constexpr auto descShift{1};
     m_ncurses.print(x + descShift, y + 0, "Keys:");
@@ -117,7 +110,7 @@ void ViewMenu::setWinStatus(int won, int lost) const
 void ViewMenu::drawStatusButton(const std::string& line1, const std::string& line2, ColorPair color) const
 {
     const auto x = getMenuXOffset();
-    const auto y = Y_OFFSET;
+    const auto y = ViewUtils::Y_OFFSET;
     m_ncurses.print(x, y + 0, TOP_LINE, color);
     m_ncurses.print(x, y + 1, "|" + line1 + "|", color);
     m_ncurses.print(x, y + 2, "|" + line2 + "|", color);
@@ -129,13 +122,13 @@ void ViewMenu::drawStatusButton(const std::string& line1, const std::string& lin
 unsigned int ViewMenu::getMenuXOffset() const
 {
     constexpr auto space{2};
-    return vx(m_board.getWidth()) + space;
+    return ViewUtils::vx(m_board.getWidth()) + space;
 }
 
 void ViewMenu::drawScore(int won, int lost) const
 {
     const auto x = getMenuXOffset();
-    const auto y = Y_SCORE_OFFSET;
+    const auto y = ViewUtils::Y_SCORE_OFFSET;
 
     m_ncurses.print(x, y + 0, " Score:");
     m_ncurses.print(x, y + 1, "   Won: " + std::to_string(won), ColorPair::USER);
@@ -145,7 +138,7 @@ void ViewMenu::drawScore(int won, int lost) const
 void ViewMenu::drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono::milliseconds enemyTimeLeft) const
 {
     const auto x = getMenuXOffset();
-    const auto y = Y_TIME_OFFSET;
+    const auto y = ViewUtils::Y_TIME_OFFSET;
 
     m_ncurses.print(x, y, " Time left:");
 
@@ -156,7 +149,7 @@ void ViewMenu::drawTimeLeft(std::chrono::milliseconds userTimeLeft, std::chrono:
 void ViewMenu::drawUserTimeLeft(std::chrono::milliseconds timeLeft) const
 {
     const auto x = getMenuXOffset();
-    const auto y = Y_TIME_OFFSET;
+    const auto y = ViewUtils::Y_TIME_OFFSET;
 
     drawTime(x, y + 1, timeLeft, "     Me: ", ColorPair::USER);
 }
@@ -164,7 +157,7 @@ void ViewMenu::drawUserTimeLeft(std::chrono::milliseconds timeLeft) const
 void ViewMenu::drawEnemyTimeLeft(std::chrono::milliseconds timeLeft) const
 {
     const auto x = getMenuXOffset();
-    const auto y = Y_TIME_OFFSET;
+    const auto y = ViewUtils::Y_TIME_OFFSET;
 
     drawTime(x, y + 2, timeLeft, "  Enemy: ", ColorPair::ENEMY);
 }
@@ -184,7 +177,7 @@ void ViewMenu::drawTime(unsigned int x, unsigned int y, std::chrono::millisecond
 bool ViewMenu::isStatusButton(unsigned int x, unsigned int y) const
 {
     const auto buttonX = getMenuXOffset();
-    const auto buttonY = Y_OFFSET;
+    const auto buttonY = ViewUtils::Y_OFFSET;
     return x >= buttonX and x <= TOP_LINE.size() + buttonX and y >= buttonY and y <= buttonY + BUTTON_HEIGHT;
 }
 

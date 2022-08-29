@@ -9,19 +9,6 @@
 
 namespace PaperSoccer {
 
-namespace {
-    int vx(int x)
-    {
-        return x * View::X_FACTOR + View::X_OFFSET;
-    }
-
-    int vy(int y)
-    {
-        return y * View::Y_FACTOR + View::Y_OFFSET;
-    }
-
-} // namespace anonymous
-
 View::View(const IBoard& board, const INCurses& ncurses, const IViewBoard &viewBoard, const IViewMenu &viewMenu)
     : m_board{board}
     , m_ncurses{ncurses}
@@ -99,29 +86,29 @@ bool View::isStatusButton(unsigned int x, unsigned int y) const
 std::optional<Direction> View::getMoveDirection(int x, int y) const
 {
     const auto ballPos = m_board.getBallPosition();
-    const auto viewX = vx(ballPos.x);
-    const auto viewY = vy(ballPos.y);
+    const auto viewX = ViewUtils::vx(ballPos.x);
+    const auto viewY = ViewUtils::vy(ballPos.y);
 
-    if (x == viewX - X_FACTOR) {
-        if (y == viewY - Y_FACTOR) {
+    if (x == viewX - ViewUtils::X_FACTOR) {
+        if (y == viewY - ViewUtils::Y_FACTOR) {
             return Direction::TopLeft;
         } else if (y == viewY) {
             return Direction::Left;
-        } else if (y == viewY + Y_FACTOR) {
+        } else if (y == viewY + ViewUtils::Y_FACTOR) {
             return Direction::BottomLeft;
         }
     } else if (x == viewX) {
-        if (y == viewY - Y_FACTOR) {
+        if (y == viewY - ViewUtils::Y_FACTOR) {
             return Direction::Top;
-        } else if (y == viewY + Y_FACTOR) {
+        } else if (y == viewY + ViewUtils::Y_FACTOR) {
             return Direction::Bottom;
         }
-    } else if (x == viewX + X_FACTOR) {
-        if (y == viewY - Y_FACTOR) {
+    } else if (x == viewX + ViewUtils::X_FACTOR) {
+        if (y == viewY - ViewUtils::Y_FACTOR) {
             return Direction::TopRight;
         } else if (y == viewY) {
             return Direction::Right;
-        } else if (y == viewY + Y_FACTOR) {
+        } else if (y == viewY + ViewUtils::Y_FACTOR) {
             return Direction::BottomRight;
         }
     }
