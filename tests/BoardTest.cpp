@@ -13,7 +13,7 @@ namespace {
     constexpr std::size_t HEIGHT{10};
     constexpr std::size_t WIDTH{8};
     constexpr std::size_t GRAPH_HEIGHT{10 + 2 + 1};
-    constexpr std::size_t GRPAH_WIDTH{8 + 1};
+    constexpr std::size_t GRAPH_WIDTH{8 + 1};
     constexpr std::size_t GOALPOST_LEFT{3};
     constexpr std::size_t GOALPOST_RIGHT{5};
     constexpr Position TOP_FROM_CENTER{4, 5};
@@ -27,7 +27,7 @@ public:
 
 TEST_F(BoardTest, checkWidth)
 {
-    ASSERT_EQ(board.getWidth(), GRPAH_WIDTH);
+    ASSERT_EQ(board.getWidth(), GRAPH_WIDTH);
 }
 
 TEST_F(BoardTest, checkHeight)
@@ -55,7 +55,7 @@ TEST_F(BoardTest, checkReset)
     board.moveBall(Direction::Top);
     board.reset();
 
-    ASSERT_EQ(board.getWidth(), GRPAH_WIDTH);
+    ASSERT_EQ(board.getWidth(), GRAPH_WIDTH);
     ASSERT_EQ(board.getHeight(), GRAPH_HEIGHT);
     ASSERT_EQ(board.getBallPosition(), CENTER);
 

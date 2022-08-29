@@ -1,6 +1,7 @@
 paper-soccer
 runTests
 
+.vscode/
 .cache/
 .cmake/
 CMakeLists.txt.user

@@ -8,14 +8,15 @@ A networked version of paper soccer game in modern console.
 ## Requirements
 Tested on:
 - `gcc` with `C++20` support
+- `cmake` (3.18)
 - `googletest` (1.12.1)
 - `protobuf (libprotobuf-dev)` (3.12.4)
-- `protoc` (protobuf-compiler) (3.13.4) - command line tool
+- `protoc` (protobuf-compiler) (3.12.4) - command line tool
 - `boost (libboost-all-dev)` (1.74)
     - `boost.asio`
     - `boost.program_options`
 - `ncurses` (6.3)
-- also terminal supporting font fallback ("weird" Unicode characters are used)
+- also terminal supporting font fallback because "weird" Unicode characters are used
 
 ## Installation
 ```bash
@@ -50,7 +51,7 @@ Connect to localhost server
 ### Game control
 Key | Direction
 --- | ---
-<kbd>Enter</kbd> | End trun
+<kbd>Enter</kbd> | End turn
 <kbd>u</kbd> | Undo player move
 <kbd>n</kbd> | Start new game, when this game end
 <kbd>Ctrl+c</kbd> | Exit

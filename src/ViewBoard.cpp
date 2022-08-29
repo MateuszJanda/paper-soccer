@@ -23,8 +23,8 @@ void ViewBoard::drawBoard(const std::string& topName, ColorPair topColor, const 
         for (std::size_t x = 0; x < m_board.getWidth(); x++) {
             Position nodePos{x, y};
             auto [nodeSkip, neighSkip] = filterDirsForOutOfBorder(nodePos);
-            auto visability = markerVisability(nodePos);
-            drawCell(nodePos, nodeSkip, neighSkip, visability);
+            auto visibility = markerVisibility(nodePos);
+            drawCell(nodePos, nodeSkip, neighSkip, visibility);
         }
     }
 
@@ -121,20 +121,20 @@ Skips ViewBoard::filterDirsForRightLine(Position nodePos) const
     return Skips{};
 }
 
-MarkerVisability ViewBoard::markerVisability(Position nodePos) const
+MarkerVisibility ViewBoard::markerVisibility(Position nodePos) const
 {
     const int bottomLine = m_board.getHeight() - 1;
 
     if ((nodePos.y == 0 or nodePos.y == bottomLine) and m_board.hasAllNeighbours(nodePos)) {
-        return MarkerVisability::Invisible;
+        return MarkerVisibility::Invisible;
     } else if (m_board.hasAnyNeighbour(nodePos)) {
-        return MarkerVisability::Occupied;
+        return MarkerVisibility::Occupied;
     }
 
-    return MarkerVisability::NotOccupied;
+    return MarkerVisibility::NotOccupied;
 }
 
-void ViewBoard::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const
+void ViewBoard::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisibility visibility) const
 {
     clearLines(nodePos);
 
@@ -166,7 +166,7 @@ void ViewBoard::drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, Marker
         drawHypotenuseToTopLeft(neighbourPos);
     }
 
-    drawMarker(nodePos, visability);
+    drawMarker(nodePos, visibility);
 }
 
 void ViewBoard::drawVerticalToTopLine(const Position& nodePos) const
@@ -215,11 +215,11 @@ void ViewBoard::clearLines(const Position& nodePos) const
     m_ncurses.print(ViewUtils::vx(nodePos.x) + 1, ViewUtils::vy(nodePos.y) - 1, "  ");
 }
 
-void ViewBoard::drawMarker(const Position& nodePos, MarkerVisability visability) const
+void ViewBoard::drawMarker(const Position& nodePos, MarkerVisibility visibility) const
 {
-    if (visability == MarkerVisability::Occupied) {
+    if (visibility == MarkerVisibility::Occupied) {
         m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "+");
-    } else if (visability == MarkerVisability::NotOccupied) {
+    } else if (visibility == MarkerVisibility::NotOccupied) {
         m_ncurses.print(ViewUtils::vx(nodePos.x), ViewUtils::vy(nodePos.y), "+", ColorPair::MARK_GRAY);
     }
 }

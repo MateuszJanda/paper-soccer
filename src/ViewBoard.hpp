@@ -16,7 +16,7 @@
 
 namespace PaperSoccer {
 
-enum MarkerVisability {
+enum MarkerVisibility {
     Invisible,
     NotOccupied,
     Occupied
@@ -31,7 +31,7 @@ public:
     void drawBoard(const std::string& topName, ColorPair topColor,
         const std::string& bottomName, ColorPair bottomColor,
         const std::vector<Direction>& dirPath, ColorPair ballColor) const override;
-    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisability visability) const;
+    void drawCell(Position nodePos, Skip nodeSkip, Skip neighSkip, MarkerVisibility visibility) const;
 
     void drawNames(const std::string& topName, ColorPair topColor,
         const std::string& bottomName, ColorPair bottomColor) const;
@@ -42,7 +42,7 @@ public:
     Skips filterDirsForBottomNetLine(Position nodePos) const;
     Skips filterDirsForTopBorderLine(Position nodePos) const;
     Skips filterDirsForRightLine(Position nodePos) const;
-    MarkerVisability markerVisability(Position nodePos) const;
+    MarkerVisibility markerVisibility(Position nodePos) const;
 
 private:
     void clearLines(const Position& nodePos) const;
@@ -51,7 +51,7 @@ private:
     void drawCrossToRight(const Position& nodePos) const;
     void drawHypotenuseToTopRight(const Position& nodePos) const;
     void drawHypotenuseToTopLeft(const Position& nodePos) const;
-    void drawMarker(const Position& nodePos, MarkerVisability visability) const;
+    void drawMarker(const Position& nodePos, MarkerVisibility visibility) const;
 
     const IBoard& m_board;
     const INCurses& m_ncurses;

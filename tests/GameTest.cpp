@@ -257,7 +257,7 @@ TEST_F(GameTest, onKeyboardMouseInputBreakWhenEnterInput)
     game.onKeyboardMouseInput();
 }
 
-TEST_F(GameTest, onKeyboardMouseInputBreakWhenMosueInput)
+TEST_F(GameTest, onKeyboardMouseInputBreakWhenMouseInput)
 {
     InSequence s;
 
@@ -592,7 +592,7 @@ TEST_F(GameTest, userRequestNewGameWhenGameEnd)
     EXPECT_EQ(game.getMatchStatus(), MatchStatus::ReadyForNew);
 }
 
-TEST_F(GameTest, userRequesNewGmeWhenEnemyReadyForNewGame)
+TEST_F(GameTest, userRequestNewGmeWhenEnemyReadyForNewGame)
 {
     expectResetSettingsForFirstCurrentTurnEnemy();
     EXPECT_CALL(networkMock, sendNewGame(Turn::User, Goal::Down));

@@ -80,7 +80,7 @@ void Game::onNewGame(NewGameMsg msg)
     const auto major = std::stoul(gameVersion.substr(0, gameVersion.find(delimiter)));
 
     if (major != msg.version_major()) {
-        throw std::runtime_error{"Inocrrect major version in NewGameMsg"};
+        throw std::runtime_error{"Incorrect major version in NewGameMsg"};
     }
 
     m_firstTurn = msg.turn();

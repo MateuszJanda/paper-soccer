@@ -23,9 +23,9 @@ namespace {
     const Skip TOP_RIGHT{Direction::Top, Direction::Right};
     const Skip RIGHT{Direction::Right};
 
-    constexpr MarkerVisability INVISIBLE{MarkerVisability::Invisible};
-    constexpr MarkerVisability OCCUPIED{MarkerVisability::Occupied};
-    constexpr MarkerVisability NOT_OCCUPIED{MarkerVisability::NotOccupied};
+    constexpr MarkerVisibility INVISIBLE{MarkerVisibility::Invisible};
+    constexpr MarkerVisibility OCCUPIED{MarkerVisibility::Occupied};
+    constexpr MarkerVisibility NOT_OCCUPIED{MarkerVisibility::NotOccupied};
 
     constexpr std::size_t WIDTH{9};
     constexpr std::size_t HEIGHT{13};
@@ -184,47 +184,47 @@ TEST_F(ViewBoardTest, checkFilterDirsForRightLineWhenThisLine)
     ASSERT_EQ(neighSkip, EMPTY);
 }
 
-TEST_F(ViewBoardTest, checkMarkerVisabilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisibilityWhenFirstLineAndDoesNotHaveAnyNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
-    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::NotOccupied);
+    ASSERT_EQ(viewBoard.markerVisibility(nodePos), MarkerVisibility::NotOccupied);
 }
 
-TEST_F(ViewBoardTest, checkMarkerVisabilityWhenLastLineAndDoesNotHaveAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisibilityWhenLastLineAndDoesNotHaveAnyNeighbours)
 {
     Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(false));
 
-    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::NotOccupied);
+    ASSERT_EQ(viewBoard.markerVisibility(nodePos), MarkerVisibility::NotOccupied);
 }
 
-TEST_F(ViewBoardTest, checkMarkerVisabilityWhenFirstLineAndHasAllNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisibilityWhenFirstLineAndHasAllNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Invisible);
+    ASSERT_EQ(viewBoard.markerVisibility(nodePos), MarkerVisibility::Invisible);
 }
 
-TEST_F(ViewBoardTest, checkMarkerVisabilityWhenLastLineAndHasAllNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisibilityWhenLastLineAndHasAllNeighbours)
 {
     Position nodePos{HEIGHT - 1, 0u};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Invisible);
+    ASSERT_EQ(viewBoard.markerVisibility(nodePos), MarkerVisibility::Invisible);
 }
 
-TEST_F(ViewBoardTest, checkMarkerVisabilityWhenHasAnyNeighbours)
+TEST_F(ViewBoardTest, checkMarkerVisibilityWhenHasAnyNeighbours)
 {
     Position nodePos{0, 0};
     EXPECT_CALL(boardMock, hasAllNeighbours(nodePos)).WillOnce(Return(false));
     EXPECT_CALL(boardMock, hasAnyNeighbour(nodePos)).WillOnce(Return(true));
 
-    ASSERT_EQ(viewBoard.markerVisability(nodePos), MarkerVisability::Occupied);
+    ASSERT_EQ(viewBoard.markerVisibility(nodePos), MarkerVisibility::Occupied);
 }
 
 TEST_F(ViewBoardTest, checkDrawCellPlusMarkerSkipAllDirs)

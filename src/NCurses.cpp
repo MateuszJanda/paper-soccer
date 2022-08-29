@@ -95,8 +95,8 @@ void NCurses::prepareColorPair(ColorPair colorPair, int fg, int bg) const
 
 void NCurses::print(unsigned int x, unsigned int y, const std::string& str, ColorPair coloPair) const
 {
-    const auto pariNum{static_cast<int>(coloPair)};
-    auto ret = attr_set(A_NORMAL, (short)pariNum, (void*)&pariNum);
+    const auto pairNum{static_cast<int>(coloPair)};
+    auto ret = attr_set(A_NORMAL, (short)pairNum, (void*)&pairNum);
     if (ret) {
         throw std::runtime_error{"attr_set() error"};
     }
