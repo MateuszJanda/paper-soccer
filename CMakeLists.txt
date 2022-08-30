@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 project(paper-soccer
-        VERSION 1.0.0
+        VERSION 1.0.1
         HOMEPAGE_URL https://github.com/MateuszJanda/paper-soccer
         LANGUAGES
         CXX)
