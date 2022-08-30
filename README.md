@@ -10,13 +10,13 @@ Tested on:
 - `gcc` with `C++20` support
 - `cmake` (3.18)
 - `googletest` (1.12.1)
-- `protobuf (libprotobuf-dev)` (3.12.4)
-- `protoc` (protobuf-compiler) (3.12.4) - command line tool
-- `boost (libboost-all-dev)` (1.74)
+- `protobuf` (`libprotobuf-dev` package) (3.12.4)
+- `protoc` (`protobuf-compiler` package) (3.12.4) - a command line tool
+- `boost` (`libboost-all-dev` package) (1.74)
     - `boost.asio`
     - `boost.program_options`
-- `ncurses` (6.3)
-- also terminal supporting font fallback because "weird" Unicode characters are used
+- `ncurses` (`libncurses-dev` package) (6.3)
+- also terminal (e.g. `gnome-terminal`) supporting font fallback because "weird" Unicode characters are used
 
 ## Installation
 ```bash
