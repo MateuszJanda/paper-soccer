@@ -6,11 +6,11 @@
 #ifndef VIEW_BOARD_HPP
 #define VIEW_BOARD_HPP
 
-#include "DirectionUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IViewBoard.hpp"
 #include "ViewUtils.hpp"
+#include "proto/Direction.pb.h"
 #include <set>
 #include <tuple>
 

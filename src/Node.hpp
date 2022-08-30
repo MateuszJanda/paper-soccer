@@ -6,8 +6,8 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include "DirectionUtils.hpp"
 #include "Position.hpp"
+#include "proto/Direction.pb.h"
 #include <set>
 #include <vector>
 

@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "Game.hpp"
+#include "DirectionUtils.hpp"
 #include "proto/Message.pb.h"
 #include <stdexcept>
 

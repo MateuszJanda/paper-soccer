@@ -4,6 +4,7 @@
 // Ad maiorem Dei gloriam
 
 #include "Node.hpp"
+#include "DirectionUtils.hpp"
 
 namespace PaperSoccer {
 

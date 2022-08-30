@@ -6,13 +6,14 @@
 #ifndef VIEW_HPP
 #define VIEW_HPP
 
-#include "DirectionUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
 #include "IView.hpp"
 #include "IViewBoard.hpp"
 #include "IViewMenu.hpp"
 #include "ViewUtils.hpp"
+#include "proto/Direction.pb.h"
+#include <optional>
 
 namespace PaperSoccer {
 
