@@ -1,13 +1,9 @@
 #ifndef I_VIEW_MENU_HPP
 #define I_VIEW_MENU_HPP
 
-#include "ColorPair.hpp"
-#include "DirectionUtils.hpp"
+#include "proto/Direction.pb.h"
 #include <chrono>
 #include <map>
-#include <optional>
-#include <string>
-#include <vector>
 
 namespace PaperSoccer {
 

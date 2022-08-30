@@ -2,7 +2,7 @@
 #define I_VIEW_HPP
 
 #include "ColorPair.hpp"
-#include "DirectionUtils.hpp"
+#include "proto/Direction.pb.h"
 #include <chrono>
 #include <map>
 #include <optional>

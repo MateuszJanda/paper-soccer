@@ -9,11 +9,8 @@
 #include "DirectionUtils.hpp"
 #include "IBoard.hpp"
 #include "INCurses.hpp"
-#include "IView.hpp"
 #include "IViewMenu.hpp"
 #include "ViewUtils.hpp"
-#include <set>
-#include <tuple>
 
 namespace PaperSoccer {
 

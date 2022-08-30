@@ -2,10 +2,8 @@
 #define I_VIEW_BOARD_HPP
 
 #include "ColorPair.hpp"
-#include "DirectionUtils.hpp"
+#include "proto/Direction.pb.h"
 #include <chrono>
-#include <map>
-#include <optional>
 #include <string>
 #include <vector>
 

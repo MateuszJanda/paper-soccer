@@ -4,8 +4,6 @@
 // Ad maiorem Dei gloriam
 
 #include "View.hpp"
-#include <iomanip>
-#include <sstream>
 
 namespace PaperSoccer {
 

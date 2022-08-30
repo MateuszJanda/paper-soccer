@@ -13,8 +13,6 @@
 #include "IViewBoard.hpp"
 #include "IViewMenu.hpp"
 #include "ViewUtils.hpp"
-#include <set>
-#include <tuple>
 
 namespace PaperSoccer {
 
