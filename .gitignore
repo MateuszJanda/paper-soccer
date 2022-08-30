@@ -2,6 +2,11 @@ paper-soccer
 runTests
 
 .vscode/
+
+.ninja_deps
+.ninja_log
+build.ninja
+
 .cache/
 .cmake/
 CMakeLists.txt.user
